@@ -123,7 +123,7 @@ fn (mut c Checker) vvd_directives(name string) []int {
 	return c.vue_template_vnodes().filter(c.vue_is_directive(it, name))
 }
 
-fn (mut c Checker) lint_vue_valid_v_bind(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_bind(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -164,27 +164,27 @@ fn (mut c Checker) vvd_simple(name string, needs_value bool, mut stats Stats) []
 	return findings
 }
 
-fn (mut c Checker) lint_vue_valid_v_cloak(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_cloak(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return if c.vue_has_template() { c.vvd_simple('cloak', false, mut stats) } else { [] }
 }
 
-fn (mut c Checker) lint_vue_valid_v_once(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_once(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return if c.vue_has_template() { c.vvd_simple('once', false, mut stats) } else { [] }
 }
 
-fn (mut c Checker) lint_vue_valid_v_pre(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_pre(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return if c.vue_has_template() { c.vvd_simple('pre', false, mut stats) } else { [] }
 }
 
-fn (mut c Checker) lint_vue_valid_v_html(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_html(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return if c.vue_has_template() { c.vvd_simple('html', true, mut stats) } else { [] }
 }
 
-fn (mut c Checker) lint_vue_valid_v_text(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_text(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return if c.vue_has_template() { c.vvd_simple('text', true, mut stats) } else { [] }
 }
 
-fn (mut c Checker) lint_vue_valid_v_show(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_show(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -203,7 +203,7 @@ fn (mut c Checker) lint_vue_valid_v_show(root C.TSNode, abs_path string, mut sta
 	return findings
 }
 
-fn (mut c Checker) lint_vue_valid_v_if(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_if(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -226,7 +226,7 @@ fn (mut c Checker) lint_vue_valid_v_if(root C.TSNode, abs_path string, mut stats
 	return findings
 }
 
-fn (mut c Checker) lint_vue_valid_v_else_if(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_else_if(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -252,7 +252,7 @@ fn (mut c Checker) lint_vue_valid_v_else_if(root C.TSNode, abs_path string, mut 
 	return findings
 }
 
-fn (mut c Checker) lint_vue_valid_v_else(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_else(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -278,7 +278,7 @@ fn (mut c Checker) lint_vue_valid_v_else(root C.TSNode, abs_path string, mut sta
 	return findings
 }
 
-fn (mut c Checker) lint_vue_valid_v_is(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_is(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

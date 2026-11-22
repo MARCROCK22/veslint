@@ -34,7 +34,7 @@ fn sfcs_options(given []json2.Any) !SfcsOptions {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_function_call_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_function_call_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := sfcs_options(c.rule_options(stylistic_function_call_spacing))!

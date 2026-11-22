@@ -9,7 +9,7 @@ const prm_no_return_in_finally_messages = {
 	'avoidReturnInFinally': 'No return in finally'
 }
 
-fn (mut c Checker) lint_promise_no_return_in_finally(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_no_return_in_finally(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

@@ -73,7 +73,7 @@ fn vhecn_phrase(line_breaks int) string {
 	return if line_breaks == 0 { 'no' } else { line_breaks.str() }
 }
 
-fn (mut c Checker) lint_vue_singleline_html_element_content_newline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_singleline_html_element_content_newline(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -81,7 +81,7 @@ fn (mut c Checker) lint_vue_singleline_html_element_content_newline(root C.TSNod
 	return c.vhecn_lint(opts, false, mut stats)
 }
 
-fn (mut c Checker) lint_vue_multiline_html_element_content_newline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_multiline_html_element_content_newline(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

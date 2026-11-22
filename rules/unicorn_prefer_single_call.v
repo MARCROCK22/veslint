@@ -75,7 +75,7 @@ fn upsg_test(t &estree.EsTree, index int, call int) bool {
 	}
 }
 
-fn (mut c Checker) lint_unicorn_prefer_single_call(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_single_call(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ignored_in_options := upsg_options(c.rule_options(unicorn_prefer_single_call))!
 	mut findings := []Finding{}

@@ -16,7 +16,7 @@ fn unnec_is_negated(t &estree.EsTree, node int) bool {
 		&& (t.string_of(node, .operator) or { '' }) == '!'
 }
 
-fn (mut c Checker) lint_unicorn_no_negation_in_equality_check(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_negation_in_equality_check(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

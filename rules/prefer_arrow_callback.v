@@ -29,10 +29,10 @@ fn pac_options(options []json2.Any) !PacOptions {
 struct PacCallback {
 	is_callback     bool
 	is_lexical_this bool
-	bind_call       ?C.TSNode
+	bind_call       ?C.vt_node
 }
 
-fn (mut c Checker) lint_prefer_arrow_callback(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_arrow_callback(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := pac_options(c.rule_options(prefer_arrow_callback))!
 	mut findings := []Finding{}
@@ -95,11 +95,11 @@ fn (mut c Checker) lint_prefer_arrow_callback(root C.TSNode, abs_path string, mu
 
 // pac_callback_info ports getCallbackInfo: through logical and conditional expressions and
 // `.bind()` calls, the function is an argument of a call.
-fn (c &Checker) pac_callback_info(f C.TSNode) PacCallback {
+fn (c &Checker) pac_callback_info(f C.vt_node) PacCallback {
 	mut current := f
 	mut bound := false
 	mut lexical := false
-	mut bind_call := ?C.TSNode(none)
+	mut bind_call := ?C.vt_node(none)
 	for {
 		parent := cti_estree_parent(current) or { return PacCallback{} }
 		match node_kind(parent) {
@@ -134,7 +134,7 @@ fn (c &Checker) pac_callback_info(f C.TSNode) PacCallback {
 				}
 				if !bound {
 					bound = true
-					args := (call_arguments(call) or { []C.TSNode{} }).filter(node_kind(it) != 'comment')
+					args := (call_arguments(call) or { []C.vt_node{} }).filter(node_kind(it) != 'comment')
 					lexical = args.len == 1 && node_kind(unwrap_parens(args[0])) == 'this'
 					bind_call = call
 				}
@@ -163,7 +163,7 @@ fn (c &Checker) pac_callback_info(f C.TSNode) PacCallback {
 
 // pac_fixes is the fix that makes the function an arrow (with the `.bind(this)` removed), or
 // none when it cannot keep the meaning.
-fn (mut c Checker) pac_fixes(root C.TSNode, f C.TSNode, info PacCallback, uses_this bool) ?[]Fix {
+fn (mut c Checker) pac_fixes(root C.vt_node, f C.vt_node, info PacCallback, uses_this bool) ?[]Fix {
 	parameters := node_field(f, 'parameters')?
 	params := named_children(parameters).filter(node_kind(it) != 'comment')
 	if !info.is_lexical_this && uses_this {

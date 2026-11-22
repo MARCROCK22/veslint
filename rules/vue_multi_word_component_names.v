@@ -34,7 +34,7 @@ fn vmwc_is_valid_name(ignores map[string]bool, name string) bool {
 	return vue_kebab_case(name).split('-').len > 1
 }
 
-fn (mut c Checker) lint_vue_multi_word_component_names(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_multi_word_component_names(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ignores := vue_multi_word_component_names_options(c.rule_options(vue_multi_word_component_names))!
 	mut findings := []Finding{}

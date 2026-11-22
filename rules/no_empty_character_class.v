@@ -10,7 +10,7 @@ const necc_messages = {
 	'unexpected': 'Empty class.'
 }
 
-fn (mut c Checker) lint_no_empty_character_class(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_empty_character_class(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['regex'], []) {

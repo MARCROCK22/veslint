@@ -48,7 +48,7 @@ fn fnm_options(options []json2.Any) !FnmOptions {
 	}
 }
 
-fn (mut c Checker) lint_func_name_matching(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_func_name_matching(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := fnm_options(c.rule_options(func_name_matching))!
 	mut findings := []Finding{}
@@ -108,7 +108,7 @@ fn (mut c Checker) lint_func_name_matching(root C.TSNode, abs_path string, mut s
 }
 
 // fnm_function is the expression when it is a FunctionExpression.
-fn fnm_function(n C.TSNode) ?C.TSNode {
+fn fnm_function(n C.vt_node) ?C.vt_node {
 	f := unwrap_parens(n)
 	if node_kind(f) in ['function_expression', 'generator_function'] {
 		return f
@@ -120,7 +120,7 @@ fn fnm_should_warn(o FnmOptions, x string, y string) bool {
 	return (o.always && x != y) || (!o.always && x == y)
 }
 
-fn (mut c Checker) fnm_report(o FnmOptions, node C.TSNode, name string, func_name string, is_prop bool, mut findings []Finding) {
+fn (mut c Checker) fnm_report(o FnmOptions, node C.vt_node, name string, func_name string, is_prop bool, mut findings []Finding) {
 	message_id := if o.always && is_prop {
 		'matchProperty'
 	} else if o.always {
@@ -162,7 +162,7 @@ fn fnm_is_identifier(name string, es5 bool) bool {
 }
 
 // fnm_is_module_exports ports isModuleExports: `module.exports` or `module["exports"]`.
-fn (c &Checker) fnm_is_module_exports(n C.TSNode) bool {
+fn (c &Checker) fnm_is_module_exports(n C.vt_node) bool {
 	if node_kind(n) !in ['member_expression', 'subscript_expression'] {
 		return false
 	}
@@ -183,7 +183,7 @@ fn (c &Checker) fnm_is_module_exports(n C.TSNode) bool {
 }
 
 // fnm_property is the check of a Property or a PropertyDefinition with a value.
-fn (mut c Checker) fnm_property(root C.TSNode, o FnmOptions, node C.TSNode, mut findings []Finding) {
+fn (mut c Checker) fnm_property(root C.vt_node, o FnmOptions, node C.vt_node, mut findings []Finding) {
 	function := fnm_function(node_field(node, 'value') or { return }) or { return }
 	func_name := c.text(es_function_id(function) or { return })
 	mut property_name := c.fnm_key_name(node)
@@ -217,7 +217,7 @@ fn (mut c Checker) fnm_property(root C.TSNode, o FnmOptions, node C.TSNode, mut 
 
 // fnm_key_name ports getKeyName: the name of a key that is an identifier (not computed), or the
 // value of a string key that is an identifier.
-fn (c &Checker) fnm_key_name(node C.TSNode) ?string {
+fn (c &Checker) fnm_key_name(node C.vt_node) ?string {
 	key, computed := es_property_key(node)?
 	if node_kind(key) == 'property_identifier' && !computed {
 		return c.text(key)
@@ -232,7 +232,7 @@ fn (c &Checker) fnm_key_name(node C.TSNode) ?string {
 }
 
 // fnm_call_of_argument is the CallExpression the node is an argument of.
-fn fnm_call_of_argument(n C.TSNode) ?C.TSNode {
+fn fnm_call_of_argument(n C.vt_node) ?C.vt_node {
 	args := cti_estree_parent(n)?
 	if node_kind(args) != 'arguments' {
 		return none
@@ -242,7 +242,7 @@ fn fnm_call_of_argument(n C.TSNode) ?C.TSNode {
 }
 
 // fnm_is_property_call ports isPropertyCall: a call of `object.method`.
-fn (c &Checker) fnm_is_property_call(call C.TSNode, object string, method string) bool {
+fn (c &Checker) fnm_is_property_call(call C.vt_node, object string, method string) bool {
 	callee := node_field(call, 'function') or { return false }
 	return c.es_is_specific_member_access(callee, object, method)
 }

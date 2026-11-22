@@ -9,7 +9,7 @@ const vue_no_deprecated_functional_template_messages = {
 	'unexpected': 'The `functional` template are deprecated.'
 }
 
-fn (mut c Checker) lint_vue_no_deprecated_functional_template(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_deprecated_functional_template(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

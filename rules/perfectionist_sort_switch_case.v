@@ -18,7 +18,7 @@ const pfsw_order_error_id = 'unexpectedSwitchCaseOrder'
 
 const pfsw_default_options = '{"fallbackSort":{"type":"unsorted"},"specialCharacters":"keep","type":"alphabetical","ignoreCase":true,"locales":"en-US","alphabet":"","order":"asc"}'
 
-fn (mut c Checker) lint_perfectionist_sort_switch_case(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_perfectionist_sort_switch_case(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	mut ctx := c.pf_context(t, perfectionist_sort_switch_case)

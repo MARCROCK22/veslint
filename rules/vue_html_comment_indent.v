@@ -93,7 +93,7 @@ fn (c &Checker) vhci_indent(ctx &VhciCtx, line int) string {
 	return if index >= 0 { text[..index] } else { text[..if text.len > 0 { text.len - 1 } else { 0 }] }
 }
 
-fn (mut c Checker) lint_vue_html_comment_indent(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_html_comment_indent(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

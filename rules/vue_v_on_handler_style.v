@@ -73,7 +73,7 @@ mut:
 	upper        []int   // the elements entered
 }
 
-fn (mut c Checker) lint_vue_v_on_handler_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_v_on_handler_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}
@@ -180,7 +180,7 @@ fn (mut c Checker) lint_vue_v_on_handler_style(root C.TSNode, abs_path string, m
 // vohs_param_counts collects the number of parameters of the methods (Infinity with a rest
 // parameter): of the `methods` of the Vue objects, and of the top-level function declarations and
 // `const` functions of `<script setup>`; a later one of a name wins.
-fn (mut c Checker) vohs_param_counts(root C.TSNode, abs_path string, mut x VohsCtx) {
+fn (mut c Checker) vohs_param_counts(root C.vt_node, abs_path string, mut x VohsCtx) {
 	s := c.vue_script(root, abs_path) or { return }
 	t := c.es_tree(root, abs_path) or { return }
 	for step in t.steps() {

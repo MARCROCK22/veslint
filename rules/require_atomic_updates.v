@@ -42,7 +42,7 @@ struct RauAssignment {
 	identifier int
 }
 
-fn (mut c Checker) lint_require_atomic_updates(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_require_atomic_updates(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_properties := rau_options(c.rule_options(require_atomic_updates))!
 	mut findings := []Finding{}

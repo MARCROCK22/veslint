@@ -121,7 +121,7 @@ struct SnepEvent {
 	init_exit bool
 }
 
-fn (mut c Checker) lint_stylistic_no_extra_parens(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_no_extra_parens(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	options := snep_options(c.rule_options(stylistic_no_extra_parens))!
 	t := c.es_tree(root, abs_path) or { return []Finding{} }

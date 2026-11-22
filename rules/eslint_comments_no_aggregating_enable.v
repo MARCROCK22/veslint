@@ -10,7 +10,7 @@ const ec_nae_messages = {
 	'aggregatingEnable': 'This `eslint-enable` comment affects {{count}} `eslint-disable` comments. An `eslint-enable` comment should be for an `eslint-disable` comment.'
 }
 
-fn (mut c Checker) lint_eslint_comments_no_aggregating_enable(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_eslint_comments_no_aggregating_enable(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	d := c.ec_disabled_area(root)
 	mut findings := []Finding{}

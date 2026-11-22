@@ -9,7 +9,7 @@ const nmstr_messages = {
 	'multilineString': 'Multiline support is limited to browsers supporting ES5 only.'
 }
 
-fn (mut c Checker) lint_no_multi_str(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_multi_str(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['string'], []) {

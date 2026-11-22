@@ -79,7 +79,7 @@ fn svnts_line(starts []int, offset int) int {
 	return lo
 }
 
-fn (mut c Checker) lint_svelte_no_trailing_spaces(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_trailing_spaces(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := svnts_options(c.rule_options(svelte_no_trailing_spaces))!
 	text := c.file_text()
 	starts := svnts_line_starts(text)

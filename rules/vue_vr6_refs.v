@@ -51,7 +51,7 @@ struct Vx6rCtx {
 }
 
 // vx6r_extract ports extractRefObjectReferences.
-fn (mut c Checker) vx6r_extract(root C.TSNode, t &estree.EsTree) Vx6rRefs {
+fn (mut c Checker) vx6r_extract(root C.vt_node, t &estree.EsTree) Vx6rRefs {
 	mut refs := Vx6rRefs{}
 	// iterateDefineRefs
 	for d in c.vue_composition_api_calls(root, t, vx6r_define_names) {
@@ -65,9 +65,9 @@ fn (mut c Checker) vx6r_extract(root C.TSNode, t &estree.EsTree) Vx6rRefs {
 
 // vx6r_define_models ports iterateDefineModels: the calls of `defineModel` as an implicit global
 // (a variable without definitions, or a reference through the global scope).
-fn (mut c Checker) vx6r_define_models(root C.TSNode, t &estree.EsTree) []int {
+fn (mut c Checker) vx6r_define_models(root C.vt_node, t &estree.EsTree) []int {
 	tree := c.scope_tree(root)
-	mut ids := []C.TSNode{}
+	mut ids := []C.vt_node{}
 	for v in tree.variables {
 		if v.name == 'defineModel' && v.scope == 0 && v.defs.len == 0 {
 			for r in v.references {
@@ -108,7 +108,7 @@ fn vx6r_assigned_pattern(t &estree.EsTree, node int) int {
 	return -1
 }
 
-fn (mut c Checker) vx6r_process_define_ref(root C.TSNode, t &estree.EsTree, mut refs Vx6rRefs, node int, method string) {
+fn (mut c Checker) vx6r_process_define_ref(root C.vt_node, t &estree.EsTree, mut refs Vx6rRefs, node int, method string) {
 	pattern := vx6r_assigned_pattern(t, node)
 	if pattern < 0 {
 		if method != 'toRefs' {
@@ -139,7 +139,7 @@ fn (mut c Checker) vx6r_process_define_ref(root C.TSNode, t &estree.EsTree, mut 
 	}
 }
 
-fn (mut c Checker) vx6r_process_define_model(root C.TSNode, t &estree.EsTree, mut refs Vx6rRefs, node int) {
+fn (mut c Checker) vx6r_process_define_model(root C.vt_node, t &estree.EsTree, mut refs Vx6rRefs, node int) {
 	mut pattern := vx6r_assigned_pattern(t, node)
 	if pattern < 0 {
 		return
@@ -154,7 +154,7 @@ fn (mut c Checker) vx6r_process_define_model(root C.TSNode, t &estree.EsTree, mu
 }
 
 // vx6r_process_expression: an expression assigned to a pattern passes the ref on to it.
-fn (mut c Checker) vx6r_process_expression(root C.TSNode, t &estree.EsTree, mut refs Vx6rRefs, node int, ctx Vx6rCtx) bool {
+fn (mut c Checker) vx6r_process_expression(root C.vt_node, t &estree.EsTree, mut refs Vx6rRefs, node int, ctx Vx6rCtx) bool {
 	parent := t.nodes[node].parent
 	if parent < 0 {
 		return false
@@ -177,7 +177,7 @@ fn (mut c Checker) vx6r_process_expression(root C.TSNode, t &estree.EsTree, mut 
 	return false
 }
 
-fn (mut c Checker) vx6r_process_member_expression(root C.TSNode, t &estree.EsTree, mut refs Vx6rRefs, node int, ctx Vx6rCtx) {
+fn (mut c Checker) vx6r_process_member_expression(root C.vt_node, t &estree.EsTree, mut refs Vx6rRefs, node int, ctx Vx6rCtx) {
 	if c.vx6r_process_expression(root, t, mut refs, node, ctx) {
 		return
 	}
@@ -189,7 +189,7 @@ fn (mut c Checker) vx6r_process_member_expression(root C.TSNode, t &estree.EsTre
 	})
 }
 
-fn (mut c Checker) vx6r_process_pattern(root C.TSNode, t &estree.EsTree, mut refs Vx6rRefs, node int, ctx Vx6rCtx) {
+fn (mut c Checker) vx6r_process_pattern(root C.vt_node, t &estree.EsTree, mut refs Vx6rRefs, node int, ctx Vx6rCtx) {
 	match t.typ(node) {
 		.identifier {
 			c.vx6r_process_identifier_pattern(root, t, mut refs, node, ctx)
@@ -211,7 +211,7 @@ fn (mut c Checker) vx6r_process_pattern(root C.TSNode, t &estree.EsTree, mut ref
 	}
 }
 
-fn (mut c Checker) vx6r_process_identifier_pattern(root C.TSNode, t &estree.EsTree, mut refs Vx6rRefs, node int, ctx Vx6rCtx) {
+fn (mut c Checker) vx6r_process_identifier_pattern(root C.vt_node, t &estree.EsTree, mut refs Vx6rRefs, node int, ctx Vx6rCtx) {
 	if node in refs.processed {
 		return
 	}
@@ -258,7 +258,7 @@ fn (mut c Checker) vx6r_process_identifier_pattern(root C.TSNode, t &estree.EsTr
 
 // vx6r_es_node is the ESTree node of a tree-sitter node of that kind (or of its nearest ancestor
 // of that kind), -1 for none.
-fn (mut c Checker) vx6r_es_node(t &estree.EsTree, n C.TSNode, kind string) int {
+fn (mut c Checker) vx6r_es_node(t &estree.EsTree, n C.vt_node, kind string) int {
 	mut node := n
 	for node_kind(node) != kind {
 		node = treesitter.node_parent(node) or { return -1 }

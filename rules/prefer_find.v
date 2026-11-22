@@ -15,12 +15,12 @@ const pfind_messages = {
 // PfindCandidate is a `….at(0)` call or a `…[0]` access whose object is made of `.filter(…)`
 // calls; it is reported if the object of every one of them is an array.
 struct PfindCandidate {
-	node    C.TSNode
-	object  C.TSNode   // the object of the `.at(0)` callee or of the `[0]` access, without parentheses
-	filters []C.TSNode // the `.filter` callees
+	node    C.vt_node
+	object  C.vt_node   // the object of the `.at(0)` callee or of the `[0]` access, without parentheses
+	filters []C.vt_node // the `.filter` callees
 }
 
-fn (mut c Checker) lint_prefer_find(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_find(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut candidates := []PfindCandidate{}
 	mut spans := []Span{}
@@ -30,7 +30,7 @@ fn (mut c Checker) lint_prefer_find(root C.TSNode, abs_path string, mut stats St
 		} else {
 			c.pfind_member_access_of_zero_object(n) or { continue }
 		}
-		mut filters := []C.TSNode{}
+		mut filters := []C.vt_node{}
 		if !c.pfind_filter_expressions(object, mut filters, 0) {
 			continue
 		}
@@ -74,7 +74,7 @@ fn (mut c Checker) lint_prefer_find(root C.TSNode, abs_path string, mut stats St
 }
 
 // pfind_filter_object is the object of a `.filter` callee, without parentheses.
-fn pfind_filter_object(callee C.TSNode) ?C.TSNode {
+fn pfind_filter_object(callee C.vt_node) ?C.vt_node {
 	return unwrap_parens(node_field(callee, 'object')?)
 }
 
@@ -105,7 +105,7 @@ fn (mut c Checker) pfind_fixes(cand PfindCandidate) []Fix {
 
 // pfind_array_at_zero_object ports getObjectIfArrayAtZeroExpression: the object of `x.at(0)` (a
 // single argument treated as 0 by Array#at, a callee that is not `?.`).
-fn (mut c Checker) pfind_array_at_zero_object(call C.TSNode) ?C.TSNode {
+fn (mut c Checker) pfind_array_at_zero_object(call C.vt_node) ?C.vt_node {
 	args := call_arguments(call)?
 	if args.len != 1 {
 		return none
@@ -138,7 +138,7 @@ fn pfind_is_zero_for_at(v JsAny) bool {
 
 // pfind_member_access_of_zero_object ports isMemberAccessOfZero: the object of `x[0]` (not `?.`),
 // whose key is a static value whose String is "0".
-fn (mut c Checker) pfind_member_access_of_zero_object(member C.TSNode) ?C.TSNode {
+fn (mut c Checker) pfind_member_access_of_zero_object(member C.vt_node) ?C.vt_node {
 	if is_optional_element(member) {
 		return none
 	}
@@ -152,7 +152,7 @@ fn (mut c Checker) pfind_member_access_of_zero_object(member C.TSNode) ?C.TSNode
 // pfind_filter_expressions ports parseArrayFilterExpressions on the syntax: the `.filter` callees
 // of the `.filter(…)` calls the expression is made of (the last expression of a sequence, both
 // branches of a conditional); false when some part is not such a call.
-fn (mut c Checker) pfind_filter_expressions(expression C.TSNode, mut out []C.TSNode, depth int) bool {
+fn (mut c Checker) pfind_filter_expressions(expression C.vt_node, mut out []C.vt_node, depth int) bool {
 	if depth > max_expression_depth {
 		return false
 	}

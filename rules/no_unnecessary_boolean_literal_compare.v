@@ -46,13 +46,13 @@ enum NublcKind {
 // NublcComparison ports the result of deconstructComparison: an equality against a boolean
 // literal.
 struct NublcComparison {
-	node       C.TSNode // the BinaryExpression
-	expression C.TSNode // the compared expression, without parentheses
-	literal    bool     // the value of the boolean literal
-	negated    bool     // `!=` or `!==`
+	node       C.vt_node // the BinaryExpression
+	expression C.vt_node // the compared expression, without parentheses
+	literal    bool      // the value of the boolean literal
+	negated    bool      // `!=` or `!==`
 }
 
-fn (mut c Checker) lint_no_unnecessary_boolean_literal_compare(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_boolean_literal_compare(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := nublc_options(c.rule_options(no_unnecessary_boolean_literal_compare))!
 	mut comparisons := []NublcComparison{}
@@ -165,7 +165,7 @@ fn (c &Checker) nublc_fix(comparison NublcComparison, nullable bool) Fix {
 
 // nublc_deconstruct ports deconstructComparison: an equality operator with a boolean literal on
 // the right or, failing that, on the left.
-fn nublc_deconstruct(node C.TSNode) ?NublcComparison {
+fn nublc_deconstruct(node C.vt_node) ?NublcComparison {
 	operator := operator_of(node)
 	if operator !in ['!=', '!==', '==', '==='] {
 		return none
@@ -189,7 +189,7 @@ fn nublc_deconstruct(node C.TSNode) ?NublcComparison {
 }
 
 // nublc_boolean_comparison ports getBooleanComparison on the type of the compared expression.
-fn (mut c Checker) nublc_boolean_comparison(expression C.TSNode) !NublcKind {
+fn (mut c Checker) nublc_boolean_comparison(expression C.vt_node) !NublcKind {
 	t := c.node_type(expression) or { return .skip }
 	// getConstraintInfo: a type parameter is replaced by its constraint (skip if it has none).
 	mut constraint := t

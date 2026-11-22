@@ -8,7 +8,7 @@ import treesitter { children, node_field, node_kind }
 
 // es_is_global_reference ports isReferenceToGlobalVariable: the identifier references a variable
 // of the global scope that has no definition (a builtin global).
-fn (mut c Checker) es_is_global_reference(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) es_is_global_reference(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(n)
 	tree := c.scope_tree(root)
 	v := tree.own_variable(tree.global_scope(), c.identifier_name(node))
@@ -20,23 +20,23 @@ fn (mut c Checker) es_is_global_reference(root C.TSNode, n C.TSNode) bool {
 }
 
 // es_is_literal: an ESTree Literal (a string, number, BigInt, boolean, null or regular expression).
-fn es_is_literal(n C.TSNode) bool {
+fn es_is_literal(n C.vt_node) bool {
 	return node_kind(n) in ['string', 'number', 'true', 'false', 'null', 'regex']
 }
 
 // es_is_identifier_named: an Identifier with that name.
-fn (c &Checker) es_is_identifier_named(n C.TSNode, name string) bool {
+fn (c &Checker) es_is_identifier_named(n C.vt_node, name string) bool {
 	return node_kind(n) in ['identifier', 'undefined'] && c.identifier_name(n) == name
 }
 
 // es_is_global_undefined: the Identifier `undefined` referencing the global variable.
-fn (mut c Checker) es_is_global_undefined(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) es_is_global_undefined(root C.vt_node, n C.vt_node) bool {
 	return c.es_is_identifier_named(n, 'undefined') && c.es_is_global_reference(root, n)
 }
 
 // es_plain_call is a CallExpression (not an optional chain, not a tagged template) with its callee
 // and its arguments.
-fn es_plain_call(n C.TSNode) ?(C.TSNode, []C.TSNode) {
+fn es_plain_call(n C.vt_node) ?(C.vt_node, []C.vt_node) {
 	if node_kind(n) != 'call_expression' || estree_type(n) != 'CallExpression' {
 		return none
 	}
@@ -46,7 +46,7 @@ fn es_plain_call(n C.TSNode) ?(C.TSNode, []C.TSNode) {
 }
 
 // es_global_call_name is the name of the callee of a CallExpression when it is an Identifier.
-fn (c &Checker) es_call_identifier(n C.TSNode) ?(C.TSNode, []C.TSNode) {
+fn (c &Checker) es_call_identifier(n C.vt_node) ?(C.vt_node, []C.vt_node) {
 	callee, args := es_plain_call(n)?
 	if node_kind(callee) !in ['identifier', 'undefined'] {
 		return none
@@ -57,15 +57,15 @@ fn (c &Checker) es_call_identifier(n C.TSNode) ?(C.TSNode, []C.TSNode) {
 // es_is_boolean_call_constant is the CallExpression case of isConstant (and of the comparisons of
 // no-constant-binary-expression): a call of the global `Boolean` without arguments or with a
 // constant first one.
-fn (mut c Checker) es_is_constant_boolean_call(root C.TSNode, callee C.TSNode, args []C.TSNode) bool {
+fn (mut c Checker) es_is_constant_boolean_call(root C.vt_node, callee C.vt_node, args []C.vt_node) bool {
 	return c.identifier_name(callee) == 'Boolean' && c.es_is_global_reference(root, callee)
 		&& (args.len == 0 || c.es_is_constant(root, args[0], true))
 }
 
 // es_template_parts are the expressions of a template literal and whether one of its quasis has
 // a non-empty cooked value (a line continuation cooks to nothing).
-fn (c &Checker) es_template_parts(n C.TSNode) ([]C.TSNode, bool) {
-	mut expressions := []C.TSNode{}
+fn (c &Checker) es_template_parts(n C.vt_node) ([]C.vt_node, bool) {
+	mut expressions := []C.vt_node{}
 	mut has_text := false
 	for child in children(n) {
 		match node_kind(child) {
@@ -89,14 +89,14 @@ fn (c &Checker) es_template_parts(n C.TSNode) ([]C.TSNode, bool) {
 }
 
 // es_is_line_continuation: an escape sequence that is a backslash before a line terminator.
-fn (c &Checker) es_is_line_continuation(n C.TSNode) bool {
+fn (c &Checker) es_is_line_continuation(n C.vt_node) bool {
 	rest := c.text(n)[1..]
 	return rest.starts_with('\n') || rest.starts_with('\r') || rest.starts_with('\u2028')
 		|| rest.starts_with('\u2029')
 }
 
 // es_is_constant ports isConstant(scope, node, inBooleanPosition).
-fn (mut c Checker) es_is_constant(root C.TSNode, n C.TSNode, in_boolean bool) bool {
+fn (mut c Checker) es_is_constant(root C.vt_node, n C.vt_node, in_boolean bool) bool {
 	node := unwrap_parens(n)
 	kind := node_kind(node)
 	match kind {
@@ -173,7 +173,7 @@ fn (mut c Checker) es_is_constant(root C.TSNode, n C.TSNode, in_boolean bool) bo
 
 // es_is_logical_identity ports isLogicalIdentity: a value that makes the logical operator give
 // the other operand away (`true` for `||`, `false` for `&&`).
-fn (c &Checker) es_is_logical_identity(n C.TSNode, operator string) bool {
+fn (c &Checker) es_is_logical_identity(n C.vt_node, operator string) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'string', 'number', 'true', 'false', 'null', 'regex' {
@@ -204,7 +204,7 @@ fn (c &Checker) es_is_logical_identity(n C.TSNode, operator string) bool {
 }
 
 // es_literal_boolean ports getBooleanValue: the truthiness of a Literal.
-fn (c &Checker) es_literal_boolean(n C.TSNode) ?bool {
+fn (c &Checker) es_literal_boolean(n C.vt_node) ?bool {
 	text := c.text(n)
 	return match node_kind(n) {
 		'null' {

@@ -98,7 +98,7 @@ fn declared(src string) []Ident {
 	}
 	tree := p.parse(src) or { panic(err) }
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	return p.identifiers(tree, src, false) or { panic(err) }
 }
@@ -241,7 +241,7 @@ fn test_all_identifiers_includes_usages() {
 	}
 	tree := p.parse(src) or { panic(err) }
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	idents := p.identifiers(tree, src, true) or { panic(err) }
 	assert idents.map(it.text) == ['a', 'b', 'a', 'a']

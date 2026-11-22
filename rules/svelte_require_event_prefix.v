@@ -46,7 +46,7 @@ enum SrepKind {
 	other
 }
 
-fn (mut c Checker) lint_svelte_require_event_prefix(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_require_event_prefix(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	check_async := srep_options(c.rule_options(svelte_require_event_prefix))!
 	// conditions: Svelte 5 components; getTypeScriptTools: a program.
 	if !c.is_svelte() {
@@ -63,8 +63,8 @@ fn (mut c Checker) lint_svelte_require_event_prefix(root C.TSNode, abs_path stri
 			}
 		}
 	}
-	mut calls := []C.TSNode{}
-	mut ids := []C.TSNode{}
+	mut calls := []C.vt_node{}
+	mut ids := []C.vt_node{}
 	for call in c.nodes_of_kind(root, c'call_expression') {
 		callee := node_field(call, 'function') or { continue }
 		if node_kind(callee) != 'identifier' || c.text(callee) != '\$props' {
@@ -259,7 +259,7 @@ fn (mut c Checker) srep_return_kind(t TypeResponse, depth int) !SrepKind {
 
 // srep_report reports at the property's first declaration when it is a node of the component
 // (tsNodeToESTreeNodeMap), else at the $props() call.
-fn (mut c Checker) srep_report(property SymbolResponse, call C.TSNode) !Finding {
+fn (mut c Checker) srep_report(property SymbolResponse, call C.vt_node) !Finding {
 	doc := c.svelte.doc
 	if property.declarations.len > 0 && tsgo.handle_path(property.declarations[0]) == c.svelte.ts_path {
 		tree, index := c.srep_ast(property.declarations[0])!

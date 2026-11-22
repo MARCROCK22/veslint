@@ -28,13 +28,13 @@ fn cr_options(options []json2.Any) !CrOptions {
 
 // CrFunction is a code path with `return` statements: a function, or the program.
 struct CrFunction {
-	node       C.TSNode
+	node       C.vt_node
 	is_program bool
 mut:
-	returns []C.TSNode
+	returns []C.vt_node
 }
 
-fn (mut c Checker) lint_consistent_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_consistent_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := cr_options(c.rule_options(consistent_return))!
 	mut sw := time.new_stopwatch()
 	// The `return` statements of each function, in the order of the source.
@@ -158,7 +158,7 @@ fn (mut c Checker) lint_consistent_return(root C.TSNode, abs_path string, mut st
 }
 
 // cr_argument is the argument of a ReturnStatement, without parentheses.
-fn cr_argument(statement C.TSNode) ?C.TSNode {
+fn cr_argument(statement C.vt_node) ?C.vt_node {
 	for argument in named_children(statement) {
 		return unwrap_parens(argument)
 	}
@@ -175,7 +175,7 @@ fn upper_case_first(text string) string {
 
 // cr_returns_void_or_thenable_void ports isReturnVoidOrThenableVoid: some call signature of the
 // function returns void or, if the function is async, a promise of void.
-fn (mut c Checker) cr_returns_void_or_thenable_void(function C.TSNode) !bool {
+fn (mut c Checker) cr_returns_void_or_thenable_void(function C.vt_node) !bool {
 	function_type := c.node_type(function) or { return false }
 	is_async := has_child_kind(function, 'async')
 	for signature in c.signatures_of(function_type, signature_kind_call)! {
@@ -209,7 +209,7 @@ fn (mut c Checker) cr_is_promise_void(t TypeResponse, at SymbolLocation, depth i
 
 // cr_is_es5_constructor ports isES5Constructor: a function whose own name starts with an
 // uppercase letter.
-fn (c &Checker) cr_is_es5_constructor(function C.TSNode) bool {
+fn (c &Checker) cr_is_es5_constructor(function C.vt_node) bool {
 	if node_kind(function) == 'method_definition' {
 		return false
 	}
@@ -219,7 +219,7 @@ fn (c &Checker) cr_is_es5_constructor(function C.TSNode) bool {
 }
 
 // cr_is_class_constructor ports isClassConstructor.
-fn (c &Checker) cr_is_class_constructor(function C.TSNode) bool {
+fn (c &Checker) cr_is_class_constructor(function C.vt_node) bool {
 	if node_kind(function) != 'method_definition' {
 		return false
 	}
@@ -231,15 +231,15 @@ fn (c &Checker) cr_is_class_constructor(function C.TSNode) bool {
 // PropertyDefinition, as ESLint's getFunctionNameWithKind looks at it.
 struct CrOwner {
 	kind       string // 'method' (MethodDefinition), 'property' (Property), 'field' (PropertyDefinition) or ''
-	member     C.TSNode
-	key        ?C.TSNode
+	member     C.vt_node
+	key        ?C.vt_node
 	is_method  bool   // a method of an object literal, not an accessor (Property.method)
 	accessor   string // 'get', 'set' or ''
 	is_static  bool
 	is_private bool
 }
 
-fn (c &Checker) cr_owner(function C.TSNode) CrOwner {
+fn (c &Checker) cr_owner(function C.vt_node) CrOwner {
 	if node_kind(function) == 'method_definition' {
 		parent := node_parent(function) or { return CrOwner{} }
 		key := node_field(function, 'name')
@@ -291,14 +291,14 @@ fn (c &Checker) cr_owner(function C.TSNode) CrOwner {
 	}
 }
 
-fn cr_is_private_key(key ?C.TSNode) bool {
+fn cr_is_private_key(key ?C.vt_node) bool {
 	k := key or { return false }
 	return node_kind(k) == 'private_property_identifier'
 }
 
 // core_function_name ports getFunctionNameWithKind of ESLint's ast-utils: "static async method
 // 'x'", "arrow function", "function 'f'", "constructor"…
-fn (c &Checker) core_function_name(function C.TSNode) string {
+fn (c &Checker) core_function_name(function C.vt_node) string {
 	owner := c.cr_owner(function)
 	mut tokens := []string{}
 	if owner.kind in ['method', 'field'] {
@@ -337,7 +337,7 @@ fn (c &Checker) core_function_name(function C.TSNode) string {
 	own_name := if node_kind(function) != 'method_definition' {
 		node_field(function, 'name')
 	} else {
-		?C.TSNode(none)
+		?C.vt_node(none)
 	}
 	if owner.kind != '' {
 		if owner.is_private {
@@ -358,7 +358,7 @@ fn (c &Checker) core_function_name(function C.TSNode) string {
 // core_static_property_name ports getStaticPropertyName of ESLint's ast-utils for a key: the name
 // of an identifier that is not computed, or the text of a literal or of a template without
 // expressions (getStaticStringValue).
-fn (c &Checker) core_static_property_name(key ?C.TSNode) ?string {
+fn (c &Checker) core_static_property_name(key ?C.vt_node) ?string {
 	mut node := key?
 	if node_kind(node) == 'computed_property_name' {
 		node = unwrap_parens(first_named(node)?)
@@ -388,7 +388,7 @@ fn (c &Checker) core_static_property_name(key ?C.TSNode) ?string {
 
 // cr_missing_return_position is where `missingReturn` is reported: the arrow of an arrow function,
 // the key of a method, or the name of the function or, without one, its first token.
-fn (c &Checker) cr_missing_return_position(function C.TSNode) Ident {
+fn (c &Checker) cr_missing_return_position(function C.vt_node) Ident {
 	if node_kind(function) == 'arrow_function' {
 		for child in children(function) {
 			if node_kind(child) == '=>' {

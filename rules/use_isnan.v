@@ -32,7 +32,7 @@ fn uin_options(options []json2.Any) !UinOptions {
 	}
 }
 
-fn (mut c Checker) lint_use_isnan(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_use_isnan(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := uin_options(c.rule_options(use_isnan))!
 	mut findings := []Finding{}
@@ -61,7 +61,7 @@ fn (mut c Checker) lint_use_isnan(root C.TSNode, abs_path string, mut stats Stat
 
 // uin_is_nan ports isNaNIdentifier: `NaN` or `Number.NaN`, also as the last expression of a
 // SequenceExpression, where `NaN` or `Number` is a reference to the global variable.
-fn (mut c Checker) uin_is_nan(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) uin_is_nan(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(es_sequence_last(n))
 	if c.es_is_specific_id(node, 'NaN') {
 		return c.es_is_global_reference(root, node)
@@ -77,7 +77,7 @@ fn (mut c Checker) uin_is_nan(root C.TSNode, n C.TSNode) bool {
 // SequenceExpression gets the suggestion `Number.isNaN(value)`, and `==` and `!=` also
 // `Number.isNaN(Number(value))`, with `!` for an inequality; a value that is a SequenceExpression
 // is wrapped in parentheses.
-fn (mut c Checker) uin_binary(root C.TSNode, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) uin_binary(root C.vt_node, node C.vt_node, mut findings []Finding) ! {
 	operator := c.text(node_field(node, 'operator') or { return })
 	if operator !in uin_comparison_operators {
 		return
@@ -116,7 +116,7 @@ fn (mut c Checker) uin_binary(root C.TSNode, node C.TSNode, mut findings []Findi
 }
 
 // uin_switch ports checkSwitchStatement: `switch (NaN)`, then each `case NaN:`.
-fn (mut c Checker) uin_switch(root C.TSNode, node C.TSNode, mut findings []Finding) {
+fn (mut c Checker) uin_switch(root C.vt_node, node C.vt_node, mut findings []Finding) {
 	if discriminant := node_field(node, 'value') {
 		if c.uin_is_nan(root, discriminant) {
 			findings << Finding{
@@ -144,7 +144,7 @@ fn (mut c Checker) uin_switch(root C.TSNode, node C.TSNode, mut findings []Findi
 // with at most two arguments. With NaN alone, and not as a SequenceExpression, the suggestion is
 // findIndex or findLastIndex with Number.isNaN (the name in double quotes for a computed
 // property).
-fn (mut c Checker) uin_call(root C.TSNode, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) uin_call(root C.vt_node, node C.vt_node, mut findings []Finding) ! {
 	callee := unwrap_parens(node_field(node, 'function') or { return })
 	if node_kind(callee) !in ['member_expression', 'subscript_expression'] {
 		return

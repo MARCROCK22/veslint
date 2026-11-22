@@ -9,7 +9,7 @@ const nsa2_messages = {
 	'unexpectedSparseArray': 'Unexpected comma in middle of array.'
 }
 
-fn (mut c Checker) lint_no_sparse_arrays(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_sparse_arrays(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['array'], []) {

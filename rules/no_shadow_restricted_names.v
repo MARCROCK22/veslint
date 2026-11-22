@@ -16,7 +16,7 @@ fn nsrn_report_global_this(options []json2.Any) !bool {
 	return o.bool_value('reportGlobalThis')!
 }
 
-fn (mut c Checker) lint_no_shadow_restricted_names(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_shadow_restricted_names(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut restricted := ['undefined', 'NaN', 'Infinity', 'arguments', 'eval']
 	if nsrn_report_global_this(c.rule_options(no_shadow_restricted_names))! {

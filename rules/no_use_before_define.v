@@ -70,7 +70,7 @@ fn nubd_flag(o OptionObject, key string) !bool {
 	return value as bool
 }
 
-fn (mut c Checker) lint_no_use_before_define(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_use_before_define(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nubd_options(c.rule_options(no_use_before_define))!
 	tree := c.scope_tree(root)

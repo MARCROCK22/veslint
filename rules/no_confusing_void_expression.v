@@ -45,11 +45,11 @@ fn ncve_options(options []json2.Any) !NcveOptions {
 // NcveCandidate is an AwaitExpression, CallExpression or TaggedTemplateExpression in an invalid
 // position (findInvalidAncestor), with that ancestor.
 struct NcveCandidate {
-	node     C.TSNode
-	ancestor C.TSNode
+	node     C.vt_node
+	ancestor C.vt_node
 }
 
-fn (mut c Checker) lint_no_confusing_void_expression(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_confusing_void_expression(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := ncve_options(c.rule_options(no_confusing_void_expression))!
 	mut candidates := []NcveCandidate{}
@@ -147,7 +147,7 @@ fn (mut c Checker) lint_no_confusing_void_expression(root C.TSNode, abs_path str
 
 // ncve_fix_target is the node canFix asks the type of: the body of an arrow function or the
 // argument of a return statement, without parentheses.
-fn ncve_fix_target(ancestor C.TSNode) ?C.TSNode {
+fn ncve_fix_target(ancestor C.vt_node) ?C.vt_node {
 	return match node_kind(ancestor) {
 		'arrow_function' { unwrap_parens(node_field(ancestor, 'body')?) }
 		'return_statement' { unwrap_parens(first_named_child(ancestor)?) }
@@ -157,7 +157,7 @@ fn ncve_fix_target(ancestor C.TSNode) ?C.TSNode {
 
 // ncve_can_fix ports canFix: the body or the returned value is void (not, for instance, the
 // `false | void` of `cond && f()`), and the function may return nothing.
-fn (mut c Checker) ncve_can_fix(ancestor C.TSNode) !bool {
+fn (mut c Checker) ncve_can_fix(ancestor C.vt_node) !bool {
 	target := ncve_fix_target(ancestor) or { return false }
 	t := c.node_type(target) or { return false }
 	if c.constrained(t)!.flags & ncve_void_like == 0 {
@@ -174,7 +174,7 @@ fn (mut c Checker) ncve_can_fix(ancestor C.TSNode) !bool {
 // ncve_allows_empty_return ports functionDeclarationAllowsEmptyReturn: the function has no return
 // type annotation, or some part of its declared return type (awaited for an async function) is
 // `any` or void-like.
-fn (mut c Checker) ncve_allows_empty_return(function C.TSNode) !bool {
+fn (mut c Checker) ncve_allows_empty_return(function C.vt_node) !bool {
 	annotation := node_field(function, 'return_type') or { return true }
 	type_node := unwrap_type_parens(first_named(annotation) or { return true })
 	declared := c.node_type(type_node) or { return false }
@@ -196,7 +196,7 @@ fn (mut c Checker) ncve_allows_empty_return(function C.TSNode) !bool {
 // ncve_arrow_fix ports the fixer of `invalidVoidExprArrow`: from the `=>` to the body becomes
 // ` { `, and from the end of the body to the end of the arrow function `; }` (its parentheses go).
 // No fix if the body is not void or the function may not return nothing.
-fn (mut c Checker) ncve_arrow_fix(arrow C.TSNode) ![]Fix {
+fn (mut c Checker) ncve_arrow_fix(arrow C.vt_node) ![]Fix {
 	if !c.ncve_can_fix(arrow)! {
 		return []Fix{}
 	}
@@ -212,7 +212,7 @@ fn (mut c Checker) ncve_arrow_fix(arrow C.TSNode) ![]Fix {
 
 // ncve_return_last_fix ports the fixer of `invalidVoidExprReturnLast`: the statement becomes its
 // value. No fix if the value is not void.
-fn (mut c Checker) ncve_return_last_fix(statement C.TSNode) ![]Fix {
+fn (mut c Checker) ncve_return_last_fix(statement C.vt_node) ![]Fix {
 	if !c.ncve_can_fix(statement)! {
 		return []Fix{}
 	}
@@ -222,7 +222,7 @@ fn (mut c Checker) ncve_return_last_fix(statement C.TSNode) ![]Fix {
 
 // ncve_return_fix ports the fixer of `invalidVoidExprReturn`: the value moves before a bare
 // `return;`, in braces if the statement is not in a block.
-fn (c &Checker) ncve_return_fix(statement C.TSNode) []Fix {
+fn (c &Checker) ncve_return_fix(statement C.vt_node) []Fix {
 	value := ncve_fix_target(statement) or { return []Fix{} }
 	mut text := '${c.ncve_asi_guard(value)}${c.text(value)}; return;'
 	in_block := if parent := node_parent(statement) {
@@ -238,7 +238,7 @@ fn (c &Checker) ncve_return_fix(statement C.TSNode) []Fix {
 
 // ncve_asi_guard ports isPreventingASI: `;` when the first token of the value is `(` or `[`, which
 // on its own line would continue the previous statement.
-fn (c &Checker) ncve_asi_guard(value C.TSNode) string {
+fn (c &Checker) ncve_asi_guard(value C.vt_node) string {
 	start := node_start(value)
 	return if start < c.src.len && c.src[start] in [`(`, `[`] { ';' } else { '' }
 }
@@ -288,7 +288,7 @@ fn (mut c Checker) ncve_message(cand NcveCandidate, o NcveOptions) !string {
 // ncve_invalid_ancestor ports findInvalidAncestor: none when the void expression is in a valid
 // position, else the closest invalid ESTree ancestor. Parentheses are not ESTree nodes and the
 // ChainExpression around an optional chain is transparent.
-fn (c &Checker) ncve_invalid_ancestor(node C.TSNode, o NcveOptions, depth int) ?C.TSNode {
+fn (c &Checker) ncve_invalid_ancestor(node C.vt_node, o NcveOptions, depth int) ?C.vt_node {
 	parent := estree_parent(node)?
 	if depth >= max_expression_depth {
 		return none
@@ -337,7 +337,7 @@ fn (c &Checker) ncve_invalid_ancestor(node C.TSNode, o NcveOptions, depth int) ?
 }
 
 // ncve_is_final_return ports isFinalReturn: the last statement of the block of a function.
-fn ncve_is_final_return(statement C.TSNode) bool {
+fn ncve_is_final_return(statement C.vt_node) bool {
 	block := node_parent(statement) or { return false }
 	if node_kind(block) != 'statement_block' {
 		return false
@@ -351,7 +351,7 @@ fn ncve_is_final_return(statement C.TSNode) bool {
 }
 
 // ncve_parent_function ports getParentFunctionNode: the closest enclosing function.
-fn ncve_parent_function(n C.TSNode) ?C.TSNode {
+fn ncve_parent_function(n C.vt_node) ?C.vt_node {
 	mut current := node_parent(n)?
 	for depth := 0; depth < max_expression_depth; depth++ {
 		if node_kind(current) in ncve_function_kinds {
@@ -364,7 +364,7 @@ fn ncve_parent_function(n C.TSNode) ?C.TSNode {
 
 // ncve_function_span is the tsgo node of a function, for its contextual type (a class method also
 // covers its decorators).
-fn ncve_function_span(function C.TSNode) Span {
+fn ncve_function_span(function C.vt_node) Span {
 	return if node_kind(function) == 'method_definition' {
 		member_span(function)
 	} else {
@@ -375,7 +375,7 @@ fn ncve_function_span(function C.TSNode) Span {
 // ncve_void_returning ports isVoidReturningFunctionNode: the return type annotation includes `void`
 // or, for a function that is not a declaration, its contextual type has a call signature whose
 // return type includes `void` (tsutils.isIntrinsicVoidType: the own flags).
-fn (mut c Checker) ncve_void_returning(function C.TSNode) !bool {
+fn (mut c Checker) ncve_void_returning(function C.vt_node) !bool {
 	if annotation := node_field(function, 'return_type') {
 		type_node := unwrap_type_parens(first_named(annotation) or { return false })
 		return_type := c.node_type(type_node) or { return false }

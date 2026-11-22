@@ -10,7 +10,7 @@ const nuca_messages = {
 	'unnecessaryCatch':       'Unnecessary try/catch wrapper.'
 }
 
-fn (mut c Checker) lint_no_useless_catch(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_catch(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['catch_clause'], []) {

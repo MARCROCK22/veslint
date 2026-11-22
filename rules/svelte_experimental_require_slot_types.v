@@ -8,7 +8,7 @@ const serst_messages = {
 	'missingSlotsInterface': 'The component must define the \$\$Slots interface.'
 }
 
-fn (mut c Checker) lint_svelte_experimental_require_slot_types(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_experimental_require_slot_types(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	// conditions: Svelte 3/4, or Svelte 5 outside runes mode.
 	if !c.is_svelte() || c.sv_runes() {
 		return []

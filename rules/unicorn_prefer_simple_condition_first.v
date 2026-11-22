@@ -168,7 +168,7 @@ fn (c &Checker) upscf_has_comments_that_prevent_fix(t &estree.EsTree, tokens &So
 	return false
 }
 
-fn (mut c Checker) lint_unicorn_prefer_simple_condition_first(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_simple_condition_first(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

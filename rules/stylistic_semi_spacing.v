@@ -40,7 +40,7 @@ const ssmi_checked_nodes = [estree.NodeType.variable_declaration, .expression_st
 	.export_all_declaration, .export_default_declaration, .property_definition, .accessor_property,
 	.ts_declare_function, .ts_type_alias_declaration]
 
-fn (mut c Checker) lint_stylistic_semi_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_semi_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := ssmi_options(c.rule_options(stylistic_semi_spacing))!

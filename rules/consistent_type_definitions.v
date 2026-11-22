@@ -20,7 +20,7 @@ fn ctd_option(options []json2.Any) !string {
 	return error('the option of `${consistent_type_definitions}` must be "interface" or "type"')
 }
 
-fn (mut c Checker) lint_consistent_type_definitions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_consistent_type_definitions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	option := ctd_option(c.rule_options(consistent_type_definitions))!
 	mut findings := []Finding{}
@@ -68,7 +68,7 @@ fn (mut c Checker) lint_consistent_type_definitions(root C.TSNode, abs_path stri
 // ctd_interface_fixes: the `type` before the name becomes `interface`, what is between the token
 // before the `=` and the type literal becomes a space, and what follows the literal up to the end
 // of the declaration goes.
-fn (mut c Checker) ctd_interface_fixes(node C.TSNode, name C.TSNode, literal C.TSNode) []Fix {
+fn (mut c Checker) ctd_interface_fixes(node C.vt_node, name C.vt_node, literal C.vt_node) []Fix {
 	tokens := c.source_tokens(node)
 	type_token := c.ctd_token_before(tokens, node_start(name), 'type') or { return []Fix{} }
 	equals := c.ctd_token_before(tokens, node_start(literal), '=') or { return []Fix{} }
@@ -83,7 +83,7 @@ fn (mut c Checker) ctd_interface_fixes(node C.TSNode, name C.TSNode, literal C.T
 // ctd_type_fixes: the token before the name becomes `type`, what is between the name (or its type
 // parameters) and the body becomes ` = `, each heritage follows the body as ` & X`, and the
 // `export default` of the interface goes after it.
-fn (mut c Checker) ctd_type_fixes(node C.TSNode, name C.TSNode) []Fix {
+fn (mut c Checker) ctd_type_fixes(node C.vt_node, name C.vt_node) []Fix {
 	body := node_field(node, 'body') or { return []Fix{} }
 	type_node := node_field(node, 'type_parameters') or { name }
 	mut fixes := []Fix{}
@@ -121,7 +121,7 @@ fn (c &Checker) ctd_token_before(tokens &SourceTokens, offset int, text string) 
 
 // ctd_in_declared_global: an ancestor is `declare global {}` (a TSModuleDeclaration with
 // `declare` and the kind 'global'); a `global {}` inside a module has no `declare`.
-fn ctd_in_declared_global(n C.TSNode) bool {
+fn ctd_in_declared_global(n C.vt_node) bool {
 	mut node := n
 	for {
 		node = node_parent(node) or { return false }

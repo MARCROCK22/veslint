@@ -10,7 +10,7 @@ const unuecst_messages = {
 	'no-useless-error-capture-stack-trace/error': 'Unnecessary `Error.captureStackTrace(…)` call.'
 }
 
-fn (mut c Checker) lint_unicorn_no_useless_error_capture_stack_trace(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_useless_error_capture_stack_trace(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -100,7 +100,7 @@ fn (mut c Checker) lint_unicorn_no_useless_error_capture_stack_trace(root C.TSNo
 
 // unuecst_builtin_subclass ports isSubclassOfBuiltinErrors: `class … extends Error` with the
 // global error.
-fn (mut c Checker) unuecst_builtin_subclass(root C.TSNode, t &estree.EsTree, class int) bool {
+fn (mut c Checker) unuecst_builtin_subclass(root C.vt_node, t &estree.EsTree, class int) bool {
 	super_class := t.node(class, .super_class) or { return false }
 	return t.typ(super_class) == .identifier
 		&& (t.string_of(super_class, .name) or { '' }) in un_builtin_errors
@@ -121,7 +121,7 @@ fn unuecst_class_constructor(t &estree.EsTree, function int, class int) bool {
 
 // unuecst_class_reference ports isClassReference: `new.target`, `this.constructor` or the name of
 // the class.
-fn (mut c Checker) unuecst_class_reference(root C.TSNode, t &estree.EsTree, node int, class int) bool {
+fn (mut c Checker) unuecst_class_reference(root C.vt_node, t &estree.EsTree, node int, class int) bool {
 	if t.typ(node) == .meta_property {
 		meta := t.node(node, .meta) or { return false }
 		property := t.node(node, .property) or { return false }

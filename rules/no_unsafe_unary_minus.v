@@ -12,11 +12,11 @@ const nuum_messages = {
 // nuum_allowed_flags are the TypeFlags a union part may have: Any | Never | BigIntLike | NumberLike.
 const nuum_allowed_flags = type_flag_any | type_flag_never | type_flag_bigint_like | type_flag_number_like
 
-fn (mut c Checker) lint_no_unsafe_unary_minus(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_unary_minus(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// Every `UnaryExpression` with the `-` operator, also the ones of literal types (`type T = -1`).
-	mut negations := []C.TSNode{}
-	mut operands := []C.TSNode{}
+	mut negations := []C.vt_node{}
+	mut operands := []C.vt_node{}
 	for node in c.nodes_of_kind(root, c'unary_expression') {
 		if operator_of(node) != '-' {
 			continue

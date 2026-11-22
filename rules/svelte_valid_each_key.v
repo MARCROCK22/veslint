@@ -10,7 +10,7 @@ const svvek_messages = {
 	'keyUseEachVars': 'Expected key to use the variables which are defined by the `{#each}` block.'
 }
 
-fn (mut c Checker) lint_svelte_valid_each_key(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_valid_each_key(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

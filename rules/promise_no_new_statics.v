@@ -9,7 +9,7 @@ const prm_no_new_statics_messages = {
 	'avoidNewStatic': "Avoid calling 'new' on 'Promise.{{ name }}()'"
 }
 
-fn (mut c Checker) lint_promise_no_new_statics(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_no_new_statics(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

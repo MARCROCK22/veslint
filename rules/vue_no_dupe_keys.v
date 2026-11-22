@@ -33,7 +33,7 @@ fn vue_no_dupe_keys_options(options []json2.Any) ![]string {
 	return groups
 }
 
-fn (mut c Checker) lint_vue_no_dupe_keys(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_dupe_keys(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	groups := vue_no_dupe_keys_options(c.rule_options(vue_no_dupe_keys))!
 	mut findings := []Finding{}
@@ -177,7 +177,7 @@ fn (mut c Checker) vndk_report_def(t &estree.EsTree, def ScopeDefinition, name s
 }
 
 // vndk_find_variable_by_name is findVariable(getScope(node), name).
-fn (mut c Checker) vndk_find_variable_by_name(root C.TSNode, t &estree.EsTree, node int, name string) int {
+fn (mut c Checker) vndk_find_variable_by_name(root C.vt_node, t &estree.EsTree, node int, name string) int {
 	ts := t.ts_node(node) or { return -1 }
 	tree := c.scope_tree(root)
 	return tree.find_variable(tree.get_scope(ts), name, t.nodes[node].start)
@@ -198,7 +198,7 @@ fn vndk_props_pattern(t &estree.EsTree, call int) int {
 }
 
 // vndk_extract_references is extractReferences.
-fn (mut c Checker) vndk_extract_references(root C.TSNode, t &estree.EsTree, node int) []int {
+fn (mut c Checker) vndk_extract_references(root C.vt_node, t &estree.EsTree, node int) []int {
 	if node < 0 {
 		return []
 	}

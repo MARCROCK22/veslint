@@ -146,7 +146,7 @@ fn (c &Checker) uelc_comparison_needs_parens(t &estree.EsTree, tokens &SourceTok
 	}
 }
 
-fn (mut c Checker) lint_unicorn_explicit_length_check(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_explicit_length_check(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	non_zero_style := uelc_options(c.rule_options(unicorn_explicit_length_check))!
 	mut findings := []Finding{}

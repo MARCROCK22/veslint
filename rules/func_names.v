@@ -35,7 +35,7 @@ fn fn_options(options []json2.Any) !FnOptions {
 	}
 }
 
-fn (mut c Checker) lint_func_names(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_func_names(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := fn_options(c.rule_options(func_names))!
 	mut findings := []Finding{}
@@ -101,12 +101,12 @@ fn (mut c Checker) lint_func_names(root C.TSNode, abs_path string, mut stats Sta
 
 // fn_has_inferred_name ports hasInferredName: a method, or a function that gets the name of the
 // variable, property or assignment target it is the value of.
-fn (c &Checker) fn_has_inferred_name(f C.TSNode) bool {
+fn (c &Checker) fn_has_inferred_name(f C.vt_node) bool {
 	if node_kind(f) == 'method_definition' {
 		return true
 	}
 	parent := cti_estree_parent(f) or { return false }
-	is_value := fn (field string, parent C.TSNode, f C.TSNode) bool {
+	is_value := fn (field string, parent C.vt_node, f C.vt_node) bool {
 		value := node_field(parent, field) or { return false }
 		return node_key(unwrap_parens(value)) == node_key(f)
 	}

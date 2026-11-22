@@ -20,7 +20,7 @@ fn nuoc_options(options []json2.Any) !bool {
 	return o.bool_value('disallowArithmeticOperators')!
 }
 
-fn (mut c Checker) lint_no_unsafe_optional_chaining(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_optional_chaining(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	arithmetic := nuoc_options(c.rule_options(no_unsafe_optional_chaining))!
 	mut findings := []Finding{}
@@ -141,7 +141,7 @@ fn (mut c Checker) lint_no_unsafe_optional_chaining(root C.TSNode, abs_path stri
 
 // nuoc_check ports checkUndefinedShortCircuit: the optional chains whose `undefined` the
 // expression can evaluate to.
-fn nuoc_check(n C.TSNode, message_id string, mut findings []Finding) {
+fn nuoc_check(n C.vt_node, message_id string, mut findings []Finding) {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'binary_expression' {

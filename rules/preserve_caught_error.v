@@ -59,12 +59,12 @@ fn pce_require_parameter(options []json2.Any) !bool {
 struct PceCause {
 	unknown  bool
 	found    bool
-	property C.TSNode // the Property
-	value    C.TSNode
+	property C.vt_node // the Property
+	value    C.vt_node
 	multiple bool
 }
 
-fn (mut c Checker) lint_preserve_caught_error(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_preserve_caught_error(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := pce_options(c.rule_options(preserve_caught_error))!
 	mut findings := []Finding{}
@@ -118,7 +118,7 @@ fn (mut c Checker) lint_preserve_caught_error(root C.TSNode, abs_path string, mu
 			continue
 		}
 		caught := c.text(parameter)
-		args := (call_arguments(expression) or { []C.TSNode{} }).filter(node_kind(it) != 'comment')
+		args := (call_arguments(expression) or { []C.vt_node{} }).filter(node_kind(it) != 'comment')
 		options_index := if built_in {
 			if class_name == 'AggregateError' { 2 } else { 1 }
 		} else {
@@ -191,7 +191,7 @@ fn (mut c Checker) lint_preserve_caught_error(root C.TSNode, abs_path string, mu
 
 // pce_parent_catch ports findParentCatch: the catch clause around the node, not across a function
 // or a static block.
-fn pce_parent_catch(n C.TSNode) ?C.TSNode {
+fn pce_parent_catch(n C.vt_node) ?C.vt_node {
 	mut current := n
 	for {
 		current = node_parent(current)?
@@ -211,7 +211,7 @@ fn pce_parent_catch(n C.TSNode) ?C.TSNode {
 }
 
 // pce_cause ports getErrorCause: the `cause` of the options argument, at `index`.
-fn (c &Checker) pce_cause(index int, args []C.TSNode) PceCause {
+fn (c &Checker) pce_cause(index int, args []C.vt_node) PceCause {
 	for i, arg in args {
 		if node_kind(arg) == 'spread_element' && i <= index {
 			return PceCause{
@@ -264,7 +264,7 @@ fn (c &Checker) pce_insertion_after_parens(tokens &SourceTokens, first SourceTok
 
 // pce_add_to_empty_call ports addArgumentsToEmptyCall: inside the `()` after the callee, or a new
 // `(…)` after the callee and the parentheses around it.
-fn (c &Checker) pce_add_to_empty_call(tokens &SourceTokens, expression C.TSNode, callee C.TSNode, text string) ?Fix {
+fn (c &Checker) pce_add_to_empty_call(tokens &SourceTokens, expression C.vt_node, callee C.vt_node, text string) ?Fix {
 	end := c.es_end(expression)
 	callee_last := tokens.before(c.es_end(callee), false)?
 	mut token := tokens.after(callee_last.end, false)?
@@ -279,7 +279,7 @@ fn (c &Checker) pce_add_to_empty_call(tokens &SourceTokens, expression C.TSNode,
 
 // pce_append_arguments ports appendArguments: after the last argument and the parentheses around
 // it, before the token ahead of the closing `)`.
-fn (c &Checker) pce_append_arguments(tokens &SourceTokens, expression C.TSNode, args []C.TSNode, text string) ?Fix {
+fn (c &Checker) pce_append_arguments(tokens &SourceTokens, expression C.vt_node, args []C.vt_node, text string) ?Fix {
 	last_argument := tokens.before(c.es_end(unwrap_parens(args.last())), false)?
 	closing := tokens.before(c.es_end(expression), false)?
 	before_closing := tokens.before(closing.start, false)?
@@ -288,7 +288,7 @@ fn (c &Checker) pce_append_arguments(tokens &SourceTokens, expression C.TSNode, 
 }
 
 // pce_existing_options ports fixExistingOptions (insertCauseIntoOptions for an object).
-fn (c &Checker) pce_existing_options(tokens &SourceTokens, argument C.TSNode, caught string) ?Fix {
+fn (c &Checker) pce_existing_options(tokens &SourceTokens, argument C.vt_node, caught string) ?Fix {
 	options := unwrap_parens(argument)
 	if node_kind(options) != 'object' {
 		return none
@@ -302,7 +302,7 @@ fn (c &Checker) pce_existing_options(tokens &SourceTokens, argument C.TSNode, ca
 }
 
 // pce_missing_fix is the fix of the suggestion for a missing `cause`.
-fn (mut c Checker) pce_missing_fix(root C.TSNode, expression C.TSNode, callee C.TSNode, args []C.TSNode, caught string, built_in bool, class_name string, options_index int) ?Fix {
+fn (mut c Checker) pce_missing_fix(root C.vt_node, expression C.vt_node, callee C.vt_node, args []C.vt_node, caught string, built_in bool, class_name string, options_index int) ?Fix {
 	tokens := c.source_tokens(root)
 	cause := '{ cause: ${caught} }'
 	if built_in {

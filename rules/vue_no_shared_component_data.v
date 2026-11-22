@@ -11,7 +11,7 @@ const vue_no_shared_component_data_messages = {
 	'dataPropertyMustBeFunction': '`data` property in component must be a function.'
 }
 
-fn (mut c Checker) lint_vue_no_shared_component_data(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_shared_component_data(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

@@ -11,7 +11,7 @@ const ncd_messages = {
 	'unexpected':  'Unexpected lexical declaration in case block.'
 }
 
-fn (mut c Checker) lint_no_case_declarations(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_case_declarations(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['switch_case', 'switch_default'], []) {
@@ -38,15 +38,15 @@ fn (mut c Checker) lint_no_case_declarations(root C.TSNode, abs_path string, mut
 
 // ncd_consequent are the statements of a case clause: the named children after its `:`, comments
 // aside.
-fn ncd_consequent(clause C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn ncd_consequent(clause C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	mut after_colon := false
 	for child in children(clause) {
 		if !after_colon {
 			after_colon = node_kind(child) == ':'
 			continue
 		}
-		if C.ts_node_is_named(child) && node_kind(child) != 'comment' {
+		if C.vt_node_is_named(child) && node_kind(child) != 'comment' {
 			out << child
 		}
 	}
@@ -55,7 +55,7 @@ fn ncd_consequent(clause C.TSNode) []C.TSNode {
 
 // ncd_is_lexical ports isLexicalDeclaration: a function or class declaration, or a variable
 // declaration that is not `var` (`declare const` is one too).
-fn ncd_is_lexical(n C.TSNode) bool {
+fn ncd_is_lexical(n C.vt_node) bool {
 	return match node_kind(n) {
 		'function_declaration', 'generator_function_declaration', 'class_declaration',
 		'abstract_class_declaration', 'lexical_declaration' {

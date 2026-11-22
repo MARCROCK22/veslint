@@ -16,7 +16,7 @@ fn snis_options(options []json2.Any) !bool {
 	return if 'allowTransitions' in o.values { o.bool_value('allowTransitions')! } else { true }
 }
 
-fn (mut c Checker) lint_svelte_no_inline_styles(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_inline_styles(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	allow_transitions := snis_options(c.rule_options(svelte_no_inline_styles))!
 	if !c.is_svelte() {
 		return []

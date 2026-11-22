@@ -30,7 +30,7 @@ fn spai_has_useful_escape(raw string, cooked string) bool {
 	return false
 }
 
-fn (mut c Checker) lint_svelte_prefer_attribute_interpolation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_prefer_attribute_interpolation(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

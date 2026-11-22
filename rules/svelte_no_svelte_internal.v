@@ -12,7 +12,7 @@ fn svnsi_is_svelte_internal(value string) bool {
 	return value == 'svelte/internal' || value.starts_with('svelte/internal/')
 }
 
-fn (mut c Checker) lint_svelte_no_svelte_internal(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_svelte_internal(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() && !c.src.contains('svelte/internal') {
 		return []
 	}

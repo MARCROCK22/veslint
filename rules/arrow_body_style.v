@@ -33,7 +33,7 @@ fn abs_options(options []json2.Any) !AbsOptions {
 	}
 }
 
-fn (mut c Checker) lint_arrow_body_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_arrow_body_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := abs_options(c.rule_options(arrow_body_style))!
 	mut findings := []Finding{}
@@ -105,7 +105,7 @@ fn (mut c Checker) lint_arrow_body_style(root C.TSNode, abs_path string, mut sta
 }
 
 // abs_unwrap_fixes removes the braces and the `return` of a block that returns a value.
-fn (mut c Checker) abs_unwrap_fixes(root C.TSNode, arrow C.TSNode, body C.TSNode, statement C.TSNode, argument C.TSNode) []Fix {
+fn (mut c Checker) abs_unwrap_fixes(root C.vt_node, arrow C.vt_node, body C.vt_node, statement C.vt_node, argument C.vt_node) []Fix {
 	tokens := c.source_tokens(root)
 	body_end := c.es_end(body)
 	// A token after the block that would continue the value (hasASIProblem).
@@ -146,7 +146,7 @@ fn (mut c Checker) abs_unwrap_fixes(root C.TSNode, arrow C.TSNode, body C.TSNode
 }
 
 // abs_inside_for_init ports isInsideForLoopInitializer.
-fn abs_inside_for_init(n C.TSNode) bool {
+fn abs_inside_for_init(n C.vt_node) bool {
 	mut current := n
 	for {
 		parent := node_parent(current) or { return false }
@@ -163,7 +163,7 @@ fn abs_inside_for_init(n C.TSNode) bool {
 }
 
 // abs_block_fixes wraps an expression body in `{return ` and `}`.
-fn (mut c Checker) abs_block_fixes(root C.TSNode, arrow C.TSNode, body C.TSNode) []Fix {
+fn (mut c Checker) abs_block_fixes(root C.vt_node, arrow C.vt_node, body C.vt_node) []Fix {
 	tokens := c.source_tokens(root)
 	mut arrow_token := tokens.before(node_start(body), false) or { return []Fix{} }
 	for c.src[arrow_token.start..arrow_token.end] != '=>' {

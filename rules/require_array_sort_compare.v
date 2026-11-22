@@ -23,13 +23,13 @@ fn rasc_options(options []json2.Any) !RascOptions {
 	}
 }
 
-fn (mut c Checker) lint_require_array_sort_compare(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_require_array_sort_compare(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := rasc_options(c.rule_options(require_array_sort_compare))!
 	mut sw := time.new_stopwatch()
 	// 'CallExpression[arguments.length=0] > MemberExpression': the callee of a call without
 	// arguments, when it is a member access named `sort` or `toSorted`.
-	mut calls := []C.TSNode{}
-	mut objects := []C.TSNode{}
+	mut calls := []C.vt_node{}
+	mut objects := []C.vt_node{}
 	for call in c.nodes_of_kind(root, c'call_expression') {
 		args := call_arguments(call) or { continue }
 		if args.len != 0 {

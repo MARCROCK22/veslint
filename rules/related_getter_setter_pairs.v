@@ -12,19 +12,19 @@ const rgsp_messages = {
 // RgspPair is a getter (with a return type) and a setter (with a single parameter) with the same
 // name in a class body, an interface or a type literal.
 struct RgspPair {
-	getter    C.TSNode // the member, whose type is the getter's
-	parameter C.TSNode // the ESTree node of the setter parameter
-	report    C.TSNode // the return type of the getter
+	getter    C.vt_node // the member, whose type is the getter's
+	parameter C.vt_node // the ESTree node of the setter parameter
+	report    C.vt_node // the return type of the getter
 }
 
-fn (mut c Checker) lint_related_getter_setter_pairs(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_related_getter_setter_pairs(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut pairs := []RgspPair{}
 	mut spans := []Span{}
 	// ClassBody, TSInterfaceBody and TSTypeLiteral, each with its own name → pair map.
 	for body in c.nodes_of_kinds(root, ['class_body', 'interface_body', 'object_type'], []string{}) {
-		mut getters := map[string]C.TSNode{}
-		mut setters := map[string]C.TSNode{}
+		mut getters := map[string]C.vt_node{}
+		mut setters := map[string]C.vt_node{}
 		mut order := []string{}
 		for member in named_children(body) {
 			kind := rgsp_accessor_kind(member)
@@ -90,7 +90,7 @@ fn (mut c Checker) lint_related_getter_setter_pairs(root C.TSNode, abs_path stri
 // rgsp_accessor_kind is the ESTree `kind` ('get' or 'set') of a MethodDefinition (a class member
 // that is not abstract: those are TSAbstractMethodDefinition) or a TSMethodSignature; '' for other
 // members.
-fn rgsp_accessor_kind(member C.TSNode) string {
+fn rgsp_accessor_kind(member C.vt_node) string {
 	if node_kind(member) !in ['method_definition', 'method_signature']
 		|| has_child_kind(member, 'abstract') {
 		return ''
@@ -107,7 +107,7 @@ fn rgsp_accessor_kind(member C.TSNode) string {
 // rgsp_estree_parameter is the node TypeScript types for the ESTree parameter: the name (an
 // identifier or a destructuring pattern), or the whole parameter if it is an AssignmentPattern or
 // a RestElement.
-fn rgsp_estree_parameter(parameter C.TSNode) C.TSNode {
+fn rgsp_estree_parameter(parameter C.vt_node) C.vt_node {
 	if _ := node_field(parameter, 'value') {
 		return parameter
 	}
@@ -121,7 +121,7 @@ fn rgsp_estree_parameter(parameter C.TSNode) C.TSNode {
 // rgsp_member_name ports getNameFromMember: the name of an identifier or a private name, a
 // literal's String(value) (quoted when it is not a valid identifier, like requiresQuoting), or the
 // source text of any other computed key.
-fn (c &Checker) rgsp_member_name(key C.TSNode) string {
+fn (c &Checker) rgsp_member_name(key C.vt_node) string {
 	mut node := key
 	if node_kind(node) == 'computed_property_name' {
 		node = unwrap_parens(first_named(node) or { return '' })

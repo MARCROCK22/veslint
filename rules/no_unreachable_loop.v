@@ -19,7 +19,7 @@ fn nurl_options(options []json2.Any) ![]string {
 	return o.string_list('ignore')!
 }
 
-fn (mut c Checker) lint_no_unreachable_loop(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unreachable_loop(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ignored := nurl_options(c.rule_options(no_unreachable_loop))!
 	checked := nurl_loop_types.filter(it !in ignored)

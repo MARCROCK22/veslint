@@ -156,7 +156,7 @@ fn (c &Checker) sbl_at_start(message string, suggestions []Suggestion) Finding {
 	}
 }
 
-fn (mut c Checker) lint_svelte_block_lang(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_block_lang(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := sbl_options(c.rule_options(svelte_block_lang))!
 	if !c.is_svelte() {
 		return []

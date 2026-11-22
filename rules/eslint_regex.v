@@ -9,7 +9,7 @@ import treesitter { node_field, node_kind, node_parent }
 
 // es_regex_literal is node.regex of a regular expression literal: its pattern, as written between
 // the slashes, and its flags.
-fn (c &Checker) es_regex_literal(n C.TSNode) ?([]u16, string) {
+fn (c &Checker) es_regex_literal(n C.vt_node) ?([]u16, string) {
 	if node_kind(n) != 'regex' {
 		return none
 	}
@@ -17,13 +17,13 @@ fn (c &Checker) es_regex_literal(n C.TSNode) ?([]u16, string) {
 	return utf16_units(c.text(pattern)), c.es_regex_flags(n)
 }
 
-fn (c &Checker) es_regex_flags(n C.TSNode) string {
+fn (c &Checker) es_regex_flags(n C.vt_node) string {
 	flags := node_field(n, 'flags') or { return '' }
 	return c.text(flags)
 }
 
 // es_string_units is the value of a string Literal in UTF-16 units (none for any other node).
-fn (c &Checker) es_string_units(n C.TSNode) ?[]u16 {
+fn (c &Checker) es_string_units(n C.vt_node) ?[]u16 {
 	if node_kind(n) != 'string' {
 		return none
 	}
@@ -60,7 +60,7 @@ fn es_regex_pattern_flags(flags string) regexpp.PatternFlags {
 }
 
 // es_estree_parent is the parent of an expression in ESTree, past its parentheses.
-fn es_estree_parent(n C.TSNode) ?(C.TSNode, C.TSNode) {
+fn es_estree_parent(n C.vt_node) ?(C.vt_node, C.vt_node) {
 	mut child := n
 	mut parent := node_parent(n)?
 	for node_kind(parent) == 'parenthesized_expression' {

@@ -48,7 +48,7 @@ fn nrsx_options(options []json2.Any) !NrsxOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_restricted_syntax(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_restricted_syntax(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	opts := nrsx_options(c.rule_options(no_restricted_syntax))!
 	mut findings := []Finding{}

@@ -12,7 +12,7 @@ const nlf_messages = {
 const nlf_functions = ['function_declaration', 'generator_function_declaration', 'function_expression',
 	'generator_function', 'arrow_function', 'method_definition']
 
-fn (mut c Checker) lint_no_loop_func(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_loop_func(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut skipped := map[u64]bool{} // SKIPPED_IIFE_NODES
@@ -64,7 +64,7 @@ fn (mut c Checker) lint_no_loop_func(root C.TSNode, abs_path string, mut stats S
 }
 
 // nlf_is_iife ports isIIFE: a function or arrow expression that is the callee of a call.
-fn nlf_is_iife(node C.TSNode) bool {
+fn nlf_is_iife(node C.vt_node) bool {
 	if node_kind(node) !in ['function_expression', 'generator_function', 'arrow_function'] {
 		return false
 	}
@@ -84,7 +84,7 @@ fn nlf_is_iife(node C.TSNode) bool {
 }
 
 // nlf_containing_loop ports getContainingLoopNode.
-fn nlf_containing_loop(node C.TSNode, skipped map[u64]bool) ?C.TSNode {
+fn nlf_containing_loop(node C.vt_node, skipped map[u64]bool) ?C.vt_node {
 	mut current := node
 	for {
 		parent := node_parent(current) or { return none }
@@ -119,9 +119,9 @@ fn nlf_containing_loop(node C.TSNode, skipped map[u64]bool) ?C.TSNode {
 }
 
 // nlf_top_loop ports getTopLoopNode.
-fn nlf_top_loop(loop C.TSNode, border int, skipped map[u64]bool) C.TSNode {
+fn nlf_top_loop(loop C.vt_node, border int, skipped map[u64]bool) C.vt_node {
 	mut top := loop
-	mut containing := ?C.TSNode(loop)
+	mut containing := ?C.vt_node(loop)
 	for {
 		node := containing or { break }
 		if node_start(node) < border {
@@ -163,7 +163,7 @@ fn (c &Checker) nlf_declaration(def ScopeDefinition) (string, int, int) {
 }
 
 // nlf_is_safe ports isSafe.
-fn (c &Checker) nlf_is_safe(tree &ScopeTree, loop C.TSNode, reference ScopeReference, skipped map[u64]bool) bool {
+fn (c &Checker) nlf_is_safe(tree &ScopeTree, loop C.vt_node, reference ScopeReference, skipped map[u64]bool) bool {
 	variable := tree.variables[reference.resolved]
 	mut kind := ''
 	mut declaration_start := 0

@@ -15,7 +15,7 @@ mut:
 	set bool
 }
 
-fn (mut c Checker) lint_no_dupe_keys(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_dupe_keys(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for object in c.nodes_of_kinds(root, ['object'], []) {

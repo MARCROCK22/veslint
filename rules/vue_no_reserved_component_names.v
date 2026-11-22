@@ -105,7 +105,7 @@ fn (o &VnrcnOptions) message_id(name string) string {
 	return if name in vue_builtin_component_names { 'reservedInVue3' } else { 'reserved' }
 }
 
-fn (mut c Checker) lint_vue_no_reserved_component_names(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_reserved_component_names(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := vue_no_reserved_component_names_options(c.rule_options(vue_no_reserved_component_names))!
 	mut findings := []Finding{}

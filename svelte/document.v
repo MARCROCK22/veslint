@@ -32,9 +32,9 @@ pub mut:
 	// es is the ESTree of `pre` (script statements and template expressions, with file offsets
 	// once restored; their tree-sitter nodes keep `pre` offsets: see pre_to_file).
 	es   estree.EsTree
-	tree &C.TSTree = unsafe { nil }
+	tree &C.vt_rows = unsafe { nil }
 	// extra_trees: other trees nodes of `es` come from (the `generics` attribute's parse).
-	extra_trees []&C.TSTree
+	extra_trees []&C.vt_rows
 	// es_parent: the Svelte parent of an ESTree node grafted into the template (its ESTree
 	// parent is a wrapper of `pre` that is not in the AST).
 	es_parent map[int]int
@@ -125,25 +125,21 @@ pub fn (p &Parsers) close() {
 pub fn (p &Parsers) token_ends(code string) ![]int {
 	tree := parse_ts(p.ts, code)!
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	return treesitter.token_ends(treesitter.root_node(tree)).ends
 }
 
-fn parse_ts(parser &C.TSParser, code string) !&C.TSTree {
-	tree := C.ts_parser_parse_string(parser, unsafe { nil }, &char(code.str), u32(code.len))
-	if isnil(tree) {
-		return error('tree-sitter could not parse the code')
-	}
-	return tree
+fn parse_ts(parser &C.TSParser, code string) !&C.vt_rows {
+	return treesitter.parse_with(parser, code, 'the code')
 }
 
-fn convert_es(root C.TSNode, code string) !estree.EsTree {
+fn convert_es(root C.vt_node, code string) !estree.EsTree {
 	return convert_es_with(root, code, false)
 }
 
 // convert_es_with is convert_es of a tree of the grammar's tsx dialect when `jsx`.
-fn convert_es_with(root C.TSNode, code string, jsx bool) !estree.EsTree {
+fn convert_es_with(root C.vt_node, code string, jsx bool) !estree.EsTree {
 	return estree.convert_with(root, code, jsx, estree.Options{
 		module:       true
 		regexp_valid: fn (pattern string, flags string) bool {
@@ -191,11 +187,11 @@ pub fn (d &Document) offset_of_loc(line int, column int) int {
 // free deletes the tree-sitter tree.
 pub fn (mut d Document) free() {
 	if d.tree != unsafe { nil } {
-		treesitter.tree_delete(d.tree)
+		treesitter.rows_free(d.tree)
 		d.tree = unsafe { nil }
 	}
 	for t in d.extra_trees {
-		treesitter.tree_delete(t)
+		treesitter.rows_free(t)
 	}
 	d.extra_trees = []
 }

@@ -129,7 +129,7 @@ fn (c &Checker) svnrr_reassign(id int) ?SvnrrReassign {
 	return none
 }
 
-fn (mut c Checker) lint_svelte_no_reactive_reassign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_reactive_reassign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	props := svnrr_options(c.rule_options(svelte_no_reactive_reassign))!
 	if !c.svsc_runes_off(abs_path) {
 		return []

@@ -27,7 +27,7 @@ fn (c &Checker) upmt_call(t &estree.EsTree, tokens &SourceTokens, node int) stri
 
 // upmt_parse_int_name ports getParseIntName: `parseInt(…, …)` or `Number.parseInt(…, …)` of the
 // globals; '' for anything else.
-fn (mut c Checker) upmt_parse_int_name(root C.TSNode, t &estree.EsTree, node int) string {
+fn (mut c Checker) upmt_parse_int_name(root C.vt_node, t &estree.EsTree, node int) string {
 	callee := t.node(node, .callee) or { return '' }
 	if un_is_call(t, node, names: ['parseInt'], arguments_length: 2, optional: false)
 		&& c.es_is_global_reference(root, t.ts_node(callee) or { return '' }) {
@@ -49,7 +49,7 @@ fn (mut c Checker) upmt_parse_int_name(root C.TSNode, t &estree.EsTree, node int
 }
 
 // upmt_is_string_call ports isStringCall: `String(…)` of the global.
-fn (mut c Checker) upmt_is_string_call(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) upmt_is_string_call(root C.vt_node, t &estree.EsTree, node int) bool {
 	if !un_is_call(t, node, names: ['String'], arguments_length: 1, optional: false) {
 		return false
 	}
@@ -58,7 +58,7 @@ fn (mut c Checker) upmt_is_string_call(root C.TSNode, t &estree.EsTree, node int
 	})
 }
 
-fn (mut c Checker) lint_unicorn_prefer_math_trunc(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_math_trunc(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

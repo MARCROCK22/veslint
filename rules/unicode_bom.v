@@ -19,7 +19,7 @@ fn ubom_always(options []json2.Any) !bool {
 	return error('the option of `${unicode_bom}` must be "always" or "never"')
 }
 
-fn (mut c Checker) lint_unicode_bom(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicode_bom(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	always := ubom_always(c.rule_options(unicode_bom))!
 	mut findings := []Finding{}

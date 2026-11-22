@@ -471,7 +471,7 @@ fn (mut c Checker) unb_type_of(t &estree.EsTree, node int, abs_path string, mut 
 
 // unb_find_variable ports findVariable(sourceCode.getScope(node), node) of eslint-utils for an
 // ESTree Identifier: the index of its variable in the scope tree, -1 for none.
-fn (mut c Checker) unb_find_variable(root C.TSNode, t &estree.EsTree, node int) int {
+fn (mut c Checker) unb_find_variable(root C.vt_node, t &estree.EsTree, node int) int {
 	if node < 0 || t.typ(node) != .identifier {
 		return -1
 	}
@@ -482,7 +482,7 @@ fn (mut c Checker) unb_find_variable(root C.TSNode, t &estree.EsTree, node int) 
 }
 
 // unb_single_definition is the only definition of a variable (`variable?.defs.length === 1`).
-fn (mut c Checker) unb_single_definition(root C.TSNode, v int) ?ScopeDefinition {
+fn (mut c Checker) unb_single_definition(root C.vt_node, v int) ?ScopeDefinition {
 	if v < 0 {
 		return none
 	}
@@ -505,7 +505,7 @@ fn unb_is_simple_declarator(def ScopeDefinition) bool {
 
 // unb_const_definition ports getConstVariableDefinition (utils/get-static-value.js): the variable
 // of an identifier and the initializer of its only definition, a `const` declarator of the name.
-fn (mut c Checker) unb_const_definition(root C.TSNode, t &estree.EsTree, node int) ?(int, int) {
+fn (mut c Checker) unb_const_definition(root C.vt_node, t &estree.EsTree, node int) ?(int, int) {
 	v := c.unb_find_variable(root, t, node)
 	def := c.unb_single_definition(root, v)?
 	if !unb_is_simple_declarator(def) || def.parent_kind != 'const' {
@@ -517,7 +517,7 @@ fn (mut c Checker) unb_const_definition(root C.TSNode, t &estree.EsTree, node in
 
 // unb_is_global_identifier ports isGlobalIdentifier (utils/is-global-identifier.js): an
 // identifier that references a configured global or no variable at all.
-fn (mut c Checker) unb_is_global_identifier(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_global_identifier(root C.vt_node, t &estree.EsTree, node int) bool {
 	if node < 0 || t.typ(node) != .identifier {
 		return false
 	}
@@ -602,7 +602,7 @@ const unb_static_global_properties = {
 
 // unb_is_safe_static_global_member ports isSafeStaticGlobalMember: a constant property of a
 // builtin global (`Math.PI`).
-fn (mut c Checker) unb_is_safe_static_global_member(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_safe_static_global_member(root C.vt_node, t &estree.EsTree, node int) bool {
 	if t.typ(node) != .member_expression || (t.flag(node, .optional) or { false }) {
 		return false
 	}
@@ -626,7 +626,7 @@ fn (mut c Checker) unb_is_safe_static_global_member(root C.TSNode, t &estree.EsT
 
 // unb_is_safe_static_pass_through_call ports isSafeStaticPassThroughCall: `Object.freeze(x)`,
 // `Object.preventExtensions(x)` or `Object.seal(x)` of a static value without side effects.
-fn (mut c Checker) unb_is_safe_static_pass_through_call(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_is_safe_static_pass_through_call(root C.vt_node, t &estree.EsTree, n int, mut visited map[int]bool) bool {
 	node := unb_unwrap_ts(t, n)
 	if t.typ(node) != .call_expression {
 		return false
@@ -659,7 +659,7 @@ fn unb_is_branch_expression(t &estree.EsTree, n int) bool {
 	return t.typ(node) in [.conditional_expression, .logical_expression]
 }
 
-fn (mut c Checker) unb_has_side_effectful_const_reference(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_has_side_effectful_const_reference(root C.vt_node, t &estree.EsTree, node int, mut visited map[int]bool) bool {
 	if t.typ(node) == .identifier {
 		return c.unb_has_side_effectful_const_initializer(root, t, node, mut visited)
 	}
@@ -675,7 +675,7 @@ fn (mut c Checker) unb_has_side_effectful_const_reference(root C.TSNode, t &estr
 }
 
 // unb_has_side_effectful_const_initializer ports hasSideEffectfulConstInitializer.
-fn (mut c Checker) unb_has_side_effectful_const_initializer(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_has_side_effectful_const_initializer(root C.vt_node, t &estree.EsTree, node int, mut visited map[int]bool) bool {
 	v, init := c.unb_const_definition(root, t, node) or {
 		return t.typ(node) != .identifier
 			&& c.unb_has_side_effectful_const_reference(root, t, node, mut visited)
@@ -716,7 +716,7 @@ fn unb_literal_property_text(t &estree.EsTree, property int) ?string {
 
 // unb_static_property_name ports getStaticPropertyName of utils/get-static-value.js; without
 // `with_context` a computed key is never resolved.
-fn (mut c Checker) unb_static_property_name(root C.TSNode, t &estree.EsTree, node int, property int, with_context bool) ?string {
+fn (mut c Checker) unb_static_property_name(root C.vt_node, t &estree.EsTree, node int, property int, with_context bool) ?string {
 	computed := t.flag(node, .computed) or { false }
 	if t.typ(property) == .identifier && !computed {
 		return t.string_of(property, .name)
@@ -733,7 +733,7 @@ fn (mut c Checker) unb_static_property_name(root C.TSNode, t &estree.EsTree, nod
 	return unb_static_value_text(c.un_static_value(t, property))
 }
 
-fn (mut c Checker) unb_is_safe_static_object_member(root C.TSNode, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_is_safe_static_object_member(root C.vt_node, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
 	property_name := name or { return false }
 	properties := t.list(node, .properties) or { return false }
 	for p in properties {
@@ -773,7 +773,7 @@ fn unb_canonical_index(name string, len int) bool {
 	return name.i64() < len
 }
 
-fn (mut c Checker) unb_is_safe_static_array_member(root C.TSNode, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_is_safe_static_array_member(root C.vt_node, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
 	elements := t.list(node, .elements) or { return false }
 	for element in elements {
 		if element >= 0 && (t.typ(element) == .spread_element
@@ -791,7 +791,7 @@ fn (mut c Checker) unb_is_safe_static_array_member(root C.TSNode, t &estree.EsTr
 	return elements[property_name.int()] >= 0
 }
 
-fn (mut c Checker) unb_is_safe_static_member_object(root C.TSNode, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_is_safe_static_member_object(root C.vt_node, t &estree.EsTree, node int, name ?string, mut visited map[int]bool) bool {
 	mut primitive := ?string(none)
 	if value := unb_static_string_value(t, node) {
 		primitive = value
@@ -814,7 +814,7 @@ fn (mut c Checker) unb_is_safe_static_member_object(root C.TSNode, t &estree.EsT
 	return false
 }
 
-fn (mut c Checker) unb_is_safe_static_member(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_is_safe_static_member(root C.vt_node, t &estree.EsTree, node int, mut visited map[int]bool) bool {
 	property := t.node(node, .property) or { return false }
 	name := c.unb_static_property_name(root, t, node, property, true)
 	if (t.flag(node, .computed) or { false })
@@ -827,7 +827,7 @@ fn (mut c Checker) unb_is_safe_static_member(root C.TSNode, t &estree.EsTree, no
 
 // unb_has_potentially_mutable_member_access ports hasPotentiallyMutableMemberAccess: the
 // expression reads a member whose value may change.
-fn (mut c Checker) unb_has_potentially_mutable_member_access(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_has_potentially_mutable_member_access(root C.vt_node, t &estree.EsTree, n int, mut visited map[int]bool) bool {
 	mut node := unb_unwrap_ts(t, n)
 	if t.typ(node) == .chain_expression {
 		node = t.node(node, .expression) or { return false }
@@ -857,7 +857,7 @@ fn (mut c Checker) unb_has_potentially_mutable_member_access(root C.TSNode, t &e
 }
 
 // unb_has_unsafe_binding_in_evaluated_path ports hasUnsafeBindingInEvaluatedPath.
-fn (mut c Checker) unb_has_unsafe_binding_in_evaluated_path(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_has_unsafe_binding_in_evaluated_path(root C.vt_node, t &estree.EsTree, n int, mut visited map[int]bool) bool {
 	node := unb_unwrap_ts(t, n)
 	match t.typ(node) {
 		.identifier {
@@ -938,7 +938,7 @@ fn (mut c Checker) unb_has_unsafe_binding_in_evaluated_path(root C.TSNode, t &es
 }
 
 // unb_static_value_internal ports getStaticValueIfNoSideEffectsInternal.
-fn (mut c Checker) unb_static_value_internal(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) ?StaticValue {
+fn (mut c Checker) unb_static_value_internal(root C.vt_node, t &estree.EsTree, n int, mut visited map[int]bool) ?StaticValue {
 	node := unb_unwrap_ts(t, n)
 	if (unb_has_side_effect(t, node, false)
 		&& !c.unb_is_safe_static_pass_through_call(root, t, node, mut visited))
@@ -956,7 +956,7 @@ fn (mut c Checker) unb_static_value_internal(root C.TSNode, t &estree.EsTree, n 
 }
 
 // unb_static_value_if_no_side_effects ports getStaticValueIfNoSideEffects.
-fn (mut c Checker) unb_static_value_if_no_side_effects(root C.TSNode, t &estree.EsTree, node int) ?StaticValue {
+fn (mut c Checker) unb_static_value_if_no_side_effects(root C.vt_node, t &estree.EsTree, node int) ?StaticValue {
 	mut visited := map[int]bool{}
 	return c.unb_static_value_internal(root, t, node, mut visited)
 }
@@ -964,7 +964,7 @@ fn (mut c Checker) unb_static_value_if_no_side_effects(root C.TSNode, t &estree.
 // unb_static_value_for_control_flow ports getStaticValueForControlFlow: getStaticValue is not
 // flow-sensitive, so mutable bindings and constants read before their declarations end on an
 // evaluated path give none.
-fn (mut c Checker) unb_static_value_for_control_flow(root C.TSNode, t &estree.EsTree, node int) ?StaticValue {
+fn (mut c Checker) unb_static_value_for_control_flow(root C.vt_node, t &estree.EsTree, node int) ?StaticValue {
 	mut visited := map[int]bool{}
 	value := c.unb_static_value_internal(root, t, node, mut visited)?
 	mut visited_bindings := map[int]bool{}
@@ -1161,7 +1161,7 @@ fn unb_is_number_literal_of(t &estree.EsTree, node int, value f64) bool {
 
 // unb_is_global_reference_or_undefined is isGlobalReference of utils/boolean.js: a configured
 // global, or a name of no variable or of one without definitions.
-fn (mut c Checker) unb_is_global_reference_or_undefined(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_global_reference_or_undefined(root C.vt_node, t &estree.EsTree, node int) bool {
 	ts := t.ts_node(node) or { return false }
 	if c.es_is_global_reference(root, ts) {
 		return true
@@ -1172,7 +1172,7 @@ fn (mut c Checker) unb_is_global_reference_or_undefined(root C.TSNode, t &estree
 
 // unb_is_global_boolean_call ports isGlobalBooleanCall (utils/boolean.js): `Boolean(x)` of the
 // global, not optional, with one argument that is not a spread.
-fn (mut c Checker) unb_is_global_boolean_call(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_global_boolean_call(root C.vt_node, t &estree.EsTree, node int) bool {
 	if node < 0 || t.typ(node) != .call_expression || (t.flag(node, .optional) or { false }) {
 		return false
 	}
@@ -1184,7 +1184,7 @@ fn (mut c Checker) unb_is_global_boolean_call(root C.TSNode, t &estree.EsTree, n
 }
 
 // unb_is_boolean_expression ports isBooleanExpression of utils/boolean.js of 79.0.0.
-fn (mut c Checker) unb_is_boolean_expression(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_boolean_expression(root C.vt_node, t &estree.EsTree, node int) bool {
 	parent := t.nodes[node].parent
 	if un_is_logic_not(t, node) || (un_is_logic_not(t, parent) && t.node(parent, .argument) or { -1 } == node)
 		|| c.unb_is_global_boolean_call(root, t, node) || (c.unb_is_global_boolean_call(root, t, parent)
@@ -1199,7 +1199,7 @@ fn (mut c Checker) unb_is_boolean_expression(root C.TSNode, t &estree.EsTree, no
 
 // unb_is_boolean_context ports isBooleanContext: the value of the node is only used for its
 // truthiness (TypeScript wrappers around it are not looked through).
-fn (mut c Checker) unb_is_boolean_context(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_boolean_context(root C.vt_node, t &estree.EsTree, node int) bool {
 	return c.unb_is_boolean_expression(root, t, node) || un_is_control_flow_test(t, node)
 }
 
@@ -1408,7 +1408,7 @@ fn (mut c Checker) unb_definition(t &estree.EsTree, def ScopeDefinition, scope i
 
 // unb_type_reference_definition ports getTypeReferenceDefinition: the nearest class, import, enum
 // or type definition of the name, from the scope upward.
-fn (mut c Checker) unb_type_reference_definition(root C.TSNode, t &estree.EsTree, name string, from int) ?UnbDefinition {
+fn (mut c Checker) unb_type_reference_definition(root C.vt_node, t &estree.EsTree, name string, from int) ?UnbDefinition {
 	tree := c.scope_tree(root)
 	mut scope := from
 	for scope >= 0 {
@@ -1425,7 +1425,7 @@ fn (mut c Checker) unb_type_reference_definition(root C.TSNode, t &estree.EsTree
 }
 
 // unb_scope_of is sourceCode.getScope(node) of an ESTree node.
-fn (mut c Checker) unb_scope_of(root C.TSNode, t &estree.EsTree, node int) int {
+fn (mut c Checker) unb_scope_of(root C.vt_node, t &estree.EsTree, node int) int {
 	ts := t.ts_node(node) or { return 0 }
 	return c.scope_tree(root).get_scope(ts)
 }
@@ -1460,7 +1460,7 @@ fn (mut c Checker) unb_import_binding_type(t &estree.EsTree, d UnbDefinition, o 
 }
 
 // unb_type_reference_type ports getTypeReferenceType.
-fn (mut c Checker) unb_type_reference_type(root C.TSNode, t &estree.EsTree, type_name int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+fn (mut c Checker) unb_type_reference_type(root C.vt_node, t &estree.EsTree, type_name int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
 	name := unb_type_name(t, type_name) or { return .unknown }
 	// getNamespaceImportBindingType needs targetTypeNamespaceImports, which none of the ported
 	// checkers has.
@@ -1511,7 +1511,7 @@ fn (mut c Checker) unb_type_reference_type(root C.TSNode, t &estree.EsTree, type
 }
 
 // unb_class_heritage_type ports getClassHeritageType.
-fn (mut c Checker) unb_class_heritage_type(root C.TSNode, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+fn (mut c Checker) unb_class_heritage_type(root C.vt_node, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
 	super_class := t.node(node, .super_class) or { return .non_target }
 	if !o.check_class_heritage {
 		return .non_target
@@ -1523,7 +1523,7 @@ fn (mut c Checker) unb_class_heritage_type(root C.TSNode, t &estree.EsTree, node
 }
 
 // unb_class_type ports getClassType.
-fn (mut c Checker) unb_class_type(root C.TSNode, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+fn (mut c Checker) unb_class_type(root C.vt_node, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
 	super_class := t.node(node, .super_class) or { return .non_target }
 	if !o.check_class_heritage {
 		return .non_target
@@ -1532,7 +1532,7 @@ fn (mut c Checker) unb_class_type(root C.TSNode, t &estree.EsTree, node int, sco
 }
 
 // unb_class_reference_type ports getClassReferenceTypeFromScope.
-fn (mut c Checker) unb_class_reference_type(root C.TSNode, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+fn (mut c Checker) unb_class_reference_type(root C.vt_node, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
 	if t.typ(node) == .identifier {
 		name := t.string_of(node, .name) or { return .unknown }
 		if !o.check_class_heritage {
@@ -1571,7 +1571,7 @@ fn (mut c Checker) unb_class_reference_type(root C.TSNode, t &estree.EsTree, nod
 }
 
 // unb_annotation_type ports getTypeAnnotationType.
-fn (mut c Checker) unb_annotation_type(root C.TSNode, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
+fn (mut c Checker) unb_annotation_type(root C.vt_node, t &estree.EsTree, node int, scope int, o UnbTypeOptions, mut visited map[string]bool) UnbKind {
 	if node < 0 {
 		return .unknown
 	}
@@ -1717,14 +1717,14 @@ fn (mut c Checker) unb_type_from_type_information(t &estree.EsTree, node int, o 
 // UnbTypeContext is what a type check needs from the rule: the file and its counters.
 @[heap]
 struct UnbTypeContext {
-	root     C.TSNode
+	root     C.vt_node
 	abs_path string
 mut:
 	stats &Stats = unsafe { nil }
 }
 
 // unb_is_rest_parameter ports isRestParameter: a simple rest parameter never written.
-fn (mut c Checker) unb_is_rest_parameter(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_rest_parameter(root C.vt_node, t &estree.EsTree, node int) bool {
 	if t.typ(node) != .identifier {
 		return false
 	}
@@ -3286,7 +3286,7 @@ fn (mut c Checker) unb_jsdoc_parameter_annotation(t &estree.EsTree, tokens &Sour
 
 // unb_jsdoc_type_annotation ports getJSDocumentTypeAnnotation: the documented type of a binding or
 // property, through the declaration of a simple identifier.
-fn (mut c Checker) unb_jsdoc_type_annotation(root C.TSNode, t &estree.EsTree, node int) ?UnbJsdocAnnotation {
+fn (mut c Checker) unb_jsdoc_type_annotation(root C.vt_node, t &estree.EsTree, node int) ?UnbJsdocAnnotation {
 	tokens := c.un_tokens(t)
 	if node < 0 || !c.unb_has_jsdoc_comments(tokens) || t.node(node, .type_annotation) != none {
 		return none
@@ -3330,7 +3330,7 @@ fn (mut c Checker) unb_jsdoc_type_annotation(root C.TSNode, t &estree.EsTree, no
 
 // unb_jsdoc_return_type ports getJSDocumentReturnType: the documented return type of a function
 // (or the `@type` of a getter).
-fn (mut c Checker) unb_jsdoc_return_type(root C.TSNode, t &estree.EsTree, node int) ?UnbJsdocAnnotation {
+fn (mut c Checker) unb_jsdoc_return_type(root C.vt_node, t &estree.EsTree, node int) ?UnbJsdocAnnotation {
 	tokens := c.un_tokens(t)
 	if !c.unb_has_jsdoc_comments(tokens) || t.node(node, .return_type) != none {
 		return none
@@ -3358,12 +3358,12 @@ fn (mut c Checker) unb_jsdoc_return_type(root C.TSNode, t &estree.EsTree, node i
 
 // unb_has_jsdoc_type_reference ports hasJSDocumentTypeReference: a documented type, through
 // aliases or inside the expression, that static inference must not bypass.
-fn (mut c Checker) unb_has_jsdoc_type_reference(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_has_jsdoc_type_reference(root C.vt_node, t &estree.EsTree, node int) bool {
 	mut visited := map[int]bool{}
 	return c.unb_has_jsdoc_type_reference_in(root, t, node, mut visited)
 }
 
-fn (mut c Checker) unb_has_jsdoc_type_reference_in(root C.TSNode, t &estree.EsTree, n int, mut visited map[int]bool) bool {
+fn (mut c Checker) unb_has_jsdoc_type_reference_in(root C.vt_node, t &estree.EsTree, n int, mut visited map[int]bool) bool {
 	if !c.unb_has_jsdoc_comments(c.un_tokens(t)) {
 		return false
 	}
@@ -3768,7 +3768,7 @@ fn unb_is_string_type_annotation(t &estree.EsTree, node int) bool {
 
 // unb_is_unmodified_mutable_variable ports isUnmodifiedMutableVariable of utils/is-string.js: a
 // `let` or `var` declarator of the name, with an initializer and no other write.
-fn (mut c Checker) unb_is_unmodified_mutable_variable(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_unmodified_mutable_variable(root C.vt_node, t &estree.EsTree, node int) bool {
 	if t.typ(node) != .identifier {
 		return false
 	}
@@ -3906,7 +3906,7 @@ fn unb_is_number_type_annotation(t &estree.EsTree, node int) bool {
 // unb_has_number_type_annotation ports hasNumberTypeAnnotation of utils/is-number.js
 // (hasTypeAnnotation of utils/type-check.js): a definition of the variable, not optional, is
 // annotated `number` or a numeric literal type.
-fn (mut c Checker) unb_has_number_type_annotation(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_has_number_type_annotation(root C.vt_node, t &estree.EsTree, node int) bool {
 	v := c.unb_find_variable(root, t, node)
 	if v < 0 {
 		return false
@@ -4114,7 +4114,7 @@ fn unb_is_regexp_constructor(t &estree.EsTree, node int) bool {
 // unb_regexp_variable_initializer ports getRegExpVariableDefinition (utils/get-static-value.js):
 // the initializer of the only definition of an identifier's variable, a declarator of the name
 // that nothing else writes.
-fn (mut c Checker) unb_regexp_variable_initializer(root C.TSNode, t &estree.EsTree, node int) ?int {
+fn (mut c Checker) unb_regexp_variable_initializer(root C.vt_node, t &estree.EsTree, node int) ?int {
 	if node < 0 || t.typ(node) != .identifier {
 		return none
 	}
@@ -4137,7 +4137,7 @@ fn (mut c Checker) unb_regexp_variable_initializer(root C.TSNode, t &estree.EsTr
 // unb_is_safe_static_regexp_constructor_argument ports isSafeStaticRegExpConstructorArgument
 // (utils/get-static-value.js): an argument whose static value has no side effects and is a RegExp
 // or a primitive other than a symbol.
-fn (mut c Checker) unb_is_safe_static_regexp_constructor_argument(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) unb_is_safe_static_regexp_constructor_argument(root C.vt_node, t &estree.EsTree, node int) bool {
 	if t.typ(node) == .spread_element {
 		return false
 	}
@@ -4148,7 +4148,7 @@ fn (mut c Checker) unb_is_safe_static_regexp_constructor_argument(root C.TSNode,
 // unb_static_regexp ports getStaticRegExp (utils/get-static-value.js): the RegExp a node
 // evaluates to, through a variable initialized with a literal or a `new RegExp(…)` of static
 // arguments.
-fn (mut c Checker) unb_static_regexp(root C.TSNode, t &estree.EsTree, node int) ?jsregexp.RegexpValue {
+fn (mut c Checker) unb_static_regexp(root C.vt_node, t &estree.EsTree, node int) ?jsregexp.RegexpValue {
 	if node < 0 {
 		return none
 	}
@@ -5196,7 +5196,7 @@ fn unb_is_simple_const_variable_definition(def ScopeDefinition) bool {
 
 // unb_has_stable_function_name_definitions ports hasStableFunctionNameDefinitions: function
 // declarations of a function expression name or of a strict scope that is not the global one.
-fn (mut c Checker) unb_has_stable_function_name_definitions(root C.TSNode, v int) bool {
+fn (mut c Checker) unb_has_stable_function_name_definitions(root C.vt_node, v int) bool {
 	tree := c.scope_tree(root)
 	variable := tree.variables[v]
 	kind := tree.scopes[variable.scope].kind

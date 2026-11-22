@@ -41,7 +41,7 @@ mut:
 	findings []Finding
 }
 
-fn (mut c Checker) lint_vue_no_mutating_props(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_mutating_props(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut x := VnmpCtx{
 		shallow_only: vnmp_options(c.rule_options(vue_no_mutating_props))!
@@ -121,7 +121,7 @@ fn (mut c Checker) lint_vue_no_mutating_props(root C.TSNode, abs_path string, mu
 // vnmp_define_props is onDefinePropsEnter: the props of the call (those not named like a
 // white-listed global or a variable of the global or module scope) and the variables the props
 // are kept in, whose mutations it reports.
-fn (mut c Checker) vnmp_define_props(root C.TSNode, t &estree.EsTree, call int, abs_path string, mut x VnmpCtx, mut stats Stats) VnmpProps {
+fn (mut c Checker) vnmp_define_props(root C.vt_node, t &estree.EsTree, call int, abs_path string, mut x VnmpCtx, mut stats Stats) VnmpProps {
 	tree := c.scope_tree(root)
 	mut defined := map[string]bool{}
 	for v in tree.scopes[0].variables {
@@ -248,7 +248,7 @@ fn (c &Checker) vnmp_verify_mutating(t &estree.EsTree, props int, name string, i
 
 // vnmp_verify_prop_variable is verifyPropVariable: the mutations through the reads of the
 // variable a prop (or the props) is kept in.
-fn (mut c Checker) vnmp_verify_prop_variable(root C.TSNode, t &estree.EsTree, prop int, path []string, mut x VnmpCtx) {
+fn (mut c Checker) vnmp_verify_prop_variable(root C.vt_node, t &estree.EsTree, prop int, path []string, mut x VnmpCtx) {
 	v := c.unb_find_variable(root, t, prop)
 	if v < 0 {
 		return

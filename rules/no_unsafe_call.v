@@ -20,13 +20,13 @@ const nuc_messages = {
 // UnsafeCall is a checked callee: the node whose type counts, where to report and which messages
 // apply.
 struct UnsafeCall {
-	callee    C.TSNode
-	reporting C.TSNode
+	callee    C.vt_node
+	reporting C.vt_node
 	unsafe_id string
 	error_id  string
 }
 
-fn (mut c Checker) lint_no_unsafe_call(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_call(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut calls := []UnsafeCall{}
 	// `CallExpression > *.callee` and `TaggedTemplateExpression > *.tag` (in tree-sitter, a call whose
@@ -57,7 +57,7 @@ fn (mut c Checker) lint_no_unsafe_call(root C.TSNode, abs_path string, mut stats
 	}
 	// `await (x)` and `` await `x` `` outside an async function: TypeScript reads a call or a tagged
 	// template on the `await` identifier (see await_reading).
-	mut awaits := []C.TSNode{}
+	mut awaits := []C.vt_node{}
 	for node in c.nodes_of_kind(root, c'await_expression') {
 		operand := first_named_child(node) or { continue }
 		if node_kind(operand) in ['parenthesized_expression', 'template_string'] {

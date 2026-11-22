@@ -29,7 +29,7 @@ fn (mut c Checker) vue_unresolved_template_refs(name string) []vue.Expr {
 
 // vue_this_members_named are the MemberExpressions of the script inside a Vue object
 // (defineVueVisitor's listeners) whose property is the Identifier `name` and whose object isThis.
-fn (mut c Checker) vue_this_members_named(root C.TSNode, abs_path string, name string) []int {
+fn (mut c Checker) vue_this_members_named(root C.vt_node, abs_path string, name string) []int {
 	s := c.vue_script(root, abs_path) or { return [] }
 	t := c.es_tree(root, abs_path) or { return [] }
 	if s.objects.len == 0 {
@@ -69,7 +69,7 @@ fn vue_literal_truthy(t &estree.EsTree, node int) bool {
 // read them: each Vue object at its `ObjectExpression:exit` (executeOnVue) and, when
 // `with_define_options`, the object argument of each `defineOptions` of `<script setup>` at its
 // CallExpression (onDefineOptionsEnter).
-fn (mut c Checker) vue_options_objects(root C.TSNode, abs_path string, with_define_options bool) []int {
+fn (mut c Checker) vue_options_objects(root C.vt_node, abs_path string, with_define_options bool) []int {
 	s := c.vue_script(root, abs_path) or { return [] }
 	t := c.es_tree(root, abs_path) or { return [] }
 	mut options_calls := map[int]bool{}
@@ -133,7 +133,7 @@ fn vue_registered_components(t &estree.EsTree, object int) []VueRegisteredCompon
 // `defineSlots<…>()` (a ComponentSlot is a VueProp: `name` is its slotName, `has_name` false for
 // null), the members of its type literals and interfaces and the properties the checker gives
 // the other types (getComponentSlotsFromTypeDefineTypes); one unknown slot without a type argument.
-fn (mut c Checker) vue_define_slots(root C.TSNode, t &estree.EsTree, call int, abs_path string, mut stats Stats) []VueProp {
+fn (mut c Checker) vue_define_slots(root C.vt_node, t &estree.EsTree, call int, abs_path string, mut stats Stats) []VueProp {
 	params := vue_type_arguments(t, call)
 	if params.len == 0 {
 		return [VueProp{

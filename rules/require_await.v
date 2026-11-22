@@ -23,15 +23,15 @@ const literal_kinds = ['string', 'number', 'true', 'false', 'null', 'regex']
 // AsyncCandidate is a non-empty async function without `await` or `for await`: whether it is
 // reported depends on the types of these nodes.
 struct AsyncCandidate {
-	node C.TSNode
+	node C.vt_node
 mut:
-	thenables []C.TSNode // if any is thenable, it counts as an await (parameters and body of
+	thenables []C.vt_node // if any is thenable, it counts as an await (parameters and body of
 	// an arrow, and `return` expressions)
-	yields    []C.TSNode // arguments of `yield`
-	delegates []C.TSNode // arguments of `yield*`
+	yields    []C.vt_node // arguments of `yield`
+	delegates []C.vt_node // arguments of `yield*`
 }
 
-fn (mut c Checker) lint_require_await(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_require_await(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut has_await := map[u64]bool{}
 	for node in c.nodes_of_kind(root, c'await_expression') {
@@ -55,7 +55,7 @@ fn (mut c Checker) lint_require_await(root C.TSNode, abs_path string, mut stats 
 			}
 		}
 	}
-	mut functions := []C.TSNode{}
+	mut functions := []C.vt_node{}
 	functions << c.nodes_of_kind(root, c'function_declaration')
 	functions << c.nodes_of_kind(root, c'function_expression')
 	functions << c.nodes_of_kind(root, c'generator_function')
@@ -98,7 +98,7 @@ fn (mut c Checker) lint_require_await(root C.TSNode, abs_path string, mut stats 
 			}
 		}
 	}
-	mut wanted := []C.TSNode{}
+	mut wanted := []C.vt_node{}
 	for candidate in candidates {
 		wanted << candidate.thenables
 		wanted << candidate.yields
@@ -129,7 +129,7 @@ fn (mut c Checker) lint_require_await(root C.TSNode, abs_path string, mut stats 
 // ra_remove_async ports the `removeAsync` suggestion: it removes the `async` keyword (a `;` takes
 // its place if what follows would continue the previous statement) and unwraps a `Promise<T>`
 // return type, or makes an `AsyncGenerator` one a `Generator`.
-fn (mut c Checker) ra_remove_async(f C.TSNode) ![]Suggestion {
+fn (mut c Checker) ra_remove_async(f C.vt_node) ![]Suggestion {
 	// nodeWithAsyncKeyword: the function, or the MethodDefinition or Property of a method. In
 	// ESTree a class method starts at its first decorator, which tree-sitter leaves before it.
 	mut first := f
@@ -183,7 +183,7 @@ fn (mut c Checker) ra_remove_async(f C.TSNode) ![]Suggestion {
 
 // ra_return_type_fixes are the changes of `removeAsync` to a return type that is a type reference:
 // `AsyncGenerator` becomes `Generator` in a generator, and `Promise<T>` becomes `T` elsewhere.
-fn (mut c Checker) ra_return_type_fixes(f C.TSNode) []Fix {
+fn (mut c Checker) ra_return_type_fixes(f C.vt_node) []Fix {
 	annotation := node_field(f, 'return_type') or { return []Fix{} }
 	if node_kind(annotation) != 'type_annotation' {
 		return []Fix{}
@@ -276,7 +276,7 @@ fn (mut c Checker) flatten(t TypeResponse, depth int) ![]TypeResponse {
 
 // enclosing_function gives the innermost function containing `n`, like the rule's scopeInfo. The
 // computed key of a method is evaluated outside of it.
-fn enclosing_function(n C.TSNode) ?C.TSNode {
+fn enclosing_function(n C.vt_node) ?C.vt_node {
 	mut child := n
 	mut node := node_parent(n)?
 	for {
@@ -293,19 +293,19 @@ fn enclosing_function(n C.TSNode) ?C.TSNode {
 	return none
 }
 
-fn same_node(a ?C.TSNode, b C.TSNode) bool {
+fn same_node(a ?C.vt_node, b C.vt_node) bool {
 	node := a or { return false }
 	return node_key(node) == node_key(b)
 }
 
-fn is_generator(f C.TSNode) bool {
+fn is_generator(f C.vt_node) bool {
 	kind := node_kind(f)
 	return kind in ['generator_function', 'generator_function_declaration']
 		|| (kind == 'method_definition' && has_child_kind(f, '*'))
 }
 
 // is_empty_function: the body is a block without statements (comments do not count).
-fn is_empty_function(f C.TSNode) bool {
+fn is_empty_function(f C.vt_node) bool {
 	body := node_field(f, 'body') or { return false }
 	return node_kind(body) == 'statement_block' && named_children(body).len == 0
 }
@@ -315,8 +315,8 @@ fn is_empty_function(f C.TSNode) bool {
 // type: the parameters, and the body if it is an expression. It also selects the return
 // annotation and the type parameters, but typescript-estree maps them to no TypeScript node and
 // they are never thenable.
-fn arrow_children(f C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn arrow_children(f C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	if param := node_field(f, 'parameter') {
 		out << param
 	} else if params := node_field(f, 'parameters') {
@@ -335,7 +335,7 @@ fn arrow_children(f C.TSNode) []C.TSNode {
 
 // estree_param is the TypeScript node typescript-estree maps to a parameter: the whole parameter
 // if it is a rest one or has a default value, and otherwise its name or pattern.
-fn estree_param(p C.TSNode) C.TSNode {
+fn estree_param(p C.vt_node) C.vt_node {
 	pattern := node_field(p, 'pattern') or { return p }
 	if node_kind(pattern) == 'rest_pattern' {
 		return p
@@ -347,7 +347,7 @@ fn estree_param(p C.TSNode) C.TSNode {
 }
 
 // estree_parent is the ESTree parent, where parentheses are not nodes.
-fn estree_parent(n C.TSNode) ?C.TSNode {
+fn estree_parent(n C.vt_node) ?C.vt_node {
 	mut parent := node_parent(n)?
 	for node_kind(parent) == 'parenthesized_expression' {
 		parent = node_parent(parent)?
@@ -356,7 +356,7 @@ fn estree_parent(n C.TSNode) ?C.TSNode {
 }
 
 // is_value_of: `f` is the value of the property or field `member`.
-fn is_value_of(member C.TSNode, f C.TSNode) bool {
+fn is_value_of(member C.vt_node, f C.vt_node) bool {
 	value := node_field(member, 'value') or { return false }
 	return node_key(unwrap_parens(value)) == node_key(f)
 }
@@ -364,7 +364,7 @@ fn is_value_of(member C.TSNode, f C.TSNode) bool {
 // function_head ports typescript-eslint's getFunctionHeadLoc, which is where the rules report:
 // from the class member (without its decorators) or the property whose value the function is,
 // or from the function, to the opening paren of its parameters; or the `=>` of other arrows.
-fn (mut c Checker) function_head(f C.TSNode) Ident {
+fn (mut c Checker) function_head(f C.vt_node) Ident {
 	kind := node_kind(f)
 	if kind == 'method_definition' {
 		return c.position_range(node_start(f), c.es_params_paren(f))
@@ -389,7 +389,7 @@ fn (mut c Checker) function_head(f C.TSNode) Ident {
 }
 
 // member_start is the first token of a class member after its decorators.
-fn member_start(member C.TSNode) Ident {
+fn member_start(member C.vt_node) Ident {
 	all := children(member)
 	mut first := 0
 	for i, child in all {
@@ -409,7 +409,7 @@ fn member_start(member C.TSNode) Ident {
 // typescript-eslint's upperCaseFirst: "Static async method 'x'", "Async arrow function 'f'", etc.
 // typescript-eslint calls it without `sourceCode`, so a computed key that is not static gets no
 // name.
-fn (mut c Checker) function_name(f C.TSNode) string {
+fn (mut c Checker) function_name(f C.vt_node) string {
 	kind := node_kind(f)
 	is_method := kind == 'method_definition'
 	mut parent_kind := ''
@@ -424,7 +424,7 @@ fn (mut c Checker) function_name(f C.TSNode) string {
 	in_field := !is_method && parent_kind == 'public_field_definition' && is_value_of(member, f)
 	method_like := is_method || in_pair || in_field
 	mut words := []string{}
-	mut key := ?C.TSNode(none)
+	mut key := ?C.vt_node(none)
 	if method_like {
 		key = node_field(member, if in_pair { 'key' } else { 'name' })
 	}
@@ -476,7 +476,7 @@ fn (mut c Checker) function_name(f C.TSNode) string {
 // static_key_name ports getPropertyName for the key of a member, without a scope: an identifier
 // is its name, a literal its value as a string, and a computed key its static value as a string,
 // where no identifier is static.
-fn (mut c Checker) static_key_name(key C.TSNode) ?string {
+fn (mut c Checker) static_key_name(key C.vt_node) ?string {
 	match node_kind(key) {
 		'property_identifier' {
 			return c.text(key)
@@ -495,7 +495,7 @@ fn (mut c Checker) static_key_name(key C.TSNode) ?string {
 
 // binding_name is the name an anonymous function is assigned to: variable, assignment, default
 // value or `export default`.
-fn (c &Checker) binding_name(parent C.TSNode, f C.TSNode) string {
+fn (c &Checker) binding_name(parent C.vt_node, f C.vt_node) string {
 	match node_kind(parent) {
 		'variable_declarator' {
 			name := node_field(parent, 'name') or { return '' }

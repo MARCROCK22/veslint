@@ -11,7 +11,7 @@ const npb_messages = {
 	'callObjectPrototype': 'Call Object.prototype.{{prop}} explicitly.'
 }
 
-fn (mut c Checker) lint_no_prototype_builtins(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_prototype_builtins(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['call_expression'], []) {
@@ -53,7 +53,7 @@ fn (mut c Checker) lint_no_prototype_builtins(root C.TSNode, abs_path string, mu
 }
 
 // npb_after_optional ports isAfterOptional: an optional link in the chain of the call.
-fn npb_after_optional(n C.TSNode) bool {
+fn npb_after_optional(n C.vt_node) bool {
 	mut node := n
 	for is_chain_element(node) {
 		if is_optional_element(node) {
@@ -68,7 +68,7 @@ fn npb_after_optional(n C.TSNode) bool {
 }
 
 // npb_fixes is the fix of the suggestion: `Object.prototype.x.call(object, …)`.
-fn (mut c Checker) npb_fixes(root C.TSNode, call C.TSNode, callee C.TSNode, name string) ?[]Fix {
+fn (mut c Checker) npb_fixes(root C.vt_node, call C.vt_node, callee C.vt_node, name string) ?[]Fix {
 	if npb_after_optional(call) {
 		return none
 	}

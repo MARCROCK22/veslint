@@ -27,17 +27,17 @@ fn pconst_options(options []json2.Any) !PconstOptions {
 // PconstDeclaration is an ESTree VariableDeclaration: a `lexical_declaration` or, for
 // `for (let a of b)`, the for-in/of statement, whose `left` is the only declarator (without init).
 struct PconstDeclaration {
-	node     C.TSNode
+	node     C.vt_node
 	for_in   bool
 	start    int
 	end      int
-	kind_tok C.TSNode
+	kind_tok C.vt_node
 }
 
 // PconstDeclarator is a VariableDeclarator: its id and init.
 struct PconstDeclarator {
-	id   C.TSNode
-	init ?C.TSNode
+	id   C.vt_node
+	init ?C.vt_node
 }
 
 // PconstEntry is a variable of a `let` declaration: where the declaration and the definition's name
@@ -55,7 +55,7 @@ mut:
 	report_count int
 }
 
-fn (mut c Checker) lint_prefer_const(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_const(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := pconst_options(c.rule_options(prefer_const))!
 	return c.pconst_lint(root, o, []string{}, mut stats)
 }
@@ -63,7 +63,7 @@ fn (mut c Checker) lint_prefer_const(root C.TSNode, abs_path string, mut stats S
 // pconst_lint is the rule with its options; the `let` declarations with a declarator whose
 // initializer calls one of `excluded_runes` (or a member of one) are not checked
 // (svelte/prefer-const's excludedRunes).
-fn (mut c Checker) pconst_lint(root C.TSNode, o PconstOptions, excluded_runes []string, mut stats Stats) ![]Finding {
+fn (mut c Checker) pconst_lint(root C.vt_node, o PconstOptions, excluded_runes []string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	tree := c.scope_tree(root)
 	// The variables of the `let` declarations (not in the init of a `for`), in the order of the
@@ -113,7 +113,7 @@ fn (mut c Checker) pconst_lint(root C.TSNode, o PconstOptions, excluded_runes []
 	})
 	variables := entries.map(it.variable)
 	// groupByDestructuring
-	mut groups := map[string][]?C.TSNode{}
+	mut groups := map[string][]?C.vt_node{}
 	mut group_order := []string{}
 	for v in variables {
 		identifier := c.pconst_identifier(tree, v, o.ignore_read_before_assign)
@@ -128,7 +128,7 @@ fn (mut c Checker) pconst_lint(root C.TSNode, o PconstOptions, excluded_runes []
 			key := '${node_start(host)}-${node_end(host)}-${node_kind(host)}'
 			if key !in groups {
 				group_order << key
-				groups[key] = []?C.TSNode{}
+				groups[key] = []?C.vt_node{}
 			}
 			groups[key] << identifier
 		}
@@ -144,7 +144,7 @@ fn (mut c Checker) pconst_lint(root C.TSNode, o PconstOptions, excluded_runes []
 
 // pconst_calls_rune: a declarator of the `let` declaration has an initializer that calls one of the
 // runes, or a member of one (`$derived.by(…)`): shouldSkipDeclaration of svelte/prefer-const.
-fn (c &Checker) pconst_calls_rune(declaration C.TSNode, runes []string) bool {
+fn (c &Checker) pconst_calls_rune(declaration C.vt_node, runes []string) bool {
 	if node_kind(declaration) != 'lexical_declaration' {
 		return false
 	}
@@ -174,7 +174,7 @@ fn (c &Checker) pconst_calls_rune(declaration C.TSNode, runes []string) bool {
 
 // pconst_skip_patterns walks up from a node past the patterns (PATTERN_TYPE) and parentheses: the
 // first other ancestor, with the child it was reached from.
-fn pconst_skip_patterns(n C.TSNode) ?(C.TSNode, C.TSNode) {
+fn pconst_skip_patterns(n C.vt_node) ?(C.vt_node, C.vt_node) {
 	mut child := n
 	mut node := node_parent(n)?
 	for node_kind(node) in ['object_pattern', 'array_pattern', 'pair_pattern',
@@ -187,7 +187,7 @@ fn pconst_skip_patterns(n C.TSNode) ?(C.TSNode, C.TSNode) {
 
 // pconst_is_declarator: the node reached from `child` is a VariableDeclarator (the left of a
 // for-in/of that declares it is one in ESTree).
-fn pconst_is_declarator(node C.TSNode, child C.TSNode) bool {
+fn pconst_is_declarator(node C.vt_node, child C.vt_node) bool {
 	if node_kind(node) == 'variable_declarator' {
 		return true
 	}
@@ -202,7 +202,7 @@ fn pconst_is_declarator(node C.TSNode, child C.TSNode) bool {
 
 // pconst_destructuring_host ports getDestructuringHost: the declarator or assignment a write is
 // the target of.
-fn pconst_destructuring_host(tree &ScopeTree, r int) ?C.TSNode {
+fn pconst_destructuring_host(tree &ScopeTree, r int) ?C.vt_node {
 	reference := tree.references[r]
 	if !reference.write {
 		return none
@@ -216,7 +216,7 @@ fn pconst_destructuring_host(tree &ScopeTree, r int) ?C.TSNode {
 }
 
 // pconst_can_become_declaration ports canBecomeVariableDeclaration.
-fn pconst_can_become_declaration(identifier C.TSNode, svelte bool) bool {
+fn pconst_can_become_declaration(identifier C.vt_node, svelte bool) bool {
 	node, child := pconst_skip_patterns(identifier) or { return false }
 	if pconst_is_declarator(node, child) {
 		return true
@@ -246,7 +246,7 @@ fn pconst_can_become_declaration(identifier C.TSNode, svelte bool) bool {
 }
 
 // pconst_has_member_assignment ports hasMemberExpressionAssignment.
-fn pconst_has_member_assignment(n C.TSNode) bool {
+fn pconst_has_member_assignment(n C.vt_node) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'object_pattern' {
@@ -306,7 +306,7 @@ fn (c &Checker) pconst_is_outer_variable(tree &ScopeTree, name ?string, scope in
 }
 
 // pconst_identifier ports getIdentifierIfShouldBeConst.
-fn (c &Checker) pconst_identifier(tree &ScopeTree, v int, ignore_read_before_assign bool) ?C.TSNode {
+fn (c &Checker) pconst_identifier(tree &ScopeTree, v int, ignore_read_before_assign bool) ?C.vt_node {
 	variable := tree.variables[v]
 	if variable.eslint_used && tree.scopes[variable.scope].kind == .global {
 		return none
@@ -399,7 +399,7 @@ fn (c &Checker) pconst_identifier(tree &ScopeTree, v int, ignore_read_before_ass
 }
 
 // pconst_declaration_of ports findUp(node, "VariableDeclaration", a statement stops it).
-fn pconst_declaration_of(n C.TSNode) ?PconstDeclaration {
+fn pconst_declaration_of(n C.vt_node) ?PconstDeclaration {
 	mut node := n
 	mut child := n
 	for {
@@ -465,8 +465,8 @@ fn pconst_declarators(d PconstDeclaration) []PconstDeclarator {
 }
 
 // pconst_check_group ports checkGroup.
-fn (c &Checker) pconst_check_group(nodes []?C.TSNode, o PconstOptions, mut st PconstState, mut findings []Finding) {
-	mut to_report := []C.TSNode{}
+fn (c &Checker) pconst_check_group(nodes []?C.vt_node, o PconstOptions, mut st PconstState, mut findings []Finding) {
+	mut to_report := []C.vt_node{}
 	for n in nodes {
 		if node := n {
 			to_report << node
@@ -558,7 +558,7 @@ fn pconst_same_name(a ?string, b ?string) bool {
 
 // pconst_pattern_length is `properties.length` of an object pattern or `elements.length` of an
 // array pattern (holes included).
-fn pconst_pattern_length(n C.TSNode) int {
+fn pconst_pattern_length(n C.vt_node) int {
 	if node_kind(n) == 'object_pattern' {
 		return named_children(n).filter(node_kind(it) != 'comment').len
 	}

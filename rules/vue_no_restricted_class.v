@@ -90,7 +90,7 @@ fn vnrc_extract(es &estree.EsTree, node int, text_only bool, mut out []VnrcClass
 	}
 }
 
-fn (mut c Checker) lint_vue_no_restricted_class(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_restricted_class(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

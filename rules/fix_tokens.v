@@ -12,13 +12,13 @@ import treesitter { children, named_children, node_end, node_field, node_kind, n
 // outermost element of an optional chain is two: its ChainExpression (`chain`) and the expression
 // inside it. Both have the same range; they differ in their type and in their parent.
 struct EsNode {
-	node  C.TSNode // without parentheses
-	chain bool     // the ChainExpression around `node`, not `node` itself
+	node  C.vt_node // without parentheses
+	chain bool      // the ChainExpression around `node`, not `node` itself
 }
 
 // es_child is the ESTree node a parent has in one of its children (an operand, an argument, an
 // object, a callee…): without parentheses, and the ChainExpression if it is an optional chain.
-fn es_child(n C.TSNode) EsNode {
+fn es_child(n C.vt_node) EsNode {
 	node := unwrap_parens(n)
 	return EsNode{
 		node:  node
@@ -29,7 +29,7 @@ fn es_child(n C.TSNode) EsNode {
 // es_inner is the expression itself, which is what a selector like `CallExpression` or
 // `MemberExpression` matches: for the outermost element of an optional chain, the expression
 // inside the ChainExpression.
-fn es_inner(n C.TSNode) EsNode {
+fn es_inner(n C.vt_node) EsNode {
 	return EsNode{
 		node: unwrap_parens(n)
 	}
@@ -94,7 +94,7 @@ struct SourceToken {
 	start int
 	end   int
 	kind  SourceTokenKind
-	node  C.TSNode // its leaf; for a string, a regular expression or a piece of a template, that node
+	node  C.vt_node // its leaf; for a string, a regular expression or a piece of a template, that node
 }
 
 fn (t SourceToken) is_comment() bool {
@@ -137,7 +137,7 @@ fn src_view(src string, start int, end int) string {
 }
 
 // source_tokens gives the tokens of the file `n` belongs to, built on first use.
-fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
+fn (mut c Checker) source_tokens(n C.vt_node) &SourceTokens {
 	if c.file_tokens == unsafe { nil } {
 		mut root := n
 		for {
@@ -151,9 +151,9 @@ fn (mut c Checker) source_tokens(n C.TSNode) &SourceTokens {
 	return c.file_tokens
 }
 
-fn build_source_tokens(root C.TSNode, src string) &SourceTokens {
+fn build_source_tokens(root C.vt_node, src string) &SourceTokens {
 	// About 0.6 tokens and comments per visible node.
-	mut all := []SourceToken{cap: int(C.ts_node_descendant_count(root)) * 3 / 4 + 16}
+	mut all := []SourceToken{cap: int(C.vt_node_descendant_count(root)) * 3 / 4 + 16}
 	source_tokens_walk(root, src, mut all)
 	if src.contains('<') {
 		all = if language_has_jsx(root) {
@@ -192,24 +192,20 @@ fn build_source_tokens(root C.TSNode, src string) &SourceTokens {
 // space and line breaks included, which tree-sitter's jsx_text leaves out, and what looks like a
 // comment or an entity in it), a JSX attribute's string is a JSXText token, and a name in a tag or
 // an attribute a JSXIdentifier.
-fn source_tokens_jsx(root C.TSNode, tokens []SourceToken) []SourceToken {
+fn source_tokens_jsx(root C.vt_node, tokens []SourceToken) []SourceToken {
 	mut gaps := []JsxTextGap{}
 	first, last := treesitter.flat_range(root)
-	if first >= 0 {
-		for i in first .. last + 1 {
-			node := treesitter.flat_node(i)
-			if node_kind(node) == 'jsx_element' {
-				source_tokens_jsx_gaps(node, mut gaps)
-			}
+	for i in first .. last + 1 {
+		node := treesitter.flat_node(root, i)
+		if node_kind(node) == 'jsx_element' {
+			source_tokens_jsx_gaps(node, mut gaps)
 		}
-	} else {
-		source_tokens_jsx_walk(root, mut gaps)
 	}
 	return source_tokens_with_gaps(tokens, gaps)
 }
 
 // source_tokens_jsx_gaps adds the gaps between the children of a JSX element.
-fn source_tokens_jsx_gaps(node C.TSNode, mut gaps []JsxTextGap) {
+fn source_tokens_jsx_gaps(node C.vt_node, mut gaps []JsxTextGap) {
 	mut previous_end := -1
 	for child in named_children(node) {
 		if node_kind(child) in ['jsx_text', 'html_character_reference', 'comment'] {
@@ -219,33 +215,6 @@ fn source_tokens_jsx_gaps(node C.TSNode, mut gaps []JsxTextGap) {
 			gaps << JsxTextGap{previous_end, node_start(child), node}
 		}
 		previous_end = node_end(child)
-	}
-}
-
-// source_tokens_jsx_walk adds the gaps of the JSX elements of a tree that has no flat tree.
-fn source_tokens_jsx_walk(root C.TSNode, mut gaps []JsxTextGap) {
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		if node_kind(node) == 'jsx_element' {
-			source_tokens_jsx_gaps(node, mut gaps)
-		}
-		if C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		mut done := false
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				done = true
-				break
-			}
-		}
-		if done {
-			break
-		}
 	}
 }
 
@@ -281,9 +250,9 @@ fn source_tokens_with_gaps(tokens []SourceToken, gaps []JsxTextGap) []SourceToke
 
 // language_has_jsx tells whether the grammar of the tree has JSX elements: the TypeScript one, for
 // .ts files, has none.
-fn language_has_jsx(root C.TSNode) bool {
+fn language_has_jsx(root C.vt_node) bool {
 	name := 'jsx_element'
-	return C.ts_language_symbol_for_name(C.ts_node_language(root), &char(name.str), u32(name.len),
+	return C.ts_language_symbol_for_name(C.vt_node_language(root), &char(name.str), u32(name.len),
 		true) != 0
 }
 
@@ -310,49 +279,30 @@ fn source_tokens_by_start(tokens []SourceToken) []SourceToken {
 struct JsxTextGap {
 	start   int
 	end     int
-	element C.TSNode
+	element C.vt_node
 }
 
 // source_tokens_walk appends the tokens and comments of a subtree, in order.
-fn source_tokens_walk(root C.TSNode, src string, mut out []SourceToken) {
+fn source_tokens_walk(root C.vt_node, src string, mut out []SourceToken) {
+	// The subtree of a node whose children are not visited is jumped over.
 	first, last := treesitter.flat_range(root)
-	if first >= 0 {
-		// From the flat tree: the subtree of a node whose children are not visited is jumped
-		// over.
-		mut i := first
-		for i <= last {
-			i = if source_tokens_visit(treesitter.flat_node(i), src, mut out) {
-				i + 1
-			} else {
-				treesitter.flat_last(i) + 1
-			}
-		}
-		return
-	}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		if source_tokens_visit(node, src, mut out) && C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return
-			}
+	mut i := first
+	for i <= last {
+		i = if source_tokens_visit(treesitter.flat_node(root, i), src, mut out) {
+			i + 1
+		} else {
+			treesitter.flat_last(root, i) + 1
 		}
 	}
 }
 
 // source_tokens_visit appends the token a node is, if it is one, and tells whether its children
 // are still to be visited. Zero-width leaves (automatic `;`, MISSING nodes) are not tokens.
-fn source_tokens_visit(node C.TSNode, src string, mut out []SourceToken) bool {
+fn source_tokens_visit(node C.vt_node, src string, mut out []SourceToken) bool {
 	start := node_start(node)
 	end := node_end(node)
 	// An anonymous leaf has its text as kind: the keywords `string` and `number` are not literals.
-	kind := if C.ts_node_is_named(node) { node_kind(node) } else { '' }
+	kind := if C.vt_node_is_named(node) { node_kind(node) } else { '' }
 	match kind {
 		'comment', 'html_comment' {
 			block := src_view(src, start, end).starts_with('/*')
@@ -377,7 +327,7 @@ fn source_tokens_visit(node C.TSNode, src string, mut out []SourceToken) bool {
 		}
 		else {}
 	}
-	if C.ts_node_child_count(node) > 0 {
+	if C.vt_node_child_count(node) > 0 {
 		return true
 	}
 	if end <= start {
@@ -400,7 +350,7 @@ fn source_tokens_visit(node C.TSNode, src string, mut out []SourceToken) bool {
 
 // source_token_is_name tells the reserved words TypeScript parses as an identifier: the `const`
 // of a const assertion, and `this` as a parameter or in a type query (`typeof this.x`).
-fn source_token_is_name(leaf C.TSNode, text string) bool {
+fn source_token_is_name(leaf C.vt_node, text string) bool {
 	if text !in ['const', 'this'] {
 		return false
 	}
@@ -420,7 +370,7 @@ fn source_token_is_name(leaf C.TSNode, text string) bool {
 
 // source_tokens_template appends the tokens of a template: its text up to each `${`, the tokens of
 // each substitution, and its text from each `}`.
-fn source_tokens_template(node C.TSNode, src string, mut out []SourceToken) {
+fn source_tokens_template(node C.vt_node, src string, mut out []SourceToken) {
 	mut piece := node_start(node)
 	for child in children(node) {
 		if node_kind(child) !in ['template_substitution', 'template_type'] {
@@ -578,17 +528,17 @@ fn (c &Checker) token_is(t SourceToken, punctuator string) bool {
 }
 
 // token_before ports getTokenBefore(node).
-fn (mut c Checker) token_before(n C.TSNode) ?SourceToken {
+fn (mut c Checker) token_before(n C.vt_node) ?SourceToken {
 	return c.source_tokens(n).before(node_start(n), false)
 }
 
 // token_after ports getTokenAfter(node).
-fn (mut c Checker) token_after(n C.TSNode) ?SourceToken {
+fn (mut c Checker) token_after(n C.vt_node) ?SourceToken {
 	return c.source_tokens(n).after(node_end(n), false)
 }
 
 // first_token ports getFirstToken(node).
-fn (mut c Checker) first_token(n C.TSNode) ?SourceToken {
+fn (mut c Checker) first_token(n C.vt_node) ?SourceToken {
 	token := c.source_tokens(n).after(node_start(n), false)?
 	if token.start >= node_end(n) {
 		return none
@@ -598,7 +548,7 @@ fn (mut c Checker) first_token(n C.TSNode) ?SourceToken {
 
 // last_token ports getLastToken(node): a comment tree-sitter leaves at the end of the node is not
 // a token.
-fn (mut c Checker) last_token(n C.TSNode) ?SourceToken {
+fn (mut c Checker) last_token(n C.vt_node) ?SourceToken {
 	token := c.source_tokens(n).before(node_end(n), false)?
 	if token.start < node_start(n) {
 		return none
@@ -607,7 +557,7 @@ fn (mut c Checker) last_token(n C.TSNode) ?SourceToken {
 }
 
 // node_tokens ports getTokens(node).
-fn (mut c Checker) node_tokens(n C.TSNode) []SourceToken {
+fn (mut c Checker) node_tokens(n C.vt_node) []SourceToken {
 	return c.source_tokens(n).inside(node_start(n), node_end(n), false)
 }
 
@@ -701,7 +651,7 @@ fn (mut c Checker) parent_syntax_paren(e EsNode, parent EsNode) ?SourceToken {
 
 // source_tokens_nth ports getFirstToken(node, skip): the token `skip` tokens after the first one
 // of the node.
-fn source_tokens_nth(tokens &SourceTokens, n C.TSNode, skip int) ?SourceToken {
+fn source_tokens_nth(tokens &SourceTokens, n C.vt_node, skip int) ?SourceToken {
 	inside := tokens.inside(node_start(n), node_end(n), false)
 	if skip >= inside.len {
 		return none
@@ -711,7 +661,7 @@ fn source_tokens_nth(tokens &SourceTokens, n C.TSNode, skip int) ?SourceToken {
 
 // source_token_after ports getTokenAfter(node, filter) for a punctuator: the first token after
 // the node that is it.
-fn (mut c Checker) source_token_after(n C.TSNode, punctuator string) ?SourceToken {
+fn (mut c Checker) source_token_after(n C.vt_node, punctuator string) ?SourceToken {
 	tokens := c.source_tokens(n)
 	for i := source_tokens_index(tokens.tokens, node_end(n)); i < tokens.tokens.len; i++ {
 		if c.token_is(tokens.tokens[i], punctuator) {
@@ -735,7 +685,7 @@ fn (mut c Checker) text_with_parentheses(e EsNode) string {
 
 // is_start_of_expression_statement ports isStartOfExpressionStatement: an ancestor that starts
 // where the node does is an ExpressionStatement.
-fn is_start_of_expression_statement(n C.TSNode) bool {
+fn is_start_of_expression_statement(n C.vt_node) bool {
 	start := node_start(n)
 	mut ancestor := n
 	for {
@@ -752,7 +702,7 @@ fn is_start_of_expression_statement(n C.TSNode) bool {
 // is_start_of_expression_statement_needing_parentheses ports
 // isStartOfExpressionStatementNeedingParentheses of typescript-eslint 8.72.2: the node starts an
 // expression statement and its first token (`first`) is `{`, `class` or `function`.
-fn (mut c Checker) is_start_of_expression_statement_needing_parentheses(n C.TSNode, first SourceToken) bool {
+fn (mut c Checker) is_start_of_expression_statement_needing_parentheses(n C.vt_node, first SourceToken) bool {
 	return c.token_text(first) in ['{', 'class', 'function'] && is_start_of_expression_statement(n)
 }
 
@@ -784,7 +734,7 @@ fn (mut c Checker) is_start_of_arrow_function_body_needing_parentheses(e EsNode,
 
 // await_token_removal ports getAwaitTokenRemovalRange of typescript-eslint 8.72.2: the fix that
 // removes an `await` token and what follows it up to the next token or comment.
-fn (mut c Checker) await_token_removal(n C.TSNode, await_start int, await_end int) Fix {
+fn (mut c Checker) await_token_removal(n C.vt_node, await_start int, await_end int) Fix {
 	next := c.source_tokens(n).after(await_end, true) or {
 		return fix_replace_range(await_start, await_end, '')
 	}
@@ -807,7 +757,7 @@ const semicolon_keyword_nodes = {
 // template, `+`, `-` or a regular expression and takes the place of the node would continue the
 // previous token, unless a `;` goes first. It looks at the token before the node and at the
 // innermost ESTree node that token is in (getNodeByRangeIndex).
-fn (mut c Checker) needs_preceding_semicolon(n C.TSNode) bool {
+fn (mut c Checker) needs_preceding_semicolon(n C.vt_node) bool {
 	previous := c.token_before(n) or { return false }
 	text := c.token_text(previous)
 	if previous.kind == .punctuator && text in ['--', ';', ':', '{', '++', '=>'] {

@@ -7,6 +7,11 @@ import os
 
 // Minimal bindings for tree-sitter (v0.27.0) and its TypeScript grammar (v0.23.2), statically
 // linked. See PROMPT.md §3.2 and §3.3.
+//
+// tree-sitter parses; veslint reads the rows of each tree (rows.h): every visible node with its
+// kind, field, flags, range and shape, built by one walk of the tree (rows_build.h), after which
+// the tree is freed. A node (C.vt_node) is a row of a set of rows. Only the editor keeps trees
+// (TreeCache), to parse the next text of a file from the last one.
 
 #flag -I @VMODROOT/vendor/tree-sitter/lib/include
 #flag @VMODROOT/build/libtree-sitter-typescript.a
@@ -19,7 +24,8 @@ $if windows {
 }
 
 #include "tree_sitter/api.h"
-#include "@VMODROOT/treesitter/flat_tree.h"
+#include "@VMODROOT/treesitter/rows.h"
+#include "@VMODROOT/treesitter/rows_build.h"
 #include "@VMODROOT/treesitter/field_cache.h"
 #include "@VMODROOT/treesitter/incremental.h"
 
@@ -32,56 +38,50 @@ struct C.TSTree {}
 @[typedef]
 struct C.TSLanguage {}
 
+// The rows of a tree (rows.h). They are malloc'd: free them with rows_free.
 @[typedef]
-struct C.TSQuery {}
-
-@[typedef]
-struct C.TSQueryCursor {}
-
-// Passed by value (32 bytes); api.h defines the real layout.
-@[typedef]
-struct C.TSNode {}
-
-// Created by value and used by pointer; api.h defines the real layout.
-@[typedef]
-struct C.TSTreeCursor {}
-
-pub const flat_named = u8(1) // VT_FLAT_NAMED
-pub const flat_extra = u8(2) // VT_FLAT_EXTRA
-pub const flat_none = u32(0xffffffff) // VT_FLAT_NONE
-
-// A node of the flat tree (flat_tree.h).
-@[typedef]
-pub struct C.vt_flat_node {
+pub struct C.vt_rows {
 pub:
-	node   C.TSNode
-	parent u32
-	next   u32
-	last   u32
-	symbol u16
-	field  u16
-	flags  u8
+	count u32
+}
+
+// A node: a row of a set of rows (rows.h), 16 bytes passed by value. The null node has no rows.
+// Its pointer to the rows is not declared to V (C.vt_node_rows gives it): a struct with one makes
+// V ask for an `or {}` at every read of a map of nodes. Compare nodes with C.vt_node_eq.
+@[typedef]
+pub struct C.vt_node {
+pub:
+	index u32
+}
+
+// A row (rows.h).
+@[typedef]
+pub struct C.vt_row {
+pub:
+	start_byte   u32
+	end_byte     u32
+	start_row    u32
+	start_column u32
+	end_row      u32
+	end_column   u32
+	parent       u32
+	next         u32
+	prev         u32
+	last         u32
+	symbol       u16
+	field        u16
+	flags        u8
 }
 
 @[typedef]
-struct C.TSPoint {
+struct C.vt_point {
 	row    u32
 	column u32
 }
 
-@[typedef]
-struct C.TSQueryCapture {
-	node  C.TSNode
-	index u32
-}
-
-@[typedef]
-struct C.TSQueryMatch {
-	id            u32
-	pattern_index u16
-	capture_count u16
-	captures      &C.TSQueryCapture
-}
+pub const row_named = u8(1) // VT_ROW_NAMED
+pub const row_extra = u8(2) // VT_ROW_EXTRA
+pub const row_none = u32(0xffffffff) // VT_ROW_NONE
 
 // The grammar header declares `const TSLanguage *`, which would clash with this prototype; so it
 // is not included and V emits the declaration thanks to @[c_extern].
@@ -93,7 +93,9 @@ fn C.tree_sitter_typescript() &C.TSLanguage
 fn C.tree_sitter_tsx() &C.TSLanguage
 
 fn C.strncmp(a &char, b &char, n uint) int
+fn C.strcmp(a &char, b &char) int
 fn C.ts_language_abi_version(self &C.TSLanguage) u32
+fn C.ts_language_symbol_for_name(self &C.TSLanguage, name &char, length u32, is_named bool) u16
 fn C.ts_parser_new() &C.TSParser
 fn C.ts_parser_delete(self &C.TSParser)
 fn C.ts_parser_set_language(self &C.TSParser, language &C.TSLanguage) bool
@@ -102,55 +104,56 @@ fn C.ts_tree_delete(self &C.TSTree)
 fn C.ts_tree_language(self &C.TSTree) &C.TSLanguage
 fn C.vt_reparse(parser &C.TSParser, old &C.TSTree, old_text &char, old_length u32, new_text &char, new_length u32, outcome &int) &C.TSTree
 fn C.vt_trees_differ(a &C.TSTree, b &C.TSTree) i64
-fn C.ts_tree_root_node(self &C.TSTree) C.TSNode
-fn C.ts_node_type(self C.TSNode) &char
-fn C.ts_node_descendant_count(self C.TSNode) u32
-fn C.ts_language_symbol_for_name(self &C.TSLanguage, name &char, length u32, is_named bool) u16
-fn C.ts_node_symbol(self C.TSNode) u16
-fn C.ts_node_is_named(self C.TSNode) bool
-fn C.ts_node_has_error(self C.TSNode) bool
-fn C.ts_node_start_byte(self C.TSNode) u32
-fn C.ts_node_end_byte(self C.TSNode) u32
-fn C.ts_node_start_point(self C.TSNode) C.TSPoint
-fn C.ts_node_is_null(self C.TSNode) bool
-fn C.ts_node_child(self C.TSNode, child_index u32) C.TSNode
-fn C.ts_node_child_count(self C.TSNode) u32
-fn C.ts_node_named_child(self C.TSNode, child_index u32) C.TSNode
-fn C.ts_node_named_child_count(self C.TSNode) u32
-fn C.vt_node_child_by_field_name(self C.TSNode, name &char, name_length u32) C.TSNode
-fn C.vt_children(self C.TSNode, named bool, out &C.TSNode, capacity u32) int
-fn C.ts_node_parent(self C.TSNode) C.TSNode
-fn C.vt_node_parent(node C.TSNode) C.TSNode
-fn C.vt_flat_build(root C.TSNode) bool
-fn C.vt_flat_clear()
-fn C.vt_flat_find(node C.TSNode) i64
-fn C.vt_flat_nodes() &C.vt_flat_node
-fn C.vt_flat_count() u32
-fn C.ts_node_prev_sibling(self C.TSNode) C.TSNode
-fn C.ts_node_prev_named_sibling(self C.TSNode) C.TSNode
-fn C.ts_node_next_sibling(self C.TSNode) C.TSNode
-fn C.ts_node_is_extra(self C.TSNode) bool
 
-// error_type is `TSQueryError *` in C; passed as voidptr to avoid declaring the enum.
-fn C.ts_query_new(language &C.TSLanguage, source &char, source_len u32, error_offset &u32, error_type voidptr) &C.TSQuery
-fn C.ts_query_delete(self &C.TSQuery)
-fn C.ts_query_cursor_new() &C.TSQueryCursor
-fn C.ts_query_cursor_delete(self &C.TSQueryCursor)
-fn C.ts_query_cursor_exec(self &C.TSQueryCursor, query &C.TSQuery, node C.TSNode)
-fn C.ts_query_cursor_next_match(self &C.TSQueryCursor, match &C.TSQueryMatch) bool
-fn C.ts_tree_cursor_new(node C.TSNode) C.TSTreeCursor
-fn C.ts_tree_cursor_delete(self &C.TSTreeCursor)
-fn C.ts_tree_cursor_current_node(self &C.TSTreeCursor) C.TSNode
-fn C.ts_tree_cursor_goto_first_child(self &C.TSTreeCursor) bool
-fn C.ts_tree_cursor_goto_next_sibling(self &C.TSTreeCursor) bool
-fn C.ts_tree_cursor_goto_parent(self &C.TSTreeCursor) bool
-fn C.strcmp(a &char, b &char) int
+fn C.vt_rows_from_tree(tree &C.TSTree) &C.vt_rows
+fn C.vt_rows_check(rows &C.vt_rows, tree &C.TSTree) u64
+fn C.vt_rows_free(rows &C.vt_rows)
+fn C.vt_rows_dump(rows &C.vt_rows, path &char) bool
+fn C.vt_rows_load(path &char, language voidptr) &C.vt_rows
+fn C.vt_rows_root(rows &C.vt_rows) C.vt_node
+fn C.vt_rows_language(rows &C.vt_rows) &C.TSLanguage
+fn C.vt_rows_has_error(rows &C.vt_rows) bool
+fn C.vt_node_at(rows &C.vt_rows, index u32) C.vt_node
+fn C.vt_node_rows(n C.vt_node) &C.vt_rows
+fn C.vt_node_row(n C.vt_node) &C.vt_row
+fn C.vt_node_type(n C.vt_node) &char
+fn C.vt_node_language(n C.vt_node) &C.TSLanguage
+fn C.vt_node_is_null(n C.vt_node) bool
+fn C.vt_node_eq(a C.vt_node, b C.vt_node) bool
+fn C.vt_node_symbol(n C.vt_node) u16
+fn C.vt_node_field(n C.vt_node) u16
+fn C.vt_node_is_named(n C.vt_node) bool
+fn C.vt_node_is_extra(n C.vt_node) bool
+fn C.vt_node_is_missing(n C.vt_node) bool
+fn C.vt_node_is_error(n C.vt_node) bool
+fn C.vt_node_has_error(n C.vt_node) bool
+fn C.vt_node_start_byte(n C.vt_node) u32
+fn C.vt_node_end_byte(n C.vt_node) u32
+fn C.vt_node_start_point(n C.vt_node) C.vt_point
+fn C.vt_node_last(n C.vt_node) u32
+fn C.vt_node_parent(n C.vt_node) C.vt_node
+fn C.vt_node_next(n C.vt_node) C.vt_node
+fn C.vt_node_next_sibling(n C.vt_node) C.vt_node
+fn C.vt_node_prev_sibling(n C.vt_node) C.vt_node
+fn C.vt_node_next_named_sibling(n C.vt_node) C.vt_node
+fn C.vt_node_prev_named_sibling(n C.vt_node) C.vt_node
+fn C.vt_node_first_child(n C.vt_node) C.vt_node
+fn C.vt_node_child_count(n C.vt_node) u32
+fn C.vt_node_child(n C.vt_node, i u32) C.vt_node
+fn C.vt_node_named_child_count(n C.vt_node) u32
+fn C.vt_node_named_child(n C.vt_node, i u32) C.vt_node
+fn C.vt_node_child_by_field_name(n C.vt_node, name &char, length u32) C.vt_node
+fn C.vt_field_id(language &C.TSLanguage, name &char, length u32) u16
+fn C.vt_node_descendant_count(n C.vt_node) u32
 
-// Verified query from PROMPT.md §3.2: names of variables, functions and parameters.
-const declarations_query = '(variable_declarator name: (identifier) @name)
-(function_declaration name: (identifier) @name)
-(required_parameter pattern: (identifier) @name)
-(optional_parameter pattern: (identifier) @name)'
+// What the rows of each parse go through: VESLINT_ROWS_CHECK=1 compares them with the tree they
+// were built from (rows_build.h: every node, with what tree-sitter's functions answer), and writes
+// the differences to stderr (or to the file VESLINT_ROWS_CHECK_LOG); VESLINT_ROWS_STUB=<directory>
+// writes them to a file there, frees them and the tree, and reads them back into new rows, which
+// are filled as another parser would fill them (rows.h): a lint that gives the same with it reads
+// nothing of tree-sitter's tree.
+const rows_check = os.getenv('VESLINT_ROWS_CHECK') == '1'
+const rows_stub = os.getenv('VESLINT_ROWS_STUB')
 
 // Ident is an identifier found by tree-sitter, with its position in bytes. The line and the column
 // veslint prints come from start_byte (offsets.utf16_positions), not from the row and the column
@@ -173,15 +176,6 @@ pub:
 pub struct Parser {
 	parser &C.TSParser
 	lang   &C.TSLanguage
-	// The declarations query, compiled on first use (declared_names): only the identifier modes
-	// use it, and compiling it took a few milliseconds of every lint worker's start.
-	query &ParserQuery
-}
-
-@[heap]
-struct ParserQuery {
-mut:
-	query &C.TSQuery = unsafe { nil }
 }
 
 // new_ts_parser prepares the TypeScript parser.
@@ -205,43 +199,77 @@ fn new_parser_for(tsx bool) !Parser {
 	return Parser{
 		parser: parser
 		lang:   lang
-		query:  &ParserQuery{}
 	}
-}
-
-// declarations_query compiles the declarations query once.
-fn (p &Parser) declarations_query() !&C.TSQuery {
-	mut holder := p.query
-	if isnil(holder.query) {
-		mut err_offset := u32(0)
-		mut err_type := u32(0)
-		query := C.ts_query_new(p.lang, &char(declarations_query.str), u32(declarations_query.len),
-			&err_offset, voidptr(&err_type))
-		if isnil(query) {
-			return error('the declarations query does not compile (error ${err_type} at offset ${err_offset})')
-		}
-		holder.query = query
-	}
-	return holder.query
 }
 
 pub fn (p &Parser) close() {
-	if !isnil(p.query.query) {
-		C.ts_query_delete(p.query.query)
-	}
 	C.ts_parser_delete(p.parser)
 }
 
-// parse returns the tree of `src` (BOM already stripped). It must be freed with `C.ts_tree_delete`.
-pub fn (p &Parser) parse(src string) !&C.TSTree {
-	if i64(src.len) > i64(max_u32) {
-		return error('file too large for tree-sitter (${src.len} bytes)')
+// parse returns the rows of `src` (BOM already stripped). They must be freed with rows_free.
+pub fn (p &Parser) parse(src string) !&C.vt_rows {
+	return parse_with(p.parser, src, 'the file')
+}
+
+// parse_with parses `src` with a parser of tree-sitter into rows; `what` names the text in the
+// errors.
+pub fn parse_with(parser &C.TSParser, src string, what string) !&C.vt_rows {
+	tree := parse_tree(parser, src, what)!
+	rows := rows_of(tree) or {
+		C.ts_tree_delete(tree)
+		return err
 	}
-	tree := C.ts_parser_parse_string(p.parser, unsafe { nil }, &char(src.str), u32(src.len))
+	C.ts_tree_delete(tree)
+	return stub_rows(rows)
+}
+
+fn parse_tree(parser &C.TSParser, src string, what string) !&C.TSTree {
+	if i64(src.len) > i64(max_u32) {
+		return error('${what} is too large for tree-sitter (${src.len} bytes)')
+	}
+	tree := C.ts_parser_parse_string(parser, unsafe { nil }, &char(src.str), u32(src.len))
 	if isnil(tree) {
-		return error('tree-sitter could not parse the file')
+		return error('tree-sitter could not parse ${what}')
 	}
 	return tree
+}
+
+// rows_of gives the rows of a tree, which stays the caller's.
+pub fn rows_of(tree &C.TSTree) !&C.vt_rows {
+	rows := C.vt_rows_from_tree(tree)
+	if isnil(rows) {
+		return error('out of memory for the rows of a tree')
+	}
+	if rows_check {
+		C.vt_rows_check(rows, tree)
+	}
+	return rows
+}
+
+// stub_rows (VESLINT_ROWS_STUB) gives rows read back from a file the rows were written to (they
+// are freed), or the rows themselves without it.
+fn stub_rows(rows &C.vt_rows) !&C.vt_rows {
+	if rows_stub == '' {
+		return rows
+	}
+	language := C.vt_rows_language(rows)
+	path := os.join_path(rows_stub, 'rows-${os.getpid()}-${voidptr(rows)}.bin')
+	if !C.vt_rows_dump(rows, &char(path.str)) {
+		C.vt_rows_free(rows)
+		return error('cannot write the rows to ${path}')
+	}
+	C.vt_rows_free(rows)
+	loaded := C.vt_rows_load(&char(path.str), voidptr(language))
+	os.rm(path) or {}
+	if isnil(loaded) {
+		return error('cannot read the rows back from ${path}')
+	}
+	return loaded
+}
+
+// rows_free frees rows: their nodes must not be used after.
+pub fn rows_free(rows &C.vt_rows) {
+	C.vt_rows_free(rows)
 }
 
 // Reparse tells how Parser.reparse parsed a text.
@@ -270,6 +298,16 @@ pub fn (p &Parser) reparse(old &C.TSTree, old_src string, src string) !(&C.TSTre
 	return tree, unsafe { Reparse(outcome) }
 }
 
+// parse_tree is the tree of `src`, for a TreeCache. It must be freed with tree_delete.
+pub fn (p &Parser) parse_tree(src string) !&C.TSTree {
+	return parse_tree(p.parser, src, 'the file')
+}
+
+// tree_delete frees a tree of tree-sitter.
+pub fn tree_delete(tree &C.TSTree) {
+	C.ts_tree_delete(tree)
+}
+
 // trees_differ is the start byte of the first node in which two trees differ (kind, range,
 // flags, field or number of children, in preorder), or -1 when they are the same tree.
 pub fn trees_differ(a &C.TSTree, b &C.TSTree) i64 {
@@ -279,7 +317,7 @@ pub fn trees_differ(a &C.TSTree, b &C.TSTree) i64 {
 // TreeCache keeps the last tree of a few files with the text it was parsed from, so that the next
 // parse of a new text of the same file (an edit in an editor: veslint --server) is an incremental
 // parse from it (Parser.reparse). Its trees are its own: one is freed when a file is parsed again,
-// forgotten or pushed out by others.
+// forgotten or pushed out by others. A parse gives new rows of the tree, which are the caller's.
 //
 // VESLINT_INCREMENTAL=0 turns it off (every parse from scratch; veslint --server then reuses no
 // answer either); VESLINT_INCREMENTAL_CHECK=1
@@ -313,23 +351,29 @@ pub fn new_tree_cache() &TreeCache {
 	}
 }
 
-// parse is the tree of `src` for the file `key`, from the tree of its last text when it has one
-// of this parser's language. The tree is the cache's: it stays valid until the next parse of
-// `key`, forget(key) or clear().
-pub fn (mut c TreeCache) parse(p &Parser, key string, src string) !&C.TSTree {
+// parse is the rows of `src` for the file `key`, from the tree of its last text when it has one
+// of this parser's language. The rows are the caller's; the tree stays the cache's until the next
+// parse of `key`, forget(key) or clear().
+pub fn (mut c TreeCache) parse(p &Parser, key string, src string) !&C.vt_rows {
+	tree := c.parse_tree(p, key, src)!
+	return stub_rows(rows_of(tree)!)
+}
+
+// parse_tree is the tree parse gives the rows of.
+pub fn (mut c TreeCache) parse_tree(p &Parser, key string, src string) !&C.TSTree {
 	mut tree := &C.TSTree(unsafe { nil })
 	if entry := c.entries[key] {
 		c.entries.delete(key)
 		c.order = c.order.filter(it != key)
 		if c.off || voidptr(entry.lang) != voidptr(p.lang) {
 			C.ts_tree_delete(entry.tree)
-			tree = p.parse(src)!
+			tree = p.parse_tree(src)!
 		} else {
 			again, how := p.reparse(entry.tree, entry.text, src)!
 			tree = again
 			c.reparses[int(how)]++
 			if c.check && how == .incremental {
-				fresh := p.parse(src) or {
+				fresh := p.parse_tree(src) or {
 					C.ts_tree_delete(tree)
 					return err
 				}
@@ -344,7 +388,7 @@ pub fn (mut c TreeCache) parse(p &Parser, key string, src string) !&C.TSTree {
 			}
 		}
 	} else {
-		tree = p.parse(src)!
+		tree = p.parse_tree(src)!
 	}
 	c.entries[key] = CachedTree{
 		text: src
@@ -390,131 +434,111 @@ pub fn (mut c TreeCache) clear() {
 	c.order = []
 }
 
-pub fn tree_has_error(tree &C.TSTree) bool {
-	return C.ts_node_has_error(C.ts_tree_root_node(tree))
+// tree_has_error: the rows have an ERROR or a MISSING node.
+pub fn tree_has_error(rows &C.vt_rows) bool {
+	return C.vt_rows_has_error(rows)
 }
 
-// identifiers returns, in order of appearance, the identifiers of `tree`: the declared names (query
-// of §3.2) or, with `all`, every `identifier` node.
-pub fn (p &Parser) identifiers(tree &C.TSTree, src string, all bool) ![]Ident {
-	root := C.ts_tree_root_node(tree)
-	mut idents := if all { all_identifiers(root, src) } else { p.declared_names(root, src)! }
+// identifiers returns, in order of appearance, the identifiers of the rows: the declared names
+// (declared_names) or, with `all`, every `identifier` node.
+pub fn (p &Parser) identifiers(rows &C.vt_rows, src string, all bool) ![]Ident {
+	root := C.vt_rows_root(rows)
+	mut idents := if all { all_identifiers(root, src) } else { declared_names(root, src) }
 	idents.sort(a.start_byte < b.start_byte)
 	return idents
 }
 
-fn (p &Parser) declared_names(root C.TSNode, src string) ![]Ident {
-	query := p.declarations_query()!
-	cursor := C.ts_query_cursor_new()
-	defer {
-		C.ts_query_cursor_delete(cursor)
-	}
-	C.ts_query_cursor_exec(cursor, query, root)
+// The declared names of PROMPT.md §3.2: the identifier that is the field of each of these parents
+// (what the query `(variable_declarator name: (identifier) @name) (function_declaration name:
+// (identifier) @name) (required_parameter pattern: (identifier) @name) (optional_parameter
+// pattern: (identifier) @name)` captures).
+const declared_name_parents = {
+	'variable_declarator':  'name'
+	'function_declaration': 'name'
+	'required_parameter':   'pattern'
+	'optional_parameter':   'pattern'
+}
+
+// declared_names gives, in preorder, the identifiers the declarations query captures.
+fn declared_names(root C.vt_node, src string) []Ident {
 	mut idents := []Ident{}
-	mut m := C.TSQueryMatch{}
-	for C.ts_query_cursor_next_match(cursor, &m) {
-		for i in 0 .. int(m.capture_count) {
-			idents << ident_from_node(unsafe { m.captures[i].node }, src)
+	language := C.vt_node_language(root)
+	for node in nodes_of_kind(root, c'identifier') {
+		parent := C.vt_node_parent(node)
+		if C.vt_node_is_null(parent) {
+			continue
+		}
+		field := declared_name_parents[node_kind(parent)] or { continue }
+		id := C.vt_field_id(language, &char(field.str), u32(field.len))
+		if C.vt_node_field(node) == id {
+			idents << ident_from_node(node, src)
 		}
 	}
 	return idents
 }
 
-fn all_identifiers(root C.TSNode, src string) []Ident {
+fn all_identifiers(root C.vt_node, src string) []Ident {
 	return nodes_of_kind(root, c'identifier').map(ident_from_node(it, src))
 }
 
-// nodes_of_kind returns, in preorder (order of appearance), the named nodes of that kind. It reads
-// the flat tree when `root` is in it, else it walks the tree with a TSTreeCursor.
-pub fn nodes_of_kind(root C.TSNode, kind &char) []C.TSNode {
-	mut nodes := []C.TSNode{}
-	first, last := flat_range(root)
-	if first >= 0 {
-		flat := C.vt_flat_nodes()
-		for i in first .. last + 1 {
-			node := unsafe { flat[i].node }
-			if unsafe { flat[i].flags } & flat_named != 0
-				&& unsafe { C.strcmp(C.ts_node_type(node), kind) } == 0 {
-				nodes << node
-			}
-		}
-		return nodes
-	}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		if C.ts_node_is_named(node) && unsafe { C.strcmp(C.ts_node_type(node), kind) } == 0 {
-			nodes << node
-		}
-		if C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return nodes
-			}
-		}
-	}
-	return nodes
-}
-
-// What nodes_of_kinds knows of a symbol of the grammar, by its number (the grammars have fewer
-// than symbol_states).
+// What nodes_of_kind and nodes_of_kinds know of a symbol of the grammar, by its number (the
+// grammars have fewer than symbol_states).
 const symbol_states = 1024
 const symbol_seen = u8(1)
 const symbol_wanted = u8(2)
 const symbol_skipped = u8(4)
 
+// nodes_of_kind returns, in preorder (order of appearance), the named nodes of that kind under
+// `root` (and `root` itself).
+pub fn nodes_of_kind(root C.vt_node, kind &char) []C.vt_node {
+	mut nodes := []C.vt_node{}
+	rows := C.vt_node_rows(root)
+	flat := C.vt_node_row(C.vt_node_at(rows, 0))
+	last := int(C.vt_node_last(root))
+	// What the kind of each symbol is, asked once per symbol.
+	mut symbols := [symbol_states]u8{}
+	for i in int(root.index) .. last + 1 {
+		row := unsafe { &flat[i] }
+		if row.flags & row_named == 0 {
+			continue
+		}
+		symbol := int(row.symbol)
+		mut state := if symbol < symbol_states { symbols[symbol] } else { u8(0) }
+		if state == 0 {
+			state = symbol_seen
+			if unsafe { C.strcmp(C.vt_node_type(C.vt_node_at(rows, u32(i))), kind) } == 0 {
+				state |= symbol_wanted
+			}
+			if symbol < symbol_states {
+				symbols[symbol] = state
+			}
+		}
+		if state & symbol_wanted != 0 {
+			nodes << C.vt_node_at(rows, u32(i))
+		}
+	}
+	return nodes
+}
+
 // nodes_of_kinds returns, in preorder, the named nodes of any of the `kinds`, without entering the
 // subtrees of the `skip` kinds.
-pub fn nodes_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
-	mut nodes := []C.TSNode{}
+pub fn nodes_of_kinds(root C.vt_node, kinds []string, skip []string) []C.vt_node {
+	mut nodes := []C.vt_node{}
 	// The kind of a node is the name of its symbol in the grammar, so what a kind is in the two
 	// lists is asked once for each symbol of the tree: most of the nodes of a file are visited
 	// by every rule.
 	mut symbols := [symbol_states]u8{}
-	first, last := flat_range(root)
-	if first >= 0 {
-		// The subtree from the flat tree: a skipped node's subtree is jumped over.
-		flat := C.vt_flat_nodes()
-		mut i := first
-		for i <= last {
-			entry := unsafe { &flat[i] }
-			symbol := int(entry.symbol)
-			mut state := if symbol < symbol_states { symbols[symbol] } else { u8(0) }
-			if state == 0 {
-				kind := node_kind(entry.node)
-				state = symbol_seen
-				if kind in kinds {
-					state |= symbol_wanted
-				}
-				if kind in skip {
-					state |= symbol_skipped
-				}
-				if symbol < symbol_states {
-					symbols[symbol] = state
-				}
-			}
-			if state & symbol_wanted != 0 && entry.flags & flat_named != 0 {
-				nodes << entry.node
-			}
-			i = if state & symbol_skipped == 0 { i + 1 } else { int(entry.last) + 1 }
-		}
-		return nodes
-	}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		symbol := int(C.ts_node_symbol(node))
+	rows := C.vt_node_rows(root)
+	flat := C.vt_node_row(C.vt_node_at(rows, 0))
+	last := int(C.vt_node_last(root))
+	// The subtree in preorder: a skipped node's subtree is jumped over.
+	mut i := int(root.index)
+	for i <= last {
+		entry := unsafe { &flat[i] }
+		symbol := int(entry.symbol)
 		mut state := if symbol < symbol_states { symbols[symbol] } else { u8(0) }
 		if state == 0 {
-			kind := node_kind(node)
+			kind := node_kind(C.vt_node_at(rows, u32(i)))
 			state = symbol_seen
 			if kind in kinds {
 				state |= symbol_wanted
@@ -526,80 +550,85 @@ pub fn nodes_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
 				symbols[symbol] = state
 			}
 		}
-		if state & symbol_wanted != 0 && C.ts_node_is_named(node) {
-			nodes << node
+		if state & symbol_wanted != 0 && entry.flags & row_named != 0 {
+			nodes << C.vt_node_at(rows, u32(i))
 		}
-		if state & symbol_skipped == 0 && C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return nodes
-			}
-		}
+		i = if state & symbol_skipped == 0 { i + 1 } else { int(entry.last) + 1 }
 	}
 	return nodes
 }
 
-// flat_range gives the places in the flat tree (flat_tree.h) of `n` and of the last node of its
-// subtree, in preorder, or (-1, -1) when `n` is not in it (not a node of the tree of this thread's
-// last NodeIndex).
-pub fn flat_range(n C.TSNode) (int, int) {
-	index := C.vt_flat_find(n)
-	if index < 0 {
-		return -1, -1
-	}
-	return int(index), int(unsafe { C.vt_flat_nodes()[index].last })
+// flat_range gives the places in its rows of `n` and of the last node of its subtree: its subtree
+// is the rows between them, in preorder.
+@[inline]
+pub fn flat_range(n C.vt_node) (int, int) {
+	return int(n.index), int(C.vt_node_last(n))
 }
 
-// flat_node is the node at a place of the flat tree (see flat_range).
+// flat_node is the node at a place of the rows of `of` (see flat_range).
 @[inline]
-pub fn flat_node(i int) C.TSNode {
-	return unsafe { C.vt_flat_nodes()[i].node }
+pub fn flat_node(of C.vt_node, i int) C.vt_node {
+	return C.vt_node_at(C.vt_node_rows(of), u32(i))
 }
 
-// flat_last is the place of the last node of the subtree of the node at place `i` of the flat tree.
+// flat_last is the place of the last node of the subtree of the node at place `i` of the rows of
+// `of`.
 @[inline]
-pub fn flat_last(i int) int {
-	return int(unsafe { C.vt_flat_nodes()[i].last })
+pub fn flat_last(of C.vt_node, i int) int {
+	return int(C.vt_node_last(C.vt_node_at(C.vt_node_rows(of), u32(i))))
 }
 
 // node_kind returns the tree-sitter node kind (`call_expression`, `&&`, `async`…). The string is
 // the grammar's own, which lives as long as the program: it is not copied.
-pub fn node_kind(n C.TSNode) string {
-	return unsafe { tos2(&u8(C.ts_node_type(n))) }
+pub fn node_kind(n C.vt_node) string {
+	return unsafe { tos2(&u8(C.vt_node_type(n))) }
 }
 
-pub fn node_start(n C.TSNode) int {
-	return int(C.ts_node_start_byte(n))
+pub fn node_start(n C.vt_node) int {
+	return int(C.vt_node_start_byte(n))
 }
 
-pub fn node_end(n C.TSNode) int {
-	return int(C.ts_node_end_byte(n))
+pub fn node_end(n C.vt_node) int {
+	return int(C.vt_node_end_byte(n))
 }
 
 // node_field returns the child with that field name, if any (field_cache.h: the id of the name is
 // looked up once).
-pub fn node_field(n C.TSNode, name string) ?C.TSNode {
+pub fn node_field(n C.vt_node, name string) ?C.vt_node {
 	child := C.vt_node_child_by_field_name(n, &char(name.str), u32(name.len))
-	if C.ts_node_is_null(child) {
+	if C.vt_node_is_null(child) {
 		return none
 	}
 	return child
 }
 
 // named_children returns the named children, without comments.
-pub fn named_children(n C.TSNode) []C.TSNode {
-	count := int(C.ts_node_named_child_count(n))
-	mut named := []C.TSNode{len: count}
-	if count > 0 && C.vt_children(n, true, &C.TSNode(named.data), u32(count)) != count {
-		// What flat_tree.h leaves to ts_node_named_child.
-		for i in 0 .. count {
-			named[i] = C.ts_node_named_child(n, u32(i))
+pub fn named_children(n C.vt_node) []C.vt_node {
+	count := int(C.vt_node_named_child_count(n))
+	mut named := []C.vt_node{cap: count}
+	if count == 0 {
+		return named
+	}
+	rows := C.vt_node_rows(n)
+	flat := C.vt_node_row(C.vt_node_at(rows, 0))
+	mut child := n.index + 1
+	for child != row_none {
+		row := unsafe { &flat[child] }
+		if row.flags & row_named != 0 {
+			named << C.vt_node_at(rows, child)
+		} else if row.last != child && C.vt_node_named_child_count(C.vt_node_at(rows, child)) > 0 {
+			// An anonymous child with named children: ts_node_named_child counts those in its
+			// place (vt_node_named_child), and the rules saw what it gives.
+			named.clear()
+			for i in 0 .. count {
+				named << C.vt_node_named_child(n, u32(i))
+			}
+			break
 		}
+		child = row.next
 	}
 	mut kept := 0
-	for i in 0 .. count {
+	for i in 0 .. named.len {
 		if node_kind(named[i]) != 'comment' {
 			named[kept] = named[i]
 			kept++
@@ -610,18 +639,23 @@ pub fn named_children(n C.TSNode) []C.TSNode {
 }
 
 // children returns all the children, also the anonymous ones (`=>`, `async`…) and comments.
-pub fn children(n C.TSNode) []C.TSNode {
-	count := int(C.ts_node_child_count(n))
-	mut out := []C.TSNode{len: count}
-	if count > 0 && C.vt_children(n, false, &C.TSNode(out.data), u32(count)) != count {
-		for i in 0 .. count {
-			out[i] = C.ts_node_child(n, u32(i))
-		}
+pub fn children(n C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
+	mut child := C.vt_node_first_child(n)
+	if C.vt_node_is_null(child) {
+		return out
+	}
+	rows := C.vt_node_rows(n)
+	flat := C.vt_node_row(C.vt_node_at(rows, 0))
+	mut at := child.index
+	for at != row_none {
+		out << C.vt_node_at(rows, at)
+		at = unsafe { flat[at].next }
 	}
 	return out
 }
 
-pub fn first_named_child(n C.TSNode) ?C.TSNode {
+pub fn first_named_child(n C.vt_node) ?C.vt_node {
 	named := named_children(n)
 	if named.len == 0 {
 		return none
@@ -630,34 +664,21 @@ pub fn first_named_child(n C.TSNode) ?C.TSNode {
 }
 
 // has_child_kind tells whether some child, also anonymous ones like `async`, is of that kind.
-pub fn has_child_kind(n C.TSNode, kind string) bool {
-	index := C.vt_flat_find(n)
-	if index >= 0 {
-		flat := C.vt_flat_nodes()
-		if i64(unsafe { flat[index].last }) == index {
-			return false
-		}
-		mut child := u32(index + 1)
-		for child != flat_none {
-			if node_kind(unsafe { flat[child].node }) == kind {
-				return true
-			}
-			child = unsafe { flat[child].next }
-		}
-		return false
-	}
-	for i in 0 .. int(C.ts_node_child_count(n)) {
-		if node_kind(C.ts_node_child(n, u32(i))) == kind {
+pub fn has_child_kind(n C.vt_node, kind string) bool {
+	mut child := C.vt_node_first_child(n)
+	for !C.vt_node_is_null(child) {
+		if node_kind(child) == kind {
 			return true
 		}
+		child = C.vt_node_next(child)
 	}
 	return false
 }
 
-fn ident_from_node(node C.TSNode, src string) Ident {
-	start := int(C.ts_node_start_byte(node))
-	end := int(C.ts_node_end_byte(node))
-	point := C.ts_node_start_point(node)
+fn ident_from_node(node C.vt_node, src string) Ident {
+	start := int(C.vt_node_start_byte(node))
+	end := int(C.vt_node_end_byte(node))
+	point := C.vt_node_start_point(node)
 	return Ident{
 		text:       src[start..end]
 		start_byte: start
@@ -666,43 +687,32 @@ fn ident_from_node(node C.TSNode, src string) Ident {
 	}
 }
 
-pub fn tree_delete(tree &C.TSTree) {
-	C.ts_tree_delete(tree)
+pub fn root_node(rows &C.vt_rows) C.vt_node {
+	return C.vt_rows_root(rows)
 }
 
-pub fn root_node(tree &C.TSTree) C.TSNode {
-	return C.ts_tree_root_node(tree)
-}
-
-pub fn next_sibling(n C.TSNode) ?C.TSNode {
-	next := C.ts_node_next_sibling(n)
-	if C.ts_node_is_null(next) {
+pub fn next_sibling(n C.vt_node) ?C.vt_node {
+	next := C.vt_node_next_sibling(n)
+	if C.vt_node_is_null(next) {
 		return none
 	}
 	return next
 }
 
-pub fn prev_sibling(n C.TSNode) ?C.TSNode {
-	prev := C.ts_node_prev_sibling(n)
-	if C.ts_node_is_null(prev) {
+pub fn prev_sibling(n C.vt_node) ?C.vt_node {
+	prev := C.vt_node_prev_sibling(n)
+	if C.vt_node_is_null(prev) {
 		return none
 	}
 	return prev
 }
 
-pub fn node_parent(n C.TSNode) ?C.TSNode {
-	// From the flat tree of the last NodeIndex (flat_tree.h), or tree-sitter's walk from the root.
+pub fn node_parent(n C.vt_node) ?C.vt_node {
 	parent := C.vt_node_parent(n)
-	if C.ts_node_is_null(parent) {
+	if C.vt_node_is_null(parent) {
 		return none
 	}
 	return parent
-}
-
-// parent_cache_clear forgets the flat tree (flat_tree.h) of the last NodeIndex of this thread, and
-// so the parents and children recorded in it: call it before that tree is freed.
-pub fn parent_cache_clear() {
-	C.vt_flat_clear()
 }
 
 // TokenEnds are, in order, the ends of the tokens of a tree: the leaves that are not comments
@@ -714,44 +724,36 @@ pub:
 	ends []int
 }
 
-// token_ends walks the tree once with a TSTreeCursor.
-pub fn token_ends(root C.TSNode) TokenEnds {
+// token_ends walks the subtree of `root` once.
+pub fn token_ends(root C.vt_node) TokenEnds {
 	mut ends := []int{}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		extra := C.ts_node_is_extra(node)
+	rows := C.vt_node_rows(root)
+	flat := C.vt_node_row(C.vt_node_at(rows, 0))
+	last := int(C.vt_node_last(root))
+	mut i := int(root.index)
+	for i <= last {
+		row := unsafe { &flat[i] }
+		node := C.vt_node_at(rows, u32(i))
+		if row.flags & row_extra != 0 {
+			// A comment: neither a token nor entered.
+			i = int(row.last) + 1
+			continue
+		}
 		// The children of a JSX element have no leading trivia for TypeScript: the white space
 		// between them is JsxText, also the one with line breaks, which tree-sitter skips. So the
 		// start of each child counts as the end of a token.
-		if !extra && unsafe { C.strncmp(C.ts_node_type(node), c'jsx_', 4) } == 0 {
-			parent := C.ts_node_parent(node)
-			if !C.ts_node_is_null(parent)
-				&& unsafe { C.strcmp(C.ts_node_type(parent), c'jsx_element') } == 0
-				&& C.ts_node_start_byte(node) > C.ts_node_start_byte(parent) {
-				ends << int(C.ts_node_start_byte(node))
+		if unsafe { C.strncmp(C.vt_node_type(node), c'jsx_', 4) } == 0 && row.parent != row_none {
+			parent := C.vt_node_at(rows, row.parent)
+			if unsafe { C.strcmp(C.vt_node_type(parent), c'jsx_element') } == 0
+				&& row.start_byte > unsafe { flat[row.parent].start_byte } {
+				ends << int(row.start_byte)
 			}
 		}
-		if !extra && C.ts_node_child_count(node) == 0 {
-			start := int(C.ts_node_start_byte(node))
-			end := int(C.ts_node_end_byte(node))
-			if end > start && unsafe { C.strcmp(C.ts_node_type(node), c'hash_bang_line') } != 0 {
-				ends << end
-			}
+		if int(row.last) == i && row.end_byte > row.start_byte
+			&& unsafe { C.strcmp(C.vt_node_type(node), c'hash_bang_line') } != 0 {
+			ends << int(row.end_byte)
 		}
-		if !extra && C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return TokenEnds{
-					ends: ends
-				}
-			}
-		}
+		i++
 	}
 	return TokenEnds{
 		ends: ends
@@ -775,8 +777,8 @@ pub fn (t &TokenEnds) last_end(offset int) int {
 	return if lo == 0 { 0 } else { t.ends[lo - 1] }
 }
 
-pub fn position_of(node C.TSNode) Ident {
-	point := C.ts_node_start_point(node)
+pub fn position_of(node C.vt_node) Ident {
+	point := C.vt_node_start_point(node)
 	return Ident{
 		start_byte: node_start(node)
 		row:        int(point.row)

@@ -129,7 +129,7 @@ fn (c &Checker) smsp_verify_open_block(i int, after int, has_expression bool, op
 		findings)
 }
 
-fn (mut c Checker) lint_svelte_mustache_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_mustache_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := smsp_options(c.rule_options(svelte_mustache_spacing))!
 	if !c.is_svelte() {
 		return []

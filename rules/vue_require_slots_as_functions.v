@@ -12,7 +12,7 @@ const vue_require_slots_as_functions_messages = {
 	'unexpected': 'Property in `$slots` should be used as function.'
 }
 
-fn (mut c Checker) lint_vue_require_slots_as_functions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_slots_as_functions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -43,7 +43,7 @@ fn (mut c Checker) lint_vue_require_slots_as_functions(root C.TSNode, abs_path s
 }
 
 // vue_verify_slot_value is the rule's verify (`seen` as in no-multiple-slot-args).
-fn (mut c Checker) vue_verify_slot_value(root C.TSNode, t &estree.EsTree, node int, report int, mut seen map[int]bool, mut findings []Finding) {
+fn (mut c Checker) vue_verify_slot_value(root C.vt_node, t &estree.EsTree, node int, report int, mut seen map[int]bool, mut findings []Finding) {
 	parent := t.nodes[node].parent
 	if parent < 0 {
 		return
@@ -75,7 +75,7 @@ fn (mut c Checker) vue_verify_slot_value(root C.TSNode, t &estree.EsTree, node i
 	}
 }
 
-fn (mut c Checker) vue_verify_slot_value_references(root C.TSNode, t &estree.EsTree, id int, report int, mut seen map[int]bool, mut findings []Finding) {
+fn (mut c Checker) vue_verify_slot_value_references(root C.vt_node, t &estree.EsTree, id int, report int, mut seen map[int]bool, mut findings []Finding) {
 	v := c.vue_find_variable(root, t, id)
 	if v < 0 || seen[v] {
 		return

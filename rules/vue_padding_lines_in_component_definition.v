@@ -54,7 +54,7 @@ fn vplicd_is_string(option json2.Any, s string) bool {
 	return option is string && option == s
 }
 
-fn (mut c Checker) lint_vue_padding_lines_in_component_definition(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_padding_lines_in_component_definition(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	options := vue_padding_lines_in_component_definition_options(c.rule_options(vue_padding_lines_in_component_definition))!
 	mut findings := []Finding{}

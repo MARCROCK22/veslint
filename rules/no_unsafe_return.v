@@ -16,16 +16,16 @@ const nur_messages = {
 // ReturnValue is a value a function returns: the ESTree node (without parentheses), where to
 // report (the `return`, or the body of an arrow) and the function.
 struct ReturnValue {
-	node      C.TSNode
-	reporting C.TSNode
-	func      C.TSNode
+	node      C.vt_node
+	reporting C.vt_node
+	func      C.vt_node
 }
 
 // Functions whose type, for typescript-eslint, is the contextual one: TypeScript's
 // FunctionExpression and ArrowFunction.
 const function_expression_kinds = ['function_expression', 'generator_function', 'arrow_function']
 
-fn (mut c Checker) lint_no_unsafe_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut values := []ReturnValue{}
 	for ret in c.nodes_of_kind(root, c'return_statement') {
@@ -74,7 +74,7 @@ fn (mut c Checker) lint_no_unsafe_return(root C.TSNode, abs_path string, mut sta
 // function_span is the TypeScript node of a function: `export` and `export default` are modifiers
 // of a function declaration (also of the anonymous one, which tree-sitter reads as an
 // expression), and the decorators of a method are part of the member.
-fn function_span(f C.TSNode) Span {
+fn function_span(f C.vt_node) Span {
 	kind := node_kind(f)
 	if kind == 'method_definition' {
 		return member_span(f)

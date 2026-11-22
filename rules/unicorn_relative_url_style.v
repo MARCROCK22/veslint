@@ -139,7 +139,7 @@ fn (c &Checker) rus_html_attribute_problems(ctx RusContext, name string, raw str
 	return out
 }
 
-fn (mut c Checker) lint_unicorn_relative_url_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_relative_url_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -214,7 +214,7 @@ fn rus_is_native_tag(name string) bool {
 
 // rus_url_call ports the NewExpression and CallExpression listener: `new URL(url, base)`,
 // `URL.canParse(url, base)` and `URL.parse(url, base)`.
-fn (mut c Checker) rus_url_call(root C.TSNode, ctx RusContext, t &estree.EsTree, node int) ?Finding {
+fn (mut c Checker) rus_url_call(root C.vt_node, ctx RusContext, t &estree.EsTree, node int) ?Finding {
 	if !un_is_new(t, node, names: ['URL'], arguments_length: 2) && !un_is_method_call(t, node,
 		objects:          ['URL']
 		methods:          ['canParse', 'parse']

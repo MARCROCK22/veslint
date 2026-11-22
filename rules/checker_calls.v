@@ -40,13 +40,13 @@ struct SymbolLocation {
 }
 
 // symbol_location is the location of a node whose type was requested with resolve_spans.
-fn (c &Checker) symbol_location(n C.TSNode) SymbolLocation {
+fn (c &Checker) symbol_location(n C.vt_node) SymbolLocation {
 	return c.span_location(node_key(n), n)
 }
 
 // span_location is the location of a span requested with resolve_spans, by its key: `n` is the
 // tree-sitter node it starts at (the node itself, for a span that is a node).
-fn (c &Checker) span_location(key u64, n C.TSNode) SymbolLocation {
+fn (c &Checker) span_location(key u64, n C.vt_node) SymbolLocation {
 	handle := c.nodes.handle(key) or { return SymbolLocation{} }
 	kind := tsgo.handle_kind(handle)
 	return SymbolLocation{
@@ -63,7 +63,7 @@ fn (c &Checker) span_location(key u64, n C.TSNode) SymbolLocation {
 // is_member_name: the node is the name of a property (of a member, or the right side of a
 // property access), the index of an element access or the name of a set accessor, whatever kind
 // of name it is.
-fn is_member_name(n C.TSNode) bool {
+fn is_member_name(n C.vt_node) bool {
 	if node_kind(n) in ['property_identifier', 'private_property_identifier'] {
 		return true
 	}
@@ -162,7 +162,7 @@ fn (mut c Checker) intrinsic(method string) !TypeResponse {
 // indexes are the same, and that is what is asked. With one, tsgo is asked for it (TypeScript 7.1
 // has it in its API; with 7.0.2 veslint computed it from the resolved signature, and fell back to
 // the argument's contextual type where the checker makes a type 7.0.2 had no id for).
-fn (mut c Checker) contextual_argument_type(call C.TSNode, args []C.TSNode, index int) !TypeResponse {
+fn (mut c Checker) contextual_argument_type(call C.vt_node, args []C.vt_node, index int) !TypeResponse {
 	if !args[..index + 1].any(node_kind(it) == 'spread_element') {
 		return c.contextual_type(args[index])!
 	}

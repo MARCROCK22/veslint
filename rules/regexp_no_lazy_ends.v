@@ -28,7 +28,7 @@ fn rxnle_options(options []json2.Any) !bool {
 	return o.bool_value('ignorePartial')!
 }
 
-fn (mut c Checker) lint_regexp_no_lazy_ends(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_lazy_ends(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ignore_partial := rxnle_options(c.rule_options(regexp_no_lazy_ends))!
 	mut findings := []Finding{}

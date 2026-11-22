@@ -143,7 +143,7 @@ mut:
 	resolved map[string]SlsConfig
 }
 
-fn (mut c Checker) lint_stylistic_list_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_list_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := sls_options(c.rule_options(stylistic_list_style))!

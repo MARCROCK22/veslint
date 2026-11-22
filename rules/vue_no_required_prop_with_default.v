@@ -19,7 +19,7 @@ fn vue_no_required_prop_with_default_options(options []json2.Any) !bool {
 	return value is bool && value
 }
 
-fn (mut c Checker) lint_vue_no_required_prop_with_default(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_required_prop_with_default(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	autofix := vue_no_required_prop_with_default_options(c.rule_options(vue_no_required_prop_with_default))!
 	mut findings := []Finding{}
@@ -54,7 +54,7 @@ fn (mut c Checker) lint_vue_no_required_prop_with_default(root C.TSNode, abs_pat
 }
 
 // vnrpwd_handle is handleObjectProp.
-fn (mut c Checker) vnrpwd_handle(root C.TSNode, t &estree.EsTree, prop VueProp, defaults map[string]bool, autofix bool, abs_path string, mut findings []Finding, mut stats Stats) ! {
+fn (mut c Checker) vnrpwd_handle(root C.vt_node, t &estree.EsTree, prop VueProp, defaults map[string]bool, autofix bool, abs_path string, mut findings []Finding, mut stats Stats) ! {
 	// `defaultProps?.has(prop.propName)`: the options have no other defaults.
 	in_defaults := prop.has_name && prop.name in defaults
 	if prop.kind == .object && prop.has_name && t.typ(prop.value) == .object_expression

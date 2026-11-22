@@ -129,7 +129,7 @@ fn mss_return_type_references_this_type(t &estree.EsTree, node int) bool {
 	return mss_has_this_type(t, annotation)
 }
 
-fn (mut c Checker) lint_method_signature_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_method_signature_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mode := mss_options(c.rule_options(method_signature_style))!
 	mut findings := []Finding{}

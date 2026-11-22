@@ -11,7 +11,7 @@ const nnanc_messages = {
 	'suggestRemovingNonNull':             'Remove the non-null assertion.'
 }
 
-fn (mut c Checker) lint_no_non_null_asserted_nullish_coalescing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_non_null_asserted_nullish_coalescing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -56,7 +56,7 @@ fn (mut c Checker) lint_no_non_null_asserted_nullish_coalescing(root C.TSNode, a
 // nnanc_has_assignment_before ports hasAssignmentBeforeNode: a write reference that ends before
 // the end of the node, or a variable definition with an initializer or a definite assignment
 // (`let x!: T`) that does.
-fn nnanc_has_assignment_before(tree &ScopeTree, variable int, node C.TSNode) bool {
+fn nnanc_has_assignment_before(tree &ScopeTree, variable int, node C.vt_node) bool {
 	end := node_end(node)
 	for r in tree.variables[variable].references {
 		reference := tree.references[r]

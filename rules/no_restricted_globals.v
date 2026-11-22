@@ -61,7 +61,7 @@ fn nrg_options(options []json2.Any) !NrgOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_restricted_globals(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_restricted_globals(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nrg_options(c.rule_options(no_restricted_globals))!
 	mut findings := []Finding{}
@@ -119,7 +119,7 @@ fn (mut c Checker) lint_no_restricted_globals(root C.TSNode, abs_path string, mu
 }
 
 // nrg_parent is the ESTree parent: parentheses are not nodes.
-fn nrg_parent(n C.TSNode) ?C.TSNode {
+fn nrg_parent(n C.vt_node) ?C.vt_node {
 	mut parent := node_parent(n)?
 	for node_kind(parent) == 'parenthesized_expression' {
 		parent = node_parent(parent)?
@@ -127,7 +127,7 @@ fn nrg_parent(n C.TSNode) ?C.TSNode {
 	return parent
 }
 
-fn nrg_report(id C.TSNode, name string, o NrgOptions) Finding {
+fn nrg_report(id C.vt_node, name string, o NrgOptions) Finding {
 	message := o.messages[name] or { '' }
 	return Finding{
 		stmt:       position_of(id)
@@ -141,7 +141,7 @@ fn nrg_report(id C.TSNode, name string, o NrgOptions) Finding {
 
 // nrg_in_type_context ports isInTypeContext: the parent of the identifier is a TSTypeReference,
 // TSInterfaceHeritage, TSClassImplements, TSTypeQuery or TSQualifiedName.
-fn nrg_in_type_context(id C.TSNode) bool {
+fn nrg_in_type_context(id C.vt_node) bool {
 	if node_kind(id) == 'type_identifier' {
 		return true
 	}

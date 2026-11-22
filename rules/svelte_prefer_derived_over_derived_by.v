@@ -15,7 +15,7 @@ const svpdodb_messages = {
 
 // svpdodb_parenthesized_range is getParenthesizedRange: the range of `target` with the parentheses
 // around it that start inside its parent.
-fn (mut c Checker) svpdodb_parenthesized_range(root C.TSNode, t &estree.EsTree, target int) (int, int) {
+fn (mut c Checker) svpdodb_parenthesized_range(root C.vt_node, t &estree.EsTree, target int) (int, int) {
 	tokens := c.source_tokens(root)
 	mut start := t.nodes[target].start
 	mut end := t.nodes[target].end
@@ -61,7 +61,7 @@ fn svpdodb_uses_this_or_new_target(t &estree.EsTree, node int) bool {
 
 // svpdodb_uses_own_bindings: the function expression uses its `arguments`, its own name, `this` or
 // `new.target`.
-fn (mut c Checker) svpdodb_uses_own_bindings(root C.TSNode, t &estree.EsTree, fn_node int) bool {
+fn (mut c Checker) svpdodb_uses_own_bindings(root C.vt_node, t &estree.EsTree, fn_node int) bool {
 	tree := c.scope_tree(root)
 	if ts := t.ts_node(fn_node) {
 		scope := tree.function_scope_of(ts)
@@ -86,7 +86,7 @@ fn (mut c Checker) svpdodb_uses_own_bindings(root C.TSNode, t &estree.EsTree, fn
 }
 
 // svpdodb_fix is the fix of a report (none when it would lose something).
-fn (mut c Checker) svpdodb_fix(root C.TSNode, t &estree.EsTree, call int, callee int, arg int, expression int) ?Fix {
+fn (mut c Checker) svpdodb_fix(root C.vt_node, t &estree.EsTree, call int, callee int, arg int, expression int) ?Fix {
 	tokens := c.source_tokens(root)
 	type_arguments := t.node(call, .type_arguments) or { -1 }
 	mut return_type := -1
@@ -159,7 +159,7 @@ fn (mut c Checker) svpdodb_fix(root C.TSNode, t &estree.EsTree, call int, callee
 	return if has { fix } else { none }
 }
 
-fn (mut c Checker) lint_svelte_prefer_derived_over_derived_by(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_prefer_derived_over_derived_by(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.svsc_runes_on(abs_path) || !c.src.contains('\$derived') {
 		return []
 	}

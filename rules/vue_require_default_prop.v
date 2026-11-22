@@ -18,7 +18,7 @@ const vrdp_object_prototype = ['constructor', 'hasOwnProperty', 'isPrototypeOf',
 	'toLocaleString', 'toString', 'valueOf', '__proto__', '__defineGetter__', '__defineSetter__',
 	'__lookupGetter__', '__lookupSetter__']
 
-fn (mut c Checker) lint_vue_require_default_prop(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_default_prop(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -54,7 +54,7 @@ fn (mut c Checker) lint_vue_require_default_prop(root C.TSNode, abs_path string,
 }
 
 // vrdp_process is processProps for one prop.
-fn (mut c Checker) vrdp_process(root C.TSNode, t &estree.EsTree, prop VueProp, should_ignore fn (VueProp) bool, abs_path string, mut findings []Finding, mut stats Stats) {
+fn (mut c Checker) vrdp_process(root C.vt_node, t &estree.EsTree, prop VueProp, should_ignore fn (VueProp) bool, abs_path string, mut findings []Finding, mut stats Stats) {
 	if prop.kind == .object {
 		if (t.flag(prop.node, .shorthand) or { false }) || !vrdp_is_without_default(t, prop.value)
 			|| vrdp_is_boolean_prop(t, prop.value) || should_ignore(prop) {

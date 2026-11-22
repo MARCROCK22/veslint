@@ -10,7 +10,7 @@ const vue_no_deprecated_data_object_declaration_messages = {
 	'objectDeclarationIsDeprecated': "Object declaration on 'data' property is deprecated. Using function declaration instead."
 }
 
-fn (mut c Checker) lint_vue_no_deprecated_data_object_declaration(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_deprecated_data_object_declaration(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

@@ -15,7 +15,7 @@ const uem_messages = {
 const un_builtin_errors = ['Error', 'EvalError', 'RangeError', 'ReferenceError', 'SyntaxError',
 	'TypeError', 'URIError', 'AggregateError', 'SuppressedError']
 
-fn (mut c Checker) lint_unicorn_error_message(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_error_message(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -80,7 +80,7 @@ fn (mut c Checker) lint_unicorn_error_message(root C.TSNode, abs_path string, mu
 
 // uem_is_safe_object_freeze_argument ports isSafeObjectFreezeArgument: an object literal without
 // mutable member reads, or a `const` of one that is not read elsewhere.
-fn (mut c Checker) uem_is_safe_object_freeze_argument(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) uem_is_safe_object_freeze_argument(root C.vt_node, t &estree.EsTree, node int) bool {
 	if node < 0 {
 		return false
 	}
@@ -109,7 +109,7 @@ fn (mut c Checker) uem_is_safe_object_freeze_argument(root C.TSNode, t &estree.E
 
 // uem_is_object_freeze_member ports isObjectFreezeMemberExpression: `Object.freeze({…}).x`, or a
 // `const` of it.
-fn (mut c Checker) uem_is_object_freeze_member(root C.TSNode, t &estree.EsTree, n int) bool {
+fn (mut c Checker) uem_is_object_freeze_member(root C.vt_node, t &estree.EsTree, n int) bool {
 	mut node := n
 	if t.typ(node) == .identifier {
 		_, init := c.unb_const_definition(root, t, node) or { return false }
@@ -138,7 +138,7 @@ fn (mut c Checker) uem_is_object_freeze_member(root C.TSNode, t &estree.EsTree, 
 
 // uem_static_value ports getStaticValueForNode: a conditional or logical expression, or one with
 // a member read that may change, is evaluated only when that is safe.
-fn (mut c Checker) uem_static_value(root C.TSNode, t &estree.EsTree, node int) ?StaticValue {
+fn (mut c Checker) uem_static_value(root C.vt_node, t &estree.EsTree, node int) ?StaticValue {
 	value_node := unb_unwrap_ts(t, node)
 	is_branch := unb_is_branch_expression(t, value_node)
 	mut visited := map[int]bool{}

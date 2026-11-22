@@ -43,7 +43,7 @@ fn vnuvb_has_escape(raw string) bool {
 	return false
 }
 
-fn (mut c Checker) lint_vue_no_useless_v_bind(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_useless_v_bind(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

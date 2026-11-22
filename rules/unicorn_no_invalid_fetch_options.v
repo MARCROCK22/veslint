@@ -9,7 +9,7 @@ const unifo_messages = {
 	'no-invalid-fetch-options': '"body" is not allowed when method is "{{method}}".'
 }
 
-fn (mut c Checker) lint_unicorn_no_invalid_fetch_options(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_invalid_fetch_options(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

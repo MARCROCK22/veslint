@@ -25,7 +25,7 @@ mut:
 // vue_reference_ids are the identifiers of the references of the variable an Identifier names
 // (findVariable(getScope(id), id).references; with `read_only`, those that read it), none when
 // it names no variable.
-fn (mut c Checker) vue_reference_ids(root C.TSNode, t &estree.EsTree, id int, read_only bool) ?map[int]bool {
+fn (mut c Checker) vue_reference_ids(root C.vt_node, t &estree.EsTree, id int, read_only bool) ?map[int]bool {
 	v := c.unb_find_variable(root, t, id)
 	if v < 0 {
 		return none
@@ -68,7 +68,7 @@ fn vue_find_assignment_property(t &estree.EsTree, pattern int, name string) int 
 // the context of `setup(props, {emit})` (the references of `emit`, an Identifier) or of
 // `setup(props, context)`; none when the setup has no second parameter, or one that cannot be
 // checked (a rest element, an array pattern, `{emit: …}` that is not an Identifier, no variable).
-fn (mut c Checker) vue_setup_context(root C.TSNode, t &estree.EsTree, setup int, emit_read_only bool) ?VueSetupContext {
+fn (mut c Checker) vue_setup_context(root C.vt_node, t &estree.EsTree, setup int, emit_read_only bool) ?VueSetupContext {
 	params := t.list(setup, .params) or { return none }
 	if params.len < 2 {
 		return none
@@ -169,7 +169,7 @@ fn (mut c Checker) vue_template_calls() []VueTemplateCall {
 // `const emit = defineEmits()` before it; in a Vue object, through the context of its setup
 // function entered before it; and any `x.$emit(…)`. Also the name of the last defineEmits
 // variable (emitParamName), which the template's calls use.
-fn (mut c Checker) vue_emit_calls_of_script(root C.TSNode, t &estree.EsTree, s &VueScript, with_define_emits bool) ([]int, string) {
+fn (mut c Checker) vue_emit_calls_of_script(root C.vt_node, t &estree.EsTree, s &VueScript, with_define_emits bool) ([]int, string) {
 	mut out := []int{}
 	mut emit_param_name := ''
 	mut define_emits := map[int]bool{}

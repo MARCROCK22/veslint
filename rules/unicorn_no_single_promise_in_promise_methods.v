@@ -12,7 +12,7 @@ const unspipm_messages = {
 	'no-single-promise-in-promise-methods/use-promise-resolve': 'Switch to `Promise.resolve(…)`.'
 }
 
-fn (mut c Checker) lint_unicorn_no_single_promise_in_promise_methods(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_single_promise_in_promise_methods(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

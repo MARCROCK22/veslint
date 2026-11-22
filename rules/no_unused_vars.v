@@ -196,7 +196,7 @@ mut:
 	findings    []Finding
 }
 
-fn (mut c Checker) lint_no_unused_vars(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unused_vars(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nuv_options(c.rule_options(no_unused_vars))!
 	tree := c.scope_tree(root)
@@ -418,7 +418,7 @@ fn (mut c Checker) nuv_keep(mut s NuvState, v int, used bool) !bool {
 }
 
 // nuv_estree_parent is the parent of an identifier without parentheses.
-fn nuv_estree_parent(n C.TSNode) ?C.TSNode {
+fn nuv_estree_parent(n C.vt_node) ?C.vt_node {
 	mut parent := node_parent(n)?
 	for node_kind(parent) == 'parenthesized_expression' {
 		parent = node_parent(parent)?
@@ -428,7 +428,7 @@ fn nuv_estree_parent(n C.TSNode) ?C.TSNode {
 
 // nuv_parent_is_array_pattern: the ESTree parent of the name is an ArrayPattern. tree-sitter reads
 // some assignment targets as an array expression (`[(a)] = b`); only a write there is in a pattern.
-fn nuv_parent_is_array_pattern(name C.TSNode, write bool) bool {
+fn nuv_parent_is_array_pattern(name C.vt_node, write bool) bool {
 	parent := nuv_estree_parent(name) or { return false }
 	kind := node_kind(parent)
 	return kind == 'array_pattern' || (write && kind == 'array')
@@ -437,7 +437,7 @@ fn nuv_parent_is_array_pattern(name C.TSNode, write bool) bool {
 // nuv_has_rest_sibling ports hasRestSibling on the parent of a name: a Property of an
 // ObjectPattern whose last property is a RestElement (an object expression read as a pattern
 // counts for a write).
-fn nuv_has_rest_sibling(name C.TSNode, write bool) bool {
+fn nuv_has_rest_sibling(name C.vt_node, write bool) bool {
 	parent := node_parent(name) or { return false }
 	mut object := parent
 	match node_kind(parent) {
@@ -479,7 +479,7 @@ fn nuv_has_rest_sibling(name C.TSNode, write bool) bool {
 // nuv_parent_is_function ports isFunction(def.name.parent) for a parameter: the name is a
 // parameter by itself (no default value, no destructuring, no parameter property) of a function
 // with or without a body (not of a function type or a signature).
-fn nuv_parent_is_function(name C.TSNode) bool {
+fn nuv_parent_is_function(name C.vt_node) bool {
 	parent := node_parent(name) or { return false }
 	if node_kind(parent) == 'arrow_function' {
 		// `x => …`
@@ -595,7 +595,7 @@ fn (mut c Checker) nuv_report(mut s NuvState, v int, message_id string, data map
 }
 
 // nuv_import_declaration is the ImportDeclaration (or `import x = require()`) a specifier is in.
-fn nuv_import_declaration(n C.TSNode) ?C.TSNode {
+fn nuv_import_declaration(n C.vt_node) ?C.vt_node {
 	mut node := n
 	for node_kind(node) != 'import_statement' {
 		node = node_parent(node)?
@@ -605,7 +605,7 @@ fn nuv_import_declaration(n C.TSNode) ?C.TSNode {
 
 // nuv_declared_variables are getDeclaredVariables of an ImportDeclaration: the variables of its
 // specifiers, in order (they are variables of the scope of `v`, one of them).
-fn nuv_declared_variables(tree &ScopeTree, v int, declaration C.TSNode) []int {
+fn nuv_declared_variables(tree &ScopeTree, v int, declaration C.vt_node) []int {
 	mut out := []int{}
 	for w in tree.scopes[tree.variables[v].scope].variables {
 		variable := tree.variables[w]
@@ -624,7 +624,7 @@ fn nuv_declared_variables(tree &ScopeTree, v int, declaration C.TSNode) []int {
 }
 
 // nuv_specifier_count is the number of specifiers of an ImportDeclaration.
-fn nuv_specifier_count(declaration C.TSNode) int {
+fn nuv_specifier_count(declaration C.vt_node) int {
 	mut count := 0
 	for part in named_children(declaration) {
 		if node_kind(part) != 'import_clause' {
@@ -721,7 +721,7 @@ fn (mut c Checker) nuv_import_fix(mut s NuvState, v int) ?NuvImportFix {
 
 // nuv_remove_with removes a specifier and a comma next to it: from the start of the first to the
 // end of the last.
-fn nuv_remove_with(node C.TSNode, comma SourceToken) Fix {
+fn nuv_remove_with(node C.vt_node, comma SourceToken) Fix {
 	start := if comma.start < node_start(node) { comma.start } else { node_start(node) }
 	end := if comma.end > node_end(node) { comma.end } else { node_end(node) }
 	return fix_remove_range(start, end)
@@ -729,7 +729,7 @@ fn nuv_remove_with(node C.TSNode, comma SourceToken) Fix {
 
 // nuv_remove_with_newline ports removeNodeWithTrailingNewline: the whole lines of the node, with
 // the line break after them, when the node is all they hold; else the node.
-fn (mut c Checker) nuv_remove_with_newline(node C.TSNode) Fix {
+fn (mut c Checker) nuv_remove_with_newline(node C.vt_node) Fix {
 	start := node_start(node)
 	end := c.tokens.last_end(node_end(node))
 	line_start := offsets.line_start_before(c.src, start)
@@ -764,7 +764,7 @@ fn nuv_next_line_start(src string, offset int) int {
 // `/* global */` comment that names the variable: the offset of the name after `global`, preceded
 // by a space or a comma and followed by the end, a space, a comma or a colon; or that of the
 // comment's text when it is not there.
-fn (mut c Checker) nuv_global_comment_location(root C.TSNode, name string) ?int {
+fn (mut c Checker) nuv_global_comment_location(root C.vt_node, name string) ?int {
 	for node in c.nodes_of_kind(root, c'comment') {
 		text := c.text(node)
 		if !text.starts_with('/*') || text.len < 4 || !text.ends_with('*/') {
@@ -819,7 +819,7 @@ fn (mut c Checker) nuv_global_comment_location(root C.TSNode, name string) ?int 
 // namespaces; in any file, those of a declared namespace or module and of the namespaces inside
 // one; unless the block has an export that overrides that (`export {}`, `export *`, `export =`,
 // `export default name`).
-fn (mut c Checker) nuv_ambient_marks(root C.TSNode, tree &ScopeTree, abs_path string) map[int]bool {
+fn (mut c Checker) nuv_ambient_marks(root C.vt_node, tree &ScopeTree, abs_path string) map[int]bool {
 	mut marked := map[int]bool{}
 	definition_file := is_definition_file(abs_path)
 	for node in c.nodes_of_kinds(root, ['interface_declaration', 'type_alias_declaration',
@@ -862,14 +862,14 @@ fn (mut c Checker) nuv_ambient_marks(root C.TSNode, tree &ScopeTree, abs_path st
 }
 
 // nuv_is_module: the node is a TSModuleDeclaration (`namespace`, `module`, `declare global`).
-fn nuv_is_module(n C.TSNode) bool {
+fn nuv_is_module(n C.vt_node) bool {
 	kind := node_kind(n)
 	return kind in ['internal_module', 'module']
 		|| (kind == 'ambient_declaration' && has_child_kind(n, 'global'))
 }
 
 // nuv_is_declared_module: the TSModuleDeclaration has `declare`.
-fn nuv_is_declared_module(module C.TSNode) bool {
+fn nuv_is_declared_module(module C.vt_node) bool {
 	if node_kind(module) == 'ambient_declaration' {
 		return has_child_kind(module, 'declare')
 	}
@@ -878,7 +878,7 @@ fn nuv_is_declared_module(module C.TSNode) bool {
 }
 
 // nuv_in_declared_module_block: the module is inside the block of a declared module.
-fn nuv_in_declared_module_block(module C.TSNode) bool {
+fn nuv_in_declared_module_block(module C.vt_node) bool {
 	mut node := module
 	for {
 		node = node_parent(node) or { return false }
@@ -895,7 +895,7 @@ fn nuv_in_declared_module_block(module C.TSNode) bool {
 
 // nuv_has_overriding_export ports hasOverridingExportStatement on the statements of a block or of
 // the program.
-fn nuv_has_overriding_export(block C.TSNode) bool {
+fn nuv_has_overriding_export(block C.vt_node) bool {
 	for statement in named_children(block) {
 		if node_kind(statement) != 'export_statement' {
 			continue
@@ -926,8 +926,8 @@ fn nuv_has_overriding_export(block C.TSNode) bool {
 
 // nuv_mark_declaration ports markDeclarationChildAsUsed: the names the declaration declares are
 // marked in its variable scope (the scope around it for a declared function or a namespace).
-fn (mut c Checker) nuv_mark_declaration(node C.TSNode, tree &ScopeTree, mut marked map[int]bool) {
-	mut declared := []C.TSNode{}
+fn (mut c Checker) nuv_mark_declaration(node C.vt_node, tree &ScopeTree, mut marked map[int]bool) {
+	mut declared := []C.vt_node{}
 	match node_kind(node) {
 		'lexical_declaration', 'variable_declaration' {
 			// The PatternVisitor on each declarator: its names and the identifiers of its
@@ -941,8 +941,8 @@ fn (mut c Checker) nuv_mark_declaration(node C.TSNode, tree &ScopeTree, mut mark
 					continue
 				}
 				mut targets := []ScopeTarget{}
-				mut rhs := []C.TSNode{}
-				builder.collect_pattern(declarator, []C.TSNode{}, -1, mut targets, mut rhs)
+				mut rhs := []C.vt_node{}
+				builder.collect_pattern(declarator, []C.vt_node{}, -1, mut targets, mut rhs)
 				for target in targets {
 					declared << target.ident
 				}
@@ -981,7 +981,7 @@ fn (mut c Checker) nuv_mark_declaration(node C.TSNode, tree &ScopeTree, mut mark
 }
 
 // nuv_name is the name of an identifier (escapes applied).
-fn (c &Checker) nuv_name(n C.TSNode) string {
+fn (c &Checker) nuv_name(n C.vt_node) string {
 	text := c.text(n)
 	if !text.contains('\\') {
 		return text

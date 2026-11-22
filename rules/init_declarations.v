@@ -46,7 +46,7 @@ fn tsid_options(options []json2.Any) !TsidOptions {
 	}
 }
 
-fn (mut c Checker) lint_init_declarations(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_init_declarations(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := tsid_options(c.rule_options(init_declarations))!
 	mut findings := []Finding{}

@@ -23,7 +23,7 @@ fn vue_return_in_computed_property_options(options []json2.Any) !bool {
 	return o.bool_value('treatUndefinedAsUnspecified')!
 }
 
-fn (mut c Checker) lint_vue_return_in_computed_property(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_return_in_computed_property(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	treat_undefined := vue_return_in_computed_property_options(c.rule_options(vue_return_in_computed_property))!
 	mut findings := []Finding{}

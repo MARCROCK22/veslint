@@ -114,7 +114,7 @@ fn vcas_option_phrase(name string) string {
 	}
 }
 
-fn (mut c Checker) lint_vue_component_api_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_component_api_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := vue_component_api_style_options(c.rule_options(vue_component_api_style))!
 	mut findings := []Finding{}
@@ -186,7 +186,7 @@ struct VcasApi {
 // vcas_is_sfc_object ports isSFCObject: in a .vue file (or one without extension), the object
 // `export default` (outside `<script setup>`), `defineComponent`, `defineNuxtComponent` or
 // `Vue.extend` give, or a `const` that one of them is given.
-fn (mut c Checker) vcas_is_sfc_object(root C.TSNode, t &estree.EsTree, s &VueScript, node int) bool {
+fn (mut c Checker) vcas_is_sfc_object(root C.vt_node, t &estree.EsTree, s &VueScript, node int) bool {
 	ext := vmcfn_extname(s.filename.all_after_last('/'))
 	if ext != '.vue' && ext != '' {
 		return false
@@ -194,7 +194,7 @@ fn (mut c Checker) vcas_is_sfc_object(root C.TSNode, t &estree.EsTree, s &VueScr
 	return c.vcas_is_sfc(root, t, s, node, 0)
 }
 
-fn (mut c Checker) vcas_is_sfc(root C.TSNode, t &estree.EsTree, s &VueScript, node int, depth int) bool {
+fn (mut c Checker) vcas_is_sfc(root C.vt_node, t &estree.EsTree, s &VueScript, node int, depth int) bool {
 	if depth > 100 {
 		return false
 	}

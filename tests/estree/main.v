@@ -26,12 +26,12 @@ fn read_source(path string) string {
 	return src
 }
 
-fn convert_file(path string, ts_parser &treesitter.Parser, tsx_parser &treesitter.Parser) ?(estree.EsTree, &C.TSTree) {
+fn convert_file(path string, ts_parser &treesitter.Parser, tsx_parser &treesitter.Parser) ?(estree.EsTree, &C.vt_rows) {
 	src := read_source(path)
 	p := if path.ends_with('.tsx') { tsx_parser } else { ts_parser }
 	tree := p.parse(src) or { return none }
 	t := estree.convert_with(treesitter.root_node(tree), src, path.ends_with('.tsx'), options(path)) or {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 		return none
 	}
 	return t, tree
@@ -48,7 +48,7 @@ fn main() {
 				exit(1)
 			}
 			print(t.serialize())
-			treesitter.tree_delete(tree)
+			treesitter.rows_free(tree)
 		}
 		'traverse' {
 			t, tree := convert_file(os.args[2], &ts_parser, &tsx_parser) or {
@@ -56,7 +56,7 @@ fn main() {
 				exit(1)
 			}
 			print(traversal(t))
-			treesitter.tree_delete(tree)
+			treesitter.rows_free(tree)
 		}
 		'hash' {
 			files := os.read_lines(os.args[2]) or { panic(err) }
@@ -74,7 +74,7 @@ fn main() {
 					continue
 				}
 				println('${file}\tok\t${sha1.hexhash(t.serialize())}:${sha1.hexhash(traversal(t))}')
-				treesitter.tree_delete(tree)
+				treesitter.rows_free(tree)
 			}
 		}
 		'time' {
@@ -112,7 +112,7 @@ fn time_file(path string, runs int, ts_parser &treesitter.Parser, tsx_parser &tr
 		}
 		conv_ms := sw.elapsed().microseconds() / 1000.0
 		println('parse ${parse_ms:.1f} ms, convert ${conv_ms:.1f} ms, ${t.nodes.len} nodes, ${src.len} bytes')
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 }
 

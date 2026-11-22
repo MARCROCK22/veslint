@@ -261,20 +261,20 @@ fn stv_key_units(key string) []u16 {
 }
 
 // get_static_value ports getStaticValue(node, initialScope) on the ESTree view of `n`.
-fn (mut c Checker) get_static_value(n C.TSNode) StaticValue {
+fn (mut c Checker) get_static_value(n C.vt_node) StaticValue {
 	mut ctx := StvContext{}
 	return c.stv_eval_top(n, mut ctx)
 }
 
 // stv_eval_top evaluates a whole expression: it is not static if the evaluation was aborted.
-fn (mut c Checker) stv_eval_top(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_eval_top(n C.vt_node, mut ctx StvContext) StaticValue {
 	result := c.stv_eval(n, mut ctx)
 	return if ctx.aborted { StaticValue{} } else { result }
 }
 
 // get_static_value_bounded is get_static_value with a bound on the sub-expressions visited, for
 // tests: it also says whether the bound was reached, and how many were visited.
-fn (mut c Checker) get_static_value_bounded(n C.TSNode, max_steps int) (StaticValue, bool, int) {
+fn (mut c Checker) get_static_value_bounded(n C.vt_node, max_steps int) (StaticValue, bool, int) {
 	mut ctx := StvContext{
 		max_steps: max_steps
 	}
@@ -284,7 +284,7 @@ fn (mut c Checker) get_static_value_bounded(n C.TSNode, max_steps int) (StaticVa
 
 // get_static_value_unscoped ports getStaticValue(node) without an initial scope: no identifier is
 // static.
-fn (mut c Checker) get_static_value_unscoped(n C.TSNode) StaticValue {
+fn (mut c Checker) get_static_value_unscoped(n C.vt_node) StaticValue {
 	mut ctx := StvContext{
 		no_scope: true
 	}
@@ -302,7 +302,7 @@ fn js_any_string_value(v JsAny) ?string {
 // static_member_name ports getStaticMemberAccessValue: the static name of a MemberExpression's
 // property or of the key of a property, method or field (a symbol is none, as it never equals a
 // name). A value that is not a string is converted like String(value).
-fn (mut c Checker) static_member_name(n C.TSNode) ?string {
+fn (mut c Checker) static_member_name(n C.vt_node) ?string {
 	key, computed := stv_member_key(n)?
 	if !computed {
 		match node_kind(key) {
@@ -324,7 +324,7 @@ fn (mut c Checker) static_member_name(n C.TSNode) ?string {
 
 // static_member_string is getStaticMemberAccessValue for the callers that compare it with names
 // (`===`, `Set#has`): a value that is not a string never equals one, so it is none.
-fn (mut c Checker) static_member_string(n C.TSNode) ?string {
+fn (mut c Checker) static_member_string(n C.vt_node) ?string {
 	key, computed := stv_member_key(n)?
 	if computed || node_kind(key) !in ['property_identifier', 'identifier',
 		'shorthand_property_identifier', 'private_property_identifier'] {
@@ -337,14 +337,14 @@ fn (mut c Checker) static_member_string(n C.TSNode) ?string {
 }
 
 // is_static_member_access_of_value ports isStaticMemberAccessOfValue.
-fn (mut c Checker) is_static_member_access_of_value(n C.TSNode, values []string) bool {
+fn (mut c Checker) is_static_member_access_of_value(n C.vt_node, values []string) bool {
 	name := c.static_member_string(n) or { return false }
 	return name in values
 }
 
 // stv_member_key gives the property or key node of a member access, property, method or field,
 // and whether it is computed (the expression inside a computed key).
-fn stv_member_key(n C.TSNode) ?(C.TSNode, bool) {
+fn stv_member_key(n C.vt_node) ?(C.vt_node, bool) {
 	match node_kind(n) {
 		'member_expression' {
 			return node_field(n, 'property')?, false
@@ -368,7 +368,7 @@ fn stv_member_key(n C.TSNode) ?(C.TSNode, bool) {
 	}
 }
 
-fn stv_key_node(key C.TSNode) ?(C.TSNode, bool) {
+fn stv_key_node(key C.vt_node) ?(C.vt_node, bool) {
 	if node_kind(key) == 'computed_property_name' {
 		return first_named(key)?, true
 	}
@@ -377,7 +377,7 @@ fn stv_key_node(key C.TSNode) ?(C.TSNode, bool) {
 
 // property_name ports getPropertyName(node, initialScope) of eslint-utils for a
 // MemberExpression, Property, MethodDefinition or PropertyDefinition.
-fn (mut c Checker) property_name(n C.TSNode) ?string {
+fn (mut c Checker) property_name(n C.vt_node) ?string {
 	key, computed := stv_member_key(n)?
 	if computed {
 		return c.string_if_constant(key)
@@ -398,17 +398,17 @@ fn (mut c Checker) property_name(n C.TSNode) ?string {
 
 // string_if_constant ports getStringIfConstant: a regular expression literal V8 rejects is
 // `/pattern/flags`, anything else String(getStaticValue).
-fn (mut c Checker) string_if_constant(n C.TSNode) ?string {
+fn (mut c Checker) string_if_constant(n C.vt_node) ?string {
 	return c.stv_string_if_constant(n, false)
 }
 
 // string_if_constant_unscoped is getStringIfConstant without an initial scope, as
 // getFunctionNameWithKind calls it: no identifier is static.
-fn (mut c Checker) string_if_constant_unscoped(n C.TSNode) ?string {
+fn (mut c Checker) string_if_constant_unscoped(n C.vt_node) ?string {
 	return c.stv_string_if_constant(n, true)
 }
 
-fn (mut c Checker) stv_string_if_constant(n C.TSNode, no_scope bool) ?string {
+fn (mut c Checker) stv_string_if_constant(n C.vt_node, no_scope bool) ?string {
 	node := unwrap_parens(n)
 	mut ctx := StvContext{
 		no_scope: no_scope
@@ -421,7 +421,7 @@ fn (mut c Checker) stv_string_if_constant(n C.TSNode, no_scope bool) ?string {
 }
 
 // stv_eval ports getStaticValueR: the operations table by ESTree node type.
-fn (mut c Checker) stv_eval(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_eval(n C.vt_node, mut ctx StvContext) StaticValue {
 	if ctx.aborted {
 		return StaticValue{}
 	}
@@ -450,7 +450,7 @@ fn (mut c Checker) stv_eval(n C.TSNode, mut ctx StvContext) StaticValue {
 	return result
 }
 
-fn (mut c Checker) stv_eval_node(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_eval_node(n C.vt_node, mut ctx StvContext) StaticValue {
 	match node_kind(n) {
 		'parenthesized_expression', 'as_expression', 'satisfies_expression', 'non_null_expression',
 		'instantiation_expression' {
@@ -531,7 +531,7 @@ fn (mut c Checker) stv_eval_node(n C.TSNode, mut ctx StvContext) StaticValue {
 // definitions whose name is one of builtinNames) or a constant variable (one Variable definition,
 // `const` or never written after its initializer, with an identifier name), whose initializer is
 // evaluated; an object value is not static if a reference mutates one of its properties.
-fn (mut c Checker) stv_identifier(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_identifier(n C.vt_node, mut ctx StvContext) StaticValue {
 	if ctx.no_scope {
 		return StaticValue{}
 	}
@@ -586,7 +586,7 @@ fn (mut c Checker) stv_mutated(tree &ScopeTree, v int, variable ScopeVariable, m
 // stv_scope_tree is the scope tree of the file of `n`: the one the checker keeps (scope_tree
 // builds it once per file, from the root), so that only the first identifier of a file climbs to
 // the root (ts_node_parent descends from the root at every step).
-fn (mut c Checker) stv_scope_tree(n C.TSNode) &ScopeTree {
+fn (mut c Checker) stv_scope_tree(n C.vt_node) &ScopeTree {
 	if c.file_scopes != unsafe { nil } {
 		return c.file_scopes
 	}
@@ -697,7 +697,7 @@ fn stv_builtin_global(name string) ?JsAny {
 
 // stv_literal ports the Literal operation with typescript-estree's values: a regular expression
 // is a RegExp only if V8 accepts it (otherwise its value is null and it is not static).
-fn (mut c Checker) stv_literal(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_literal(n C.vt_node, mut ctx StvContext) StaticValue {
 	match node_kind(n) {
 		'string' {
 			quoted := c.text(n)
@@ -745,9 +745,9 @@ fn (mut c Checker) stv_literal(n C.TSNode, mut ctx StvContext) StaticValue {
 
 // stv_quasis gives the raw texts of the parts of a template between its substitutions, and the
 // substitution expressions.
-fn (c &Checker) stv_quasis(n C.TSNode) ([]string, []C.TSNode) {
+fn (c &Checker) stv_quasis(n C.vt_node) ([]string, []C.vt_node) {
 	mut raws := []string{}
-	mut expressions := []C.TSNode{}
+	mut expressions := []C.vt_node{}
 	mut start := node_start(n) + 1
 	for child in children(n) {
 		if node_kind(child) == 'template_substitution' {
@@ -761,7 +761,7 @@ fn (c &Checker) stv_quasis(n C.TSNode) ([]string, []C.TSNode) {
 }
 
 // stv_template ports TemplateLiteral: the cooked parts joined with the values as strings.
-fn (mut c Checker) stv_template(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_template(n C.vt_node, mut ctx StvContext) StaticValue {
 	raws, expressions := c.stv_quasis(n)
 	values := c.stv_values(expressions, mut ctx) or { return StaticValue{} }
 	mut out := cooked_units(raws[0], true) or { return StaticValue{} }
@@ -778,7 +778,7 @@ fn stv_concat_string(v JsAny) ?[]u16 {
 }
 
 // stv_values ports getElementValues on expressions (no holes nor spreads).
-fn (mut c Checker) stv_values(nodes []C.TSNode, mut ctx StvContext) ?[]JsAny {
+fn (mut c Checker) stv_values(nodes []C.vt_node, mut ctx StvContext) ?[]JsAny {
 	mut out := []JsAny{}
 	for node in nodes {
 		v := c.stv_eval(node, mut ctx)
@@ -791,7 +791,7 @@ fn (mut c Checker) stv_values(nodes []C.TSNode, mut ctx StvContext) ?[]JsAny {
 }
 
 // stv_element_values ports getElementValues on a list of elements that may include spreads.
-fn (mut c Checker) stv_element_values(nodes []C.TSNode, mut ctx StvContext) ?[]JsAny {
+fn (mut c Checker) stv_element_values(nodes []C.vt_node, mut ctx StvContext) ?[]JsAny {
 	mut out := []JsAny{}
 	for node in nodes {
 		if node_kind(node) == 'spread_element' {
@@ -876,7 +876,7 @@ fn stv_iterate(v JsAny, mut ctx StvContext) ?[]JsAny {
 }
 
 // stv_array_elements gives the elements of an ArrayExpression, with its holes.
-fn (mut c Checker) stv_array_elements(n C.TSNode, mut ctx StvContext) ?[]JsAny {
+fn (mut c Checker) stv_array_elements(n C.vt_node, mut ctx StvContext) ?[]JsAny {
 	mut out := []JsAny{}
 	mut expect_element := true
 	for child in children(n) {
@@ -890,7 +890,7 @@ fn (mut c Checker) stv_array_elements(n C.TSNode, mut ctx StvContext) ?[]JsAny {
 			expect_element = true
 			continue
 		}
-		if !C.ts_node_is_named(child) || kind == 'comment' {
+		if !C.vt_node_is_named(child) || kind == 'comment' {
 			continue
 		}
 		out << c.stv_element_values([child], mut ctx)?
@@ -900,7 +900,7 @@ fn (mut c Checker) stv_array_elements(n C.TSNode, mut ctx StvContext) ?[]JsAny {
 }
 
 // stv_object ports ObjectExpression: init properties with static keys and values, and spreads.
-fn (mut c Checker) stv_object(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_object(n C.vt_node, mut ctx StvContext) StaticValue {
 	mut keys := []string{}
 	mut values := []JsAny{}
 	mut prototype := []JsAny{}
@@ -1035,7 +1035,7 @@ fn stv_to_string_tag(v JsAny) string {
 
 // stv_property_key ports getStaticPropertyNameValue for a Property: its name, String(value) of a
 // literal key, or the value of a computed key. none: the key is not static.
-fn (mut c Checker) stv_property_key(key C.TSNode, mut ctx StvContext) ?JsAny {
+fn (mut c Checker) stv_property_key(key C.vt_node, mut ctx StvContext) ?JsAny {
 	match node_kind(key) {
 		'property_identifier' {
 			return js_any_text(c.identifier_name(key))
@@ -1118,7 +1118,7 @@ fn stv_assign(mut keys []string, mut values []JsAny, mut prototype []JsAny, sour
 }
 
 // stv_member ports MemberExpression.
-fn (mut c Checker) stv_member(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_member(n C.vt_node, mut ctx StvContext) StaticValue {
 	property := node_field(n, if node_kind(n) == 'member_expression' { 'property' } else { 'index' }) or {
 		return StaticValue{}
 	}
@@ -1185,7 +1185,7 @@ fn stv_rejected_getter(object JsAny, key_value JsAny, called bool) bool {
 }
 
 // stv_member_property ports getStaticPropertyNameValue for a MemberExpression.
-fn (mut c Checker) stv_member_property(n C.TSNode, mut ctx StvContext) ?JsAny {
+fn (mut c Checker) stv_member_property(n C.vt_node, mut ctx StvContext) ?JsAny {
 	if node_kind(n) == 'subscript_expression' {
 		v := c.stv_eval(node_field(n, 'index')?, mut ctx)
 		if !v.found {
@@ -1202,7 +1202,7 @@ fn stv_is_nullish(v JsAny) bool {
 
 // stv_new ports NewExpression: `new RegExp(…)`, `new Map(…)`, `new Set(…)` and `new Object(…)`
 // are evaluated.
-fn (mut c Checker) stv_new(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_new(n C.vt_node, mut ctx StvContext) StaticValue {
 	callee := c.stv_eval(node_field(n, 'constructor') or { return StaticValue{} }, mut ctx)
 	mut args := []JsAny{}
 	if arguments := node_field(n, 'arguments') {
@@ -1246,7 +1246,7 @@ fn (mut c Checker) stv_new(n C.TSNode, mut ctx StvContext) StaticValue {
 }
 
 // stv_call ports CallExpression and, for a tagged template, TaggedTemplateExpression.
-fn (mut c Checker) stv_call(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_call(n C.vt_node, mut ctx StvContext) StaticValue {
 	function := node_field(n, 'function') or { return StaticValue{} }
 	args_node := node_field(n, 'arguments') or { return StaticValue{} }
 	if node_kind(args_node) == 'template_string' {
@@ -1317,7 +1317,7 @@ fn stv_call_value(f JsAny, this JsAny, has_receiver bool, args []JsAny, mut ctx 
 }
 
 // stv_tagged_template ports TaggedTemplateExpression: only String.raw.
-fn (mut c Checker) stv_tagged_template(tag C.TSNode, template C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_tagged_template(tag C.vt_node, template C.vt_node, mut ctx StvContext) StaticValue {
 	tag_value := c.stv_eval(tag, mut ctx)
 	raws, expressions := c.stv_quasis(template)
 	values := c.stv_values(expressions, mut ctx) or { return StaticValue{} }
@@ -1336,7 +1336,7 @@ fn (mut c Checker) stv_tagged_template(tag C.TSNode, template C.TSNode, mut ctx 
 }
 
 // stv_unary ports UnaryExpression.
-fn (mut c Checker) stv_unary(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_unary(n C.vt_node, mut ctx StvContext) StaticValue {
 	operator := operator_of(n)
 	if operator == 'delete' {
 		return StaticValue{}
@@ -1400,7 +1400,7 @@ fn stv_typeof(v JsAny) string {
 }
 
 // stv_binary ports LogicalExpression and BinaryExpression.
-fn (mut c Checker) stv_binary(n C.TSNode, mut ctx StvContext) StaticValue {
+fn (mut c Checker) stv_binary(n C.vt_node, mut ctx StvContext) StaticValue {
 	operator := operator_of(n)
 	left_node := node_field(n, 'left') or { return StaticValue{} }
 	right_node := node_field(n, 'right') or { return StaticValue{} }

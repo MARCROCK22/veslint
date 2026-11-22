@@ -24,7 +24,7 @@ fn sshc_options(options []json2.Any) !bool {
 	return error('the option of `${svelte_spaced_html_comment}` must be "always" or "never"')
 }
 
-fn (mut c Checker) lint_svelte_spaced_html_comment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_spaced_html_comment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	require_space := sshc_options(c.rule_options(svelte_spaced_html_comment))!
 	if !c.is_svelte() {
 		return []

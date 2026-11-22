@@ -5,6 +5,6 @@ module rules
 
 const upjpb_messages = map[string]string{}
 
-fn (mut c Checker) lint_unicorn_prefer_json_parse_buffer(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_json_parse_buffer(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return []Finding{}
 }

@@ -13,12 +13,12 @@ const nntas_messages = {
 
 // NntasAssertion is a TSAsExpression or TSTypeAssertion that is not a const assertion.
 struct NntasAssertion {
-	node       C.TSNode
-	expression C.TSNode // without parentheses
-	type_node  C.TSNode // the asserted type, without parentheses
+	node       C.vt_node
+	expression C.vt_node // without parentheses
+	type_node  C.vt_node // the asserted type, without parentheses
 }
 
-fn (mut c Checker) lint_non_nullable_type_assertion_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_non_nullable_type_assertion_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut assertions := []NntasAssertion{}
 	mut spans := []Span{}
@@ -67,7 +67,7 @@ fn (c &Checker) nntas_fix(a NntasAssertion) Fix {
 
 // nntas_assertion gives the parts of `x as T` or `<T>x`; none for a const assertion (`x as const`,
 // `<const>x`: isConstAssertion), whose `const` is an anonymous token in tree-sitter.
-fn nntas_assertion(node C.TSNode) ?NntasAssertion {
+fn nntas_assertion(node C.vt_node) ?NntasAssertion {
 	if node_kind(node) == 'as_expression' {
 		parts := named_children(node)
 		if parts.len < 2 {
@@ -93,7 +93,7 @@ fn nntas_assertion(node C.TSNode) ?NntasAssertion {
 
 // nntas_types_if_not_loose ports getTypesIfNotLoose: the union parts of the type of the node, or
 // none (empty) if it is `any` or `unknown` (tsutils.isTypeFlagSet, on the type's own flags).
-fn (mut c Checker) nntas_types_if_not_loose(n C.TSNode) ![]TypeResponse {
+fn (mut c Checker) nntas_types_if_not_loose(n C.vt_node) ![]TypeResponse {
 	t := c.node_type(n) or { return []TypeResponse{} }
 	if t.flags & (type_flag_any | type_flag_unknown) != 0 {
 		return []TypeResponse{}

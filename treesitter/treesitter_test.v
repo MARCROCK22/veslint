@@ -2,7 +2,7 @@ module treesitter
 
 import os
 
-fn statements(src string) ([]C.TSNode, TokenEnds, &C.TSTree) {
+fn statements(src string) ([]C.vt_node, TokenEnds, &C.vt_rows) {
 	p := new_parser() or { panic(err) }
 	defer {
 		p.close()
@@ -18,7 +18,7 @@ fn test_token_ends_skip_trailing_comments() {
 	src := 'f() // a\nf() /* b */\nf()'
 	stmts, tokens, tree := statements(src)
 	defer {
-		tree_delete(tree)
+		rows_free(tree)
 	}
 	assert stmts.len == 3
 	assert node_end(stmts[0]) > 3 // includes `// a`
@@ -33,7 +33,7 @@ fn test_token_ends_skip_hash_bang() {
 	src := '#!/usr/bin/env node\nf();\n'
 	stmts, tokens, tree := statements(src)
 	defer {
-		tree_delete(tree)
+		rows_free(tree)
 	}
 	assert stmts.len == 1
 	assert tokens.last_end(node_start(stmts[0])) == 0
@@ -45,7 +45,7 @@ fn test_token_ends_skip_zero_width_tokens() {
 	src := 'a\nb'
 	stmts, tokens, tree := statements(src)
 	defer {
-		tree_delete(tree)
+		rows_free(tree)
 	}
 	assert stmts.len == 2
 	assert tokens.ends == [1, 3]
@@ -54,12 +54,12 @@ fn test_token_ends_skip_zero_width_tokens() {
 }
 
 // same_nodes tells whether two lists hold the same nodes in the same order.
-fn same_nodes(a []C.TSNode, b []C.TSNode) bool {
+fn same_nodes(a []C.vt_node, b []C.vt_node) bool {
 	if a.len != b.len {
 		return false
 	}
 	for i, node in a {
-		if !C.ts_node_eq(node, b[i]) {
+		if !C.vt_node_eq(node, b[i]) {
 			return false
 		}
 	}
@@ -79,7 +79,7 @@ fn test_node_index_gives_what_the_walks_give() {
 	}
 	tree := p.parse(src) or { panic(err) }
 	defer {
-		tree_delete(tree)
+		rows_free(tree)
 	}
 	root := root_node(tree)
 	index := new_node_index(root)
@@ -116,65 +116,6 @@ fn test_node_index_gives_what_the_walks_give() {
 	assert same_nodes(NodeIndex{}.of_kind(root, 'array'), nodes_of_kind(root, c'array'))
 }
 
-// parents_agree walks every node under `root` with a cursor and checks node_parent (the parents the
-// index recorded) against tree-sitter's ts_node_parent.
-fn parents_agree(root C.TSNode) int {
-	mut checked := 0
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		expected := C.ts_node_parent(node)
-		got := node_parent(node) or { C.TSNode{} }
-		if C.ts_node_is_null(expected) {
-			assert node_parent(node) == none
-		} else {
-			assert C.ts_node_eq(got, expected)
-			assert C.ts_node_start_byte(got) == C.ts_node_start_byte(expected)
-			assert C.ts_node_symbol(got) == C.ts_node_symbol(expected)
-		}
-		checked++
-		if C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return checked
-			}
-		}
-	}
-	return checked
-}
-
-fn test_node_parent_from_the_index_is_tree_sitters() {
-	p := new_parser() or { panic(err) }
-	defer {
-		p.close()
-	}
-	// The rules' own fixtures: every construct of the grammar, JSX left to the tsx parser.
-	mut files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.ts')
-	files.sort()
-	mut checked := 0
-	for file in files#[..400] {
-		tree := p.parse(os.read_file(file) or { panic(err) }) or { panic(err) }
-		root := root_node(tree)
-		_ := new_node_index(root)
-		checked += parents_agree(root)
-		// Forgotten before the tree is freed: tree-sitter's walk from then on.
-		parent_cache_clear()
-		tree_delete(tree)
-	}
-	assert checked > 100000
-	// A tree with no index (or another tree than the index's) is walked by tree-sitter.
-	tree := p.parse('const a = [1, (b) => b];') or { panic(err) }
-	defer {
-		tree_delete(tree)
-	}
-	assert parents_agree(root_node(tree)) > 10
-}
-
 // One walk gives the node index and the token ends that the two walks give: on the rules' own
 // fixtures (comments, `#!`, automatic `;`, ERROR nodes) and on .tsx ones (JSX children).
 fn test_node_index_and_token_ends_from_one_walk() {
@@ -200,25 +141,15 @@ fn test_node_index_and_token_ends_from_one_walk() {
 	assert checked > 10000
 }
 
-// walk_of_kinds is what of_kinds gives, from a walk of a cursor.
-fn walk_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
-	mut nodes := []C.TSNode{}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
+// walk_of_kinds is what of_kinds gives, from a recursive walk of the children.
+fn walk_of_kinds(root C.vt_node, kinds []string, skip []string) []C.vt_node {
+	mut nodes := []C.vt_node{}
+	if C.vt_node_is_named(root) && node_kind(root) in kinds {
+		nodes << root
 	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		if C.ts_node_is_named(node) && node_kind(node) in kinds {
-			nodes << node
-		}
-		if node_kind(node) !in skip && C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return nodes
-			}
+	if node_kind(root) !in skip {
+		for child in children(root) {
+			nodes << walk_of_kinds(child, kinds, skip)
 		}
 	}
 	return nodes
@@ -227,8 +158,7 @@ fn walk_of_kinds(root C.TSNode, kinds []string, skip []string) []C.TSNode {
 fn same_index_and_ends(p Parser, src string) int {
 	tree := p.parse(src) or { panic(err) }
 	defer {
-		parent_cache_clear()
-		tree_delete(tree)
+		rows_free(tree)
 	}
 	root := root_node(tree)
 	expected := token_ends(root)
@@ -254,10 +184,10 @@ fn same_index_and_ends(p Parser, src string) int {
 	return expected.ends.len
 }
 
-// children and named_children (from the flat tree, or from one walk of a cursor without it:
-// flat_tree.h) give what ts_node_child and ts_node_named_child give, and node_parent what
-// ts_node_parent gives, for every node of the rules' fixtures and of .tsx ones.
-fn test_children_are_tree_sitters() {
+// The rows answer what tree-sitter's functions answer (rows_build.h, vt_rows_check), for every node
+// of the rules' fixtures, of .tsx ones and of trees with errors, but where tree-sitter has quirks
+// no reader of veslint sees (vt_rows_check_quirk).
+fn test_rows_are_tree_sitters() {
 	p := new_parser() or { panic(err) }
 	tsx := new_tsx_parser() or { panic(err) }
 	defer {
@@ -268,62 +198,46 @@ fn test_children_are_tree_sitters() {
 	files.sort()
 	mut tsx_files := os.walk_ext(os.join_path(@VMODROOT, 'tests', 'rules'), '.tsx')
 	tsx_files.sort()
-	mut checked := 0
-	for flat in [false, true] {
-		for file in files#[..300] {
-			checked += same_children(p, os.read_file(file) or { panic(err) }, flat)
-		}
-		for file in tsx_files#[..100] {
-			checked += same_children(tsx, os.read_file(file) or { panic(err) }, flat)
-		}
-		checked += same_children(p, 'a\nb /* c */ ) d; { x; /* y */ z }', flat)
+	mut checked := u64(0)
+	for file in files {
+		checked += same_rows(p, os.read_file(file) or { panic(err) })
 	}
-	assert checked > 200000
+	for file in tsx_files {
+		checked += same_rows(tsx, os.read_file(file) or { panic(err) })
+	}
+	checked += same_rows(p, 'a\nb /* c */ ) d; { x; /* y */ z }')
+	checked += same_rows(p, 'let = ;\nfunction f( { return 1 }\nclass A { a = 1 b = 2 }\nif (x) y\nz')
+	assert checked > 900000
 }
 
-fn same_children(p Parser, src string, flat bool) int {
-	tree := p.parse(src) or { panic(err) }
+fn same_rows(p Parser, src string) u64 {
+	tree := p.parse_tree(src) or { panic(err) }
 	defer {
-		parent_cache_clear()
 		tree_delete(tree)
 	}
-	if flat {
-		_ := new_node_index(root_node(tree))
-	}
-	mut checked := 0
-	mut cursor := C.ts_tree_cursor_new(root_node(tree))
+	rows := rows_of(tree) or { panic(err) }
 	defer {
-		C.ts_tree_cursor_delete(&cursor)
+		rows_free(rows)
 	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		all := children(node)
-		assert all.len == int(C.ts_node_child_count(node))
-		for i, child in all {
-			assert C.ts_node_eq(child, C.ts_node_child(node, u32(i)))
-		}
-		mut named := []C.TSNode{}
-		for i in 0 .. int(C.ts_node_named_child_count(node)) {
-			child := C.ts_node_named_child(node, u32(i))
-			if node_kind(child) != 'comment' {
-				named << child
-			}
-		}
-		assert same_nodes(named_children(node), named), src
-		if parent := node_parent(node) {
-			assert C.ts_node_eq(parent, C.ts_node_parent(node)), src
-		} else {
-			assert C.ts_node_is_null(C.ts_node_parent(node)), src
-		}
-		checked++
-		if C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return checked
-			}
-		}
+	assert C.vt_rows_check(rows, tree) == 0, src
+	// Written and read back as another parser would fill them: the same rows.
+	path := os.join_path(os.temp_dir(), 'veslint-rows-test-${os.getpid()}.bin')
+	assert C.vt_rows_dump(rows, &char(path.str))
+	loaded := C.vt_rows_load(&char(path.str), voidptr(C.vt_rows_language(rows)))
+	os.rm(path) or {}
+	assert !isnil(loaded)
+	defer {
+		rows_free(loaded)
 	}
-	return checked
+	assert loaded.count == rows.count
+	for i in 0 .. int(rows.count) {
+		a := C.vt_node_row(C.vt_node_at(rows, u32(i)))
+		b := C.vt_node_row(C.vt_node_at(loaded, u32(i)))
+		assert a.start_byte == b.start_byte && a.end_byte == b.end_byte && a.start_row == b.start_row
+			&& a.start_column == b.start_column && a.end_row == b.end_row
+			&& a.end_column == b.end_column && a.parent == b.parent && a.next == b.next
+			&& a.prev == b.prev && a.last == b.last && a.symbol == b.symbol && a.field == b.field
+			&& a.flags == b.flags, src
+	}
+	return u64(rows.count)
 }

@@ -9,7 +9,7 @@ const nvar_messages = {
 	'unexpectedVar': 'Unexpected var, use let or const instead.'
 }
 
-fn (mut c Checker) lint_no_var(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_var(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['variable_declaration', 'for_in_statement'], []) {
@@ -71,7 +71,7 @@ fn (mut c Checker) lint_no_var(root C.TSNode, abs_path string, mut stats Stats) 
 
 // nvar_declaration_range is the range of the ESTree VariableDeclaration: from `var` to its left
 // side in a for-in or for-of, without the `;` in the head of a for.
-fn (c &Checker) nvar_declaration_range(node C.TSNode, estree C.TSNode, var_token C.TSNode) (int, int) {
+fn (c &Checker) nvar_declaration_range(node C.vt_node, estree C.vt_node, var_token C.vt_node) (int, int) {
 	if node_kind(node) == 'for_in_statement' {
 		return node_start(var_token), c.es_end(node_field(node, 'left') or { var_token })
 	}
@@ -88,7 +88,7 @@ fn (c &Checker) nvar_declaration_range(node C.TSNode, estree C.TSNode, var_token
 
 // nvar_is_block_statement: an ESTree BlockStatement (not the body of a static block or a
 // namespace).
-fn nvar_is_block_statement(n C.TSNode) bool {
+fn nvar_is_block_statement(n C.vt_node) bool {
 	if node_kind(n) != 'statement_block' {
 		return false
 	}
@@ -99,7 +99,7 @@ fn nvar_is_block_statement(n C.TSNode) bool {
 
 // nvar_can_fix ports canFix. `node` is the declaration (or the for-in of `for (var a in b)`, the
 // ESTree parent of its declaration) and `estree` the ESTree node of a declaration.
-fn (mut c Checker) nvar_can_fix(root C.TSNode, node C.TSNode, estree C.TSNode) bool {
+fn (mut c Checker) nvar_can_fix(root C.vt_node, node C.vt_node, estree C.vt_node) bool {
 	tree := c.scope_tree(root)
 	variables := c.es_declared_variables(root, node)
 	loop_assignee := node_kind(node) == 'for_in_statement'
@@ -193,7 +193,7 @@ fn (mut c Checker) nvar_can_fix(root C.TSNode, node C.TSNode, estree C.TSNode) b
 // nvar_has_unsafe_hoisted_function_reference ports hasUnsafeHoistedFunctionReference: a reference
 // (not the initializer) after the declaration from inside a function declaration that is called
 // before the declaration.
-fn (mut c Checker) nvar_has_unsafe_hoisted_function_reference(root C.TSNode, v int) bool {
+fn (mut c Checker) nvar_has_unsafe_hoisted_function_reference(root C.vt_node, v int) bool {
 	tree := c.scope_tree(root)
 	variable := tree.variables[v]
 	if variable.defs.len == 0 {
@@ -232,7 +232,7 @@ fn (mut c Checker) nvar_has_unsafe_hoisted_function_reference(root C.TSNode, v i
 }
 
 // nvar_self_reference_in_tdz ports hasSelfReferenceInTDZ.
-fn (mut c Checker) nvar_self_reference_in_tdz(root C.TSNode, declarator C.TSNode) bool {
+fn (mut c Checker) nvar_self_reference_in_tdz(root C.vt_node, declarator C.vt_node) bool {
 	init := unwrap_parens(node_field(declarator, 'value') or { return false })
 	tree := c.scope_tree(root)
 	init_start := node_start(init)
@@ -245,7 +245,7 @@ fn (mut c Checker) nvar_self_reference_in_tdz(root C.TSNode, declarator C.TSNode
 		}
 		id := variable.defs[0].name
 		id_start := node_start(id)
-		mut default_value := ?C.TSNode(none)
+		mut default_value := ?C.vt_node(none)
 		if id_parent := node_parent(id) {
 			if node_kind(id_parent) in ['assignment_pattern', 'object_assignment_pattern'] {
 				if left := node_field(id_parent, 'left') {
@@ -279,7 +279,7 @@ fn (mut c Checker) nvar_self_reference_in_tdz(root C.TSNode, declarator C.TSNode
 }
 
 // nvar_is_in_loop ports astUtils.isInLoop.
-fn nvar_is_in_loop(n C.TSNode) bool {
+fn nvar_is_in_loop(n C.vt_node) bool {
 	mut current := n
 	for {
 		kind := node_kind(current)

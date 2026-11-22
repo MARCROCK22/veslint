@@ -10,7 +10,7 @@ const ncrx_messages = {
 	'unexpected': 'Unexpected control character(s) in regular expression: {{controlChars}}.'
 }
 
-fn (mut c Checker) lint_no_control_regex(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_control_regex(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['regex', 'string'], []) {
@@ -34,7 +34,7 @@ fn (mut c Checker) lint_no_control_regex(root C.TSNode, abs_path string, mut sta
 // ncrx_regexp ports getRegExp: the pattern and flags of a regular expression literal, or of a
 // string that is the first argument of `RegExp(…)` or `new RegExp(…)` with the global RegExp (the flags of a second
 // string argument, '' standing for none).
-fn (mut c Checker) ncrx_regexp(root C.TSNode, node C.TSNode) ?([]u16, ?string) {
+fn (mut c Checker) ncrx_regexp(root C.vt_node, node C.vt_node) ?([]u16, ?string) {
 	if pattern, flags := c.es_regex_literal(node) {
 		return pattern, ?string(flags)
 	}

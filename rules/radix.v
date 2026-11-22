@@ -22,7 +22,7 @@ fn radix_options(options []json2.Any) !bool {
 	return true
 }
 
-fn (mut c Checker) lint_radix(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_radix(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	radix_options(c.rule_options(radix_rule))!
 	mut findings := []Finding{}
@@ -60,7 +60,7 @@ fn (mut c Checker) lint_radix(root C.TSNode, abs_path string, mut stats Stats) !
 	return findings
 }
 
-fn (mut c Checker) radix_check(root C.TSNode, call C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) radix_check(root C.vt_node, call C.vt_node, mut findings []Finding) ! {
 	args := (call_arguments(call) or { return }).filter(node_kind(it) != 'comment')
 	// A spread among the first two arguments: nothing is known.
 	for i, arg in args {

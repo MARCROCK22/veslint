@@ -10,7 +10,7 @@ const nmn_messages = {
 	'errorMessageInterface': 'Interfaces cannot be constructed, only classes.'
 }
 
-fn (mut c Checker) lint_no_misused_new(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_misused_new(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -62,7 +62,7 @@ fn (mut c Checker) lint_no_misused_new(root C.TSNode, abs_path string, mut stats
 
 // nmn_key_name is the `name` of a key that is an Identifier or a PrivateIdentifier (computed or
 // not, as the selector does not look at that), '' for any other key.
-fn (c &Checker) nmn_key_name(key C.TSNode) string {
+fn (c &Checker) nmn_key_name(key C.vt_node) string {
 	mut node := key
 	if node_kind(node) == 'computed_property_name' {
 		node = unwrap_parens(first_named(node) or { return '' })
@@ -76,7 +76,7 @@ fn (c &Checker) nmn_key_name(key C.TSNode) string {
 
 // nmn_returns_parent ports isMatchingParentType: the class or interface has a name, and the
 // return type of the signature is a reference to that name (getTypeReferenceName).
-fn (c &Checker) nmn_returns_parent(parent C.TSNode, signature C.TSNode) bool {
+fn (c &Checker) nmn_returns_parent(parent C.vt_node, signature C.vt_node) bool {
 	if node_kind(parent) !in ['class_declaration', 'abstract_class_declaration', 'class',
 		'interface_declaration'] {
 		return false
@@ -92,7 +92,7 @@ fn (c &Checker) nmn_returns_parent(parent C.TSNode, signature C.TSNode) bool {
 
 // nmn_type_reference_name ports getTypeReferenceName for a type: the name of a TSTypeReference
 // whose typeName is an Identifier, with or without type arguments; '' for any other type.
-fn (c &Checker) nmn_type_reference_name(type_node C.TSNode) string {
+fn (c &Checker) nmn_type_reference_name(type_node C.vt_node) string {
 	mut node := unwrap_type_parens(type_node)
 	if node_kind(node) == 'generic_type' {
 		node = node_field(node, 'name') or { return '' }

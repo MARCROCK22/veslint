@@ -12,7 +12,7 @@ const ec_nue_messages = {
 	'unusedRule': "'{{ruleId}}' rule is re-enabled but it has not been disabled."
 }
 
-fn (mut c Checker) lint_eslint_comments_no_unused_enable(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_eslint_comments_no_unused_enable(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	d := c.ec_disabled_area(root)
 	mut findings := []Finding{}

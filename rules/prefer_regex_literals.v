@@ -31,7 +31,7 @@ fn prl_options(options []json2.Any) !bool {
 	return o.bool_value('disallowRedundantWrapping') or { false }
 }
 
-fn (mut c Checker) lint_prefer_regex_literals(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_regex_literals(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	redundant := prl_options(c.rule_options(prefer_regex_literals))!
 	ecma_version := if c.ecma_version <= 5 {
@@ -53,7 +53,7 @@ fn (mut c Checker) lint_prefer_regex_literals(root C.TSNode, abs_path string, mu
 	for traced in c.es_global_references(root, trace) {
 		stats.checked++
 		node := traced.node
-		mut args := []C.TSNode{}
+		mut args := []C.vt_node{}
 		if arguments := node_field(node, 'arguments') {
 			if node_kind(arguments) == 'arguments' {
 				args = named_children(arguments).filter(node_kind(it) != 'comment').map(unwrap_parens(it))
@@ -205,7 +205,7 @@ fn prl_escape(pattern []u16, flags string, ecma_version int) ?string {
 
 // prl_is_static_string ports isStaticString: a string literal, a template without substitutions
 // or String.raw with one.
-fn (mut c Checker) prl_is_static_string(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) prl_is_static_string(root C.vt_node, n C.vt_node) bool {
 	return match node_kind(n) {
 		'string' { true }
 		'template_string' { !children(n).any(node_kind(it) == 'template_substitution') }
@@ -216,7 +216,7 @@ fn (mut c Checker) prl_is_static_string(root C.TSNode, n C.TSNode) bool {
 
 // prl_string_raw_template is the template of a String.raw tagged template without substitutions
 // (isStringRawTaggedStaticTemplateLiteral), when `String` is the global one.
-fn (mut c Checker) prl_string_raw_template(root C.TSNode, n C.TSNode) ?C.TSNode {
+fn (mut c Checker) prl_string_raw_template(root C.vt_node, n C.vt_node) ?C.vt_node {
 	template := node_field(n, 'arguments')?
 	if node_kind(template) != 'template_string'
 		|| children(template).any(node_kind(it) == 'template_substitution') {
@@ -234,7 +234,7 @@ fn (mut c Checker) prl_string_raw_template(root C.TSNode, n C.TSNode) ?C.TSNode 
 }
 
 // prl_string_value ports getStringValue.
-fn (mut c Checker) prl_string_value(root C.TSNode, n C.TSNode) ?[]u16 {
+fn (mut c Checker) prl_string_value(root C.vt_node, n C.vt_node) ?[]u16 {
 	match node_kind(n) {
 		'string' {
 			return c.es_string_units(n)
@@ -258,7 +258,7 @@ fn (mut c Checker) prl_string_value(root C.TSNode, n C.TSNode) ?[]u16 {
 }
 
 // prl_can_fix_to ports canFixTo.
-fn (mut c Checker) prl_can_fix_to(root C.TSNode, node C.TSNode, pattern []u16, flags string, ecma_version int) bool {
+fn (mut c Checker) prl_can_fix_to(root C.vt_node, node C.vt_node, pattern []u16, flags string, ecma_version int) bool {
 	tokens := c.source_tokens(root)
 	start := node_start(node)
 	end := c.es_end(node)
@@ -285,7 +285,7 @@ fn (mut c Checker) prl_can_fix_to(root C.TSNode, node C.TSNode, pattern []u16, f
 
 // prl_fix ports the fix that replaces the call with the literal (getSafeOutput: a space where the
 // literal would join the token before or after it).
-fn (mut c Checker) prl_fix(root C.TSNode, node C.TSNode, literal string) Fix {
+fn (mut c Checker) prl_fix(root C.vt_node, node C.vt_node, literal string) Fix {
 	tokens := c.source_tokens(root)
 	start := node_start(node)
 	end := c.es_end(node)

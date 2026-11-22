@@ -77,7 +77,7 @@ fn (mut c Checker) un_search_value_not_assignable(mut ctx UnCtx, call int, searc
 	return !(c.assignable(search_type.id, parameter_type.id) or { return false })
 }
 
-fn (mut c Checker) lint_unicorn_prefer_array_index_of(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_array_index_of(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

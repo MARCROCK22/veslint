@@ -29,7 +29,7 @@ fn ncc_check_loops(options []json2.Any) !string {
 	return error('the option `checkLoops` of `${no_constant_condition}` must be "all", "allExceptWhileTrue", "none", true or false')
 }
 
-fn (mut c Checker) lint_no_constant_condition(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_constant_condition(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	check_loops := ncc_check_loops(c.rule_options(no_constant_condition))!
 	mut findings := []Finding{}
@@ -77,6 +77,6 @@ fn (mut c Checker) lint_no_constant_condition(root C.TSNode, abs_path string, mu
 
 // ncc_has_own_yield: a `yield` of the loop's own function (nested functions are not entered)
 // starts inside the loop at or after `from`.
-fn (c &Checker) ncc_has_own_yield(loop C.TSNode, from int) bool {
+fn (c &Checker) ncc_has_own_yield(loop C.vt_node, from int) bool {
 	return c.nodes_of_kinds(loop, ['yield_expression'], ncc_function_kinds).any(node_start(it) >= from)
 }

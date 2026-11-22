@@ -12,7 +12,7 @@ const vue_no_expose_after_await_messages = {
 	'forbidden': '`{{name}}` is forbidden after an `await` expression.'
 }
 
-fn (mut c Checker) lint_vue_no_expose_after_await(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_expose_after_await(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -123,7 +123,7 @@ fn (mut c Checker) lint_vue_no_expose_after_await(root C.TSNode, abs_path string
 
 // vneaa_read_references adds the identifiers of the read references of the variable `id`
 // declares; false when there is no variable (findVariable).
-fn (mut c Checker) vneaa_read_references(root C.TSNode, t &estree.EsTree, id int, mut out map[u64]bool) bool {
+fn (mut c Checker) vneaa_read_references(root C.vt_node, t &estree.EsTree, id int, mut out map[u64]bool) bool {
 	v := c.unb_find_variable(root, t, id)
 	if v < 0 {
 		return false

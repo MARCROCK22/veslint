@@ -21,7 +21,7 @@ fn rxhe_options(options []json2.Any) !bool {
 	return !(value is string && value == 'never')
 }
 
-fn (mut c Checker) lint_regexp_hexadecimal_escape(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_hexadecimal_escape(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	always := rxhe_options(c.rule_options(regexp_hexadecimal_escape))!
 	mut findings := []Finding{}

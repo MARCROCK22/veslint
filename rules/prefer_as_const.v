@@ -12,7 +12,7 @@ const pac_messages = {
 	'variableSuggest':        'You should use `as const` instead of type annotation.'
 }
 
-fn (mut c Checker) lint_prefer_as_const(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_as_const(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -67,7 +67,7 @@ fn (mut c Checker) lint_prefer_as_const(root C.TSNode, abs_path string, mut stat
 // (not `-1`, nor `null`, a TSNullKeyword) with the same raw text. An assertion is fixed to
 // `const`; an annotation (`annotation` is its TSTypeAnnotation) gets a suggestion that removes it
 // and adds ` as const` after the value.
-fn (mut c Checker) pac_compare(value_node C.TSNode, type_node C.TSNode, can_fix bool, annotation C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) pac_compare(value_node C.vt_node, type_node C.vt_node, can_fix bool, annotation C.vt_node, mut findings []Finding) ! {
 	value := unwrap_parens(value_node)
 	type_literal := unwrap_type_parens(type_node)
 	if node_kind(value) !in ['string', 'number', 'true', 'false', 'null', 'regex']

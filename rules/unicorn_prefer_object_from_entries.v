@@ -26,7 +26,7 @@ fn upofe_options(options []json2.Any) ![]string {
 	return []string{}
 }
 
-fn (mut c Checker) lint_unicorn_prefer_object_from_entries(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_object_from_entries(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut functions := upofe_options(c.rule_options(unicorn_prefer_object_from_entries))!
 	functions << upofe_lodash_from_pairs_functions

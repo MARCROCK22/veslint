@@ -101,7 +101,7 @@ fn (mut ctx VnupCtx) container(node int) &VnupContainer {
 	return unsafe { &ctx.containers[node] }
 }
 
-fn (mut c Checker) lint_vue_no_unused_properties(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_unused_properties(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []Finding{}
 	}
@@ -183,7 +183,7 @@ fn (mut c Checker) lint_vue_no_unused_properties(root C.TSNode, abs_path string,
 
 // vnup_define_props is onDefinePropsEnter: the props as properties of the Program, and what the
 // pattern the props are assigned to reads (its pattern is returned, -1 for none).
-fn (mut c Checker) vnup_define_props(root C.TSNode, t &estree.EsTree, call int, abs_path string, mut ctx VnupCtx, mut stats Stats) int {
+fn (mut c Checker) vnup_define_props(root C.vt_node, t &estree.EsTree, call int, abs_path string, mut ctx VnupCtx, mut stats Stats) int {
 	mut container := ctx.container(-1)
 	for prop in c.vue_define_props(root, t, call, abs_path, true, mut stats) {
 		if !prop.has_name || prop.name == '' || vnup_is_never_type_prop(t, prop) {
@@ -426,7 +426,7 @@ fn (mut c Checker) vnup_template(t &estree.EsTree, props_pattern int, mut ctx Vn
 }
 
 // vnup_report is reportUnusedProperties.
-fn (mut c Checker) vnup_report(root C.TSNode, t &estree.EsTree, mut ctx VnupCtx, mut stats Stats) {
+fn (mut c Checker) vnup_report(root C.vt_node, t &estree.EsTree, mut ctx VnupCtx, mut stats Stats) {
 	for key in ctx.order {
 		container := ctx.containers[key]
 		mut all := container.refs.clone()
@@ -441,7 +441,7 @@ fn (mut c Checker) vnup_report(root C.TSNode, t &estree.EsTree, mut ctx VnupCtx,
 }
 
 // vnup_verify is verifyPropertyUsage.
-fn (mut c Checker) vnup_verify(root C.TSNode, t &estree.EsTree, property VnupProperty, refs int, refs_props int, mut ctx VnupCtx) {
+fn (mut c Checker) vnup_verify(root C.vt_node, t &estree.EsTree, property VnupProperty, refs int, refs_props int, mut ctx VnupCtx) {
 	if property.group == 'props' && (c.vpr_has_property(mut ctx.x, refs_props, property.name,
 		VprHasOptions{ external_call_as_any: true })
 		|| c.vpr_has_property(mut ctx.x, refs, r'$props', VprHasOptions{})) {
@@ -470,7 +470,7 @@ fn (mut c Checker) vnup_verify(root C.TSNode, t &estree.EsTree, property VnupPro
 }
 
 // vnup_verify_deep is verifyDataOptionDeepProperties.
-fn (mut c Checker) vnup_verify_deep(root C.TSNode, t &estree.EsTree, segments []string, value int, refs int, mut ctx VnupCtx) {
+fn (mut c Checker) vnup_verify_deep(root C.vt_node, t &estree.EsTree, segments []string, value int, refs int, mut ctx VnupCtx) {
 	mut target := value
 	if target >= 0 && t.typ(target) == .identifier {
 		target = c.vnup_find_expression(root, t, target, 0)
@@ -500,7 +500,7 @@ fn (mut c Checker) vnup_verify_deep(root C.TSNode, t &estree.EsTree, segments []
 
 // vnup_find_expression is findExpression: the initializer of a `const` (through aliases), or
 // the identifier itself.
-fn (mut c Checker) vnup_find_expression(root C.TSNode, t &estree.EsTree, id int, depth int) int {
+fn (mut c Checker) vnup_find_expression(root C.vt_node, t &estree.EsTree, id int, depth int) int {
 	v := c.vue_find_variable(root, t, id)
 	if v < 0 || depth > 100 {
 		return id
@@ -520,7 +520,7 @@ fn (mut c Checker) vnup_find_expression(root C.TSNode, t &estree.EsTree, id int,
 
 // vnup_is_public_property is isPublicProperty: the property's JSDoc comment (or its function's)
 // has a `@public` tag.
-fn (mut c Checker) vnup_is_public_property(root C.TSNode, t &estree.EsTree, property int) bool {
+fn (mut c Checker) vnup_is_public_property(root C.vt_node, t &estree.EsTree, property int) bool {
 	mut jsdoc := c.vnup_jsdoc(root, t.nodes[property].start)
 	if jsdoc.len == 0 {
 		value := vue_property_value(t, property)
@@ -569,7 +569,7 @@ fn vnup_unicode_space_before(s string, i int) bool {
 
 // vnup_jsdoc is findJSDocComment of a node starting at `start`: the value of the JSDoc block
 // comment before it (through line comments), in a one-element list; empty for none.
-fn (mut c Checker) vnup_jsdoc(root C.TSNode, start int) []string {
+fn (mut c Checker) vnup_jsdoc(root C.vt_node, start int) []string {
 	tokens := c.source_tokens(root)
 	mut at := start
 	for {

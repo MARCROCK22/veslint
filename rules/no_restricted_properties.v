@@ -65,7 +65,7 @@ fn nrp_options(options []json2.Any) !NrpOptions {
 	return o
 }
 
-fn (mut c Checker) lint_no_restricted_properties(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_restricted_properties(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nrp_options(c.rule_options(no_restricted_properties))!
 	mut findings := []Finding{}
@@ -102,7 +102,7 @@ fn (mut c Checker) lint_no_restricted_properties(root C.TSNode, abs_path string,
 }
 
 // nrp_in_type_query: a member expression of `typeof a.b` in a type (a TSQualifiedName).
-fn nrp_in_type_query(n C.TSNode) bool {
+fn nrp_in_type_query(n C.vt_node) bool {
 	mut node := n
 	for node_kind(node) == 'member_expression' {
 		node = node_parent(node) or { return false }
@@ -112,9 +112,9 @@ fn nrp_in_type_query(n C.TSNode) bool {
 
 // nrp_pattern_object is the name of the identifier an object pattern destructures (the init of
 // its declarator, the right of its assignment or default value).
-fn (c &Checker) nrp_pattern_object(pattern C.TSNode) ?string {
+fn (c &Checker) nrp_pattern_object(pattern C.vt_node) ?string {
 	parent := node_parent(pattern)?
-	mut right := ?C.TSNode(none)
+	mut right := ?C.vt_node(none)
 	match node_kind(parent) {
 		'variable_declarator' {
 			name := node_field(parent, 'name')?
@@ -138,7 +138,7 @@ fn (c &Checker) nrp_pattern_object(pattern C.TSNode) ?string {
 }
 
 // nrp_check ports checkPropertyAccess.
-fn (c &Checker) nrp_check(node C.TSNode, object_name ?string, property_name string, o NrpOptions, mut findings []Finding) {
+fn (c &Checker) nrp_check(node C.vt_node, object_name ?string, property_name string, o NrpOptions, mut findings []Finding) {
 	mut matched := ?NrpRestriction(none)
 	if object := object_name {
 		if properties := o.properties[object] {

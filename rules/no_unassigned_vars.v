@@ -9,7 +9,7 @@ const nuv2_messages = {
 	'unassigned': "'{{name}}' is always 'undefined' because it's never assigned."
 }
 
-fn (mut c Checker) lint_no_unassigned_vars(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unassigned_vars(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['variable_declarator'], []) {
@@ -63,7 +63,7 @@ fn (mut c Checker) lint_no_unassigned_vars(root C.TSNode, abs_path string, mut s
 	return findings
 }
 
-fn nuv2_is_ambient(n C.TSNode) bool {
+fn nuv2_is_ambient(n C.vt_node) bool {
 	mut current := n
 	for {
 		current = node_parent(current) or { return false }

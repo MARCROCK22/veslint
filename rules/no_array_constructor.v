@@ -10,7 +10,7 @@ const nac_messages = {
 	'useLiteral': 'The array literal notation [] is preferable.'
 }
 
-fn (mut c Checker) lint_no_array_constructor(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_array_constructor(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -38,7 +38,7 @@ fn (mut c Checker) lint_no_array_constructor(root C.TSNode, abs_path string, mut
 		} else if list := node_field(node, 'arguments') {
 			named_children(list)
 		} else {
-			[]C.TSNode{}
+			[]C.vt_node{}
 		}
 		if args.len == 1 {
 			continue
@@ -62,7 +62,7 @@ fn (mut c Checker) lint_no_array_constructor(root C.TSNode, abs_path string, mut
 
 // nac_arguments_text ports getArgumentsText: the source between the first `(` after the callee
 // and the last token of the call, if that one is a `)`; '' otherwise.
-fn (mut c Checker) nac_arguments_text(node C.TSNode, callee C.TSNode) string {
+fn (mut c Checker) nac_arguments_text(node C.vt_node, callee C.vt_node) string {
 	last := c.last_token(node) or { return '' }
 	if !c.token_is(last, ')') {
 		return ''

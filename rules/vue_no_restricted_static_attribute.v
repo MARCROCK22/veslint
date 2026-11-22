@@ -127,7 +127,7 @@ fn (c &Checker) vnrsa_default_message(attr int, option &VnrsaOption) string {
 	return 'Using `${key}${value}`${on} is not allowed.'
 }
 
-fn (mut c Checker) lint_vue_no_restricted_static_attribute(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_restricted_static_attribute(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

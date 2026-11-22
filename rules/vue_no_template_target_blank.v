@@ -39,7 +39,7 @@ fn vnttb_is_external(href string) bool {
 	return i > 0 && i < href.len && href[i] == `:`
 }
 
-fn (mut c Checker) lint_vue_no_template_target_blank(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_template_target_blank(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

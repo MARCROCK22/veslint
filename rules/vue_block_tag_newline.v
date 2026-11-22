@@ -105,7 +105,7 @@ fn vbtn_phrase(n int) string {
 	return if n == 1 { '1 line break' } else { '${n} line breaks' }
 }
 
-fn (mut c Checker) lint_vue_block_tag_newline(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_block_tag_newline(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() || c.vue_has_invalid_eof() {
 		return []
 	}

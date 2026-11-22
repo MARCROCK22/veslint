@@ -48,8 +48,8 @@ enum CtiSpecifierKind {
 // CtiSpecifier is a specifier of an ImportDeclaration: `node` is its ESTree node (the identifier
 // of a default import, the namespace_import, the import_specifier) and `local` its local name.
 struct CtiSpecifier {
-	node        C.TSNode
-	local       C.TSNode
+	node        C.vt_node
+	local       C.vt_node
 	kind        CtiSpecifierKind
 	inline_type bool // an ImportSpecifier with `type`
 }
@@ -60,8 +60,8 @@ fn (s CtiSpecifier) same(other CtiSpecifier) bool {
 
 // CtiImport is an ImportDeclaration (not an `import x = require()`).
 struct CtiImport {
-	node       C.TSNode
-	source     C.TSNode
+	node       C.vt_node
+	source     C.vt_node
 	type_only  bool // importKind 'type'
 	specifiers []CtiSpecifier
 	attributes int
@@ -85,7 +85,7 @@ mut:
 	value_only_named_import int = -1
 }
 
-fn (mut c Checker) lint_consistent_type_imports(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_consistent_type_imports(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := cti_options(c.rule_options(consistent_type_imports))!
 	mut findings := []Finding{}
@@ -252,7 +252,7 @@ fn cti_word_list(words []string) string {
 }
 
 // cti_import reads an ImportDeclaration: none for an `import x = require()`.
-fn (c &Checker) cti_import(node C.TSNode) ?CtiImport {
+fn (c &Checker) cti_import(node C.vt_node) ?CtiImport {
 	if has_child_kind(node, 'import_require_clause') {
 		return none
 	}
@@ -317,7 +317,7 @@ fn (c &Checker) cti_import(node C.TSNode) ?CtiImport {
 }
 
 // cti_estree_parent is the ESTree parent of an identifier: its parent without parentheses.
-fn cti_estree_parent(n C.TSNode) ?C.TSNode {
+fn cti_estree_parent(n C.vt_node) ?C.vt_node {
 	mut parent := node_parent(n)?
 	for node_kind(parent) == 'parenthesized_expression' {
 		parent = node_parent(parent)?
@@ -393,7 +393,7 @@ fn (c &Checker) cti_matches(t SourceToken, want string) bool {
 
 // cti_token_before ports getTokenBefore(offset, filter): the last token before `offset` that is
 // `want`.
-fn (mut c Checker) cti_token_before(n C.TSNode, offset int, want string) ?SourceToken {
+fn (mut c Checker) cti_token_before(n C.vt_node, offset int, want string) ?SourceToken {
 	tokens := c.source_tokens(n).tokens
 	mut i := source_tokens_index(tokens, offset) - 1
 	for i >= 0 {
@@ -407,7 +407,7 @@ fn (mut c Checker) cti_token_before(n C.TSNode, offset int, want string) ?Source
 
 // cti_token_after ports getTokenAfter(offset, filter): the first token from `offset` on that is
 // `want`.
-fn (mut c Checker) cti_token_after(n C.TSNode, offset int, want string) ?SourceToken {
+fn (mut c Checker) cti_token_after(n C.vt_node, offset int, want string) ?SourceToken {
 	tokens := c.source_tokens(n).tokens
 	for i in source_tokens_index(tokens, offset) .. tokens.len {
 		if c.cti_matches(tokens[i], want) {
@@ -419,7 +419,7 @@ fn (mut c Checker) cti_token_after(n C.TSNode, offset int, want string) ?SourceT
 
 // cti_token_between ports getFirstTokenBetween(left, right, filter) for what ends at `start` and
 // what starts at `end` (and getFirstToken(node, filter) for the range of a node).
-fn (mut c Checker) cti_token_between(n C.TSNode, start int, end int, want string) ?SourceToken {
+fn (mut c Checker) cti_token_between(n C.vt_node, start int, end int, want string) ?SourceToken {
 	for token in c.source_tokens(n).inside(start, end, false) {
 		if c.cti_matches(token, want) {
 			return token
@@ -430,7 +430,7 @@ fn (mut c Checker) cti_token_between(n C.TSNode, start int, end int, want string
 
 // cti_end is the end of the ESTree range of a statement: its last token (tree-sitter may take a
 // comment after a statement without `;`).
-fn (c &Checker) cti_end(n C.TSNode) int {
+fn (c &Checker) cti_end(n C.vt_node) int {
 	return c.tokens.last_end(node_end(n))
 }
 

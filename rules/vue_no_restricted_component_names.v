@@ -69,7 +69,7 @@ fn (o &VrcnOption) test(name string) bool {
 	return name == vue_pascal_case(o.name) || name == vue_kebab_case(o.name)
 }
 
-fn (mut c Checker) lint_vue_no_restricted_component_names(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_restricted_component_names(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	options := vue_no_restricted_component_names_options(c.rule_options(vue_no_restricted_component_names))!
 	mut findings := []Finding{}

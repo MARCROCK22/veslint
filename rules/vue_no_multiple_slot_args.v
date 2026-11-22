@@ -12,7 +12,7 @@ const vue_no_multiple_slot_args_messages = {
 	'unexpectedSpread': 'Unexpected spread argument.'
 }
 
-fn (mut c Checker) lint_vue_no_multiple_slot_args(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_multiple_slot_args(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -45,7 +45,7 @@ fn (mut c Checker) lint_vue_no_multiple_slot_args(root C.TSNode, abs_path string
 // vue_verify_slot_call is the rule's verify: the call of the node, or the calls of the variable
 // it is assigned to (`seen`, the variables being followed, keeps a variable assigned to itself
 // from looping, where upstream overflows its stack).
-fn (mut c Checker) vue_verify_slot_call(root C.TSNode, t &estree.EsTree, node int, mut seen map[int]bool, mut findings []Finding) {
+fn (mut c Checker) vue_verify_slot_call(root C.vt_node, t &estree.EsTree, node int, mut seen map[int]bool, mut findings []Finding) {
 	parent := t.nodes[node].parent
 	if parent < 0 {
 		return
@@ -85,7 +85,7 @@ fn (mut c Checker) vue_verify_slot_call(root C.TSNode, t &estree.EsTree, node in
 	}
 }
 
-fn (mut c Checker) vue_verify_slot_references(root C.TSNode, t &estree.EsTree, id int, mut seen map[int]bool, mut findings []Finding) {
+fn (mut c Checker) vue_verify_slot_references(root C.vt_node, t &estree.EsTree, id int, mut seen map[int]bool, mut findings []Finding) {
 	v := c.vue_find_variable(root, t, id)
 	if v < 0 || seen[v] {
 		return

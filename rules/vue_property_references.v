@@ -76,7 +76,7 @@ struct VprProperty {
 struct VprExtractor {
 	unknown_member_as_unreferenced bool
 	return_as_unreferenced         bool
-	root                           C.TSNode
+	root                           C.vt_node
 	t                              &estree.EsTree = unsafe { nil }
 mut:
 	refs          []VprRef
@@ -92,7 +92,7 @@ mut:
 }
 
 // vpr_new_extractor is definePropertyReferenceExtractor.
-fn (mut c Checker) vpr_new_extractor(root C.TSNode, t &estree.EsTree, unknown_member_as_unreferenced bool, return_as_unreferenced bool) VprExtractor {
+fn (mut c Checker) vpr_new_extractor(root C.vt_node, t &estree.EsTree, unknown_member_as_unreferenced bool, return_as_unreferenced bool) VprExtractor {
 	mut x := VprExtractor{
 		unknown_member_as_unreferenced: unknown_member_as_unreferenced
 		return_as_unreferenced:         return_as_unreferenced

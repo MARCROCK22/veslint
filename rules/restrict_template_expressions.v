@@ -38,11 +38,11 @@ fn rte_options(options []json2.Any) !RteOptions {
 	}
 }
 
-fn (mut c Checker) lint_restrict_template_expressions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_restrict_template_expressions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	options := rte_options(c.rule_options(restrict_template_expressions))!
-	mut expressions := []C.TSNode{}
-	mut awaited := []C.TSNode{} // templates after an `await`, which TypeScript may read as tagged
+	mut expressions := []C.vt_node{}
+	mut awaited := []C.vt_node{} // templates after an `await`, which TypeScript may read as tagged
 	mut spans := []Span{}
 	for template in c.nodes_of_kind(root, c'template_string') {
 		// Tagged templates are not checked.

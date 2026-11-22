@@ -13,7 +13,7 @@ const nuctor_messages = {
 	'removeConstructor':    'Remove the constructor.'
 }
 
-fn (mut c Checker) lint_no_useless_constructor(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_constructor(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -72,7 +72,7 @@ fn (mut c Checker) lint_no_useless_constructor(root C.TSNode, abs_path string, m
 // nuctor_is_redundant_super_call ports isRedundantSuperCall: the body is a single `super(...)` call
 // (isSingleSuperCall), the parameters are identifiers or rest elements (isSimple), and the call
 // passes `...arguments` or the parameters in order (isPassingThrough).
-fn (c &Checker) nuctor_is_redundant_super_call(statements []C.TSNode, parameters []C.TSNode) bool {
+fn (c &Checker) nuctor_is_redundant_super_call(statements []C.vt_node, parameters []C.vt_node) bool {
 	if statements.len != 1 || node_kind(statements[0]) != 'expression_statement' {
 		return false
 	}
@@ -97,7 +97,7 @@ fn (c &Checker) nuctor_is_redundant_super_call(statements []C.TSNode, parameters
 
 // nuctor_parameter is the ESTree type of a parameter (Identifier, RestElement, or '' for a pattern
 // or a parameter with a default value) and the node of its name or rest argument.
-fn nuctor_parameter(parameter C.TSNode) (string, C.TSNode) {
+fn nuctor_parameter(parameter C.vt_node) (string, C.vt_node) {
 	if _ := node_field(parameter, 'value') {
 		return '', parameter
 	}
@@ -110,7 +110,7 @@ fn nuctor_parameter(parameter C.TSNode) (string, C.TSNode) {
 }
 
 // nuctor_is_spread_arguments ports isSpreadArguments: `super(...arguments)`.
-fn (c &Checker) nuctor_is_spread_arguments(arguments []C.TSNode) bool {
+fn (c &Checker) nuctor_is_spread_arguments(arguments []C.vt_node) bool {
 	if arguments.len != 1 || node_kind(arguments[0]) != 'spread_element' {
 		return false
 	}
@@ -121,7 +121,7 @@ fn (c &Checker) nuctor_is_spread_arguments(arguments []C.TSNode) bool {
 // nuctor_is_passing_through ports isPassingThrough: each parameter goes, in order, as the argument
 // of the same name (isValidIdentifierPair), or a rest parameter as the spread of the same name
 // (isValidRestSpreadPair).
-fn (c &Checker) nuctor_is_passing_through(parameters []C.TSNode, arguments []C.TSNode) bool {
+fn (c &Checker) nuctor_is_passing_through(parameters []C.vt_node, arguments []C.vt_node) bool {
 	if parameters.len != arguments.len {
 		return false
 	}
@@ -142,7 +142,7 @@ fn (c &Checker) nuctor_is_passing_through(parameters []C.TSNode, arguments []C.T
 }
 
 // nuctor_is_same_identifier ports isValidIdentifierPair for a parameter's name and an argument.
-fn (c &Checker) nuctor_is_same_identifier(name C.TSNode, argument C.TSNode) bool {
+fn (c &Checker) nuctor_is_same_identifier(name C.vt_node, argument C.vt_node) bool {
 	return node_kind(name) in ['identifier', 'undefined']
 		&& node_kind(argument) in ['identifier', 'undefined']
 		&& c.identifier_name(name) == c.identifier_name(argument)

@@ -15,10 +15,10 @@ const nuppa_messages = {
 struct NuppaAssignment {
 	frame u64
 	name  string
-	node  C.TSNode
+	node  C.vt_node
 }
 
-fn (mut c Checker) lint_no_unnecessary_parameter_property_assignment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_parameter_property_assignment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -106,7 +106,7 @@ fn (mut c Checker) lint_no_unnecessary_parameter_property_assignment(root C.TSNo
 
 // nuppa_property_name ports getPropertyName: the name of `this.x`, or of `this['x']`
 // (getStaticStringValue; since typescript-eslint 8.72 not of `this[x]`).
-fn (c &Checker) nuppa_property_name(left C.TSNode) ?string {
+fn (c &Checker) nuppa_property_name(left C.vt_node) ?string {
 	node := unwrap_parens(left)
 	if !is_member(node) || node_kind(unwrap_parens(node_field(node, 'object')?)) != 'this' {
 		return none
@@ -122,7 +122,7 @@ fn (c &Checker) nuppa_property_name(left C.TSNode) ?string {
 }
 
 // nuppa_identifier ports getIdentifier: the identifier, also inside `as` and `!`.
-fn nuppa_identifier(n C.TSNode) ?C.TSNode {
+fn nuppa_identifier(n C.vt_node) ?C.vt_node {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'as_expression', 'non_null_expression' {
@@ -138,7 +138,7 @@ fn nuppa_identifier(n C.TSNode) ?C.TSNode {
 }
 
 // nuppa_class_body is the innermost class body around a node.
-fn nuppa_class_body(n C.TSNode) ?C.TSNode {
+fn nuppa_class_body(n C.vt_node) ?C.vt_node {
 	mut node := node_parent(n)?
 	for node_kind(node) != 'class_body' {
 		node = node_parent(node)?
@@ -148,7 +148,7 @@ fn nuppa_class_body(n C.TSNode) ?C.TSNode {
 
 // nuppa_parent_property ports findParentPropertyDefinition: the closest field around a node
 // (not an `accessor`, which is an AccessorProperty).
-fn nuppa_parent_property(n C.TSNode) ?C.TSNode {
+fn nuppa_parent_property(n C.vt_node) ?C.vt_node {
 	mut node := node_parent(n)?
 	for node_kind(node) != 'public_field_definition' || children_of_kind(node, 'accessor').len > 0 {
 		node = node_parent(node)?
@@ -158,9 +158,9 @@ fn nuppa_parent_property(n C.TSNode) ?C.TSNode {
 
 // nuppa_parent_function ports findParentFunction from the node itself: the closest function
 // declaration or expression, arrow function, or function of a method, around it.
-fn nuppa_parent_function(n C.TSNode) ?C.TSNode {
+fn nuppa_parent_function(n C.vt_node) ?C.vt_node {
 	mut node := n
-	mut from := ?C.TSNode(none)
+	mut from := ?C.vt_node(none)
 	for {
 		kind := node_kind(node)
 		if kind in ['function_declaration', 'generator_function_declaration', 'function_expression',
@@ -178,7 +178,7 @@ fn nuppa_parent_function(n C.TSNode) ?C.TSNode {
 }
 
 // nuppa_iife_call ports isArrowIIFE: the call an arrow function is in (its callee or an argument).
-fn nuppa_iife_call(function C.TSNode) ?C.TSNode {
+fn nuppa_iife_call(function C.vt_node) ?C.vt_node {
 	if node_kind(function) != 'arrow_function' {
 		return none
 	}
@@ -192,7 +192,7 @@ fn nuppa_iife_call(function C.TSNode) ?C.TSNode {
 
 // nuppa_is_constructor ports isConstructorFunctionExpression: the function of a class
 // constructor.
-fn (c &Checker) nuppa_is_constructor(function C.TSNode) bool {
+fn (c &Checker) nuppa_is_constructor(function C.vt_node) bool {
 	if node_kind(function) != 'method_definition' {
 		return false
 	}
@@ -203,7 +203,7 @@ fn (c &Checker) nuppa_is_constructor(function C.TSNode) bool {
 // nuppa_is_parameter_reference ports isReferenceFromParameter: the first reference of that name
 // created in the scope of the identifier resolves to a variable whose first definition is a
 // parameter.
-fn (mut c Checker) nuppa_is_parameter_reference(root C.TSNode, id C.TSNode) bool {
+fn (mut c Checker) nuppa_is_parameter_reference(root C.vt_node, id C.vt_node) bool {
 	tree := c.scope_tree(root)
 	name := c.identifier_name(id)
 	for r in tree.scopes[tree.get_scope(id)].references {
@@ -222,7 +222,7 @@ fn (mut c Checker) nuppa_is_parameter_reference(root C.TSNode, id C.TSNode) bool
 
 // nuppa_is_parameter_property ports isParameterPropertyWithName: `public foo` or `public foo = 1`
 // (a parameter with a modifier is a TSParameterProperty).
-fn (c &Checker) nuppa_is_parameter_property(parameter C.TSNode, name string) bool {
+fn (c &Checker) nuppa_is_parameter_property(parameter C.vt_node, name string) bool {
 	if node_kind(parameter) !in ['required_parameter', 'optional_parameter'] {
 		return false
 	}

@@ -30,7 +30,7 @@ fn vue_enum_option(rule string, options []json2.Any, allowed []string, default_v
 	return value as string
 }
 
-fn (mut c Checker) lint_vue_define_props_declaration(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_define_props_declaration(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

@@ -19,7 +19,7 @@ fn vndvonum_safe_integer(text string) ?i64 {
 	return i64(n)
 }
 
-fn (mut c Checker) lint_vue_no_deprecated_v_on_number_modifiers(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_deprecated_v_on_number_modifiers(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

@@ -12,13 +12,13 @@ const nad_messages = {
 	'useSplice':     'Use `array.splice()` instead.'
 }
 
-fn (mut c Checker) lint_no_array_delete(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_array_delete(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// `UnaryExpression[operator="delete"]` whose argument is a MemberExpression (not an optional
 	// chain): its object is checked.
-	mut deletes := []C.TSNode{}
-	mut objects := []C.TSNode{}
-	mut members := []C.TSNode{}
+	mut deletes := []C.vt_node{}
+	mut objects := []C.vt_node{}
+	mut members := []C.vt_node{}
 	for node in c.nodes_of_kind(root, c'unary_expression') {
 		if operator_of(node) != 'delete' {
 			continue
@@ -56,7 +56,7 @@ fn (mut c Checker) lint_no_array_delete(root C.TSNode, abs_path string, mut stat
 
 // nad_use_splice ports the fixer of the `useSplice` suggestion: `delete a[k]` becomes
 // `a.splice(k, 1)`, after the comments that were inside the expression.
-fn (c &Checker) nad_use_splice(node C.TSNode, member C.TSNode, object C.TSNode) Fix {
+fn (c &Checker) nad_use_splice(node C.vt_node, member C.vt_node, object C.vt_node) Fix {
 	property := unwrap_parens(node_field(member, 'index') or {
 		node_field(member, 'property') or { member }
 	})

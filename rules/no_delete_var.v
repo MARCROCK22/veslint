@@ -9,7 +9,7 @@ const ndv_messages = {
 	'unexpected': 'Variables should not be deleted.'
 }
 
-fn (mut c Checker) lint_no_delete_var(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_delete_var(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['unary_expression'], []) {

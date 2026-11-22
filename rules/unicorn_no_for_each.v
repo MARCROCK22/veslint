@@ -63,7 +63,7 @@ fn unafe_parameter_variables(tree &ScopeTree, scope int) []int {
 		&& tree.variables[it].defs[0].kind == .parameter)
 }
 
-fn (mut c Checker) unafe_is_fixable(root C.TSNode, t &estree.EsTree, call int) bool {
+fn (mut c Checker) unafe_is_fixable(root C.vt_node, t &estree.EsTree, call int) bool {
 	arguments := t.list(call, .arguments) or { return false }
 	if (t.flag(call, .optional) or { false }) || arguments.len != 1 {
 		return false
@@ -156,7 +156,7 @@ fn (mut c Checker) unafe_is_strict_callbag_namespace(ctx &UnCtx, node int) bool 
 	return false
 }
 
-fn (mut c Checker) lint_unicorn_no_for_each(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_for_each(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -214,7 +214,7 @@ fn (mut c Checker) lint_unicorn_no_for_each(root C.TSNode, abs_path string, mut 
 }
 
 // unafe_fix ports getFixFunction.
-fn (mut c Checker) unafe_fix(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, call int) ?[]Fix {
+fn (mut c Checker) unafe_fix(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, call int) ?[]Fix {
 	callback := (t.list(call, .arguments) or { return none })[0]
 	parameters := t.list(callback, .params) or { return none }
 	callee := t.node(call, .callee)?

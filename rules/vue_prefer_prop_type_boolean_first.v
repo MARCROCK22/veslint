@@ -12,7 +12,7 @@ const vue_prefer_prop_type_boolean_first_messages = {
 	'moveToFirst':   'Move `Boolean` to be first in prop types.'
 }
 
-fn (mut c Checker) lint_vue_prefer_prop_type_boolean_first(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_prefer_prop_type_boolean_first(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

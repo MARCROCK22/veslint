@@ -33,7 +33,7 @@ fn rxnlf_options(options []json2.Any) !([]string, []string) {
 	return static_properties, prototype_methods
 }
 
-fn (mut c Checker) lint_regexp_no_legacy_features(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_legacy_features(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	static_properties, prototype_methods := rxnlf_options(c.rule_options(regexp_no_legacy_features))!
 	mut findings := []Finding{}

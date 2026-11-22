@@ -8,7 +8,7 @@ const svnelisvmikp_messages = {
 	'unexpected': 'disallow exporting load functions in `*.svelte` module in SvelteKit page components.'
 }
 
-fn (mut c Checker) lint_svelte_no_export_load_in_svelte_module_in_kit_pages(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_export_load_in_svelte_module_in_kit_pages(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte()
 		|| c.svsc_kit_file_type(abs_path) !in [.page_svelte, .error_svelte, .layout_svelte] {
 		return []

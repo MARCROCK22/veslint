@@ -16,7 +16,7 @@ fn nsa_options(options []json2.Any) !bool {
 	return o.bool_value('props')!
 }
 
-fn (mut c Checker) lint_no_self_assign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_self_assign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	props := nsa_options(c.rule_options(no_self_assign))!
 	mut findings := []Finding{}
@@ -35,7 +35,7 @@ fn (mut c Checker) lint_no_self_assign(root C.TSNode, abs_path string, mut stats
 }
 
 // nsa_report reports `node` (the right side): its text without white space is the name.
-fn (c &Checker) nsa_report(node C.TSNode, mut findings []Finding) {
+fn (c &Checker) nsa_report(node C.vt_node, mut findings []Finding) {
 	findings << Finding{
 		stmt:       position_of(node)
 		message_id: 'selfAssignment'
@@ -46,7 +46,7 @@ fn (c &Checker) nsa_report(node C.TSNode, mut findings []Finding) {
 }
 
 // nsa_each ports eachSelfAssignment.
-fn (c &Checker) nsa_each(l C.TSNode, r C.TSNode, props bool, mut findings []Finding) {
+fn (c &Checker) nsa_each(l C.vt_node, r C.vt_node, props bool, mut findings []Finding) {
 	left := unwrap_parens(l)
 	right := unwrap_parens(r)
 	lk := node_kind(left)
@@ -108,7 +108,7 @@ fn (c &Checker) nsa_each(l C.TSNode, r C.TSNode, props bool, mut findings []Find
 
 // nsa_property is the case of two Properties: the right one an `init` that is not a method, both
 // with the same static name; then their values.
-fn (c &Checker) nsa_property(left C.TSNode, right C.TSNode, props bool, mut findings []Finding) {
+fn (c &Checker) nsa_property(left C.vt_node, right C.vt_node, props bool, mut findings []Finding) {
 	left_name, left_value := c.nsa_property_parts(left) or { return }
 	if node_kind(right) !in ['pair', 'shorthand_property_identifier'] {
 		return
@@ -121,7 +121,7 @@ fn (c &Checker) nsa_property(left C.TSNode, right C.TSNode, props bool, mut find
 
 // nsa_property_parts are the static name (getStaticPropertyName) and the value of a Property of
 // an object literal or pattern; none for another node, or a name that is not static.
-fn (c &Checker) nsa_property_parts(n C.TSNode) ?(string, C.TSNode) {
+fn (c &Checker) nsa_property_parts(n C.vt_node) ?(string, C.vt_node) {
 	match node_kind(n) {
 		'pair', 'pair_pattern' {
 			name := c.core_static_property_name(node_field(n, 'key'))?

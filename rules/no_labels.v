@@ -26,7 +26,7 @@ fn nl_options(options []json2.Any) !NlOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_labels(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_labels(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nl_options(c.rule_options(no_labels))!
 	mut findings := []Finding{}
@@ -62,7 +62,7 @@ fn (mut c Checker) lint_no_labels(root C.TSNode, abs_path string, mut stats Stat
 }
 
 // nl_body_kind ports getBodyKind: 'loop', 'switch' or 'other', for the body of a labeled statement.
-fn nl_body_kind(labeled C.TSNode) string {
+fn nl_body_kind(labeled C.vt_node) string {
 	body := node_field(labeled, 'body') or { return 'other' }
 	return match node_kind(body) {
 		'for_statement', 'for_in_statement', 'while_statement', 'do_statement' { 'loop' }
@@ -72,7 +72,7 @@ fn nl_body_kind(labeled C.TSNode) string {
 }
 
 // nl_label_kind ports getKind: the body kind of the closest enclosing statement with that label.
-fn (c &Checker) nl_label_kind(n C.TSNode, label string) string {
+fn (c &Checker) nl_label_kind(n C.vt_node, label string) string {
 	mut current := n
 	for {
 		current = node_parent(current) or { return 'other' }

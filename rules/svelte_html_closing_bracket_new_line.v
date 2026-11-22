@@ -52,7 +52,7 @@ fn shcbnl_phrase(line_breaks int) string {
 	}
 }
 
-fn (mut c Checker) lint_svelte_html_closing_bracket_new_line(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_html_closing_bracket_new_line(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := shcbnl_options(c.rule_options(svelte_html_closing_bracket_new_line))!
 	if !c.is_svelte() {
 		return []

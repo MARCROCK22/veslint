@@ -43,7 +43,7 @@ struct EcLoc {
 }
 
 // ec_comments are the comments of the file, in order, as ESLint's SourceCode gives them.
-fn (mut c Checker) ec_comments(root C.TSNode) []EcComment {
+fn (mut c Checker) ec_comments(root C.vt_node) []EcComment {
 	lines := offsets.line_starts(c.src)
 	mut out := []EcComment{}
 	for node in c.nodes_of_kind(root, c'comment') {
@@ -332,7 +332,7 @@ fn ec_parse_directive_text(value string, additional []string) ?EcDirective {
 // the directive comments of the file; a line comment only for `eslint-disable-line`,
 // `eslint-disable-next-line` and the additional directives, and an `eslint-disable-line` only on
 // one line.
-fn (mut c Checker) ec_directive_comments(root C.TSNode, additional []string) []EcDirective {
+fn (mut c Checker) ec_directive_comments(root C.vt_node, additional []string) []EcDirective {
 	mut out := []EcDirective{}
 	for comment in c.ec_comments(root) {
 		parsed := ec_parse_directive_text(comment.value, additional) or { continue }
@@ -518,7 +518,7 @@ fn ec_split_rule_ids(value string) []string {
 // after the first ` -- ` left out; a line comment only for `eslint-disable-line` and
 // `eslint-disable-next-line`; an `eslint-disable-line` on more than one line is not a directive),
 // whatever rules they name.
-fn (mut c Checker) ec_disabled_area(root C.TSNode) EcDisabledArea {
+fn (mut c Checker) ec_disabled_area(root C.vt_node) EcDisabledArea {
 	mut d := EcDisabledArea{
 		comments: c.ec_comments(root)
 	}

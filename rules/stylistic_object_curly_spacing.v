@@ -67,7 +67,7 @@ struct SocspCtx {
 	options SocspOptions
 }
 
-fn (mut c Checker) lint_stylistic_object_curly_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_object_curly_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := socsp_options(c.rule_options(stylistic_object_curly_spacing))!

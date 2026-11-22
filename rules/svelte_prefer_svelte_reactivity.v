@@ -55,7 +55,7 @@ mut:
 }
 
 // svpsr_yield is a result of the generators: true stops the iteration (a `first` check).
-fn (mut c Checker) svpsr_yield(root C.TSNode, t &estree.EsTree, traced EsTraced, mut tr SvpsrTracer) bool {
+fn (mut c Checker) svpsr_yield(root C.vt_node, t &estree.EsTree, traced EsTraced, mut tr SvpsrTracer) bool {
 	match tr.mode {
 		.first {
 			return true
@@ -75,7 +75,7 @@ fn (mut c Checker) svpsr_yield(root C.TSNode, t &estree.EsTree, traced EsTraced,
 
 // svpsr_variable_refs is _iterateVariableReferences: on a stop the variable stays on the stack; at
 // the end the top of the stack is popped (whichever variable it is).
-fn (mut c Checker) svpsr_variable_refs(root C.TSNode, t &estree.EsTree, v int, path []string, trace EsTrace, report bool, mut tr SvpsrTracer) bool {
+fn (mut c Checker) svpsr_variable_refs(root C.vt_node, t &estree.EsTree, v int, path []string, trace EsTrace, report bool, mut tr SvpsrTracer) bool {
 	if v in tr.stack {
 		return false
 	}
@@ -102,7 +102,7 @@ fn (mut c Checker) svpsr_variable_refs(root C.TSNode, t &estree.EsTree, v int, p
 }
 
 // svpsr_property_refs is _iteratePropertyReferences (es_trace_properties with generator stops).
-fn (mut c Checker) svpsr_property_refs(root C.TSNode, t &estree.EsTree, from C.TSNode, path []string, trace EsTrace, mut tr SvpsrTracer) bool {
+fn (mut c Checker) svpsr_property_refs(root C.vt_node, t &estree.EsTree, from C.vt_node, path []string, trace EsTrace, mut tr SvpsrTracer) bool {
 	mut node := from
 	for es_is_pass_through(node) {
 		node = cti_estree_parent(node) or { break }
@@ -194,7 +194,7 @@ fn (mut c Checker) svpsr_property_refs(root C.TSNode, t &estree.EsTree, from C.T
 }
 
 // svpsr_lhs_refs is _iterateLhsReferences (es_trace_lhs with generator stops).
-fn (mut c Checker) svpsr_lhs_refs(root C.TSNode, t &estree.EsTree, pattern C.TSNode, path []string, trace EsTrace, mut tr SvpsrTracer) bool {
+fn (mut c Checker) svpsr_lhs_refs(root C.vt_node, t &estree.EsTree, pattern C.vt_node, path []string, trace EsTrace, mut tr SvpsrTracer) bool {
 	match node_kind(pattern) {
 		'identifier', 'shorthand_property_identifier_pattern' {
 			tree := c.scope_tree(root)
@@ -240,7 +240,7 @@ fn (mut c Checker) svpsr_lhs_refs(root C.TSNode, t &estree.EsTree, pattern C.TSN
 }
 
 // svpsr_is_mutable is isDateMutable and the others, with the shared stack.
-fn (mut c Checker) svpsr_is_mutable(root C.TSNode, t &estree.EsTree, class string, ctor C.TSNode, mut tr SvpsrTracer) bool {
+fn (mut c Checker) svpsr_is_mutable(root C.vt_node, t &estree.EsTree, class string, ctor C.vt_node, mut tr SvpsrTracer) bool {
 	mut children := map[string]EsTrace{}
 	if class == 'URL' {
 		for part in svpsr_url_parts {
@@ -286,7 +286,7 @@ fn (mut c Checker) svpsr_is_mutable(root C.TSNode, t &estree.EsTree, class strin
 }
 
 // svpsr_check is the body of the rule's loop for a construction of a class.
-fn (mut c Checker) svpsr_check(root C.TSNode, t &estree.EsTree, traced EsTraced, mut tr SvpsrTracer) {
+fn (mut c Checker) svpsr_check(root C.vt_node, t &estree.EsTree, traced EsTraced, mut tr SvpsrTracer) {
 	node := c.es_index_of(t, traced.node) or { return }
 	class := traced.path[0]
 	message_id := match class {
@@ -313,7 +313,7 @@ fn (mut c Checker) svpsr_check(root C.TSNode, t &estree.EsTree, traced EsTraced,
 }
 
 // svpsr_definition_nodes are the def.node of the variable an identifier of the module refers to.
-fn (mut c Checker) svpsr_definition_nodes(root C.TSNode, t &estree.EsTree, identifier int) []int {
+fn (mut c Checker) svpsr_definition_nodes(root C.vt_node, t &estree.EsTree, identifier int) []int {
 	ts := t.ts_node(identifier) or { return [] }
 	tree := c.scope_tree(root)
 	name := t.string_of(identifier, .name) or { return [] }
@@ -340,7 +340,7 @@ fn svpsr_is_in(t &estree.EsTree, needle int, haystack int) bool {
 	return false
 }
 
-fn (mut c Checker) lint_svelte_prefer_svelte_reactivity(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_prefer_svelte_reactivity(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.svsc_runes_on(abs_path) {
 		return []
 	}

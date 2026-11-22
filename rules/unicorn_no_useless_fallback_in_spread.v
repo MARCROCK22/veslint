@@ -10,7 +10,7 @@ const unufis_messages = {
 	'no-useless-fallback-in-spread': 'The empty object is useless.'
 }
 
-fn (mut c Checker) lint_unicorn_no_useless_fallback_in_spread(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_useless_fallback_in_spread(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

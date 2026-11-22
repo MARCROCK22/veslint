@@ -17,9 +17,9 @@ const nuarg_messages = {
 // ArgumentCall is a call (CallExpression, NewExpression or TaggedTemplateExpression) with its
 // arguments as in ESTree: without parentheses and, in a template, the `${…}` expressions.
 struct ArgumentCall {
-	node   C.TSNode
-	callee C.TSNode
-	args   []C.TSNode
+	node   C.vt_node
+	callee C.vt_node
+	args   []C.vt_node
 	tagged bool
 	// an `await (…)` or `` await `…` `` that TypeScript may read as a call (see await_reading)
 	await_misread bool
@@ -70,7 +70,7 @@ fn (mut s FunctionSignature) next_parameter_type() ?TypeResponse {
 	return s.rest_args[type_index]
 }
 
-fn (mut c Checker) lint_no_unsafe_argument(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_argument(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	calls := c.collect_argument_calls(root)
 	mut spans := []Span{}
@@ -104,7 +104,7 @@ fn (mut c Checker) lint_no_unsafe_argument(root C.TSNode, abs_path string, mut s
 
 // collect_argument_calls collects the calls with some argument. `import(…)` is an
 // ImportExpression in ESTree, not a call.
-fn (c &Checker) collect_argument_calls(root C.TSNode) []ArgumentCall {
+fn (c &Checker) collect_argument_calls(root C.vt_node) []ArgumentCall {
 	mut calls := []ArgumentCall{}
 	for node in c.nodes_of_kinds(root, ['call_expression', 'new_expression', 'await_expression'], []) {
 		if node_kind(node) == 'await_expression' {
@@ -120,7 +120,7 @@ fn (c &Checker) collect_argument_calls(root C.TSNode) []ArgumentCall {
 		}
 		list := node_field(node, 'arguments') or { continue }
 		tagged := node_kind(list) == 'template_string'
-		mut args := []C.TSNode{}
+		mut args := []C.vt_node{}
 		for child in named_children(list) {
 			if !tagged {
 				args << unwrap_parens(child)
@@ -142,10 +142,10 @@ fn (c &Checker) collect_argument_calls(root C.TSNode) []ArgumentCall {
 
 // await_call is an `await (a, b)` or `` await `…${x}…` `` seen as the call TypeScript reads
 // outside an async function: the callee is the `await` identifier.
-fn await_call(node C.TSNode) ?ArgumentCall {
+fn await_call(node C.vt_node) ?ArgumentCall {
 	operand := first_named_child(node)?
 	callee := await_keyword(node)?
-	mut args := []C.TSNode{}
+	mut args := []C.vt_node{}
 	match node_kind(operand) {
 		'parenthesized_expression' {
 			inner := first_named_child(operand)?
@@ -181,7 +181,7 @@ fn await_call(node C.TSNode) ?ArgumentCall {
 }
 
 // spread_argument is the value of a `...x` (without parentheses), or none if `arg` is not a spread.
-fn spread_argument(arg C.TSNode) ?C.TSNode {
+fn spread_argument(arg C.vt_node) ?C.vt_node {
 	if node_kind(arg) != 'spread_element' {
 		return none
 	}
@@ -282,7 +282,7 @@ fn (mut c Checker) check_unsafe_arguments(call ArgumentCall, mut findings []Find
 // function_signature ports FunctionSignature.create with the signature TypeScript chose for the
 // call and the type of each parameter as seen from it. Like typescript-eslint, only a parameter
 // declared with `...` counts as rest; those of synthesized signatures have no declaration.
-fn (mut c Checker) function_signature(call C.TSNode) !FunctionSignature {
+fn (mut c Checker) function_signature(call C.vt_node) !FunctionSignature {
 	handle := c.nodes.handle(node_key(call)) or { return FunctionSignature{} }
 	signature := c.resolved_signature(call)!
 	if signature.id == 0 {

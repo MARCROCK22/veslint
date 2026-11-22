@@ -28,9 +28,9 @@ enum Comparison {
 // Assignment is a receiver and the value it gets, checked with checkAssignment. If it does not
 // report and `destructure` is set, the destructurings of the receiver are checked too.
 struct Assignment {
-	receiver    C.TSNode
-	sender      C.TSNode
-	reporting   C.TSNode
+	receiver    C.vt_node
+	sender      C.vt_node
+	reporting   C.vt_node
 	report_end  int = -1 // where the reported ESTree node ends, when not where `reporting` does
 	comparison  Comparison
 	destructure bool
@@ -40,7 +40,7 @@ const assignment_kinds = ['variable_declarator', 'assignment_expression', 'requi
 	'optional_parameter', 'assignment_pattern', 'object_assignment_pattern', 'public_field_definition',
 	'object', 'array', 'jsx_attribute']
 
-fn (mut c Checker) lint_no_unsafe_assignment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_assignment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	assignments, spreads := c.collect_assignments(root)
 	mut spans := []Span{}
@@ -93,9 +93,9 @@ fn (mut c Checker) lint_no_unsafe_assignment(root C.TSNode, abs_path string, mut
 
 // collect_assignments collects in one pass what typescript-eslint checks with checkAssignment,
 // and the `...x` of array literals.
-fn (c &Checker) collect_assignments(root C.TSNode) ([]Assignment, []C.TSNode) {
+fn (c &Checker) collect_assignments(root C.vt_node) ([]Assignment, []C.vt_node) {
 	mut out := []Assignment{}
-	mut spreads := []C.TSNode{}
+	mut spreads := []C.vt_node{}
 	for node in c.nodes_of_kinds(root, assignment_kinds, []) {
 		match node_kind(node) {
 			'variable_declarator' {
@@ -174,8 +174,8 @@ fn (c &Checker) collect_assignments(root C.TSNode) ([]Assignment, []C.TSNode) {
 				// `JSXAttribute[value != null]` whose value is a JSXExpressionContainer with an
 				// expression. The receiver is the attribute's name: type-utils' getContextualType gives
 				// it no contextual type, so its own type counts.
-				mut name := ?C.TSNode(none)
-				mut value := ?C.TSNode(none)
+				mut name := ?C.vt_node(none)
+				mut value := ?C.vt_node(none)
 				for child in named_children(node) {
 					if node_kind(child) == 'jsx_expression' {
 						value = jsx_expression_value(child)
@@ -204,7 +204,7 @@ fn (c &Checker) collect_assignments(root C.TSNode) ([]Assignment, []C.TSNode) {
 }
 
 // object_assignments ports `:not(ObjectPattern) > Property` in an object literal.
-fn object_assignments(object C.TSNode) []Assignment {
+fn object_assignments(object C.vt_node) []Assignment {
 	mut out := []Assignment{}
 	for prop in named_children(object) {
 		match node_kind(prop) {
@@ -248,7 +248,7 @@ fn object_assignments(object C.TSNode) []Assignment {
 }
 
 // annotated ports getComparisonType: with a type annotation the value is compared with the receiver.
-fn annotated(node C.TSNode) Comparison {
+fn annotated(node C.vt_node) Comparison {
 	if _ := node_field(node, 'type') {
 		return .basic
 	}
@@ -256,7 +256,7 @@ fn annotated(node C.TSNode) Comparison {
 }
 
 // property_key is the key in ESTree: in `[k]`, the expression inside.
-fn property_key(name C.TSNode) ?C.TSNode {
+fn property_key(name C.vt_node) ?C.vt_node {
 	if node_kind(name) == 'computed_property_name' {
 		return unwrap_parens(first_named_child(name)?)
 	}
@@ -315,7 +315,7 @@ fn (mut c Checker) check_assignment(a Assignment, mut findings []Finding) !bool 
 // key_contextual_type is the receiver of a property of an object literal: getContextualType from
 // type-utils only gives the contextual type to keys that are identifiers; without it, the type of
 // the key.
-fn (mut c Checker) key_contextual_type(key C.TSNode) !TypeResponse {
+fn (mut c Checker) key_contextual_type(key C.vt_node) !TypeResponse {
 	if node_kind(key) in ['property_identifier', 'shorthand_property_identifier'] {
 		contextual := c.contextual_type(key)!
 		if !contextual.is_null() {
@@ -330,7 +330,7 @@ fn any_text(t TypeResponse) string {
 	return if is_error_type(t) { 'error typed' } else { '`any`' }
 }
 
-fn (mut c Checker) check_array_destructure_helper(receiver C.TSNode, sender C.TSNode, mut findings []Finding) !bool {
+fn (mut c Checker) check_array_destructure_helper(receiver C.vt_node, sender C.vt_node, mut findings []Finding) !bool {
 	if node_kind(receiver) != 'array_pattern' {
 		return false
 	}
@@ -341,7 +341,7 @@ fn (mut c Checker) check_array_destructure_helper(receiver C.TSNode, sender C.TS
 
 // check_array_destructure ports checkArrayDestructure: an array of `any`, or each `any` element of
 // a tuple, also in nested patterns.
-fn (mut c Checker) check_array_destructure(pattern C.TSNode, sender_type TypeResponse, sender string, depth int, mut findings []Finding) !bool {
+fn (mut c Checker) check_array_destructure(pattern C.vt_node, sender_type TypeResponse, sender string, depth int, mut findings []Finding) !bool {
 	if depth > max_expression_depth {
 		c.too_deep++
 		return false
@@ -387,9 +387,9 @@ fn (mut c Checker) check_array_destructure(pattern C.TSNode, sender_type TypeRes
 
 // array_pattern_elements are the elements of an array pattern as in ESTree, with holes (`[, a]`)
 // as none.
-fn array_pattern_elements(pattern C.TSNode) []?C.TSNode {
-	mut out := []?C.TSNode{}
-	mut pending := ?C.TSNode(none)
+fn array_pattern_elements(pattern C.vt_node) []?C.vt_node {
+	mut out := []?C.vt_node{}
+	mut pending := ?C.vt_node(none)
 	for child in children(pattern) {
 		match node_kind(child) {
 			'[', 'comment' {}
@@ -410,7 +410,7 @@ fn array_pattern_elements(pattern C.TSNode) []?C.TSNode {
 	return out
 }
 
-fn (mut c Checker) check_object_destructure_helper(receiver C.TSNode, sender C.TSNode, mut findings []Finding) !bool {
+fn (mut c Checker) check_object_destructure_helper(receiver C.vt_node, sender C.vt_node, mut findings []Finding) !bool {
 	if node_kind(receiver) != 'object_pattern' {
 		return false
 	}
@@ -423,7 +423,7 @@ fn (mut c Checker) check_object_destructure_helper(receiver C.TSNode, sender C.T
 // the value is `any`, also in nested patterns. The type of each property is requested as seen from
 // the value (`sender`, its tsgo node), like getTypeOfSymbolAtLocation in typescript-eslint, and
 // only for the properties that appear in the pattern.
-fn (mut c Checker) check_object_destructure(pattern C.TSNode, sender_type TypeResponse, sender string, depth int, mut findings []Finding) !bool {
+fn (mut c Checker) check_object_destructure(pattern C.vt_node, sender_type TypeResponse, sender string, depth int, mut findings []Finding) !bool {
 	if depth > max_expression_depth {
 		c.too_deep++
 		return false
@@ -457,7 +457,7 @@ fn (mut c Checker) check_object_destructure(pattern C.TSNode, sender_type TypeRe
 
 // pattern_property gives the name of a property of an object pattern and its ESTree value, or none
 // if it has no computable name (or it is a `...rest`).
-fn (c &Checker) pattern_property(prop C.TSNode) ?(string, C.TSNode) {
+fn (c &Checker) pattern_property(prop C.vt_node) ?(string, C.vt_node) {
 	match node_kind(prop) {
 		'shorthand_property_identifier_pattern' {
 			return c.identifier_name(prop), prop
@@ -488,7 +488,7 @@ fn (c &Checker) pattern_property(prop C.TSNode) ?(string, C.TSNode) {
 
 // identifier_name is the name of an identifier with its `\u…` escapes applied, like the ESTree
 // `name`.
-fn (c &Checker) identifier_name(n C.TSNode) string {
+fn (c &Checker) identifier_name(n C.vt_node) string {
 	text := c.text(n)
 	if !text.contains('\\') {
 		return text
@@ -499,7 +499,7 @@ fn (c &Checker) identifier_name(n C.TSNode) string {
 // literal_name is String(value) of a literal used as a property name: strings and templates
 // without substitutions (with their escapes), numbers, BigInt, true/false/null and regular
 // expressions.
-fn (c &Checker) literal_name(n C.TSNode) ?string {
+fn (c &Checker) literal_name(n C.vt_node) ?string {
 	text := c.text(n)
 	match node_kind(n) {
 		'string' {

@@ -10,7 +10,7 @@ const nia_messages = {
 	'readonlyMember': "The members of '{{name}}' are read-only."
 }
 
-fn (mut c Checker) lint_no_import_assign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_import_assign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['import_statement'], []) {
@@ -50,7 +50,7 @@ fn (mut c Checker) lint_no_import_assign(root C.TSNode, abs_path string, mut sta
 }
 
 // nia_write_node ports getWriteNode: the assignment, update, unary, call or for-in/of around.
-fn nia_write_node(id C.TSNode) C.TSNode {
+fn nia_write_node(id C.vt_node) C.vt_node {
 	mut node := id
 	for {
 		node = cti_estree_parent(node) or { return id }
@@ -63,7 +63,7 @@ fn nia_write_node(id C.TSNode) C.TSNode {
 }
 
 // nia_is_assignment_left ports isAssignmentLeft: the node is a target of an assignment.
-fn nia_is_assignment_left(n C.TSNode) bool {
+fn nia_is_assignment_left(n C.vt_node) bool {
 	parent := cti_estree_parent(n) or { return false }
 	key := node_key(n)
 	match node_kind(parent) {
@@ -86,7 +86,7 @@ fn nia_is_assignment_left(n C.TSNode) bool {
 }
 
 // nia_is_member_write ports isMemberWrite for a namespace import.
-fn (mut c Checker) nia_is_member_write(root C.TSNode, id C.TSNode) bool {
+fn (mut c Checker) nia_is_member_write(root C.vt_node, id C.vt_node) bool {
 	parent := cti_estree_parent(id) or { return false }
 	if node_kind(parent) in ['member_expression', 'subscript_expression'] {
 		object := node_field(parent, 'object') or { return false }
@@ -139,6 +139,6 @@ fn (mut c Checker) nia_is_member_write(root C.TSNode, id C.TSNode) bool {
 	return v >= 0 && tree.variables[v].scope == 0
 }
 
-fn node_start_of(n C.TSNode) int {
+fn node_start_of(n C.vt_node) int {
 	return treesitter.node_start(n)
 }

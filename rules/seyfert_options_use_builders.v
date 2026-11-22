@@ -18,7 +18,7 @@ struct SyViolation {
 	name string
 }
 
-fn (mut c Checker) lint_seyfert_options_use_builders(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_options_use_builders(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	decorators, callees, arguments := sy_option_decorators(c.nodes_of_kind(root, c'decorator'))
 	mut asked := callees.clone()

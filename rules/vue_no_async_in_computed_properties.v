@@ -35,7 +35,7 @@ fn vue_no_async_in_computed_properties_options(options []json2.Any) ![]string {
 	return out
 }
 
-fn (mut c Checker) lint_vue_no_async_in_computed_properties(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_async_in_computed_properties(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ignored := vue_no_async_in_computed_properties_options(c.rule_options(vue_no_async_in_computed_properties))!
 	mut findings := []Finding{}
@@ -244,7 +244,7 @@ fn vnaicp_is_timed_function(t &estree.EsTree, node int) bool {
 }
 
 // vnaicp_is_next_tick is isNextTick.
-fn (mut c Checker) vnaicp_is_next_tick(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) vnaicp_is_next_tick(root C.vt_node, t &estree.EsTree, node int) bool {
 	callee := vue_skip_chain(t, t.node(node, .callee) or { return false })
 	if t.typ(callee) != .member_expression {
 		return false

@@ -266,7 +266,7 @@ fn (mut b ScopeBuilder) svelte_reactive_scope(module int) {
 
 // svelte_assignment_of_target is the assignment expression whose left side has the identifier
 // (the parent of the reference's writeExpr), through the patterns of a destructuring.
-fn svelte_assignment_of_target(ident C.TSNode) ?C.TSNode {
+fn svelte_assignment_of_target(ident C.vt_node) ?C.vt_node {
 	mut child := ident
 	mut node := node_parent(ident)?
 	for {
@@ -290,7 +290,7 @@ fn svelte_assignment_of_target(ident C.TSNode) ?C.TSNode {
 }
 
 // svelte_is_reactive_statement: a top-level `$:` statement of a script (a SvelteReactiveStatement).
-fn (b &ScopeBuilder) svelte_is_reactive_statement(n C.TSNode) bool {
+fn (b &ScopeBuilder) svelte_is_reactive_statement(n C.vt_node) bool {
 	if node_kind(n) != 'labeled_statement' {
 		return false
 	}
@@ -453,15 +453,15 @@ fn (mut b ScopeBuilder) svelte_props_scope(module int, script svelte.ScriptRange
 	}
 }
 
-fn (b &ScopeBuilder) svelte_pattern_targets(pattern C.TSNode) []ScopeTarget {
+fn (b &ScopeBuilder) svelte_pattern_targets(pattern C.vt_node) []ScopeTarget {
 	mut targets := []ScopeTarget{}
-	mut rhs := []C.TSNode{}
-	b.collect_pattern(pattern, []C.TSNode{}, -1, mut targets, mut rhs)
+	mut rhs := []C.vt_node{}
+	b.collect_pattern(pattern, []C.vt_node{}, -1, mut targets, mut rhs)
 	return targets
 }
 
 // svelte_is_call_of: a call of the identifier `name`.
-fn (b &ScopeBuilder) svelte_is_call_of(n C.TSNode, name string) bool {
+fn (b &ScopeBuilder) svelte_is_call_of(n C.vt_node, name string) bool {
 	if node_kind(n) != 'call_expression' {
 		return false
 	}
@@ -471,7 +471,7 @@ fn (b &ScopeBuilder) svelte_is_call_of(n C.TSNode, name string) bool {
 
 // svelte_add_prop_reference is addPropReference: a virtual reference that writes and reads each
 // module variable of that name that has none yet.
-fn (mut b ScopeBuilder) svelte_add_prop_reference(module int, ident C.TSNode, mut done map[int]bool) {
+fn (mut b ScopeBuilder) svelte_add_prop_reference(module int, ident C.vt_node, mut done map[int]bool) {
 	name := b.name_of(ident)
 	for v in b.tree.scopes[module].variables {
 		if b.tree.variables[v].name != name || v in done {

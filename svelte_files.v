@@ -226,7 +226,7 @@ fn svelte_identifiers(parser treesitter.Parser, doc &svelte.Document, all bool) 
 		return []treesitter.Ident{}, []int{}, []offsets.DisplayPos{}
 	}
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	text := doc.lint_text()
 	mut idents := []treesitter.Ident{}

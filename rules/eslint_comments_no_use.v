@@ -35,7 +35,7 @@ fn ec_nu_options(options []json2.Any) !EcNuOptions {
 	}
 }
 
-fn (mut c Checker) lint_eslint_comments_no_use(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_eslint_comments_no_use(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := ec_nu_options(c.rule_options(eslint_comments_no_use))!
 	mut findings := []Finding{}

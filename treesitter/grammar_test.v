@@ -3,7 +3,7 @@ module treesitter
 // What the patched grammar reads as TypeScript does (internals.md, "Grammar"), by the shape of the
 // tree: the kind of each node with its named children, comments apart, in parentheses.
 
-fn shape(n C.TSNode) string {
+fn shape(n C.vt_node) string {
 	parts := named_children(n).map(shape(it))
 	return if parts.len == 0 { node_kind(n) } else { '${node_kind(n)}(${parts.join(',')})' }
 }
@@ -17,7 +17,7 @@ fn shapes_of(src string, kind string, tsx bool) []string {
 	}
 	tree := p.parse(src) or { panic(err) }
 	defer {
-		tree_delete(tree)
+		rows_free(tree)
 	}
 	if tree_has_error(tree) {
 		return ['ERROR']
@@ -86,7 +86,7 @@ fn test_instantiation_after_a_unary_operator() {
 	}
 	tree := p.parse('const a = !f<T>;') or { panic(err) }
 	defer {
-		tree_delete(tree)
+		rows_free(tree)
 	}
 	instantiation := nodes_of_kind(root_node(tree), c'instantiation_expression')[0]
 	assert children(instantiation).map(node_kind(it)) == ['identifier', 'type_arguments']

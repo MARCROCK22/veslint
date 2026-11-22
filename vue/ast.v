@@ -199,7 +199,7 @@ pub:
 	code string
 	tsx  bool
 pub mut:
-	tree &C.TSTree = unsafe { nil }
+	tree &C.vt_rows = unsafe { nil }
 	es   estree.EsTree
 	// to_file maps each byte offset of `code` (and its end) to a byte offset of the file.
 	to_file []int

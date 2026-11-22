@@ -12,15 +12,15 @@ const prtp_messages = {
 
 // PrtpCall is a `x.reduce(callback, init as T)` call whose types decide the report.
 struct PrtpCall {
-	call       C.TSNode
-	callee     C.TSNode // the MemberExpression, without parentheses
-	object     C.TSNode // the object of the callee
-	assertion  C.TSNode // the second argument, a type assertion
-	expression C.TSNode // its expression
-	type_node  C.TSNode // its type
+	call       C.vt_node
+	callee     C.vt_node // the MemberExpression, without parentheses
+	object     C.vt_node // the object of the callee
+	assertion  C.vt_node // the second argument, a type assertion
+	expression C.vt_node // its expression
+	type_node  C.vt_node // its type
 }
 
-fn (mut c Checker) lint_prefer_reduce_type_parameter(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_reduce_type_parameter(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut calls := []PrtpCall{}
 	mut spans := []Span{}
@@ -90,7 +90,7 @@ fn (c &Checker) prtp_fixes(call PrtpCall) []Fix {
 
 // prtp_type_assertion ports isTypeAssertion (TSAsExpression or TSTypeAssertion): its expression
 // and its type.
-fn prtp_type_assertion(n C.TSNode) ?(C.TSNode, C.TSNode) {
+fn prtp_type_assertion(n C.vt_node) ?(C.vt_node, C.vt_node) {
 	named := named_children(n)
 	match node_kind(n) {
 		'as_expression' {

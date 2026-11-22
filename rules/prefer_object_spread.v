@@ -10,7 +10,7 @@ const pos_messages = {
 	'useLiteralMessage': 'Use an object literal instead of `Object.assign`. eg: `{ foo: bar }`.'
 }
 
-fn (mut c Checker) lint_prefer_object_spread(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_object_spread(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	trace := {
@@ -53,7 +53,7 @@ fn (mut c Checker) lint_prefer_object_spread(root C.TSNode, abs_path string, mut
 
 // pos_has_proto_property ports hasProtoProperty: a Property (not a spread) of the object whose
 // static name is `__proto__`.
-fn (c &Checker) pos_has_proto_property(object C.TSNode) bool {
+fn (c &Checker) pos_has_proto_property(object C.vt_node) bool {
 	for property in named_children(object) {
 		if node_kind(property) in ['spread_element', 'comment'] {
 			continue
@@ -73,7 +73,7 @@ fn pos_is_space(b u8) bool {
 
 // pos_needs_parens ports needsParens: an object literal in the place of the call would start a
 // statement or be read otherwise.
-fn (mut c Checker) pos_needs_parens(call C.TSNode) bool {
+fn (mut c Checker) pos_needs_parens(call C.vt_node) bool {
 	parent := cti_estree_parent(call) or { return false }
 	match node_kind(parent) {
 		'variable_declarator', 'array', 'return_statement', 'call_expression', 'pair' {
@@ -97,7 +97,7 @@ fn (mut c Checker) pos_needs_parens(call C.TSNode) bool {
 }
 
 // pos_fix ports defineFixer: `{ ...a, b: 1 }` from `Object.assign({}, a, { b: 1 })`.
-fn (mut c Checker) pos_fix(root C.TSNode, call C.TSNode, args []C.TSNode) (bool, Fix) {
+fn (mut c Checker) pos_fix(root C.vt_node, call C.vt_node, args []C.vt_node) (bool, Fix) {
 	tokens := c.source_tokens(root)
 	callee := node_field(call, 'function') or { return false, Fix{} }
 	mut left_paren := tokens.after(c.es_end(callee), false) or { return false, Fix{} }

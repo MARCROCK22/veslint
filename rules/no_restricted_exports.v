@@ -56,7 +56,7 @@ fn nre_options(options []json2.Any) !NreOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_restricted_exports(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_restricted_exports(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nre_options(c.rule_options(no_restricted_exports))!
 	mut findings := []Finding{}
@@ -130,7 +130,7 @@ enum NreExport {
 }
 
 // nre_name ports getModuleExportName: the name of an identifier or the value of a string.
-fn (c &Checker) nre_name(n C.TSNode) string {
+fn (c &Checker) nre_name(n C.vt_node) string {
 	if node_kind(n) == 'string' {
 		return c.literal_string_value(n) or { c.text(n) }
 	}
@@ -138,7 +138,7 @@ fn (c &Checker) nre_name(n C.TSNode) string {
 }
 
 // nre_check ports checkExportedName.
-fn (c &Checker) nre_check(node C.TSNode, kind NreExport, has_source bool, local_name string, o NreOptions, mut findings []Finding) {
+fn (c &Checker) nre_check(node C.vt_node, kind NreExport, has_source bool, local_name string, o NreOptions, mut findings []Finding) {
 	name := c.nre_name(node)
 	mut matches_pattern := false
 	if program := o.pattern {

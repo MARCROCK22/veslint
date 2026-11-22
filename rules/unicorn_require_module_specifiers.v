@@ -12,7 +12,7 @@ const urms_messages = {
 	'suggestion/to-side-effect-import': 'Switch to side effect import.'
 }
 
-fn (mut c Checker) lint_unicorn_require_module_specifiers(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_require_module_specifiers(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

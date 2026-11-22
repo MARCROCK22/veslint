@@ -91,15 +91,15 @@ struct PncCandidate {
 	message_id string
 	data       map[string]string
 	check      PncCheck
-	test       C.TSNode
+	test       C.vt_node
 	// For the suggestion:
-	node      C.TSNode // the `||` or `||=` expression, the conditional or the `if`
-	other     C.TSNode // a conditional: its nullish branch; an `if`: its assignment (without parentheses)
-	statement C.TSNode // an `if`: the statement of the assignment
-	block     bool     // an `if`: its consequent is a block
+	node      C.vt_node // the `||` or `||=` expression, the conditional or the `if`
+	other     C.vt_node // a conditional: its nullish branch; an `if`: its assignment (without parentheses)
+	statement C.vt_node // an `if`: the statement of the assignment
+	block     bool      // an `if`: its consequent is a block
 }
 
-fn (mut c Checker) lint_prefer_nullish_coalescing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_nullish_coalescing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := pnc_options(c.rule_options(prefer_nullish_coalescing))!
 	if o.ignore_boolean_coercion {
@@ -219,7 +219,7 @@ fn (mut c Checker) pnc_type_eligible(t TypeResponse, o PncOptions) !bool {
 
 // pnc_or ports checkAndFixWithPreferNullishOverOr for `a || b` and `a ||= b`: reported at the
 // operator if the type of `a` is eligible.
-fn (c &Checker) pnc_or(n C.TSNode, description string, equals string, o PncOptions, mut candidates []PncCandidate) {
+fn (c &Checker) pnc_or(n C.vt_node, description string, equals string, o PncOptions, mut candidates []PncCandidate) {
 	if o.ignore_conditional_tests && c.is_conditional_test(n) {
 		return
 	}
@@ -245,7 +245,7 @@ fn (c &Checker) pnc_or(n C.TSNode, description string, equals string, o PncOptio
 }
 
 // pnc_ternary handles the ConditionalExpression visitor.
-fn (c &Checker) pnc_ternary(n C.TSNode, o PncOptions, mut candidates []PncCandidate) {
+fn (c &Checker) pnc_ternary(n C.vt_node, o PncOptions, mut candidates []PncCandidate) {
 	test := unwrap_parens(node_field(n, 'condition') or { return })
 	operator, inside := c.pnc_test_operator(test) or { return }
 	consequence := unwrap_parens(node_field(n, 'consequence') or { return })
@@ -266,7 +266,7 @@ fn (c &Checker) pnc_ternary(n C.TSNode, o PncOptions, mut candidates []PncCandid
 }
 
 // pnc_if handles the IfStatement visitor: `if (!a) a = b;` and the like.
-fn (c &Checker) pnc_if(n C.TSNode, o PncOptions, mut candidates []PncCandidate) {
+fn (c &Checker) pnc_if(n C.vt_node, o PncOptions, mut candidates []PncCandidate) {
 	if _ := node_field(n, 'alternative') {
 		return
 	}
@@ -321,14 +321,14 @@ fn (mut c Checker) pnc_fixes(cand PncCandidate) []Fix {
 }
 
 // pnc_is_logical_or ports isLogicalOrOperator: a LogicalExpression with `||`.
-fn pnc_is_logical_or(n C.TSNode) bool {
+fn pnc_is_logical_or(n C.vt_node) bool {
 	return node_kind(n) == 'binary_expression' && operator_of(n) == '||'
 }
 
 // pnc_or_fixes: the operator becomes `??` or `??=`; inside another `||` the new expression gets
 // parentheses, which start after the `&&` of its left side if there is one (`&&` and `??` cannot
 // be mixed without them).
-fn (c &Checker) pnc_or_fixes(n C.TSNode) []Fix {
+fn (c &Checker) pnc_or_fixes(n C.vt_node) []Fix {
 	operator := node_field(n, 'operator') or { return []Fix{} }
 	left := unwrap_parens(node_field(n, 'left') or { return []Fix{} })
 	right := unwrap_parens(node_field(n, 'right') or { return []Fix{} })
@@ -401,14 +401,14 @@ fn (c &Checker) pnc_format_comments(comments []SourceToken, separator string) st
 }
 
 // pnc_test_operator ports getOperatorAndNodesInsideTestExpression; none is a null operator.
-fn (c &Checker) pnc_test_operator(test C.TSNode) ?(string, []C.TSNode) {
+fn (c &Checker) pnc_test_operator(test C.vt_node) ?(string, []C.vt_node) {
 	if c.is_member_access_like(test) || node_kind(test) == 'unary_expression' {
 		if node_kind(test) != 'unary_expression' {
-			return '', []C.TSNode{}
+			return '', []C.vt_node{}
 		}
 		argument := unwrap_parens(node_field(test, 'argument') or { return none })
 		if operator_of(test) == '!' && c.is_member_access_like(argument) {
-			return '!', []C.TSNode{}
+			return '!', []C.vt_node{}
 		}
 		return none
 	}
@@ -466,7 +466,7 @@ fn (c &Checker) pnc_test_operator(test C.TSNode) ?(string, []C.TSNode) {
 
 // pnc_params ports getNullishCoalescingParams: the node whose type decides and how; none when the
 // construct is not fixable without looking at types.
-fn (c &Checker) pnc_params(n C.TSNode, test C.TSNode, non_nullish C.TSNode, inside []C.TSNode, operator string, o PncOptions) ?(PncCheck, C.TSNode) {
+fn (c &Checker) pnc_params(n C.vt_node, test C.vt_node, non_nullish C.vt_node, inside []C.vt_node, operator string, o PncOptions) ?(PncCheck, C.vt_node) {
 	if inside.len == 0 {
 		left := if node_kind(test) == 'unary_expression' {
 			unwrap_parens(node_field(test, 'argument') or { return none })
@@ -488,7 +488,7 @@ fn (c &Checker) pnc_params(n C.TSNode, test C.TSNode, non_nullish C.TSNode, insi
 	}
 	mut has_null := false
 	mut has_undefined := false
-	mut left := ?C.TSNode(none)
+	mut left := ?C.vt_node(none)
 	for node in inside {
 		if node_kind(node) == 'null' {
 			has_null = true
@@ -514,7 +514,7 @@ fn (c &Checker) pnc_params(n C.TSNode, test C.TSNode, non_nullish C.TSNode, insi
 
 // pnc_is_call_argument: the ESTree parent of `n` is a CallExpression (tree-sitter puts the
 // `arguments` node in between).
-fn pnc_is_call_argument(n C.TSNode) bool {
+fn pnc_is_call_argument(n C.vt_node) bool {
 	arguments := estree_parent(n) or { return false }
 	if node_kind(arguments) != 'arguments' {
 		return false
@@ -527,7 +527,7 @@ fn pnc_is_call_argument(n C.TSNode) bool {
 // the branches of a conditional and the last expression of a sequence, `n` is an argument of a
 // call to the built-in `Boolean` (isBuiltInBooleanCall: the call has no declaration of `Boolean`
 // in its own scope). It reads the scopes of the file, which the caller has built.
-fn (c &Checker) is_boolean_constructor_context(n C.TSNode) bool {
+fn (c &Checker) is_boolean_constructor_context(n C.vt_node) bool {
 	mut node := n
 	for depth := 0; depth < max_expression_depth; depth++ {
 		parent := estree_parent(node) or { return false }
@@ -575,7 +575,7 @@ fn (c &Checker) is_boolean_constructor_context(n C.TSNode) bool {
 // is_conditional_test ports isConditionalTest (util/isConditionalTest.ts of typescript-eslint
 // 8.72.2, also used by no-unnecessary-boolean-literal-compare): `n` is (part of) the test of a
 // condition.
-fn (c &Checker) is_conditional_test(n C.TSNode) bool {
+fn (c &Checker) is_conditional_test(n C.vt_node) bool {
 	mut node := n
 	for depth := 0; depth < max_expression_depth; depth++ {
 		parent := estree_parent(node) or { return false }
@@ -616,9 +616,9 @@ fn (c &Checker) is_conditional_test(n C.TSNode) bool {
 }
 
 // is_mixed_logical_expression ports isMixedLogicalExpression: an `||` chain that touches an `&&`.
-fn (c &Checker) is_mixed_logical_expression(n C.TSNode) bool {
+fn (c &Checker) is_mixed_logical_expression(n C.vt_node) bool {
 	mut seen := map[string]bool{}
-	mut queue := []C.TSNode{}
+	mut queue := []C.vt_node{}
 	pnc_push_around(n, mut queue)
 	mut i := 0
 	for i < queue.len && i < 10 * max_expression_depth {
@@ -643,7 +643,7 @@ fn (c &Checker) is_mixed_logical_expression(n C.TSNode) bool {
 }
 
 // pnc_push_around queues the ESTree parent and the operands of `n`.
-fn pnc_push_around(n C.TSNode, mut queue []C.TSNode) {
+fn pnc_push_around(n C.vt_node, mut queue []C.vt_node) {
 	if parent := estree_parent(n) {
 		queue << parent
 	}
@@ -656,19 +656,19 @@ fn pnc_push_around(n C.TSNode, mut queue []C.TSNode) {
 }
 
 // is_nullish_comparison ports isNodeNullishComparison: `null === undefined` and the like.
-fn (c &Checker) is_nullish_comparison(n C.TSNode) bool {
+fn (c &Checker) is_nullish_comparison(n C.vt_node) bool {
 	left := unwrap_parens(node_field(n, 'left') or { return false })
 	right := unwrap_parens(node_field(n, 'right') or { return false })
 	return (node_kind(left) == 'null' || is_undefined_identifier(left))
 		&& (node_kind(right) == 'null' || is_undefined_identifier(right))
 }
 
-fn is_undefined_identifier(n C.TSNode) bool {
+fn is_undefined_identifier(n C.vt_node) bool {
 	return node_kind(n) == 'undefined'
 }
 
 // is_member_access_like: an ESTree Identifier, MemberExpression or ChainExpression.
-fn (c &Checker) is_member_access_like(n C.TSNode) bool {
+fn (c &Checker) is_member_access_like(n C.vt_node) bool {
 	kind := node_kind(n)
 	return kind in ['identifier', 'undefined', 'member_expression', 'subscript_expression']
 		|| estree_type(n) == 'ChainExpression'
@@ -676,7 +676,7 @@ fn (c &Checker) is_member_access_like(n C.TSNode) bool {
 
 // similar_member_access ports areNodesSimilarMemberAccess: the same member access sequence,
 // whatever the optional chaining (`a.b.c` and `a?.b.c` are similar).
-fn (c &Checker) similar_member_access(a C.TSNode, b C.TSNode) bool {
+fn (c &Checker) similar_member_access(a C.vt_node, b C.vt_node) bool {
 	x := unwrap_parens(a)
 	y := unwrap_parens(b)
 	if is_member(x) && is_member(y) {
@@ -705,7 +705,7 @@ fn (c &Checker) similar_member_access(a C.TSNode, b C.TSNode) bool {
 }
 
 // node_equal ports isNodeEqual: the same `this`, literal value, identifier name or member access.
-fn (c &Checker) node_equal(a C.TSNode, b C.TSNode) bool {
+fn (c &Checker) node_equal(a C.vt_node, b C.vt_node) bool {
 	x := unwrap_parens(a)
 	y := unwrap_parens(b)
 	tx := estree_type(x)
@@ -740,7 +740,7 @@ fn (c &Checker) node_equal(a C.TSNode, b C.TSNode) bool {
 
 // literal_value is a key for `Literal.value` that is equal for two literals exactly when their
 // values are `===`: the type and String(value). A regular expression is never equal to another.
-fn (c &Checker) literal_value(n C.TSNode) ?string {
+fn (c &Checker) literal_value(n C.vt_node) ?string {
 	match node_kind(n) {
 		'string' {
 			return 's:' + c.literal_string_value(n)?
@@ -760,7 +760,7 @@ fn (c &Checker) literal_value(n C.TSNode) ?string {
 }
 
 // literal_string_value is the value of a string literal, with its escapes applied.
-fn (c &Checker) literal_string_value(n C.TSNode) ?string {
+fn (c &Checker) literal_string_value(n C.vt_node) ?string {
 	if node_kind(n) != 'string' {
 		return none
 	}

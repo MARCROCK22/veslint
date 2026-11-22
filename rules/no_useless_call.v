@@ -9,7 +9,7 @@ const nuca2_messages = {
 	'unnecessaryCall': "Unnecessary '.{{name}}()'."
 }
 
-fn (mut c Checker) lint_no_useless_call(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_call(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['call_expression'], []) {

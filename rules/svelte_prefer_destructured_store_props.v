@@ -51,7 +51,7 @@ fn svpdsp_is_expression_identifier(t &estree.EsTree, id int, parent int) bool {
 
 // svpdsp_is_top_level: findVariable of the identifier gives no variable, or one of the module or
 // global scope.
-fn (mut c Checker) svpdsp_is_top_level(root C.TSNode, e &SvscEs, id int) bool {
+fn (mut c Checker) svpdsp_is_top_level(root C.vt_node, e &SvscEs, id int) bool {
 	if e.svelte {
 		v := c.sv_find_variable(id)
 		if v < 0 {
@@ -181,7 +181,7 @@ mut:
 	identifiers []int
 }
 
-fn (mut c Checker) lint_svelte_prefer_destructured_store_props(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_prefer_destructured_store_props(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() && !svpdsp_may_have_store_access(c.src) {
 		return []
 	}

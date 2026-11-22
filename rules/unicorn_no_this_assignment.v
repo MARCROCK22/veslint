@@ -9,7 +9,7 @@ const unta_messages = {
 	'no-this-assignment': 'Do not assign `this` to `{{name}}`.'
 }
 
-fn (mut c Checker) lint_unicorn_no_this_assignment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_this_assignment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

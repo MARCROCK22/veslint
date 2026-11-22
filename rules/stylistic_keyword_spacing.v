@@ -73,7 +73,7 @@ mut:
 	findings []Finding
 }
 
-fn (mut c Checker) lint_stylistic_keyword_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_keyword_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	options := skwsp_options(c.rule_options(stylistic_keyword_spacing))!
 	t := c.es_tree(root, abs_path) or { return []Finding{} }

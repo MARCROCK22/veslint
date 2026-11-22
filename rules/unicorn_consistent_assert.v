@@ -33,7 +33,7 @@ fn uca_assert_function(t &estree.EsTree, specifier int, module_name string) bool
 	return name == 'default' || (module_name == 'assert' && name == 'strict')
 }
 
-fn (mut c Checker) lint_unicorn_consistent_assert(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_consistent_assert(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

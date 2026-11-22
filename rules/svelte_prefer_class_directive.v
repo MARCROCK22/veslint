@@ -271,7 +271,7 @@ fn (c &Checker) spcd_fix(attr int, index int, entries []SpcdEntry) ![]Fix {
 	return fixes
 }
 
-fn (mut c Checker) lint_svelte_prefer_class_directive(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_prefer_class_directive(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	prefer_empty := spcd_options(c.rule_options(svelte_prefer_class_directive))!
 	if !c.is_svelte() {
 		return []

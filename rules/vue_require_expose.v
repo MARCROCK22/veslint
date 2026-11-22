@@ -18,7 +18,7 @@ const vue_require_expose_messages = {
 const vre_fix_expose_before_options = ['name', 'components', 'directives', 'extends', 'mixins',
 	'provide', 'inject', 'inheritAttrs', 'props', 'emits']
 
-fn (mut c Checker) lint_vue_require_expose(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_expose(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -128,7 +128,7 @@ fn (mut c Checker) lint_vue_require_expose(root C.TSNode, abs_path string, mut s
 
 // vre_returns_function: the setup function's scope gets `returnFunction` (an arrow whose body is
 // a function, or a `return` of a function directly in it).
-fn (mut c Checker) vre_returns_function(root C.TSNode, t &estree.EsTree, f int) bool {
+fn (mut c Checker) vre_returns_function(root C.vt_node, t &estree.EsTree, f int) bool {
 	if t.typ(f) == .arrow_function_expression && (t.flag(f, .expression) or { false }) {
 		if c.vre_is_function(root, t, t.node(f, .body) or { -1 }, 0) {
 			return true
@@ -148,7 +148,7 @@ fn (mut c Checker) vre_returns_function(root C.TSNode, t &estree.EsTree, f int) 
 }
 
 // vre_is_function is the rule's isFunction.
-fn (mut c Checker) vre_is_function(root C.TSNode, t &estree.EsTree, node int, depth int) bool {
+fn (mut c Checker) vre_is_function(root C.vt_node, t &estree.EsTree, node int, depth int) bool {
 	if node < 0 || depth > 20 {
 		return false
 	}
@@ -178,7 +178,7 @@ fn (mut c Checker) vre_is_function(root C.TSNode, t &estree.EsTree, node int, de
 }
 
 // vre_suggestions is buildSuggest.
-fn (mut c Checker) vre_suggestions(root C.TSNode, t &estree.EsTree, object int) ![]Suggestion {
+fn (mut c Checker) vre_suggestions(root C.vt_node, t &estree.EsTree, object int) ![]Suggestion {
 	properties := t.list(object, .properties) or { []int{} }
 	property_nodes := properties.filter(vue_is_property(t, it))
 	mut before := -1

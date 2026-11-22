@@ -36,7 +36,7 @@ struct SnipToken {
 	start    int
 	end      int
 	typ      string
-	node     C.TSNode
+	node     C.vt_node
 	reserved bool
 }
 
@@ -45,7 +45,7 @@ fn (t SnipToken) is_comment() bool {
 }
 
 // snippet_tokens gives the tokens and the comments of a snippet's tree, in order.
-fn snippet_tokens(root C.TSNode, src string, tsx bool) ([]SnipToken, []SnipToken) {
+fn snippet_tokens(root C.vt_node, src string, tsx bool) ([]SnipToken, []SnipToken) {
 	mut all := []SnipToken{}
 	tokens_walk(root, src, mut all)
 	if tsx && src.contains('<') {
@@ -66,17 +66,14 @@ fn snippet_tokens(root C.TSNode, src string, tsx bool) ([]SnipToken, []SnipToken
 struct JsxGap {
 	start int
 	end   int
-	node  C.TSNode
+	node  C.vt_node
 }
 
-fn tokens_jsx(root C.TSNode, tokens []SnipToken) []SnipToken {
+fn tokens_jsx(root C.vt_node, tokens []SnipToken) []SnipToken {
 	mut gaps := []JsxGap{}
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
+	first, last := treesitter.flat_range(root)
+	for i in first .. last + 1 {
+		node := treesitter.flat_node(root, i)
 		if node_kind(node) == 'jsx_element' {
 			mut previous_end := -1
 			for child in named_children(node) {
@@ -88,19 +85,6 @@ fn tokens_jsx(root C.TSNode, tokens []SnipToken) []SnipToken {
 				}
 				previous_end = treesitter.node_end(child)
 			}
-		}
-		if C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		mut done := false
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				done = true
-				break
-			}
-		}
-		if done {
-			break
 		}
 	}
 	mut out := []SnipToken{cap: tokens.len}
@@ -130,30 +114,26 @@ fn tokens_jsx(root C.TSNode, tokens []SnipToken) []SnipToken {
 	return out
 }
 
-fn tokens_walk(root C.TSNode, src string, mut out []SnipToken) {
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		if tokens_visit(node, src, mut out) && C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return
-			}
+// tokens_walk visits the subtree in preorder; the subtree of a node whose children are not
+// visited is jumped over.
+fn tokens_walk(root C.vt_node, src string, mut out []SnipToken) {
+	first, last := treesitter.flat_range(root)
+	mut i := first
+	for i <= last {
+		i = if tokens_visit(treesitter.flat_node(root, i), src, mut out) {
+			i + 1
+		} else {
+			treesitter.flat_last(root, i) + 1
 		}
 	}
 }
 
 // tokens_visit appends the token a node is, if it is one, and tells whether its children are
 // still to be visited. Zero-width leaves (automatic `;`, MISSING nodes) are not tokens.
-fn tokens_visit(node C.TSNode, src string, mut out []SnipToken) bool {
+fn tokens_visit(node C.vt_node, src string, mut out []SnipToken) bool {
 	start := treesitter.node_start(node)
 	end := treesitter.node_end(node)
-	kind := if C.ts_node_is_named(node) { node_kind(node) } else { '' }
+	kind := if C.vt_node_is_named(node) { node_kind(node) } else { '' }
 	match kind {
 		'comment', 'html_comment' {
 			block := src[start..end].starts_with('/*')
@@ -177,7 +157,7 @@ fn tokens_visit(node C.TSNode, src string, mut out []SnipToken) bool {
 		}
 		else {}
 	}
-	if C.ts_node_child_count(node) > 0 {
+	if C.vt_node_child_count(node) > 0 {
 		return true
 	}
 	if end <= start {
@@ -201,7 +181,7 @@ fn tokens_visit(node C.TSNode, src string, mut out []SnipToken) bool {
 
 // token_is_name tells the reserved words TypeScript parses as an identifier: the `const` of a
 // const assertion, and `this` as a parameter or in a type query.
-fn token_is_name(leaf C.TSNode, text string) bool {
+fn token_is_name(leaf C.vt_node, text string) bool {
 	if text !in ['const', 'this'] {
 		return false
 	}
@@ -219,7 +199,7 @@ fn token_is_name(leaf C.TSNode, text string) bool {
 	return node_kind(parent) == 'type_query'
 }
 
-fn tokens_template(node C.TSNode, src string, mut out []SnipToken) {
+fn tokens_template(node C.vt_node, src string, mut out []SnipToken) {
 	mut piece := treesitter.node_start(node)
 	for child in children(node) {
 		if node_kind(child) !in ['template_substitution', 'template_type'] {

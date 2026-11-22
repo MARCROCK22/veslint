@@ -43,12 +43,12 @@ fn prpt_options(options []json2.Any) !PrptOptions {
 // modifiers of a parameter property) and the node its type is that of (its type annotation, or
 // the whole parameter when it has none or it has a default value).
 struct PrptParameter {
-	report    C.TSNode
-	type_node C.TSNode
+	report    C.vt_node
+	type_node C.vt_node
 	is_type   bool
 }
 
-fn (mut c Checker) lint_prefer_readonly_parameter_types(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_readonly_parameter_types(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := prpt_options(c.rule_options(prefer_readonly_parameter_types))!
 	mut sw := time.new_stopwatch()
 	mut parameters := []PrptParameter{}
@@ -102,7 +102,7 @@ fn (mut c Checker) prpt_annotation(parameter PrptParameter) !string {
 }
 
 // prpt_parameters are the parameters of a function the options have the rule check.
-fn prpt_parameters(function C.TSNode, options PrptOptions) []PrptParameter {
+fn prpt_parameters(function C.vt_node, options PrptOptions) []PrptParameter {
 	mut out := []PrptParameter{}
 	list := node_field(function, 'parameters') or {
 		// The only parameter of an arrow function, without parentheses: it has no type annotation.
@@ -128,7 +128,7 @@ fn prpt_parameters(function C.TSNode, options PrptOptions) []PrptParameter {
 		pattern := node_field(parameter, 'pattern') or { continue }
 		// A parameter with a default value is an AssignmentPattern, which has no type annotation
 		// of its own: its type is that of the parameter.
-		mut annotation := ?C.TSNode(none)
+		mut annotation := ?C.vt_node(none)
 		if _ := node_field(parameter, 'value') {
 		} else if type_annotation := node_field(parameter, 'type') {
 			annotation = first_named(type_annotation)
@@ -151,7 +151,7 @@ fn prpt_parameters(function C.TSNode, options PrptOptions) []PrptParameter {
 
 // prpt_place is where a parameter is reported: its ESTree node, an AssignmentPattern to its
 // default value, or the name or pattern with its type annotation.
-fn (c &Checker) prpt_place(report C.TSNode) Ident {
+fn (c &Checker) prpt_place(report C.vt_node) Ident {
 	if parent := node_parent(report) {
 		if node_kind(parent) in ['required_parameter', 'optional_parameter'] {
 			if _ := node_field(parent, 'value') {

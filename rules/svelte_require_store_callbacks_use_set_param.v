@@ -12,7 +12,7 @@ const svrscusp_messages = {
 	'addParam':    'Add a `set` parameter.'
 }
 
-fn (mut c Checker) lint_svelte_require_store_callbacks_use_set_param(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_require_store_callbacks_use_set_param(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	calls := c.svsc_store_calls(root, abs_path, ['readable', 'writable'])
 	if calls.len == 0 {
 		return []

@@ -16,7 +16,7 @@ const keyword_types = {
 	'undefined': NodeType.ts_undefined_keyword
 }
 
-fn (mut c Converter) typ(n C.TSNode) int {
+fn (mut c Converter) typ(n C.vt_node) int {
 	kind := kind_of(n)
 	match kind {
 		'predefined_type' {
@@ -250,7 +250,7 @@ fn (mut c Converter) typ(n C.TSNode) int {
 // is the node id the checker has not given, and `postfix` the field of JSDocNonNullableType and
 // JSDocNullableType. The node starts where getTokenPosOfNode puts a JSDoc node: after the white
 // space that follows the token before it, at a comment if one comes first.
-fn (mut c Converter) jsdoc_type(n C.TSNode, typ NodeType, postfix bool) int {
+fn (mut c Converter) jsdoc_type(n C.vt_node, typ NodeType, postfix bool) int {
 	mut inner := Kid{
 		n: n
 	}
@@ -274,7 +274,7 @@ fn (mut c Converter) jsdoc_type(n C.TSNode, typ NodeType, postfix bool) int {
 	return i
 }
 
-fn (mut c Converter) flatten_types(n C.TSNode, kind string, mut out []int) {
+fn (mut c Converter) flatten_types(n C.vt_node, kind string, mut out []int) {
 	for k in c.kids(n) {
 		if !k.named {
 			continue
@@ -313,7 +313,7 @@ fn (mut c Converter) tuple_member(k Kid) int {
 	return member
 }
 
-fn (mut c Converter) type_annotation(n C.TSNode) int {
+fn (mut c Converter) type_annotation(n C.vt_node) int {
 	i := c.mkn(.ts_type_annotation, n)
 	if t := c.first_named_kid(n) {
 		c.pnode(i, .type_annotation, c.typ(t.n))
@@ -323,7 +323,7 @@ fn (mut c Converter) type_annotation(n C.TSNode) int {
 
 // return_type converts the return type of a function (`: T`, `: x is T`, `: asserts x`) or of a
 // function type (after `=>`).
-fn (mut c Converter) return_type(rt C.TSNode, fn_kids []Kid) int {
+fn (mut c Converter) return_type(rt C.vt_node, fn_kids []Kid) int {
 	match kind_of(rt) {
 		'type_annotation', 'type_predicate_annotation', 'asserts_annotation' {
 			i := c.mkn(.ts_type_annotation, rt)
@@ -346,7 +346,7 @@ fn (mut c Converter) return_type(rt C.TSNode, fn_kids []Kid) int {
 	}
 }
 
-fn (mut c Converter) type_predicate(n C.TSNode) int {
+fn (mut c Converter) type_predicate(n C.vt_node) int {
 	kids := c.kids(n)
 	if kind_of(n) == 'asserts' {
 		i := c.mkn(.ts_type_predicate, n)
@@ -369,7 +369,7 @@ fn (mut c Converter) type_predicate(n C.TSNode) int {
 	return i
 }
 
-fn (mut c Converter) predicate_name(n C.TSNode) int {
+fn (mut c Converter) predicate_name(n C.vt_node) int {
 	if kind_of(n) == 'this' {
 		return c.mkn(.ts_this_type, n)
 	}
@@ -377,14 +377,14 @@ fn (mut c Converter) predicate_name(n C.TSNode) int {
 }
 
 // predicate_type is the TSTypeAnnotation of a type predicate, with the range of its type.
-fn (mut c Converter) predicate_type(n C.TSNode) int {
+fn (mut c Converter) predicate_type(n C.vt_node) int {
 	t := c.typ(n)
 	i := c.mk(.ts_type_annotation, n, c.t.nodes[t].start, c.t.nodes[t].end)
 	c.pnode(i, .type_annotation, t)
 	return i
 }
 
-fn (mut c Converter) type_parameters(n C.TSNode) int {
+fn (mut c Converter) type_parameters(n C.vt_node) int {
 	i := c.mkn(.ts_type_parameter_declaration, n)
 	mut params := []int{}
 	for k in c.kids(n) {
@@ -413,7 +413,7 @@ fn (mut c Converter) type_parameters(n C.TSNode) int {
 	return i
 }
 
-fn (mut c Converter) type_arguments(n C.TSNode) int {
+fn (mut c Converter) type_arguments(n C.vt_node) int {
 	i := c.mkn(.ts_type_parameter_instantiation, n)
 	mut params := []int{}
 	for k in c.kids(n) {
@@ -427,7 +427,7 @@ fn (mut c Converter) type_arguments(n C.TSNode) int {
 
 // type_members converts the members of an interface body or object type; a `;` or `,` after a
 // member belongs to it.
-fn (mut c Converter) type_members(body C.TSNode) []int {
+fn (mut c Converter) type_members(body C.vt_node) []int {
 	kids := c.kids(body)
 	mut out := []int{}
 	for k, kid in kids {
@@ -505,7 +505,7 @@ fn (mut c Converter) type_member(kid Kid, start int, end int) int {
 }
 
 // object_type converts `{ … }`: a TSTypeLiteral, or a TSMappedType for `{ [K in T]: U }`.
-fn (mut c Converter) object_type(n C.TSNode) int {
+fn (mut c Converter) object_type(n C.vt_node) int {
 	kids := c.kids(n)
 	for k in kids {
 		if k.kind == 'index_signature' {
@@ -522,7 +522,7 @@ fn (mut c Converter) object_type(n C.TSNode) int {
 	return i
 }
 
-fn (mut c Converter) mapped_type(n C.TSNode, ik []Kid, clause Kid) int {
+fn (mut c Converter) mapped_type(n C.vt_node, ik []Kid, clause Kid) int {
 	i := c.mkn(.ts_mapped_type, n)
 	ck := c.kids(clause.n)
 	c.pnode(i, .constraint, c.typ(field_of(ck, 'type') or { return i }.n))
@@ -575,7 +575,7 @@ fn (mut c Converter) mapped_type(n C.TSNode, ik []Kid, clause Kid) int {
 	return i
 }
 
-fn (mut c Converter) type_query(n C.TSNode) int {
+fn (mut c Converter) type_query(n C.vt_node) int {
 	i := c.mkn(.ts_type_query, n)
 	inner := c.first_named_kid(n) or { return i }
 	match inner.kind {
@@ -589,7 +589,7 @@ fn (mut c Converter) type_query(n C.TSNode) int {
 					// typeof import('x').A<T>: the type arguments are the import type's.
 					ta := ik.filter(it.kind == 'type_arguments')
 					c.pnode(i, .expr_name, c.import_type(f.n, inner.n, if ta.len > 0 {
-						?C.TSNode(ta[0].n)
+						?C.vt_node(ta[0].n)
 					} else {
 						none
 					}))
@@ -612,13 +612,13 @@ fn (mut c Converter) type_query(n C.TSNode) int {
 }
 
 // query_name converts the name of a `typeof` type: `this` is a ThisExpression there.
-fn (mut c Converter) query_name(n C.TSNode) int {
+fn (mut c Converter) query_name(n C.vt_node) int {
 	return c.entity_name(n)
 }
 
 // import_type converts `import('x').A.B<T>`: `n` is the import_type node, `whole` the node with
 // the type arguments `ta` (a generic_type) or `n` itself.
-fn (mut c Converter) import_type(n C.TSNode, whole C.TSNode, type_args ?C.TSNode) int {
+fn (mut c Converter) import_type(n C.vt_node, whole C.vt_node, type_args ?C.vt_node) int {
 	i := c.mkn(.ts_import_type, whole)
 	mut call := c.first_named_kid(n) or { return i }
 	mut qualifier := -1

@@ -29,7 +29,7 @@ fn svpwd_is_effect(t &estree.EsTree, call int) bool {
 	return false
 }
 
-fn (mut c Checker) lint_svelte_prefer_writable_derived(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_prefer_writable_derived(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.svsc_runes_on(abs_path) || !c.src.contains('\$effect') {
 		return []
 	}

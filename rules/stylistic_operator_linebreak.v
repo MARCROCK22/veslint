@@ -173,7 +173,7 @@ fn (c &Checker) solb_validate(x SolbCtx, node int, right_side int, operator stri
 	}
 }
 
-fn (mut c Checker) lint_stylistic_operator_linebreak(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_operator_linebreak(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut findings := []Finding{}
 	options := solb_options(c.rule_options(vue_wrap_operator_linebreak))
 	t := c.es_tree(root, abs_path) or { return findings }

@@ -36,7 +36,7 @@ fn uscb_declaration_allowed_in_avoid_block(t &estree.EsTree, node int) bool {
 	return t.typ(node) == .variable_declaration || uscb_needs_case_block(t, node)
 }
 
-fn (mut c Checker) lint_unicorn_switch_case_braces(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_switch_case_braces(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	option := uscb_options(c.rule_options(unicorn_switch_case_braces))!
 	braces_required := option != 'avoid' && option != 'single-statement'
@@ -132,7 +132,7 @@ fn (mut c Checker) uscb_unnecessary(t &estree.EsTree, tokens &SourceTokens, node
 
 // uscb_declaration_used_outside_case ports isDeclarationUsedOutsideCase: case declarations share
 // the scope of the switch, and a new block can hide them from the other cases.
-fn (mut c Checker) uscb_declaration_used_outside_case(root C.TSNode, t &estree.EsTree, consequent []int) bool {
+fn (mut c Checker) uscb_declaration_used_outside_case(root C.vt_node, t &estree.EsTree, consequent []int) bool {
 	start := t.nodes[consequent[0]].start
 	end := t.nodes[consequent[consequent.len - 1]].end
 	tree := c.scope_tree(root)

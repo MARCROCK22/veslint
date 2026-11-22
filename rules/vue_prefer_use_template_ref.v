@@ -12,7 +12,7 @@ const vue_prefer_use_template_ref_messages = {
 	'preferUseTemplateRef': "Replace '{{name}}' with 'useTemplateRef'."
 }
 
-fn (mut c Checker) lint_vue_prefer_use_template_ref(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_prefer_use_template_ref(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

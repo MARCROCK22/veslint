@@ -22,7 +22,7 @@ fn rxnmgf_options(options []json2.Any) !bool {
 	return o.bool_value('strictTypes')!
 }
 
-fn (mut c Checker) lint_regexp_no_missing_g_flag(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_missing_g_flag(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	strict_types := rxnmgf_options(c.rule_options(regexp_no_missing_g_flag))!
 	mut findings := []Finding{}

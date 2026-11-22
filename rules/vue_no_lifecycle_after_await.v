@@ -14,7 +14,7 @@ const vnlaa_hooks = ['onBeforeMount', 'onBeforeUnmount', 'onBeforeUpdate', 'onEr
 	'onMounted', 'onRenderTracked', 'onRenderTriggered', 'onUnmounted', 'onUpdated', 'onActivated',
 	'onDeactivated']
 
-fn (mut c Checker) lint_vue_no_lifecycle_after_await(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_lifecycle_after_await(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

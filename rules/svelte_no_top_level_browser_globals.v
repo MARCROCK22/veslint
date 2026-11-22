@@ -259,7 +259,7 @@ fn (st &SvntlbgState) top_level(t &estree.EsTree, i int) bool {
 	return !svntlbg_contains(st.functions, t.nodes[i].start, t.nodes[i].end)
 }
 
-fn (mut c Checker) lint_svelte_no_top_level_browser_globals(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_top_level_browser_globals(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if sv_file_type(c.sv_file_path(abs_path)) == .none {
 		return []
 	}

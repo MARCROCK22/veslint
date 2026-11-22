@@ -110,7 +110,7 @@ fn nrty_options(options []json2.Any) !map[string]NrtyBan {
 	return out
 }
 
-fn (mut c Checker) lint_no_restricted_types(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_restricted_types(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	banned := nrty_options(c.rule_options(no_restricted_types))!
 	mut findings := []Finding{}

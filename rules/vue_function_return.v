@@ -20,7 +20,7 @@ mut:
 // whose current segments is reachable at its exit (a segment that only the no-match edge of an
 // exhaustive switch reaches counts as unreachable), or, with `treat_undefined`, whose last
 // return has no value.
-fn (mut c Checker) vue_functions_without_return(root C.TSNode, abs_path string, treat_undefined bool, mut stats Stats) []int {
+fn (mut c Checker) vue_functions_without_return(root C.vt_node, abs_path string, treat_undefined bool, mut stats Stats) []int {
 	mut out := []int{}
 	an := c.code_path_analysis(root, abs_path) or { return out }
 	t := c.es_tree(root, abs_path) or { return out }

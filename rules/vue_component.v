@@ -66,7 +66,7 @@ mut:
 
 // vue_script is the VueScript of the file, built on first use; none when the file has no ESTree
 // (syntax errors).
-fn (mut c Checker) vue_script(root C.TSNode, abs_path string) ?&VueScript {
+fn (mut c Checker) vue_script(root C.vt_node, abs_path string) ?&VueScript {
 	t := c.es_tree(root, abs_path)?
 	if !c.vue_script_info.built {
 		filename := c.vue_context_filename(abs_path)
@@ -122,7 +122,7 @@ fn (s &VueScript) in_script_setup(t &estree.EsTree, node int) bool {
 }
 
 // vue_build_objects gives every ObjectExpression its type, and every node its Vue object.
-fn (mut c Checker) vue_build_objects(root C.TSNode, t &estree.EsTree) {
+fn (mut c Checker) vue_build_objects(root C.vt_node, t &estree.EsTree) {
 	n := t.nodes.len
 	c.vue_script_info.types = []VueObjectType{len: n}
 	c.vue_script_info.owner = []int{len: n, init: -1}
@@ -165,7 +165,7 @@ fn (mut c Checker) vue_component_comment_lines(t &estree.EsTree) map[int]bool {
 }
 
 // vue_get_object_type ports getVueObjectType.
-fn (mut c Checker) vue_get_object_type(root C.TSNode, t &estree.EsTree, node int, comment_lines map[int]bool) VueObjectType {
+fn (mut c Checker) vue_get_object_type(root C.vt_node, t &estree.EsTree, node int, comment_lines map[int]bool) VueObjectType {
 	parent := vue_get_parent(t, node)
 	if parent >= 0 {
 		match t.typ(parent) {
@@ -205,7 +205,7 @@ fn (mut c Checker) vue_get_object_type(root C.TSNode, t &estree.EsTree, node int
 
 // vue_component_definition_type ports getVueComponentDefinitionType: 'component', 'mixin',
 // 'extend', 'createApp', 'defineComponent', 'defineNuxtComponent' or '' (null).
-fn (mut c Checker) vue_component_definition_type(root C.TSNode, t &estree.EsTree, node int) string {
+fn (mut c Checker) vue_component_definition_type(root C.vt_node, t &estree.EsTree, node int) string {
 	parent := vue_get_parent(t, node)
 	if parent < 0 || t.typ(parent) != .call_expression {
 		return ''
@@ -267,7 +267,7 @@ struct VueTracedCall {
 // vue_composition_api_calls ports iterateReferencesTraceMap(tracker,
 // createCompositionApiTraceMap({ [name]: { [ReferenceTracker.CALL]: true }, … })): the
 // CallExpressions of the names imported from the composition API modules, then of the globals.
-fn (mut c Checker) vue_composition_api_calls(root C.TSNode, t &estree.EsTree, names []string) []VueTracedCall {
+fn (mut c Checker) vue_composition_api_calls(root C.vt_node, t &estree.EsTree, names []string) []VueTracedCall {
 	call_trace := EsTrace{
 		call: true
 	}
@@ -305,7 +305,7 @@ const vue_like_packages = ['vue', '@vue/composition-api', '@nuxtjs/composition-a
 
 // vue_is_global_or_imported_from_vue ports isGlobalOrImportedFromVue: the callee (an Identifier)
 // calls the global or the export of Vue of its name, or nothing tells it is something else.
-fn (mut c Checker) vue_is_global_or_imported_from_vue(root C.TSNode, t &estree.EsTree, callee int) bool {
+fn (mut c Checker) vue_is_global_or_imported_from_vue(root C.vt_node, t &estree.EsTree, callee int) bool {
 	name := t.string_of(callee, .name) or { return true }
 	call := t.nodes[callee].parent
 	calls := c.vue_traced_calls(root, t, name)
@@ -367,7 +367,7 @@ fn (mut c Checker) vue_is_global_or_imported_from_vue(root C.TSNode, t &estree.E
 }
 
 // vue_import_statement_of is the import statement an import specifier is in.
-fn vue_import_statement_of(n C.TSNode) ?C.TSNode {
+fn vue_import_statement_of(n C.vt_node) ?C.vt_node {
 	mut node := n
 	for {
 		node = node_parent(node)?
@@ -381,7 +381,7 @@ fn vue_import_statement_of(n C.TSNode) ?C.TSNode {
 // vue_traced_calls are the calls isGlobalOrImportedFromVue's ReferenceTracker finds of `name`
 // (as a global, an import of the composition API modules, or a property of their require()),
 // as ESTree nodes; once per name and file.
-fn (mut c Checker) vue_traced_calls(root C.TSNode, t &estree.EsTree, name string) []int {
+fn (mut c Checker) vue_traced_calls(root C.vt_node, t &estree.EsTree, name string) []int {
 	if cached := c.vue_script_info.vue_callees[name] {
 		return cached
 	}
@@ -642,7 +642,7 @@ fn vue_property_value(t &estree.EsTree, property int) int {
 }
 
 // vue_is_this ports isThis: `this`, or a `const` initialized with `this`.
-fn (mut c Checker) vue_is_this(root C.TSNode, t &estree.EsTree, node int) bool {
+fn (mut c Checker) vue_is_this(root C.vt_node, t &estree.EsTree, node int) bool {
 	if node < 0 {
 		return false
 	}
@@ -685,13 +685,13 @@ fn (mut c Checker) vue_is_this(root C.TSNode, t &estree.EsTree, node int) bool {
 
 // vue_find_variable is findVariable(getScope(node), node) of an Identifier: its variable, -1 for
 // none.
-fn (mut c Checker) vue_find_variable(root C.TSNode, t &estree.EsTree, node int) int {
+fn (mut c Checker) vue_find_variable(root C.vt_node, t &estree.EsTree, node int) int {
 	return c.unb_find_variable(root, t, node)
 }
 
 // vue_object_or_array ports getObjectOrArray: the object or array expression, or the one a
 // `const` (with one definition) is initialized with; -1 for none.
-fn (mut c Checker) vue_object_or_array(root C.TSNode, t &estree.EsTree, node int) int {
+fn (mut c Checker) vue_object_or_array(root C.vt_node, t &estree.EsTree, node int) int {
 	if node < 0 {
 		return -1
 	}

@@ -16,15 +16,15 @@ const prx_messages = {
 
 // PrxCandidate is a `.match` member of a call with one argument whose types decide the report.
 struct PrxCandidate {
-	call           C.TSNode
-	member         C.TSNode
-	object         C.TSNode
-	argument       C.TSNode
+	call           C.vt_node
+	member         C.vt_node
+	object         C.vt_node
+	argument       C.vt_node
 	string_literal bool   // the argument is a string literal that RegExp accepts
 	regexp         string // and what `RegExp(argument).toString()` gives for it
 }
 
-fn (mut c Checker) lint_prefer_regexp_exec(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_regexp_exec(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut candidates := []PrxCandidate{}
 	mut spans := []Span{}
@@ -34,7 +34,7 @@ fn (mut c Checker) lint_prefer_regexp_exec(root C.TSNode, abs_path string, mut s
 			continue
 		}
 		// 'CallExpression[arguments.length=1] > MemberExpression': the callee or the argument.
-		mut members := []C.TSNode{}
+		mut members := []C.vt_node{}
 		if callee := node_field(call, 'function') {
 			members << unwrap_parens(callee)
 		}
@@ -109,7 +109,7 @@ fn (mut c Checker) prx_fix(candidate PrxCandidate, string_argument bool) Fix {
 // prx_candidate applies the checks that do not need types: a static `match` member, an argument
 // that is not a RegExp with the global flag (or could be one), and a string literal argument
 // RegExp accepts.
-fn (mut c Checker) prx_candidate(call C.TSNode, member C.TSNode, argument C.TSNode) ?PrxCandidate {
+fn (mut c Checker) prx_candidate(call C.vt_node, member C.vt_node, argument C.vt_node) ?PrxCandidate {
 	if !c.is_static_member_access_of_value(member, ['match']) {
 		return none
 	}
@@ -143,7 +143,7 @@ fn (mut c Checker) prx_candidate(call C.TSNode, member C.TSNode, argument C.TSNo
 
 // prx_definitely_no_global_flag ports definitelyDoesNotContainGlobalFlag: `RegExp(…)` or
 // `new RegExp(…)` without flags or with static flags without `g`.
-fn (mut c Checker) prx_definitely_no_global_flag(n C.TSNode) bool {
+fn (mut c Checker) prx_definitely_no_global_flag(n C.vt_node) bool {
 	kind := node_kind(n)
 	if kind != 'call_expression' && kind != 'new_expression' {
 		return false

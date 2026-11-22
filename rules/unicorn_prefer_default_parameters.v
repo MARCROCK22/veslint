@@ -24,7 +24,7 @@ fn updp_options(options []json2.Any) !bool {
 	return o.bool_value('checkFallbackExpressions')!
 }
 
-fn (mut c Checker) lint_unicorn_prefer_default_parameters(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_default_parameters(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	check_fallback_expressions := updp_options(c.rule_options(unicorn_prefer_default_parameters))!
 	mut findings := []Finding{}
@@ -219,7 +219,7 @@ fn (c &Checker) updp_fix_default_expression(t &estree.EsTree, tokens &SourceToke
 }
 
 // updp_es_name is the ESTree Identifier of a definition name, -1 if none.
-fn (mut c Checker) updp_es_name(t &estree.EsTree, name C.TSNode) int {
+fn (mut c Checker) updp_es_name(t &estree.EsTree, name C.vt_node) int {
 	mut node := c.es_index_of(t, name) or { return -1 }
 	// The key of a shorthand property of an object pattern shares its node with the binding: its
 	// value, or the left side of the default of its value.
@@ -614,7 +614,7 @@ fn (mut c Checker) updp_types(ctx &UnCtx, spans []Span) ?[]TypeResponse {
 
 // updp_is_default_value_compatible ports isDefaultValueCompatible: without a program, or when
 // TypeScript cannot tell (getTypeAtLocation or the checker throws), the default is compatible.
-fn (mut c Checker) updp_is_default_value_compatible(mut ctx UnCtx, binding_name C.TSNode, binding int, default_value int, expression int) bool {
+fn (mut c Checker) updp_is_default_value_compatible(mut ctx UnCtx, binding_name C.vt_node, binding int, default_value int, expression int) bool {
 	if !c.scope_setup.type_information {
 		return true
 	}
@@ -622,7 +622,7 @@ fn (mut c Checker) updp_is_default_value_compatible(mut ctx UnCtx, binding_name 
 		default_value, expression) or { true }
 }
 
-fn (mut c Checker) updp_is_default_value_compatible_with_types(mut ctx UnCtx, binding_name C.TSNode, binding int, default_value int, expression int) !bool {
+fn (mut c Checker) updp_is_default_value_compatible_with_types(mut ctx UnCtx, binding_name C.vt_node, binding int, default_value int, expression int) !bool {
 	t := ctx.t
 	tree := c.scope_tree(ctx.root)
 	// `binding.typeAnnotation?.typeAnnotation ?? binding`

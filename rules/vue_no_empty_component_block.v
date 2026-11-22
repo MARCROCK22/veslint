@@ -10,7 +10,7 @@ const vue_no_empty_component_block_messages = {
 	'unexpected': '`<{{ blockName }}>` is empty. Empty block is not allowed.'
 }
 
-fn (mut c Checker) lint_vue_no_empty_component_block(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_empty_component_block(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

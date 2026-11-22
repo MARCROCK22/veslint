@@ -51,7 +51,7 @@ pub mut:
 	start  int
 	end    int
 	parent int = -1
-	ts     C.TSNode
+	ts     C.vt_node
 	has_ts bool
 	props  []Prop
 }
@@ -212,7 +212,7 @@ pub fn (t &EsTree) typ(i int) NodeType {
 }
 
 // ts_node is the tree-sitter node the ESTree node was converted from, if any.
-pub fn (t &EsTree) ts_node(i int) ?C.TSNode {
+pub fn (t &EsTree) ts_node(i int) ?C.vt_node {
 	n := t.nodes[i]
 	if n.has_ts {
 		return n.ts

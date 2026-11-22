@@ -17,7 +17,7 @@ struct NdevValue {
 	units     []u16
 }
 
-fn (mut c Checker) lint_no_duplicate_enum_values(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_duplicate_enum_values(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -53,7 +53,7 @@ fn (mut c Checker) lint_no_duplicate_enum_values(root C.TSNode, abs_path string,
 
 // ndev_value ports getMemberValue: a string or number literal, `+` or `-` of a value (through
 // Number(), NaN being no value), and a template literal without substitutions (its cooked text).
-fn (c &Checker) ndev_value(n C.TSNode) ?NdevValue {
+fn (c &Checker) ndev_value(n C.vt_node) ?NdevValue {
 	match node_kind(n) {
 		'string' {
 			quoted := c.text(n)

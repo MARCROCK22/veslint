@@ -43,7 +43,7 @@ fn (mut st VnuedState) add_call(t &estree.EsTree, call int) {
 
 // Also in a TypeScript file: the rule composes its script listeners with defineTemplateBodyVisitor's
 // (which gives none there) instead of handing them to it.
-fn (mut c Checker) lint_vue_no_unused_emit_declarations(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_unused_emit_declarations(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }
@@ -122,7 +122,7 @@ fn (mut c Checker) lint_vue_no_unused_emit_declarations(root C.TSNode, abs_path 
 
 // vnued_setup_function is the rule's onSetupFunctionEnter (it does not skip a default value of
 // the context parameter: `ctx = …` is a context that references nothing).
-fn (mut c Checker) vnued_setup_function(root C.TSNode, t &estree.EsTree, setup int, owner int, mut st VnuedState) {
+fn (mut c Checker) vnued_setup_function(root C.vt_node, t &estree.EsTree, setup int, owner int, mut st VnuedState) {
 	params := t.list(setup, .params) or { return }
 	if params.len < 2 || t.typ(params[1]) in [.rest_element, .array_pattern] {
 		return
@@ -147,7 +147,7 @@ fn (mut c Checker) vnued_setup_function(root C.TSNode, t &estree.EsTree, setup i
 
 // vnued_call is the rule's callVisitor on a call (of the script when `script`, else of the
 // template) with the setup context of `key`.
-fn (mut c Checker) vnued_call(root C.TSNode, t &estree.EsTree, call int, key int, script bool, mut st VnuedState) {
+fn (mut c Checker) vnued_call(root C.vt_node, t &estree.EsTree, call int, key int, script bool, mut st VnuedState) {
 	raw_callee := t.node(call, .callee) or { return }
 	callee := vue_skip_chain(t, raw_callee)
 	mut emit_name := ''

@@ -59,7 +59,7 @@ mut:
 	template_define VreeDefine
 }
 
-fn (mut c Checker) lint_vue_require_explicit_emits(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_explicit_emits(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}
@@ -180,7 +180,7 @@ fn (mut c Checker) lint_vue_require_explicit_emits(root C.TSNode, abs_path strin
 // vree_setup_context is the rule's onSetupFunctionEnter: the read references of the emit or the
 // context (no default value skipped; another kind of parameter is a context that references
 // nothing).
-fn (mut c Checker) vree_setup_context(root C.TSNode, t &estree.EsTree, setup int) ?VueSetupContext {
+fn (mut c Checker) vree_setup_context(root C.vt_node, t &estree.EsTree, setup int) ?VueSetupContext {
 	params := t.list(setup, .params) or { return none }
 	if params.len < 2 || t.typ(params[1]) in [.rest_element, .array_pattern] {
 		return none
@@ -204,7 +204,7 @@ fn (mut c Checker) vree_setup_context(root C.TSNode, t &estree.EsTree, setup int
 }
 
 // vree_call is the rule's callVisitor on a call of the script, for the component `key`.
-fn (mut c Checker) vree_call(root C.TSNode, t &estree.EsTree, call int, key int, o VreeOptions, st VreeState, mut findings []Finding) ! {
+fn (mut c Checker) vree_call(root C.vt_node, t &estree.EsTree, call int, key int, o VreeOptions, st VreeState, mut findings []Finding) ! {
 	name, literal := vue_name_param(t, call) or { return }
 	emits := st.emits[key] or { return }
 	define := VreeDefine{

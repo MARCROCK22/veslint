@@ -15,12 +15,12 @@ const unuse_messages = {
 	'no-unnecessary-slice-end': 'Passing `{{description}}` as the `end` argument is unnecessary.'
 }
 
-fn (mut c Checker) lint_unicorn_no_unnecessary_array_splice_count(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_unnecessary_array_splice_count(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return c.un_length_or_infinity(root, abs_path, mut stats, ['splice', 'toSpliced'], 'no-unnecessary-array-splice-count',
 		true)
 }
 
-fn (mut c Checker) lint_unicorn_no_unnecessary_slice_end(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_unnecessary_slice_end(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return c.un_length_or_infinity(root, abs_path, mut stats, ['slice'], 'no-unnecessary-slice-end',
 		false)
 }
@@ -57,7 +57,7 @@ fn un_contains_node(t &estree.EsTree, node int, predicate fn (int) bool) bool {
 
 // un_length_or_infinity ports listen; `check_array_receiver` skips the receivers known not to be
 // arrays (for `splice` and `toSpliced`, whose same-named methods mean something else elsewhere).
-fn (mut c Checker) un_length_or_infinity(root C.TSNode, abs_path string, mut stats Stats, methods []string, message_id string, check_array_receiver bool) ![]Finding {
+fn (mut c Checker) un_length_or_infinity(root C.vt_node, abs_path string, mut stats Stats, methods []string, message_id string, check_array_receiver bool) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

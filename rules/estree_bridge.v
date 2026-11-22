@@ -19,7 +19,7 @@ enum EsFileState {
 }
 
 // es_tree is the ESTree of the file, or none when the file has syntax errors.
-fn (mut c Checker) es_tree(root C.TSNode, abs_path string) ?&estree.EsTree {
+fn (mut c Checker) es_tree(root C.vt_node, abs_path string) ?&estree.EsTree {
 	if c.file_es_state == .unknown {
 		mut top := root
 		for {
@@ -59,7 +59,7 @@ fn (c &Checker) es_options() estree.Options {
 
 // code_path_analysis is ESLint's code path analysis of the file (its events, code paths and
 // segments), or none when the file has syntax errors.
-fn (mut c Checker) code_path_analysis(root C.TSNode, abs_path string) ?&codepath.Analysis {
+fn (mut c Checker) code_path_analysis(root C.vt_node, abs_path string) ?&codepath.Analysis {
 	t := c.es_tree(root, abs_path)?
 	if !c.file_code_paths_built {
 		c.file_code_paths = codepath.analyze(t)
@@ -83,7 +83,7 @@ fn (mut c Checker) reset_es_file() {
 // one when several share it, as a ChainExpression and its member expression), for the helpers
 // ported on tree-sitter's tree (the ReferenceTracker, the scope tree) that the rules on the ESTree
 // use; none if it has none.
-fn (mut c Checker) es_index_of(t &estree.EsTree, n C.TSNode) ?int {
+fn (mut c Checker) es_index_of(t &estree.EsTree, n C.vt_node) ?int {
 	if c.file_es_by_ts.len == 0 {
 		for i, node in t.nodes {
 			if !node.has_ts {

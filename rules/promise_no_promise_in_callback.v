@@ -15,7 +15,7 @@ fn prm_no_promise_in_callback_options(options []json2.Any) !bool {
 	return o.bool_value('exemptDeclarations')!
 }
 
-fn (mut c Checker) lint_promise_no_promise_in_callback(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_no_promise_in_callback(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	exempt_declarations := prm_no_promise_in_callback_options(c.rule_options(promise_no_promise_in_callback))!
 	mut findings := []Finding{}

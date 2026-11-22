@@ -17,7 +17,7 @@ enum NlbKind {
 	other        // the body of a namespace or `declare global`
 }
 
-fn nlb_kind(n C.TSNode) NlbKind {
+fn nlb_kind(n C.vt_node) NlbKind {
 	parent := node_parent(n) or { return .block }
 	return match node_kind(parent) {
 		'class_static_block' { .static_block }
@@ -33,7 +33,7 @@ mut:
 	findings []Finding
 }
 
-fn (mut c Checker) lint_no_lone_blocks(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_lone_blocks(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut st := NlbState{
 		es6: c.ecma_version >= 2015
@@ -44,8 +44,8 @@ fn (mut c Checker) lint_no_lone_blocks(root C.TSNode, abs_path string, mut stats
 }
 
 // nlb_statements are the statements of a block, program or switch case.
-fn nlb_statements(n C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn nlb_statements(n C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	value := node_field(n, 'value')
 	for child in named_children(n) {
 		if node_kind(child) == 'comment' {
@@ -62,7 +62,7 @@ fn nlb_statements(n C.TSNode) []C.TSNode {
 }
 
 // nlb_is_lone_block ports isLoneBlock.
-fn nlb_is_lone_block(node C.TSNode) bool {
+fn nlb_is_lone_block(node C.vt_node) bool {
 	parent := node_parent(node) or { return false }
 	match node_kind(parent) {
 		'program' {
@@ -81,7 +81,7 @@ fn nlb_is_lone_block(node C.TSNode) bool {
 	}
 }
 
-fn (c &Checker) nlb_report(node C.TSNode, mut st NlbState) {
+fn (c &Checker) nlb_report(node C.vt_node, mut st NlbState) {
 	parent := node_parent(node) or { return }
 	nested := node_kind(parent) == 'statement_block' && nlb_kind(parent) != .other
 	st.findings << Finding{
@@ -92,7 +92,7 @@ fn (c &Checker) nlb_report(node C.TSNode, mut st NlbState) {
 
 // nlb_mark ports markLoneBlock: a block-level binding whose parent is the innermost lone block
 // makes it necessary.
-fn nlb_mark(node C.TSNode, mut st NlbState) {
+fn nlb_mark(node C.vt_node, mut st NlbState) {
 	if st.lone.len == 0 {
 		return
 	}
@@ -102,7 +102,7 @@ fn nlb_mark(node C.TSNode, mut st NlbState) {
 	}
 }
 
-fn (mut c Checker) nlb_visit(root C.TSNode, n C.TSNode, mut st NlbState, mut stats Stats) {
+fn (mut c Checker) nlb_visit(root C.vt_node, n C.vt_node, mut st NlbState, mut stats Stats) {
 	kind := node_kind(n)
 	is_block := kind == 'statement_block' && nlb_kind(n) == .block
 	if is_block {

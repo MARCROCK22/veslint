@@ -24,7 +24,7 @@ fn nn_options(options []json2.Any) !NnOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_namespace(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_namespace(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nn_options(c.rule_options(no_namespace))!
 	mut findings := []Finding{}
@@ -60,7 +60,7 @@ fn (mut c Checker) lint_no_namespace(root C.TSNode, abs_path string, mut stats S
 // (`declare namespace X {}`, `declare module 'x' {}`, `declare global {}`, which tree-sitter has
 // as an ambient_declaration without a module node). Nothing else that is declared can hold a
 // namespace.
-fn nn_is_declaration(n C.TSNode) bool {
+fn nn_is_declaration(n C.vt_node) bool {
 	mut node := n
 	for {
 		node = node_parent(node) or { return false }

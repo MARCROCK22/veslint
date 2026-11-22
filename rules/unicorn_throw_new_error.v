@@ -19,7 +19,7 @@ fn utne_is_error_name(name string) bool {
 		|| (prefix[0].is_capital() && prefix.bytes().all(it.is_letter() || it.is_digit()))
 }
 
-fn (mut c Checker) lint_unicorn_throw_new_error(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_throw_new_error(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

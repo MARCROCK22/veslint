@@ -71,7 +71,7 @@ fn vue_no_restricted_props_options(options []json2.Any) ![]VnrpOption {
 	return out
 }
 
-fn (mut c Checker) lint_vue_no_restricted_props(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_restricted_props(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	options := vue_no_restricted_props_options(c.rule_options(vue_no_restricted_props))!
 	mut findings := []Finding{}

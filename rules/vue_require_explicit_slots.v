@@ -13,7 +13,7 @@ const vue_require_explicit_slots_messages = {
 	'alreadyDefinedSlot':   'Slot {{slotName}} is already defined.'
 }
 
-fn (mut c Checker) lint_vue_require_explicit_slots(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_explicit_slots(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

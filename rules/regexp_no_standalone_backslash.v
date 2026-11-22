@@ -9,7 +9,7 @@ const regexp_no_standalone_backslash_messages = {
 	'unexpected': "Unexpected standalone backslash (`\\`). It looks like an escape sequence, but it's a single `\\` character pattern."
 }
 
-fn (mut c Checker) lint_regexp_no_standalone_backslash(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_regexp_no_standalone_backslash(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	regexps := c.rx_regexps(root, abs_path)

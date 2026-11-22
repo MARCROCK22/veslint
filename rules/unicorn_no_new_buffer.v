@@ -56,7 +56,7 @@ fn (c &Checker) unnb_can_remove_ignored_arguments(t &estree.EsTree, tokens &Sour
 		&& args[1..].all(!un_has_side_effect(t, it))
 }
 
-fn (mut c Checker) lint_unicorn_no_new_buffer(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_new_buffer(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

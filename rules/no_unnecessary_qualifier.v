@@ -31,19 +31,19 @@ const nuq_symbol_flag_alias = u32(2097152)
 // NuqAccess is a MemberExpression (not computed) whose object is an entity name, or a
 // TSQualifiedName: the namespace access visitNamespaceAccess looks at.
 struct NuqAccess {
-	node      C.TSNode
-	qualifier C.TSNode
-	name      C.TSNode
+	node      C.vt_node
+	qualifier C.vt_node
+	name      C.vt_node
 	scope     []u64 // keys of the namespacesInScope spans when the access is visited
 }
 
 // NuqStep is a step of the walk: entering or leaving a node.
 struct NuqStep {
-	node    C.TSNode
+	node    C.vt_node
 	leaving bool
 }
 
-fn (mut c Checker) lint_no_unnecessary_qualifier(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_qualifier(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut accesses := []NuqAccess{}
 	mut spans := []Span{}
@@ -68,7 +68,7 @@ fn (mut c Checker) lint_no_unnecessary_qualifier(root C.TSNode, abs_path string,
 	unnecessary := c.nuq_unnecessary(accesses)!
 	// currentFailedNamespaceExpression: inside a reported access, nested ones are not checked.
 	mut findings := []Finding{}
-	mut reported := []C.TSNode{}
+	mut reported := []C.vt_node{}
 	for i, a in accesses {
 		if !unnecessary[i] {
 			continue
@@ -95,7 +95,7 @@ fn (mut c Checker) lint_no_unnecessary_qualifier(root C.TSNode, abs_path string,
 
 // nuq_walk visits the tree in order, keeping namespacesInScope like the rule's enter and exit
 // handlers, and collects the namespace accesses with the namespaces in scope at each one.
-fn (c &Checker) nuq_walk(root C.TSNode, mut accesses []NuqAccess, mut spans []Span) {
+fn (c &Checker) nuq_walk(root C.vt_node, mut accesses []NuqAccess, mut spans []Span) {
 	mut scope := []u64{}
 	mut steps := [NuqStep{
 		node: root
@@ -159,7 +159,7 @@ fn (c &Checker) nuq_walk(root C.TSNode, mut accesses []NuqAccess, mut spans []Sp
 }
 
 // nuq_is_module: a TSModuleDeclaration (`namespace`, `module`, `declare global`).
-fn nuq_is_module(n C.TSNode) bool {
+fn nuq_is_module(n C.vt_node) bool {
 	kind := node_kind(n)
 	return kind in ['internal_module', 'module']
 		|| (kind == 'ambient_declaration' && has_child_kind(n, 'global'))
@@ -167,7 +167,7 @@ fn nuq_is_module(n C.TSNode) bool {
 
 // nuq_exported is the enum or module of an ExportNamedDeclaration (`export enum`, `export
 // namespace`, `export declare namespace`).
-fn nuq_exported(n C.TSNode) ?C.TSNode {
+fn nuq_exported(n C.vt_node) ?C.vt_node {
 	if node_kind(n) != 'export_statement' {
 		return none
 	}
@@ -183,7 +183,7 @@ fn nuq_exported(n C.TSNode) ?C.TSNode {
 
 // nuq_declaration_span is the TypeScript declaration of an enum or module: its modifiers
 // (`export`, `declare`) are part of it.
-fn (c &Checker) nuq_declaration_span(declaration C.TSNode, kind u32) Span {
+fn (c &Checker) nuq_declaration_span(declaration C.vt_node, kind u32) Span {
 	mut first := declaration
 	for {
 		parent := node_parent(first) or { break }
@@ -202,7 +202,7 @@ fn (c &Checker) nuq_declaration_span(declaration C.TSNode, kind u32) Span {
 
 // nuq_innermost_module_span is the innermost ModuleDeclaration of `namespace A.B {}` (the one of
 // `B`), or the module itself.
-fn (c &Checker) nuq_innermost_module_span(module C.TSNode) Span {
+fn (c &Checker) nuq_innermost_module_span(module C.vt_node) Span {
 	name := node_field(module, 'name') or {
 		return c.nuq_declaration_span(module, nuq_syntax_kind_module_declaration)
 	}
@@ -222,7 +222,7 @@ fn (c &Checker) nuq_innermost_module_span(module C.TSNode) Span {
 
 // nuq_access reads a namespace access: a member_expression whose object is an entity name, or
 // a qualified name (nested_type_identifier, nested_identifier).
-fn nuq_access(n C.TSNode) ?NuqAccess {
+fn nuq_access(n C.vt_node) ?NuqAccess {
 	match node_kind(n) {
 		'member_expression' {
 			object := unwrap_parens(node_field(n, 'object')?)
@@ -257,7 +257,7 @@ fn nuq_access(n C.TSNode) ?NuqAccess {
 
 // nuq_is_entity_name ports isEntityNameExpression: an identifier, or a non-computed member access
 // of one.
-fn nuq_is_entity_name(n C.TSNode) bool {
+fn nuq_is_entity_name(n C.vt_node) bool {
 	mut node := n
 	for depth := 0; depth < max_expression_depth; depth++ {
 		match node_kind(node) {
@@ -353,8 +353,8 @@ const nuq_function_kinds = ['function_declaration', 'generator_function_declarat
 // nuq_outer_functions are the functions the node is in but not in their body (in a parameter, a
 // return type or a type parameter), and the method a decorator with the node is on, from the
 // innermost: resolveName does not look at their locals from there, and getSymbolsInScope does.
-fn nuq_outer_functions(n C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn nuq_outer_functions(n C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	mut child := n
 	for _ in 0 .. max_expression_depth {
 		parent := node_parent(child) or { break }
@@ -439,8 +439,8 @@ fn (mut c Checker) nuq_symbol_in_scope(a NuqAccess, meaning int) !SymbolResponse
 
 // nuq_arguments_functions are the functions around the node that have an `arguments` object
 // (not the arrow functions), from the innermost.
-fn nuq_arguments_functions(n C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn nuq_arguments_functions(n C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	mut node := n
 	for _ in 0 .. max_expression_depth {
 		node = node_parent(node) or { break }

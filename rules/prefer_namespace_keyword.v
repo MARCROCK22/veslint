@@ -10,7 +10,7 @@ const pnk_messages = {
 	'useNamespace': "Use 'namespace' instead of 'module' to declare custom TypeScript modules."
 }
 
-fn (mut c Checker) lint_prefer_namespace_keyword(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_namespace_keyword(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0

@@ -14,7 +14,7 @@ const sy_ndi_messages = {
 	'preferRoot': "'{{name}}' is exported from 'seyfert'; import it from the package root, not '{{source}}'."
 }
 
-fn (mut c Checker) lint_seyfert_no_deep_imports(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_no_deep_imports(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -73,8 +73,8 @@ fn (mut c Checker) lint_seyfert_no_deep_imports(root C.TSNode, abs_path string, 
 
 // sy_ndi_specifiers are the ESTree specifiers of an import: its default import, its namespace
 // import and its named imports, in order.
-fn sy_ndi_specifiers(declaration C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn sy_ndi_specifiers(declaration C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	for child in named_children(declaration) {
 		if node_kind(child) != 'import_clause' {
 			continue
@@ -96,7 +96,7 @@ fn sy_ndi_specifiers(declaration C.TSNode) []C.TSNode {
 
 // sy_ndi_imported_name ports importedName: the imported name of a specifier, an identifier's or
 // the value of a string.
-fn (c &Checker) sy_ndi_imported_name(specifier C.TSNode) string {
+fn (c &Checker) sy_ndi_imported_name(specifier C.vt_node) string {
 	name := node_field(specifier, 'name') or { return '' }
 	if node_kind(name) == 'string' {
 		return c.literal_string_value(name) or { '' }

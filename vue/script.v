@@ -68,7 +68,7 @@ pub mut:
 	// in `es`'s Program body.
 	masked        string
 	split_offsets []int
-	tree          &C.TSTree = unsafe { nil }
+	tree          &C.vt_rows = unsafe { nil }
 	es            estree.EsTree
 	has_es        bool
 	// has_error: tree-sitter found syntax errors in the script (vue-eslint-parser throws a
@@ -409,7 +409,7 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 	tree := parse_ts(if s.jsx { c.tsx } else { c.ts }, s.masked) or { return }
 	s.tree = tree
 	root := treesitter.root_node(tree)
-	if C.ts_node_has_error(root) {
+	if C.vt_node_has_error(root) {
 		s.has_error = true
 		s.error_index = first_error_offset(root)
 	}
@@ -624,7 +624,7 @@ fn (mut c ExprContext) parse_combined(setup int, other int) {
 		}
 		defer {
 			if alone.tree != unsafe { nil } {
-				treesitter.tree_delete(alone.tree)
+				treesitter.rows_free(alone.tree)
 			}
 		}
 		sb := c.setup_code_blocks(setup, setup_text, if pre_pass { &alone.es } else { &s.es },
@@ -783,7 +783,7 @@ fn (mut c ExprContext) setup_code_blocks(setup int, text int, es &estree.EsTree,
 // SetupAlone is the setup content parsed alone (parse_setup_alone); `tree` is nil when it has
 // syntax errors. Its tree outlives `es`, which keeps nodes of it.
 struct SetupAlone {
-	tree   &C.TSTree = unsafe { nil }
+	tree   &C.vt_rows = unsafe { nil }
 	es     estree.EsTree
 	tokens []Token
 }
@@ -801,8 +801,8 @@ fn (mut c ExprContext) parse_setup_alone(text int) SetupAlone {
 	jsx := c.opts.fragment_jsx
 	tree := parse_ts(if jsx { c.tsx } else { c.ts }, code) or { return SetupAlone{} }
 	root := treesitter.root_node(tree)
-	if C.ts_node_has_error(root) {
-		treesitter.tree_delete(tree)
+	if C.vt_node_has_error(root) {
+		treesitter.rows_free(tree)
 		return SetupAlone{}
 	}
 	es := estree.convert_with(root, code, jsx, estree.Options{
@@ -811,7 +811,7 @@ fn (mut c ExprContext) parse_setup_alone(text int) SetupAlone {
 			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
 		}
 	}) or {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 		return SetupAlone{}
 	}
 	toks, _ := snippet_tokens(root, code, jsx)

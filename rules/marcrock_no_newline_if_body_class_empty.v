@@ -10,7 +10,7 @@ const mnl_messages = {
 	'noNewLine': 'Empty body class should not have a newline.'
 }
 
-fn (mut c Checker) lint_marcrock_no_newline_if_body_class_empty(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_marcrock_no_newline_if_body_class_empty(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

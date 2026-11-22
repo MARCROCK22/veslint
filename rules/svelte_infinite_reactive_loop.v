@@ -143,7 +143,7 @@ fn svirl_is_inside_of_function(t &estree.EsTree, node int) bool {
 
 // svirl_function_body is getFunctionDeclarationNode: the body of the function a called identifier
 // names (a function declaration, or a variable initialized with a function), -1 for none.
-fn (mut c Checker) svirl_function_body(root C.TSNode, t &estree.EsTree, identifier int) int {
+fn (mut c Checker) svirl_function_body(root C.vt_node, t &estree.EsTree, identifier int) int {
 	ts := t.ts_node(identifier) or { return -1 }
 	tree := c.scope_tree(root)
 	name := t.string_of(identifier, .name) or { return -1 }
@@ -177,7 +177,7 @@ fn (mut c Checker) svirl_function_body(root C.TSNode, t &estree.EsTree, identifi
 }
 
 // svirl_verify is verifyInternal.
-fn (mut c Checker) svirl_verify(root C.TSNode, mut ctx SvirlContext, ast int, call_identifiers []int, same_task bool) {
+fn (mut c Checker) svirl_verify(root C.vt_node, mut ctx SvirlContext, ast int, call_identifiers []int, same_task bool) {
 	if ctx.processed[ast] {
 		return
 	}
@@ -259,7 +259,7 @@ fn (mut c Checker) svirl_verify(root C.TSNode, mut ctx SvirlContext, ast int, ca
 	}
 }
 
-fn (mut c Checker) lint_svelte_infinite_reactive_loop(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_infinite_reactive_loop(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.svsc_runes_off(abs_path) || c.svelte.doc.reactive.len == 0 {
 		return []
 	}

@@ -1065,7 +1065,7 @@ fn un_is_escaped_at(text string, i int) bool {
 
 // un_reference_node is the ESTree Identifier of a reference the scope tree or the ReferenceTracker
 // gives: in a shorthand property the value, not the key, which has the same range.
-fn (mut c Checker) un_reference_node(t &estree.EsTree, ts C.TSNode) ?int {
+fn (mut c Checker) un_reference_node(t &estree.EsTree, ts C.vt_node) ?int {
 	node := c.es_index_of(t, ts)?
 	parent := t.nodes[node].parent
 	if parent >= 0 && t.typ(parent) == .property && (t.flag(parent, .shorthand) or { false })
@@ -1392,7 +1392,7 @@ fn (c &Checker) un_replace_member_property(t &estree.EsTree, tokens &SourceToken
 
 // un_is_function_self_used_inside ports isFunctionSelfUsedInside: `this`, `arguments` or the name of
 // the function is used inside it.
-fn (mut c Checker) un_is_function_self_used_inside(root C.TSNode, t &estree.EsTree, function int) bool {
+fn (mut c Checker) un_is_function_self_used_inside(root C.vt_node, t &estree.EsTree, function int) bool {
 	if t.typ(function) == .arrow_function_expression {
 		return false
 	}
@@ -1467,7 +1467,7 @@ fn un_is_node_matches(t &estree.EsTree, node int, names_or_paths []string) bool 
 // un_const_initializer ports getConstVariableInitializer (utils/get-const-variable-initializer.js
 // of eslint-plugin-unicorn 79.0.0): the initializer of
 // the only definition of the variable of an identifier, a `const` declarator.
-fn (mut c Checker) un_const_initializer(root C.TSNode, t &estree.EsTree, node int) ?int {
+fn (mut c Checker) un_const_initializer(root C.vt_node, t &estree.EsTree, node int) ?int {
 	if t.typ(node) != .identifier {
 		return none
 	}

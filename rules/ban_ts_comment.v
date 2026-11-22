@@ -132,7 +132,7 @@ fn btsc_last_line(value string) string {
 	return value[start..]
 }
 
-fn (mut c Checker) lint_ban_ts_comment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_ban_ts_comment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := btsc_options(c.rule_options(ban_ts_comment))!
 	mut findings := []Finding{}

@@ -19,7 +19,7 @@ fn ner_allow_else_if(options []json2.Any) !bool {
 	return o.bool_value('allowElseIf')!
 }
 
-fn (mut c Checker) lint_no_else_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_else_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_else_if := ner_allow_else_if(c.rule_options(no_else_return))!
 	mut findings := []Finding{}
@@ -29,12 +29,12 @@ fn (mut c Checker) lint_no_else_return(root C.TSNode, abs_path string, mut stats
 		if !ner_in_statement_list(node) {
 			continue
 		}
-		mut report := ?C.TSNode(none)
+		mut report := ?C.vt_node(none)
 		if allow_else_if {
 			// The consequents of the whole if-else-if chain return, and the chain ends in `else`.
-			mut consequents := []C.TSNode{}
+			mut consequents := []C.vt_node{}
 			mut current := node
-			mut alternate := ?C.TSNode(none)
+			mut alternate := ?C.vt_node(none)
 			mut complete := true
 			for node_kind(current) == 'if_statement' {
 				next := ner_alternate(current) or {
@@ -76,7 +76,7 @@ fn (mut c Checker) lint_no_else_return(root C.TSNode, abs_path string, mut stats
 }
 
 // ner_in_statement_list: the parent is a Program, a BlockStatement, a StaticBlock or a SwitchCase.
-fn ner_in_statement_list(n C.TSNode) bool {
+fn ner_in_statement_list(n C.vt_node) bool {
 	parent := node_parent(n) or { return false }
 	return match node_kind(parent) {
 		'program', 'switch_case', 'switch_default' {
@@ -93,18 +93,18 @@ fn ner_in_statement_list(n C.TSNode) bool {
 }
 
 // ner_alternate is the ESTree `alternate` of an IfStatement: the statement of its `else`.
-fn ner_alternate(n C.TSNode) ?C.TSNode {
+fn ner_alternate(n C.vt_node) ?C.vt_node {
 	clause := node_field(n, 'alternative')?
 	return first_named(clause)
 }
 
 // ner_statements are the statements of a block, comments aside.
-fn ner_statements(block C.TSNode) []C.TSNode {
+fn ner_statements(block C.vt_node) []C.vt_node {
 	return named_children(block).filter(node_kind(it) != 'comment')
 }
 
 // ner_naive_has_return ports naiveHasReturn: a `return`, or a block whose last statement is one.
-fn ner_naive_has_return(n C.TSNode) bool {
+fn ner_naive_has_return(n C.vt_node) bool {
 	if node_kind(n) == 'statement_block' {
 		statements := ner_statements(n)
 		return statements.len > 0 && node_kind(statements.last()) == 'return_statement'
@@ -114,7 +114,7 @@ fn ner_naive_has_return(n C.TSNode) bool {
 
 // ner_return_or_if ports checkForReturnOrIf: a `return`, or an `if` with an `else` where both
 // branches naively return.
-fn ner_return_or_if(n C.TSNode) bool {
+fn ner_return_or_if(n C.vt_node) bool {
 	if node_kind(n) == 'return_statement' {
 		return true
 	}
@@ -127,7 +127,7 @@ fn ner_return_or_if(n C.TSNode) bool {
 }
 
 // ner_always_returns ports alwaysReturns.
-fn ner_always_returns(n C.TSNode) bool {
+fn ner_always_returns(n C.vt_node) bool {
 	if node_kind(n) == 'statement_block' {
 		return ner_statements(n).any(ner_return_or_if(it))
 	}
@@ -137,7 +137,7 @@ fn ner_always_returns(n C.TSNode) bool {
 // ner_fix ports the fix of displayReport: the `else` and the braces of its block are removed,
 // when that cannot change the meaning; the replacement covers the enclosing function
 // (FixTracker.retainEnclosingFunction).
-fn (mut c Checker) ner_fix(root C.TSNode, if_node C.TSNode, else_node C.TSNode) (bool, Fix) {
+fn (mut c Checker) ner_fix(root C.vt_node, if_node C.vt_node, else_node C.vt_node) (bool, Fix) {
 	if !c.ner_safe_from_collisions(root, if_node, else_node) {
 		return false, Fix{}
 	}
@@ -190,7 +190,7 @@ fn ner_starts_unsafe(text string) bool {
 }
 
 // ner_upper_function ports getUpperFunction: the closest function around the node.
-fn ner_upper_function(n C.TSNode) ?C.TSNode {
+fn ner_upper_function(n C.vt_node) ?C.vt_node {
 	mut current := n
 	for {
 		current = node_parent(current)?
@@ -203,7 +203,7 @@ fn ner_upper_function(n C.TSNode) ?C.TSNode {
 
 // ner_function_start is where the ESTree function starts: a method's FunctionExpression starts
 // at its type parameters or its parameters.
-fn ner_function_start(function C.TSNode) int {
+fn ner_function_start(function C.vt_node) int {
 	if node_kind(function) == 'method_definition' {
 		if type_parameters := node_field(function, 'type_parameters') {
 			return node_start(type_parameters)
@@ -217,7 +217,7 @@ fn ner_function_start(function C.TSNode) int {
 
 // ner_safe_from_collisions ports isSafeFromNameCollisions: the variables of the `else` block can
 // move to the scope of the `if`.
-fn (mut c Checker) ner_safe_from_collisions(root C.TSNode, if_node C.TSNode, else_node C.TSNode) bool {
+fn (mut c Checker) ner_safe_from_collisions(root C.vt_node, if_node C.vt_node, else_node C.vt_node) bool {
 	if node_kind(else_node) in ['function_declaration', 'generator_function_declaration'] {
 		return false
 	}

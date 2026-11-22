@@ -22,7 +22,7 @@ fn snmst_options(given []json2.Any) !bool {
 	return false
 }
 
-fn (mut c Checker) lint_stylistic_no_mixed_spaces_and_tabs(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_no_mixed_spaces_and_tabs(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	smart_tabs := snmst_options(c.rule_options(stylistic_no_mixed_spaces_and_tabs))!

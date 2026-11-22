@@ -14,7 +14,7 @@ const svngwb_messages = {
 
 // svngwb_base_references are extractBasePathReferences: the identifiers of the references to
 // `base` imported from `$app/paths` (node keys of the lint code's tree).
-fn (mut c Checker) svngwb_base_references(root C.TSNode) map[u64]bool {
+fn (mut c Checker) svngwb_base_references(root C.vt_node) map[u64]bool {
 	mut out := map[u64]bool{}
 	tree := c.scope_tree(root)
 	for traced in c.es_esm_references(root, {
@@ -85,7 +85,7 @@ fn svngwb_has_scheme(t &estree.EsTree, literal int) bool {
 	return false
 }
 
-fn (mut c Checker) lint_svelte_no_goto_without_base(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_goto_without_base(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.src.contains('\$app/navigation')
 		|| !c.svsc_kit_version_in(abs_path, ['1.0.0-next', '1', '2']) {
 		return []

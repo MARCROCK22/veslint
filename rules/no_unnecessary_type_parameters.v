@@ -45,17 +45,17 @@ const nutp_kind_mapped_type = u32(202)
 
 // NutpParameter is a type parameter that is not repeated in the signature as written.
 struct NutpParameter {
-	node        C.TSNode
-	name_node   C.TSNode
+	node        C.vt_node
+	name_node   C.vt_node
 	name        string
 	variable    int
 	declaration string // the handle of its TypeScript declaration, once known
 }
 
 struct NutpCheck {
-	node       C.TSNode
-	list       C.TSNode   // its `<…>`
-	all        []C.TSNode // every type parameter of the list
+	node       C.vt_node
+	list       C.vt_node   // its `<…>`
+	all        []C.vt_node // every type parameter of the list
 	descriptor string
 mut:
 	parameters []NutpParameter
@@ -72,7 +72,7 @@ mut:
 	function_like        bool
 }
 
-fn (mut c Checker) lint_no_unnecessary_type_parameters(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_type_parameters(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	tree := c.scope_tree(root)
 	mut checks := []NutpCheck{}
@@ -162,7 +162,7 @@ fn (mut c Checker) lint_no_unnecessary_type_parameters(root C.TSNode, abs_path s
 
 // nutp_repeated_in_ast ports isTypeParameterRepeatedInAST: the type parameter has two references
 // in the signature, or one as a type argument of something that is not an array.
-fn (c &Checker) nutp_repeated_in_ast(parameter C.TSNode, tree &ScopeTree, variable int, start_of_body int) bool {
+fn (c &Checker) nutp_repeated_in_ast(parameter C.vt_node, tree &ScopeTree, variable int, start_of_body int) bool {
 	mut total := 0
 	for index in tree.variables[variable].references {
 		reference := tree.references[index]
@@ -205,7 +205,7 @@ fn (c &Checker) nutp_repeated_in_ast(parameter C.TSNode, tree &ScopeTree, variab
 }
 
 // nutp_node_span is the TypeScript node of a function-like node or of a class member.
-fn (c &Checker) nutp_node_span(node C.TSNode) Span {
+fn (c &Checker) nutp_node_span(node C.vt_node) Span {
 	return match node_kind(node) {
 		'function_type', 'constructor_type' { c.type_node_span(node) }
 		'function_signature' { prd_declaration_span(node) }
@@ -219,7 +219,7 @@ fn (c &Checker) nutp_node_span(node C.TSNode) Span {
 
 // nutp_spans are the nodes whose types the count of a node needs: the node, or the members of a
 // class.
-fn (c &Checker) nutp_spans(node C.TSNode) []Span {
+fn (c &Checker) nutp_spans(node C.vt_node) []Span {
 	if node_kind(node) !in nutp_class_kinds {
 		return [c.nutp_node_span(node)]
 	}
@@ -236,7 +236,7 @@ fn (c &Checker) nutp_spans(node C.TSNode) []Span {
 }
 
 // nutp_declaration is the handle of the TypeParameter declaration whose name the node is.
-fn (mut c Checker) nutp_declaration(name_node C.TSNode) !string {
+fn (mut c Checker) nutp_declaration(name_node C.vt_node) !string {
 	handle := c.nodes.handle(node_key(name_node)) or { return '' }
 	if tsgo.handle_kind(handle) == syntax_kind_type_parameter {
 		return handle
@@ -283,7 +283,7 @@ fn (mut c Checker) nutp_count_usage(check NutpCheck, declarations map[u64]string
 
 // nutp_collect ports collectTypeParameterUsageCounts for a node: the signature of a call
 // signature or of a constructor, or the type of any other node.
-fn (mut c Checker) nutp_collect(node C.TSNode, from_class bool, mut counts map[string]int) ! {
+fn (mut c Checker) nutp_collect(node C.vt_node, from_class bool, mut counts map[string]int) ! {
 	span := c.nutp_node_span(node)
 	mut walk := NutpWalk{
 		from_class: from_class

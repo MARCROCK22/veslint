@@ -115,12 +115,12 @@ pub fn (d &Document) top_elements(name string) []int {
 pub fn (mut d Document) free() {
 	for mut s in d.snippets {
 		if s.tree != unsafe { nil } {
-			treesitter.tree_delete(s.tree)
+			treesitter.rows_free(s.tree)
 			s.tree = unsafe { nil }
 		}
 	}
 	if d.script.tree != unsafe { nil } {
-		treesitter.tree_delete(d.script.tree)
+		treesitter.rows_free(d.script.tree)
 		d.script.tree = unsafe { nil }
 	}
 }

@@ -35,7 +35,7 @@ struct NrtcPart {
 // NrtcLiteral is a literal part of a union and the type node it comes from.
 struct NrtcLiteral {
 	value string
-	node  C.TSNode
+	node  C.vt_node
 }
 
 // NrtcOverride is a literal of a type node overridden by a primitive of the union.
@@ -46,13 +46,13 @@ struct NrtcOverride {
 
 // NrtcUnionMember is a member of an intersection whose type is a union (seenUnionTypes).
 struct NrtcUnionMember {
-	node  C.TSNode
+	node  C.vt_node
 	parts []NrtcPart
 }
 
-fn (mut c Checker) lint_no_redundant_type_constituents(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_redundant_type_constituents(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
-	mut containers := []C.TSNode{}
+	mut containers := []C.vt_node{}
 	mut spans := []Span{}
 	for node in c.nodes_of_kinds(root, ['union_type', 'intersection_type'], []string{}) {
 		parent := node_parent(node) or { continue }
@@ -83,7 +83,7 @@ fn (mut c Checker) lint_no_redundant_type_constituents(root C.TSNode, abs_path s
 }
 
 // nrtc_spans requests the types nrtc_parts may need for a type node.
-fn (c &Checker) nrtc_spans(n C.TSNode, mut spans []Span) {
+fn (c &Checker) nrtc_spans(n C.vt_node, mut spans []Span) {
 	if c.nrtc_syntactic_part(n) != none {
 		return
 	}
@@ -97,7 +97,7 @@ fn (c &Checker) nrtc_spans(n C.TSNode, mut spans []Span) {
 }
 
 // nrtc_parts ports getTypeNodeTypePartFlagsCached.
-fn (mut c Checker) nrtc_parts(n C.TSNode, mut cache map[u64][]NrtcPart) ![]NrtcPart {
+fn (mut c Checker) nrtc_parts(n C.vt_node, mut cache map[u64][]NrtcPart) ![]NrtcPart {
 	key := node_key(n)
 	if key in cache {
 		return cache[key]
@@ -109,7 +109,7 @@ fn (mut c Checker) nrtc_parts(n C.TSNode, mut cache map[u64][]NrtcPart) ![]NrtcP
 
 // nrtc_compute_parts ports getTypeNodeTypePartFlags: keywords and literals by their syntax, unions
 // by their members, other types by their type (a boolean stays whole).
-fn (mut c Checker) nrtc_compute_parts(n C.TSNode, mut cache map[u64][]NrtcPart) ![]NrtcPart {
+fn (mut c Checker) nrtc_compute_parts(n C.vt_node, mut cache map[u64][]NrtcPart) ![]NrtcPart {
 	if part := c.nrtc_syntactic_part(n) {
 		return [part]
 	}
@@ -133,7 +133,7 @@ fn (mut c Checker) nrtc_compute_parts(n C.TSNode, mut cache map[u64][]NrtcPart) 
 
 // nrtc_syntactic_part is the part of a keyword type of keywordNodeTypesToTsTypes or of a
 // TSLiteralType of a Literal, with describeLiteralTypeNode as its name.
-fn (c &Checker) nrtc_syntactic_part(n C.TSNode) ?NrtcPart {
+fn (c &Checker) nrtc_syntactic_part(n C.vt_node) ?NrtcPart {
 	match node_kind(n) {
 		'predefined_type' {
 			text := c.text(n)
@@ -316,7 +316,7 @@ fn nrtc_primitive_name(flag u32) string {
 }
 
 // nrtc_check_union ports the `TSUnionType:exit` handler.
-fn (mut c Checker) nrtc_check_union(node C.TSNode, mut cache map[u64][]NrtcPart, mut findings []Finding) ! {
+fn (mut c Checker) nrtc_check_union(node C.vt_node, mut cache map[u64][]NrtcPart, mut findings []Finding) ! {
 	mut seen_literals := map[u32][]NrtcLiteral{}
 	mut seen_primitives := map[u32]bool{}
 	in_return_type := nrtc_is_inside_return_type(node)
@@ -367,7 +367,7 @@ fn (mut c Checker) nrtc_check_union(node C.TSNode, mut cache map[u64][]NrtcPart,
 	}
 	// overriddenTypeNodes, in insertion order.
 	mut order := []u64{}
-	mut nodes := map[u64]C.TSNode{}
+	mut nodes := map[u64]C.vt_node{}
 	mut overridden := map[u64][]NrtcOverride{}
 	for primitive, literals in seen_literals {
 		if primitive !in seen_primitives {
@@ -404,9 +404,9 @@ fn (mut c Checker) nrtc_check_union(node C.TSNode, mut cache map[u64][]NrtcPart,
 }
 
 // nrtc_check_intersection ports the `TSIntersectionType:exit` handler.
-fn (mut c Checker) nrtc_check_intersection(node C.TSNode, mut cache map[u64][]NrtcPart, mut findings []Finding) ! {
+fn (mut c Checker) nrtc_check_intersection(node C.vt_node, mut cache map[u64][]NrtcPart, mut findings []Finding) ! {
 	mut seen_literals := map[u32][]string{}
-	mut seen_primitives := map[u32][]C.TSNode{}
+	mut seen_primitives := map[u32][]C.vt_node{}
 	mut seen_unions := []NrtcUnionMember{}
 	for member in type_members(node) {
 		parts := c.nrtc_parts(member, mut cache)!
@@ -491,7 +491,7 @@ fn (mut c Checker) nrtc_check_intersection(node C.TSNode, mut cache map[u64][]Nr
 
 // nrtc_is_inside_return_type ports isNodeInsideReturnType: the union is the return type of a
 // function or function type (the TSTypeAnnotation of its returnType).
-fn nrtc_is_inside_return_type(node C.TSNode) bool {
+fn nrtc_is_inside_return_type(node C.vt_node) bool {
 	parent := type_parent(node) or { return false }
 	parent_kind := node_kind(parent)
 	if parent_kind in ['function_type', 'constructor_type'] {

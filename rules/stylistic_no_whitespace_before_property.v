@@ -11,7 +11,7 @@ const snwbp_messages = {
 	'unexpectedWhitespace': 'Unexpected whitespace before property {{propName}}.'
 }
 
-fn (mut c Checker) lint_stylistic_no_whitespace_before_property(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_no_whitespace_before_property(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

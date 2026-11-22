@@ -3,10 +3,6 @@ module svelte
 import estree
 import treesitter
 
-fn C.ts_node_is_error(self C.TSNode) bool
-fn C.ts_node_is_missing(self C.TSNode) bool
-fn C.ts_node_has_error(self C.TSNode) bool
-
 // The script side of a Svelte document: the pre-virtual code parsed by tree-sitter, its ESTree
 // and tokens, and ScriptLetContext.restore — the template expressions taken out of it and put
 // back in the Svelte AST with file offsets (src/context/script-let.ts restoreNodes), the
@@ -84,7 +80,7 @@ fn (mut c Conv) restore() ! {
 	tree := parse_ts(if jsx { c.parsers.tsx } else { c.parsers.ts }, pre)!
 	doc.tree = tree
 	root := treesitter.root_node(tree)
-	if C.ts_node_has_error(root) {
+	if C.vt_node_has_error(root) {
 		c.syntax_error(root)
 		return
 	}
@@ -98,9 +94,9 @@ fn (mut c Conv) restore() ! {
 		// are those of the pre-virtual code.
 		ts_tree := parse_ts(c.parsers.ts, pre)!
 		ts_root := treesitter.root_node(ts_tree)
-		if C.ts_node_has_error(ts_root) {
+		if C.vt_node_has_error(ts_root) {
 			at := first_error_offset(ts_root)
-			treesitter.tree_delete(ts_tree)
+			treesitter.rows_free(ts_tree)
 			doc.error = ParseError{
 				message:    'Parsing error.'
 				index:      if at < c.code.len { at } else { c.code.len }
@@ -110,7 +106,7 @@ fn (mut c Conv) restore() ! {
 			doc.virtual_error = true
 			return
 		}
-		treesitter.tree_delete(ts_tree)
+		treesitter.rows_free(ts_tree)
 	}
 	es := convert_es_with(root, pre, jsx) or {
 		doc.error = ParseError{
@@ -316,7 +312,7 @@ fn sort_tokens(mut list []Token) {
 // (acorn rejected a template expression) when an expression alone does not parse either, the
 // first in the file (the compiler parses the template before svelte-eslint-parser parses the
 // script), else typescript-eslint's error at the position in the pre-virtual code.
-fn (mut c Conv) syntax_error(root C.TSNode) {
+fn (mut c Conv) syntax_error(root C.vt_node) {
 	if c.compile_expression_error() {
 		return
 	}
@@ -377,10 +373,10 @@ fn (c &Conv) expression_error(part string) ?int {
 	code := '(${part});'
 	tree := parse_ts(c.parsers.ts, code) or { return none }
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	root := treesitter.root_node(tree)
-	if !C.ts_node_has_error(root) {
+	if !C.vt_node_has_error(root) {
 		return none
 	}
 	at := expression_error_offset(root, code) - 1
@@ -396,66 +392,50 @@ fn (c &Conv) expression_error(part string) ?int {
 // expression_error_offset approximates where acorn stops in an expression tree-sitter rejects: a
 // missing node's place, or the token after the first child of the first ERROR node (`<T` of a
 // type assertion followed by what it does not take: `<i/>`, `<a href="x">`), else its start.
-fn expression_error_offset(root C.TSNode, code string) int {
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		if C.ts_node_is_missing(node) {
+fn expression_error_offset(root C.vt_node, code string) int {
+	first, last := treesitter.flat_range(root)
+	mut i := first
+	for i <= last {
+		node := treesitter.flat_node(root, i)
+		if C.vt_node_is_missing(node) {
 			return treesitter.node_start(node)
 		}
-		if C.ts_node_is_error(node) {
-			if C.ts_node_named_child_count(node) == 0 {
+		if C.vt_node_is_error(node) {
+			if C.vt_node_named_child_count(node) == 0 {
 				return treesitter.node_start(node)
 			}
-			mut at := treesitter.node_end(C.ts_node_named_child(node, 0))
+			mut at := treesitter.node_end(C.vt_node_named_child(node, 0))
 			for at < code.len && code[at] in [` `, `\t`, `\n`, `\r`] {
 				at++
 			}
 			return at
 		}
-		if C.ts_node_has_error(node) && C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return treesitter.node_start(root)
-			}
-		}
+		// Only the subtrees with an error are entered.
+		i = if C.vt_node_has_error(node) { i + 1 } else { treesitter.flat_last(root, i) + 1 }
 	}
-	return 0
+	return treesitter.node_start(root)
 }
 
 fn (c &Conv) expression_parses(part string) bool {
 	tree := parse_ts(c.parsers.ts, '(${part});') or { return false }
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
-	return !C.ts_node_has_error(treesitter.root_node(tree))
+	return !C.vt_node_has_error(treesitter.root_node(tree))
 }
 
-fn first_error_offset(root C.TSNode) int {
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		if C.ts_node_is_error(node) || C.ts_node_is_missing(node) {
+fn first_error_offset(root C.vt_node) int {
+	first, last := treesitter.flat_range(root)
+	mut i := first
+	for i <= last {
+		node := treesitter.flat_node(root, i)
+		if C.vt_node_is_error(node) || C.vt_node_is_missing(node) {
 			return treesitter.node_start(node)
 		}
-		if C.ts_node_has_error(node) && C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return treesitter.node_start(root)
-			}
-		}
+		// Only the subtrees with an error are entered.
+		i = if C.vt_node_has_error(node) { i + 1 } else { treesitter.flat_last(root, i) + 1 }
 	}
-	return 0
+	return treesitter.node_start(root)
 }
 
 // let_tokens adds the tokens and comments of a let's segments (moved to the file).
@@ -799,10 +779,10 @@ fn (c &Conv) has_type_info(e int) bool {
 	code := '(${text});'
 	tree := parse_ts(c.parsers.ts, code) or { return false }
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	root := treesitter.root_node(tree)
-	if C.ts_node_has_error(root) {
+	if C.vt_node_has_error(root) {
 		return false
 	}
 	es := convert_es(root, code) or { return false }

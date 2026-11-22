@@ -26,7 +26,7 @@ fn cth_aliases(options []json2.Any) ![]string {
 	return out
 }
 
-fn (mut c Checker) lint_consistent_this(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_consistent_this(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	aliases := cth_aliases(c.rule_options(consistent_this))!
 	mut findings := []Finding{}
@@ -64,7 +64,7 @@ fn (mut c Checker) lint_consistent_this(root C.TSNode, abs_path string, mut stat
 }
 
 // cth_check ports checkAssignment: an alias is assigned `this` with `=`; nothing else is.
-fn cth_check(c &Checker, aliases []string, node C.TSNode, name string, value C.TSNode, operator string, mut findings []Finding) {
+fn cth_check(c &Checker, aliases []string, node C.vt_node, name string, value C.vt_node, operator string, mut findings []Finding) {
 	is_this := node_kind(unwrap_parens(value)) == 'this'
 	if name in aliases {
 		if !is_this || (operator != '' && operator != '=') {
@@ -89,7 +89,7 @@ fn cth_check(c &Checker, aliases []string, node C.TSNode, name string, value C.T
 
 // cth_ensure_assigned ports ensureWasAssigned: each alias of the scope (and of the module scope
 // of a module) is initialized or assigned `this` in that scope.
-fn (mut c Checker) cth_ensure_assigned(root C.TSNode, aliases []string, node C.TSNode, mut findings []Finding) {
+fn (mut c Checker) cth_ensure_assigned(root C.vt_node, aliases []string, node C.vt_node, mut findings []Finding) {
 	tree := c.scope_tree(root)
 	scope := if node_kind(node) == 'program' {
 		0

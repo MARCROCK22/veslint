@@ -12,7 +12,7 @@ import treesitter { children, has_child_kind, named_children, node_end, node_fie
 // TSEmptyBodyFunctionExpression), TSAbstractMethodDefinition, PropertyDefinition, AccessorProperty,
 // TSAbstractPropertyDefinition, TSAbstractAccessorProperty, TSIndexSignature or StaticBlock; ''
 // for what is not a member (the decorators of the next method, comments, `;`).
-fn cm_type(member C.TSNode) string {
+fn cm_type(member C.vt_node) string {
 	match node_kind(member) {
 		'method_definition', 'method_signature' {
 			return 'MethodDefinition'
@@ -46,7 +46,7 @@ fn cm_type(member C.TSNode) string {
 }
 
 // cm_members are the ESTree members of a class_body, in order.
-fn cm_members(body C.TSNode) []C.TSNode {
+fn cm_members(body C.vt_node) []C.vt_node {
 	return named_children(body).filter(cm_type(it) != '')
 }
 
@@ -54,7 +54,7 @@ fn cm_members(body C.TSNode) []C.TSNode {
 // 'constructor' or 'method'. TypeScript parses as a constructor a member named `constructor` or
 // `'constructor'` that is not static; typescript-estree also gives that kind to a method named by
 // the string, like `*'constructor'() {}`, but not to a generator named by the identifier.
-fn (c &Checker) cm_method_kind(member C.TSNode) string {
+fn (c &Checker) cm_method_kind(member C.vt_node) string {
 	if has_child_kind(member, 'get') {
 		return 'get'
 	}
@@ -80,13 +80,13 @@ fn (c &Checker) cm_method_kind(member C.TSNode) string {
 }
 
 // cm_is_static: the member has the `static` modifier.
-fn cm_is_static(member C.TSNode) bool {
+fn cm_is_static(member C.vt_node) bool {
 	return has_child_kind(member, 'static')
 }
 
 // cm_accessibility is the `accessibility` of a member or a parameter: 'public', 'protected',
 // 'private' or ''.
-fn (c &Checker) cm_accessibility(n C.TSNode) string {
+fn (c &Checker) cm_accessibility(n C.vt_node) string {
 	for child in children(n) {
 		if node_kind(child) == 'accessibility_modifier' {
 			return c.text(child)
@@ -97,10 +97,10 @@ fn (c &Checker) cm_accessibility(n C.TSNode) string {
 
 // cm_decorators are the decorators of a member: those of a method are the siblings before it
 // (with comments in between), those of a field its children.
-fn cm_decorators(member C.TSNode) []C.TSNode {
+fn cm_decorators(member C.vt_node) []C.vt_node {
 	mut out := children(member).filter(node_kind(it) == 'decorator')
 	if node_kind(member) in ['method_definition', 'method_signature', 'abstract_method_signature'] {
-		mut before := []C.TSNode{}
+		mut before := []C.vt_node{}
 		mut node := member
 		for {
 			node = prev_sibling(node) or { break }
@@ -119,7 +119,7 @@ fn cm_decorators(member C.TSNode) []C.TSNode {
 }
 
 // cm_start is where the ESTree member starts: at its first decorator.
-fn cm_start(member C.TSNode) int {
+fn cm_start(member C.vt_node) int {
 	decorators := cm_decorators(member)
 	return if decorators.len > 0 { node_start(decorators[0]) } else { node_start(member) }
 }
@@ -127,7 +127,7 @@ fn cm_start(member C.TSNode) int {
 // cm_end is where the ESTree member ends: after the `;` that closes a field, an overload, an
 // abstract member or an index signature (a method with a body ends at its `}`), and never after a
 // comment tree-sitter leaves at the end of the node.
-fn (c &Checker) cm_end(member C.TSNode) int {
+fn (c &Checker) cm_end(member C.vt_node) int {
 	if node_kind(member) in ['method_definition', 'class_static_block'] {
 		return c.cm_node_end(member)
 	}
@@ -148,17 +148,17 @@ fn (c &Checker) cm_end(member C.TSNode) int {
 
 // cm_node_end is where TypeScript ends a node: at the end of its last token, without the comments
 // tree-sitter may leave at its end.
-fn (c &Checker) cm_node_end(n C.TSNode) int {
+fn (c &Checker) cm_node_end(n C.vt_node) int {
 	return c.tokens.last_end(node_end(n))
 }
 
 // cm_node_text is the text of a node as TypeScript ranges it (getText).
-fn (c &Checker) cm_node_text(n C.TSNode) string {
+fn (c &Checker) cm_node_text(n C.vt_node) string {
 	return c.src[node_start(n)..c.cm_node_end(n)]
 }
 
 // cm_super_class is the `superClass` of a class: the value of its `extends` clause.
-fn cm_super_class(class C.TSNode) ?C.TSNode {
+fn cm_super_class(class C.vt_node) ?C.vt_node {
 	for child in named_children(class) {
 		if node_kind(child) == 'class_heritage' {
 			for clause in named_children(child) {
@@ -173,7 +173,7 @@ fn cm_super_class(class C.TSNode) ?C.TSNode {
 
 // cm_class_decorators are the `decorators` of a class: its own, and those before the `export` of
 // an exported class, which tree-sitter gives the export_statement.
-fn cm_class_decorators(class C.TSNode) []C.TSNode {
+fn cm_class_decorators(class C.vt_node) []C.vt_node {
 	mut out := children(class).filter(node_kind(it) == 'decorator')
 	if parent := node_parent(class) {
 		if node_kind(parent) == 'export_statement' {
@@ -184,14 +184,14 @@ fn cm_class_decorators(class C.TSNode) []C.TSNode {
 }
 
 // cm_parameters are the ESTree `params` of a function or method: its parameters, `this` included.
-fn cm_parameters(function C.TSNode) []C.TSNode {
-	parameters := node_field(function, 'parameters') or { return []C.TSNode{} }
+fn cm_parameters(function C.vt_node) []C.vt_node {
+	parameters := node_field(function, 'parameters') or { return []C.vt_node{} }
 	return named_children(parameters)
 }
 
 // cm_is_parameter_property: the parameter is a TSParameterProperty, a parameter with a modifier
 // (an accessibility, `readonly` or `override`).
-fn cm_is_parameter_property(parameter C.TSNode) bool {
+fn cm_is_parameter_property(parameter C.vt_node) bool {
 	for child in children(parameter) {
 		if node_kind(child) in ['accessibility_modifier', 'readonly', 'override_modifier'] {
 			return true

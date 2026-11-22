@@ -6,6 +6,6 @@ module rules
 
 const unhe_messages = map[string]string{}
 
-fn (mut c Checker) lint_unicorn_no_hex_escape(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_hex_escape(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return []Finding{}
 }

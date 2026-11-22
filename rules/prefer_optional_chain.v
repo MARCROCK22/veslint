@@ -54,12 +54,12 @@ fn poc_options(options []json2.Any) !PocOptions {
 // ChainExpression typescript-estree wraps around it (its `expression` is the same node without
 // `chain`). Parentheses are never part of a PocNode.
 struct PocNode {
-	node  C.TSNode
+	node  C.vt_node
 	chain bool
 	empty bool // a missing node (`null` in ESTree)
 }
 
-fn poc_view(n C.TSNode) PocNode {
+fn poc_view(n C.vt_node) PocNode {
 	node := unwrap_parens(n)
 	return PocNode{
 		node:  node
@@ -67,7 +67,7 @@ fn poc_view(n C.TSNode) PocNode {
 	}
 }
 
-fn poc_view_opt(n ?C.TSNode) PocNode {
+fn poc_view_opt(n ?C.vt_node) PocNode {
 	node := n or {
 		return PocNode{
 			empty: true
@@ -349,7 +349,7 @@ fn poc_arguments(v PocNode) []PocNode {
 	return args.map(poc_view(it))
 }
 
-fn (c &Checker) poc_name(n C.TSNode) string {
+fn (c &Checker) poc_name(n C.vt_node) string {
 	if node_kind(n) == 'private_property_identifier' {
 		return c.text(n).trim_left('#')
 	}
@@ -358,7 +358,7 @@ fn (c &Checker) poc_name(n C.TSNode) string {
 
 // poc_literal_equal: the same raw text and the same value (a RegExp value is a different object
 // each time, unless V8 rejects both and both are null).
-fn (c &Checker) poc_literal_equal(a C.TSNode, b C.TSNode) bool {
+fn (c &Checker) poc_literal_equal(a C.vt_node, b C.vt_node) bool {
 	if c.text(a) != c.text(b) {
 		return false
 	}
@@ -431,7 +431,7 @@ fn (c &Checker) poc_compare_by_visiting(a PocNode, b PocNode, typ string, depth 
 }
 
 // poc_same_structure compares two tree-sitter subtrees by kind and leaf text.
-fn (c &Checker) poc_same_structure(a C.TSNode, b C.TSNode, depth int) bool {
+fn (c &Checker) poc_same_structure(a C.vt_node, b C.vt_node, depth int) bool {
 	if depth > max_expression_depth || node_kind(a) != node_kind(b) {
 		return false
 	}
@@ -486,7 +486,7 @@ enum PocYoda {
 
 struct PocOperand {
 	validity         PocValidity
-	node             C.TSNode
+	node             C.vt_node
 	compared_name    PocNode
 	nullish          PocNullish
 	comparison       PocComparison
@@ -496,19 +496,19 @@ struct PocOperand {
 
 // PocLogical is a logical expression visited by the rule and its operands.
 struct PocLogical {
-	node     C.TSNode
+	node     C.vt_node
 	operator string
-	operands []C.TSNode
+	operands []C.vt_node
 }
 
-fn (mut c Checker) lint_prefer_optional_chain(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_optional_chain(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := poc_options(c.rule_options(prefer_optional_chain))!
 	mut seen := map[u64]bool{}
 	mut logicals := []PocLogical{}
-	mut empty_objects := []C.TSNode{} // `(foo || {}).bar`: the `foo`
-	mut empty_reports := []C.TSNode{}
-	mut empty_logicals := []C.TSNode{}
+	mut empty_objects := []C.vt_node{} // `(foo || {}).bar`: the `foo`
+	mut empty_reports := []C.vt_node{}
+	mut empty_logicals := []C.vt_node{}
 	mut spans := []Span{}
 	for n in c.nodes_of_kinds(root, ['binary_expression'], []string{}) {
 		operator := operator_of(n)
@@ -576,9 +576,9 @@ fn (mut c Checker) lint_prefer_optional_chain(root C.TSNode, abs_path string, mu
 
 // poc_flatten ports flattenLogicalOperands: the operands of a chain of the same operator, in order,
 // marking the nested logical expressions as seen.
-fn poc_flatten(n C.TSNode, operator string, mut seen map[u64]bool) []C.TSNode {
+fn poc_flatten(n C.vt_node, operator string, mut seen map[u64]bool) []C.vt_node {
 	seen[node_key(n)] = true
-	mut operands := []C.TSNode{}
+	mut operands := []C.vt_node{}
 	mut stack := [node_field(n, 'right') or { return operands }, node_field(n, 'left') or {
 		return operands
 	}]
@@ -596,7 +596,7 @@ fn poc_flatten(n C.TSNode, operator string, mut seen map[u64]bool) []C.TSNode {
 }
 
 // poc_operand_spans requests the types an operand may need.
-fn poc_operand_spans(operand C.TSNode, mut spans []Span) {
+fn poc_operand_spans(operand C.vt_node, mut spans []Span) {
 	spans << node_span(operand)
 	for field in ['left', 'right', 'argument'] {
 		if child := node_field(operand, field) {
@@ -613,7 +613,7 @@ fn poc_operand_spans(operand C.TSNode, mut spans []Span) {
 
 // poc_empty_object_member: the parent of `foo || {}` / `foo ?? {}` when it is a member access
 // without `?.`.
-fn poc_empty_object_member(n C.TSNode) ?C.TSNode {
+fn poc_empty_object_member(n C.vt_node) ?C.vt_node {
 	right := unwrap_parens(node_field(n, 'right')?)
 	if node_kind(right) != 'object' || named_children(right).len != 0 {
 		return none
@@ -633,7 +633,7 @@ enum PocValueType {
 	undefined_string
 }
 
-fn (c &Checker) poc_comparison_value_type(n C.TSNode) PocValueType {
+fn (c &Checker) poc_comparison_value_type(n C.vt_node) PocValueType {
 	match node_kind(n) {
 		'null' {
 			return .null_
@@ -721,7 +721,7 @@ fn (mut c Checker) poc_gather(logical PocLogical, o PocOptions) ![]PocOperand {
 }
 
 // poc_binary_operand classifies a BinaryExpression operand.
-fn (mut c Checker) poc_binary_operand(operand C.TSNode, chain_operator string) PocOperand {
+fn (mut c Checker) poc_binary_operand(operand C.vt_node, chain_operator string) PocOperand {
 	invalid := PocOperand{
 		validity: .invalid
 	}
@@ -831,7 +831,7 @@ fn (mut c Checker) poc_binary_operand(operand C.TSNode, chain_operator string) P
 
 // poc_is_global_reference ports isReferenceToGlobalFunction: the first reference with that name
 // created in the scope of `n` resolves to no variable, or to one without definitions.
-fn (mut c Checker) poc_is_global_reference(n C.TSNode) bool {
+fn (mut c Checker) poc_is_global_reference(n C.vt_node) bool {
 	tree := c.stv_scope_tree(n)
 	name := c.identifier_name(n)
 	for r in tree.scopes[tree.get_scope(n)].references {
@@ -853,7 +853,7 @@ fn (mut c Checker) poc_parts(t TypeResponse) ![]TypeResponse {
 }
 
 // poc_valid_false_boolean_check ports isValidFalseBooleanCheckType.
-fn (mut c Checker) poc_valid_false_boolean_check(n C.TSNode, disallow_falsy_literal bool, o PocOptions) !bool {
+fn (mut c Checker) poc_valid_false_boolean_check(n C.vt_node, disallow_falsy_literal bool, o PocOptions) !bool {
 	t := c.node_type(unwrap_parens(n)) or { return false }
 	parts := c.poc_parts(t)!
 	if disallow_falsy_literal {
@@ -1111,7 +1111,7 @@ fn (mut c Checker) poc_report_then_reset(logical PocLogical, mut sub PocSubChain
 }
 
 // poc_should_report ports checkNullishAndReport: with requireNullish, some node may be nullish.
-fn (mut c Checker) poc_should_report(nodes []C.TSNode, o PocOptions) !bool {
+fn (mut c Checker) poc_should_report(nodes []C.vt_node, o PocOptions) !bool {
 	if !o.require_nullish {
 		return true
 	}
@@ -1170,7 +1170,7 @@ fn (c &Checker) poc_resolve_operand_subset(previous PocOperand, last PocOperand)
 
 // poc_report_start ports the start of getReportRange: the first token of the first operand,
 // extended over the `(` tokens just before it inside the logical expression.
-fn (c &Checker) poc_report_start(first C.TSNode, boundary C.TSNode) int {
+fn (c &Checker) poc_report_start(first C.vt_node, boundary C.vt_node) int {
 	mut start := node_start(first)
 	limit := node_start(boundary)
 	for start > limit {
@@ -1185,7 +1185,7 @@ fn (c &Checker) poc_report_start(first C.TSNode, boundary C.TSNode) int {
 
 // poc_report_end ports the end of getReportRange: the last token of the last operand, extended
 // over the `)` tokens just after it inside the logical expression.
-fn (mut c Checker) poc_report_end(last C.TSNode, boundary C.TSNode) int {
+fn (mut c Checker) poc_report_end(last C.vt_node, boundary C.vt_node) int {
 	tokens := c.source_tokens(last)
 	mut end := node_end(last)
 	limit := node_end(boundary)
@@ -1360,7 +1360,7 @@ fn (mut c Checker) poc_report(logical PocLogical, chain []PocOperand, has_last b
 
 // poc_unary_prefix: the operator of a UnaryExpression operand and a space (`typeof `), which the
 // new code keeps.
-fn poc_unary_prefix(n C.TSNode) string {
+fn poc_unary_prefix(n C.vt_node) string {
 	return if node_kind(n) == 'unary_expression' { '${operator_of(n)} ' } else { '' }
 }
 
@@ -1369,7 +1369,7 @@ fn poc_unary_prefix(n C.TSNode) string {
 // new code and what follows the range without the `)` tokens left unmatched. Like the original,
 // that second form reads the text of the expression with offsets of the file, so it is only
 // right for an expression at the start of the file.
-fn (mut c Checker) poc_fix(node C.TSNode, start int, end int, new_code string) Fix {
+fn (mut c Checker) poc_fix(node C.vt_node, start int, end int, new_code string) Fix {
 	tokens := c.source_tokens(node).inside(node_start(node), node_end(node), false)
 	mut unclosed := 0
 	for token in tokens {
@@ -1415,7 +1415,7 @@ fn (mut c Checker) poc_fix(node C.TSNode, start int, end int, new_code string) F
 
 // poc_empty_object_fix ports the fixer of the `(foo || {}).bar` suggestion: `foo?.bar`, with
 // `foo` in parentheses when it binds looser than a call.
-fn (c &Checker) poc_empty_object_fix(left C.TSNode, member C.TSNode, logical C.TSNode) Fix {
+fn (c &Checker) poc_empty_object_fix(left C.vt_node, member C.vt_node, logical C.vt_node) Fix {
 	mut left_text := c.text(left)
 	if ts_operator_precedence(left, operator_of(logical), false) < precedence_left_hand_side {
 		left_text = '(${left_text})'

@@ -10,7 +10,7 @@ const vue_no_export_in_script_setup_messages = {
 	'forbidden': '`<script setup>` cannot contain ES module exports.'
 }
 
-fn (mut c Checker) lint_vue_no_export_in_script_setup(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_export_in_script_setup(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

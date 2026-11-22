@@ -25,7 +25,7 @@ mut:
 	current_segments []int // a Set: insertion order, no duplicates
 }
 
-fn (mut c Checker) lint_no_this_before_super(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_this_before_super(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	an := c.code_path_analysis(root, abs_path) or { return findings }

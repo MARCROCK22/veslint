@@ -30,7 +30,7 @@ fn vue_match_component_file_name_options(options []json2.Any) !VmcfnOptions {
 	}
 }
 
-fn (mut c Checker) lint_vue_match_component_file_name(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_match_component_file_name(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := vue_match_component_file_name_options(c.rule_options(vue_match_component_file_name))!
 	mut findings := []Finding{}

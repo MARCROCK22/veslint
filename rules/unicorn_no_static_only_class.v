@@ -15,7 +15,7 @@ const unsoc_messages = {
 // literal.
 const unsoc_class_only_keywords = ['this', 'super', 'new.target']
 
-fn (mut c Checker) lint_unicorn_no_static_only_class(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_static_only_class(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -74,7 +74,7 @@ fn unsoc_is_static_member(t &estree.EsTree, node int) bool {
 
 // unsoc_references_class_name ports referencesClassName: a reference to the class's name is in the
 // range of `value`.
-fn (mut c Checker) unsoc_references_class_name(root C.TSNode, t &estree.EsTree, value int, id int) bool {
+fn (mut c Checker) unsoc_references_class_name(root C.vt_node, t &estree.EsTree, value int, id int) bool {
 	if id < 0 || value < 0 {
 		return false
 	}
@@ -97,7 +97,7 @@ fn (mut c Checker) unsoc_references_class_name(root C.TSNode, t &estree.EsTree, 
 
 // unsoc_switch_class_to_object ports switchClassToObject: the fixes, none when the class cannot
 // become an object.
-fn (mut c Checker) unsoc_switch_class_to_object(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, node int) ?[]Fix {
+fn (mut c Checker) unsoc_switch_class_to_object(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, node int) ?[]Fix {
 	if (t.flag(node, .declare_) or { false }) || (t.flag(node, .abstract_) or { false })
 		|| (t.list(node, .implements_) or { []int{} }).len > 0 {
 		return none

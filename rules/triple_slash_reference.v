@@ -36,7 +36,7 @@ struct TsrReference {
 	import_name string
 }
 
-fn (mut c Checker) lint_triple_slash_reference(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_triple_slash_reference(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := tsr_options(c.rule_options(triple_slash_reference))!
 	mut findings := []Finding{}
@@ -98,7 +98,7 @@ fn (c &Checker) tsr_finding(comment SourceToken, name string) Finding {
 // tsr_module_source is the string an import takes its module from: the source of an
 // ImportDeclaration, or the string of `require()` in a TSImportEqualsDeclaration (with `export`
 // too, the declaration of its export statement).
-fn (c &Checker) tsr_module_source(node C.TSNode) ?C.TSNode {
+fn (c &Checker) tsr_module_source(node C.vt_node) ?C.vt_node {
 	for child in named_children(node) {
 		if node_kind(child) == 'import_require_clause' {
 			for part in named_children(child) {

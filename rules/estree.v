@@ -8,7 +8,7 @@ import treesitter { children, has_child_kind, named_children, node_field, node_k
 
 // is_chain_element: a node typescript-estree may put in an optional chain (a member access, a call
 // that is not a tagged template, or a `!`).
-fn is_chain_element(n C.TSNode) bool {
+fn is_chain_element(n C.vt_node) bool {
 	return match node_kind(n) {
 		'member_expression', 'subscript_expression', 'non_null_expression' {
 			true
@@ -25,7 +25,7 @@ fn is_chain_element(n C.TSNode) bool {
 
 // is_optional_element: the element has its own `?.` (an `optional_chain` node in a member access,
 // an anonymous `?.` token in a call).
-fn is_optional_element(n C.TSNode) bool {
+fn is_optional_element(n C.vt_node) bool {
 	return match node_kind(n) {
 		'member_expression', 'subscript_expression' { has_child_kind(n, 'optional_chain') }
 		'call_expression' { has_child_kind(n, '?.') }
@@ -35,7 +35,7 @@ fn is_optional_element(n C.TSNode) bool {
 
 // chain_lhs is the part a chain element applies to: the object, the callee or the expression of a
 // `!`, with its parentheses (which break a chain).
-fn chain_lhs(n C.TSNode) ?C.TSNode {
+fn chain_lhs(n C.vt_node) ?C.vt_node {
 	return match node_kind(n) {
 		'member_expression', 'subscript_expression' { node_field(n, 'object') }
 		'call_expression' { node_field(n, 'function') }
@@ -45,7 +45,7 @@ fn chain_lhs(n C.TSNode) ?C.TSNode {
 }
 
 // chain_has_optional: some element of the chain that ends at `n` has a `?.`.
-fn chain_has_optional(n C.TSNode) bool {
+fn chain_has_optional(n C.vt_node) bool {
 	mut node := n
 	for depth := 0; depth < max_expression_depth; depth++ {
 		if !is_chain_element(node) {
@@ -61,7 +61,7 @@ fn chain_has_optional(n C.TSNode) bool {
 
 // is_estree_chain_root: `n` is the outermost element of an optional chain, which typescript-estree
 // wraps in a ChainExpression (a `!` continues the chain; parentheses break it).
-fn is_estree_chain_root(n C.TSNode) bool {
+fn is_estree_chain_root(n C.vt_node) bool {
 	if !chain_has_optional(n) {
 		return false
 	}
@@ -75,7 +75,7 @@ fn is_estree_chain_root(n C.TSNode) bool {
 
 // estree_type is the ESTree type of a node as rules compare it; other kinds keep their tree-sitter
 // name, which never matches an ESTree one.
-fn estree_type(n C.TSNode) string {
+fn estree_type(n C.vt_node) string {
 	kind := node_kind(n)
 	return match kind {
 		'identifier', 'undefined', 'property_identifier', 'shorthand_property_identifier' {
@@ -111,7 +111,7 @@ fn estree_type(n C.TSNode) string {
 }
 
 // estree_binary_kind tells ESTree's LogicalExpression (`&&`, `||`, `??`) from BinaryExpression.
-fn estree_binary_kind(n C.TSNode) string {
+fn estree_binary_kind(n C.vt_node) string {
 	if node_kind(n) != 'binary_expression' {
 		return ''
 	}
@@ -122,13 +122,13 @@ fn estree_binary_kind(n C.TSNode) string {
 	}
 }
 
-fn is_member(n C.TSNode) bool {
+fn is_member(n C.vt_node) bool {
 	return node_kind(n) in ['member_expression', 'subscript_expression']
 }
 
 // member_property is the ESTree property of a MemberExpression: the name, or the index without
 // parentheses.
-fn member_property(n C.TSNode) ?C.TSNode {
+fn member_property(n C.vt_node) ?C.vt_node {
 	if node_kind(n) == 'subscript_expression' {
 		return unwrap_parens(node_field(n, 'index')?)
 	}
@@ -136,9 +136,9 @@ fn member_property(n C.TSNode) ?C.TSNode {
 }
 
 // first_named is the first named child of a node, comments excluded.
-fn first_named(n C.TSNode) ?C.TSNode {
+fn first_named(n C.vt_node) ?C.vt_node {
 	for child in children(n) {
-		if C.ts_node_is_named(child) && node_kind(child) != 'comment' {
+		if C.vt_node_is_named(child) && node_kind(child) != 'comment' {
 			return child
 		}
 	}
@@ -147,7 +147,7 @@ fn first_named(n C.TSNode) ?C.TSNode {
 
 // call_arguments are the ESTree arguments of a call (spreads included), or none for a tagged
 // template.
-fn call_arguments(call C.TSNode) ?[]C.TSNode {
+fn call_arguments(call C.vt_node) ?[]C.vt_node {
 	args := node_field(call, 'arguments')?
 	if node_kind(args) != 'arguments' {
 		return none
@@ -156,13 +156,13 @@ fn call_arguments(call C.TSNode) ?[]C.TSNode {
 }
 
 // children_of_kind are the children (named or not) of a node with that kind.
-fn children_of_kind(n C.TSNode, kind string) []C.TSNode {
+fn children_of_kind(n C.vt_node, kind string) []C.vt_node {
 	return children(n).filter(node_kind(it) == kind)
 }
 
 // unwrap_type_parens removes the parentheses around a type: typescript-estree converts a
 // ParenthesizedType to its inner type.
-fn unwrap_type_parens(n C.TSNode) C.TSNode {
+fn unwrap_type_parens(n C.vt_node) C.vt_node {
 	mut node := n
 	for node_kind(node) == 'parenthesized_type' {
 		node = first_named(node) or { return node }
@@ -173,13 +173,13 @@ fn unwrap_type_parens(n C.TSNode) C.TSNode {
 // type_members are the ESTree `types` of a union_type or intersection_type: tree-sitter nests
 // `A | B | C` to the left, `(A | B) | C`, whose inner node is not an ESTree node, and parentheses
 // are not ESTree nodes (a parenthesized union stays one member, a nested TSUnionType).
-fn type_members(n C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn type_members(n C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	collect_type_members(n, node_kind(n), mut out)
 	return out
 }
 
-fn collect_type_members(n C.TSNode, kind string, mut out []C.TSNode) {
+fn collect_type_members(n C.vt_node, kind string, mut out []C.vt_node) {
 	for child in named_children(n) {
 		if node_kind(child) == kind {
 			collect_type_members(child, kind, mut out)
@@ -191,7 +191,7 @@ fn collect_type_members(n C.TSNode, kind string, mut out []C.TSNode) {
 
 // type_parent is the ESTree parent of a type node: its parent without the parenthesized_type
 // nodes, which typescript-estree removes.
-fn type_parent(n C.TSNode) ?C.TSNode {
+fn type_parent(n C.vt_node) ?C.vt_node {
 	mut parent := node_parent(n)?
 	for node_kind(parent) == 'parenthesized_type' {
 		parent = node_parent(parent)?
@@ -210,7 +210,7 @@ enum TypeNameRole {
 
 // type_name_role tells the role of a `type_identifier` (a `generic_type` is a TSTypeReference
 // with type arguments, or a heritage clause with them).
-fn type_name_role(n C.TSNode) TypeNameRole {
+fn type_name_role(n C.vt_node) TypeNameRole {
 	mut name := n
 	parent := node_parent(n) or { return .other }
 	if node_kind(parent) == 'generic_type' {

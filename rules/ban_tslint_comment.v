@@ -10,7 +10,7 @@ const btslc_messages = {
 	'commentDetected': 'tslint comment detected: "{{ text }}"'
 }
 
-fn (mut c Checker) lint_ban_tslint_comment(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_ban_tslint_comment(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	enable_disable := jsregexp.js_regex_new(r'^\s*tslint:(enable|disable)(?:-(line|next-line))?(:|\s|$)',

@@ -9,7 +9,7 @@ const neqn_messages = {
 	'unexpected': "Use '===' to compare with null."
 }
 
-fn (mut c Checker) lint_no_eq_null(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_eq_null(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['binary_expression'], []) {

@@ -54,7 +54,7 @@ fn embt_options(options []json2.Any) !EmbtOptions {
 
 // EmbtState is what the rule remembers while ESLint traverses the file.
 struct EmbtState {
-	root C.TSNode
+	root C.vt_node
 	t    &estree.EsTree
 	o    EmbtOptions
 mut:
@@ -66,7 +66,7 @@ mut:
 	findings         []Finding
 }
 
-fn (mut c Checker) lint_explicit_module_boundary_types(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_explicit_module_boundary_types(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := embt_options(c.rule_options(explicit_module_boundary_types))!
 	t := c.es_tree(root, abs_path) or { return []Finding{} }

@@ -11,7 +11,7 @@ const ec_nud_messages = {
 	'unexpected': "Unexpected unlimited '{{kind}}' comment. Specify some rule names to disable."
 }
 
-fn (mut c Checker) lint_eslint_comments_no_unlimited_disable(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_eslint_comments_no_unlimited_disable(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for directive in c.ec_directive_comments(root, []) {

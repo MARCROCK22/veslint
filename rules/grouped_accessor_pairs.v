@@ -44,7 +44,7 @@ mut:
 	setters []int
 }
 
-fn (mut c Checker) lint_grouped_accessor_pairs(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_grouped_accessor_pairs(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := gap_options(c.rule_options(grouped_accessor_pairs))!
 	mut findings := []Finding{}
@@ -77,7 +77,7 @@ fn (mut c Checker) lint_grouped_accessor_pairs(root C.TSNode, abs_path string, m
 
 // gap_check ports checkList: the getter and the setter of each key are next to each other, in the
 // order of the option.
-fn (mut c Checker) gap_check(o GapOptions, members []C.TSNode, checked []bool, mut findings []Finding) {
+fn (mut c Checker) gap_check(o GapOptions, members []C.vt_node, checked []bool, mut findings []Finding) {
 	mut accessors := []GapAccessor{}
 	for i, member in members {
 		if !checked[i] {
@@ -157,7 +157,7 @@ fn (mut c Checker) gap_check(o GapOptions, members []C.TSNode, checked []bool, m
 
 // gap_name ports getFunctionNameWithKind for an accessor: `static`, `private`, getter or setter,
 // and its name.
-fn (c &Checker) gap_name(member C.TSNode) string {
+fn (c &Checker) gap_name(member C.vt_node) string {
 	mut tokens := []string{}
 	in_class := node_kind(member) in ['method_definition', 'method_signature']
 		&& node_kind(cti_estree_parent(member) or { member }) == 'class_body'

@@ -36,7 +36,7 @@ fn snsbp_options(given []json2.Any) !SnsbpOptions {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_nonblock_statement_body_position(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_nonblock_statement_body_position(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := snsbp_options(c.rule_options(stylistic_nonblock_statement_body_position))!

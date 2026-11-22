@@ -222,7 +222,7 @@ fn (m &PrmMultipleResolved) same_route_path_segment(segment int) ?int {
 	return none
 }
 
-fn (mut c Checker) lint_promise_no_multiple_resolved(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_no_multiple_resolved(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	an := c.code_path_analysis(root, abs_path) or { return findings }

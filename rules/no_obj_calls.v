@@ -10,7 +10,7 @@ const noc2_messages = {
 	'unexpectedRefCall': "'{{name}}' is reference to '{{ref}}', which is not a function."
 }
 
-fn (mut c Checker) lint_no_obj_calls(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_obj_calls(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut trace := map[string]EsTrace{}

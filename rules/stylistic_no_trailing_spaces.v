@@ -24,7 +24,7 @@ fn sntr_options(given []json2.Any) !SntrOptions {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_no_trailing_spaces(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_no_trailing_spaces(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := sntr_options(c.rule_options(stylistic_no_trailing_spaces))!

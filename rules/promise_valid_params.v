@@ -16,7 +16,7 @@ fn prm_valid_params_options(options []json2.Any) ![]string {
 	return o.string_list('exclude')!
 }
 
-fn (mut c Checker) lint_promise_valid_params(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_valid_params(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	exclude := prm_valid_params_options(c.rule_options(promise_valid_params))!
 	mut findings := []Finding{}

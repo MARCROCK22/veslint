@@ -152,7 +152,7 @@ fn unuu_is_safe_integer(value ?f64) bool {
 		&& math.abs(v) <= 9007199254740991.0
 }
 
-fn (mut c Checker) lint_unicorn_no_useless_undefined(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_useless_undefined(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	check_arguments, check_arrow_function_body := unuu_options(c.rule_options(unicorn_no_useless_undefined))!
 	mut findings := []Finding{}

@@ -85,7 +85,7 @@ fn (c &Checker) vvmod_has_variable(name string, leaf int) bool {
 	return false
 }
 
-fn (mut c Checker) lint_vue_valid_v_model(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_model(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

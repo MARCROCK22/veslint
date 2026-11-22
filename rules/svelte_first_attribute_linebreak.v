@@ -28,7 +28,7 @@ fn sfal_options(options []json2.Any) !SfalOptions {
 	}
 }
 
-fn (mut c Checker) lint_svelte_first_attribute_linebreak(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_first_attribute_linebreak(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := sfal_options(c.rule_options(svelte_first_attribute_linebreak))!
 	if !c.is_svelte() {
 		return []

@@ -13,7 +13,7 @@ const sroa_messages = {
 	'complex':          'It cannot be optimized because too complex.'
 }
 
-fn (mut c Checker) lint_svelte_require_optimized_style_attribute(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_require_optimized_style_attribute(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

@@ -15,7 +15,7 @@ const neb_this_scope_kinds = ['function_declaration', 'function_expression', 'ge
 
 // neb_in_field_initializer: between the node and `top`, the node is in the value of a class field
 // (a PropertyDefinition, not an AccessorProperty).
-fn neb_in_field_initializer(n C.TSNode, top C.TSNode) bool {
+fn neb_in_field_initializer(n C.vt_node, top C.vt_node) bool {
 	mut child := n
 	for node_key(child) != node_key(top) {
 		parent := node_parent(child) or { return false }
@@ -31,7 +31,7 @@ fn neb_in_field_initializer(n C.TSNode, top C.TSNode) bool {
 	return false
 }
 
-fn (mut c Checker) lint_no_extra_bind(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_extra_bind(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	kinds := ['function_expression', 'generator_function', 'arrow_function']
@@ -74,7 +74,7 @@ fn (mut c Checker) lint_no_extra_bind(root C.TSNode, abs_path string, mut stats 
 
 // neb_bind_call ports isCalleeOfBindMethod: the function is the object of `.bind(x)`, called with
 // one argument that is not a spread.
-fn (c &Checker) neb_bind_call(f C.TSNode) ?(C.TSNode, C.TSNode) {
+fn (c &Checker) neb_bind_call(f C.vt_node) ?(C.vt_node, C.vt_node) {
 	member := cti_estree_parent(f)?
 	if !c.es_is_specific_member_access(member, '', 'bind') {
 		return none
@@ -95,7 +95,7 @@ fn (c &Checker) neb_bind_call(f C.TSNode) ?(C.TSNode, C.TSNode) {
 }
 
 // neb_fix removes `.bind` and its arguments, when the argument has no side effects.
-fn (mut c Checker) neb_fix(root C.TSNode, member C.TSNode, call C.TSNode) (bool, Fix) {
+fn (mut c Checker) neb_fix(root C.vt_node, member C.vt_node, call C.vt_node) (bool, Fix) {
 	args := (call_arguments(call) or { return false, Fix{} }).filter(node_kind(it) != 'comment')
 	argument := unwrap_parens(args[0])
 	if node_kind(argument) !in ['string', 'number', 'true', 'false', 'null', 'regex', 'identifier',

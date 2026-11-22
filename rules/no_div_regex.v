@@ -9,7 +9,7 @@ const ndr_messages = {
 	'unexpected': "A regular expression literal can be confused with '/='."
 }
 
-fn (mut c Checker) lint_no_div_regex(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_div_regex(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['regex'], []) {

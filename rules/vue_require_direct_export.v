@@ -20,7 +20,7 @@ fn vue_require_direct_export_options(options []json2.Any) !bool {
 	return value is bool && value
 }
 
-fn (mut c Checker) lint_vue_require_direct_export(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_direct_export(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	disallow_functional := vue_require_direct_export_options(c.rule_options(vue_require_direct_export))!
 	mut findings := []Finding{}

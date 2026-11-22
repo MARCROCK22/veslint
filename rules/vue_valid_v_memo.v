@@ -15,7 +15,7 @@ const vvm_messages = {
 	'insideVFor':         "'v-memo' directive does not work inside 'v-for'."
 }
 
-fn (mut c Checker) lint_vue_valid_v_memo(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_v_memo(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

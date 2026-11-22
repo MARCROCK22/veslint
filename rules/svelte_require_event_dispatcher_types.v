@@ -11,6 +11,6 @@ const svredt_messages = {
 	'missingTypeParameter': 'Type parameters missing for the `createEventDispatcher` function call.'
 }
 
-fn (mut c Checker) lint_svelte_require_event_dispatcher_types(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_require_event_dispatcher_types(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return []
 }

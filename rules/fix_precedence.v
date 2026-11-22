@@ -74,7 +74,7 @@ fn binary_operator_precedence(operator string) int {
 // ts_binary_operator is the text of the operator token of the TypeScript BinaryExpression a node
 // is (`a + b`, `a = b`, `a += b` and `a, b` are all BinaryExpressions there), or '' for another
 // node: what a caller passes as `tsNode.operatorToken.kind`.
-fn ts_binary_operator(n C.TSNode) string {
+fn ts_binary_operator(n C.vt_node) string {
 	return match node_kind(n) {
 		'binary_expression', 'augmented_assignment_expression' { operator_of(n) }
 		'assignment_expression' { '=' }
@@ -84,7 +84,7 @@ fn ts_binary_operator(n C.TSNode) string {
 }
 
 // is_prefix_update: `++a` or `--a` (a PrefixUnaryExpression), not `a++`.
-fn is_prefix_update(n C.TSNode) bool {
+fn is_prefix_update(n C.vt_node) bool {
 	operator := node_field(n, 'operator') or { return false }
 	argument := node_field(n, 'argument') or { return false }
 	return node_start(operator) < node_start(argument)
@@ -96,7 +96,7 @@ fn is_prefix_update(n C.TSNode) bool {
 // for a `new` expression. `n` is not unwrapped: a parenthesized_expression is TypeScript's
 // ParenthesizedExpression (Primary), and the node an ESTree expression maps to is the one inside
 // its parentheses.
-fn ts_operator_precedence(n C.TSNode, operator string, has_arguments bool) int {
+fn ts_operator_precedence(n C.vt_node, operator string, has_arguments bool) int {
 	kind := node_kind(n)
 	return match kind {
 		'spread_element' {
@@ -154,7 +154,7 @@ fn ts_operator_precedence(n C.TSNode, operator string, has_arguments bool) int {
 // expression). It differs from ts_operator_precedence: it reads the operator from the node, an
 // arrow function has the precedence of `yield`, and `a satisfies T`, `import(x)` and `a = b` are
 // invalid.
-fn estree_operator_precedence(n C.TSNode) int {
+fn estree_operator_precedence(n C.vt_node) int {
 	kind := node_kind(n)
 	return match kind {
 		'spread_element', 'rest_pattern' {
@@ -215,19 +215,19 @@ fn estree_operator_precedence(n C.TSNode) int {
 // is_higher_precedence_than_await ports isHigherPrecedenceThanAwait for the TypeScript node of
 // `n` (see ts_operator_precedence): its precedence, with its own operator if it is a
 // BinaryExpression, is above that of `await`.
-fn is_higher_precedence_than_await(n C.TSNode) bool {
+fn is_higher_precedence_than_await(n C.vt_node) bool {
 	return ts_operator_precedence(n, ts_binary_operator(n), false) > precedence_unary
 }
 
 // precedence_is_tagged_template: a call_expression that is a TaggedTemplateExpression.
-fn precedence_is_tagged_template(n C.TSNode) bool {
+fn precedence_is_tagged_template(n C.vt_node) bool {
 	args := node_field(n, 'arguments') or { return false }
 	return node_kind(args) == 'template_string'
 }
 
 // precedence_is_import_call: `import(x)`, an ImportExpression in ESTree and a CallExpression in
 // TypeScript.
-fn precedence_is_import_call(n C.TSNode) bool {
+fn precedence_is_import_call(n C.vt_node) bool {
 	function := node_field(n, 'function') or { return false }
 	return node_kind(function) == 'import'
 }

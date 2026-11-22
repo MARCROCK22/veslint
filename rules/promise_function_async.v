@@ -36,12 +36,12 @@ fn pfa_options(options []json2.Any) !PfaOptions {
 	}
 }
 
-fn (mut c Checker) lint_promise_function_async(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_function_async(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := pfa_options(c.rule_options(promise_function_async))!
 	mut promise_names := ['Promise']
 	promise_names << options.allowed_promise_names
 	mut sw := time.new_stopwatch()
-	mut functions := []C.TSNode{}
+	mut functions := []C.vt_node{}
 	for f in c.nodes_of_kinds(root, function_kinds, []string{}) {
 		// '[async = false]'
 		if has_child_kind(f, 'async') || !c.pfa_is_checked(f, options) {
@@ -115,7 +115,7 @@ fn (mut c Checker) lint_promise_function_async(root C.TSNode, abs_path string, m
 // pfa_is_checked: the options have the rule look at this function, and it is not a getter or a
 // setter, which cannot be async. A method of a class is a "method declaration"; a constructor, the
 // method of an object and any other function expression are "function expressions".
-fn (c &Checker) pfa_is_checked(f C.TSNode, options PfaOptions) bool {
+fn (c &Checker) pfa_is_checked(f C.vt_node, options PfaOptions) bool {
 	match node_kind(f) {
 		'arrow_function' {
 			return options.check_arrow_functions
@@ -147,7 +147,7 @@ fn (c &Checker) pfa_is_checked(f C.TSNode, options PfaOptions) bool {
 
 // pfa_is_constructor: the class member is its constructor (a MethodDefinition of kind
 // "constructor", as TypeScript parses it: not static, not computed, not a generator or an accessor).
-fn (c &Checker) pfa_is_constructor(method C.TSNode) bool {
+fn (c &Checker) pfa_is_constructor(method C.vt_node) bool {
 	return c.cm_method_kind(method) == 'constructor'
 }
 
@@ -191,7 +191,7 @@ fn (mut c Checker) contains_all_types_by_name(t TypeResponse, allow_any bool, al
 
 // pfa_fix ports the fixer: `async ` before the function, or before the key of a method, after
 // its modifiers.
-fn (mut c Checker) pfa_fix(f C.TSNode) Fix {
+fn (mut c Checker) pfa_fix(f C.vt_node) Fix {
 	if node_kind(f) != 'method_definition' {
 		return fix_insert_at(node_start(f), 'async ')
 	}

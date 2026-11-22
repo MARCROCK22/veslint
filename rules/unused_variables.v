@@ -13,7 +13,7 @@ const unused_loop_kinds = ['do_statement', 'for_statement', 'for_in_statement', 
 
 // unused_variables ports collectUnusedVariables: the variables (by index in the scope tree) that
 // are not marked as used, not exported and without a reference that uses them.
-fn (mut c Checker) unused_variables(root C.TSNode, tree &ScopeTree) map[int]bool {
+fn (mut c Checker) unused_variables(root C.vt_node, tree &ScopeTree) map[int]bool {
 	marked := c.unused_marked(root, tree)
 	mut unused := map[int]bool{}
 	// collectUnusedVariables goes down the tree from the global scope.
@@ -42,7 +42,7 @@ fn (mut c Checker) unused_variables(root C.TSNode, tree &ScopeTree) map[int]bool
 
 // unused_mark ports markVariableAsUsed for a name: the first variable with it from the scope of
 // the node outwards.
-fn unused_mark(name string, node C.TSNode, tree &ScopeTree, mut marked map[int]bool) {
+fn unused_mark(name string, node C.vt_node, tree &ScopeTree, mut marked map[int]bool) {
 	mut scope := tree.get_scope(node)
 	for scope >= 0 {
 		variable := tree.own_variable(scope, name)
@@ -55,7 +55,7 @@ fn unused_mark(name string, node C.TSNode, tree &ScopeTree, mut marked map[int]b
 }
 
 // unused_marked ports the visitor: the variables that count as used whatever their references.
-fn (mut c Checker) unused_marked(root C.TSNode, tree &ScopeTree) map[int]bool {
+fn (mut c Checker) unused_marked(root C.vt_node, tree &ScopeTree) map[int]bool {
 	mut marked := map[int]bool{}
 	for node in c.nodes_of_kinds(root, ['required_parameter', 'optional_parameter', 'enum_declaration',
 		'mapped_type_clause', 'ambient_declaration', 'class_declaration', 'abstract_class_declaration',
@@ -119,7 +119,7 @@ fn (mut c Checker) unused_marked(root C.TSNode, tree &ScopeTree) map[int]bool {
 					continue
 				}
 				if _ := node_field(node, 'kind') {
-					mut identifiers := []C.TSNode{}
+					mut identifiers := []C.vt_node{}
 					nc_pattern_identifiers(left, mut identifiers)
 					if identifiers.len > 0 {
 						variable := tree.declared_variable(identifiers[0])
@@ -155,7 +155,7 @@ fn (mut c Checker) unused_marked(root C.TSNode, tree &ScopeTree) map[int]bool {
 				}
 				parameters := node_field(node, 'parameters') or { continue }
 				for parameter in named_children(parameters) {
-					mut identifiers := []C.TSNode{}
+					mut identifiers := []C.vt_node{}
 					c.unused_parameter_identifiers(parameter, mut identifiers)
 					for identifier in identifiers {
 						unused_mark(c.nc_name(identifier), identifier, tree, mut marked)
@@ -170,7 +170,7 @@ fn (mut c Checker) unused_marked(root C.TSNode, tree &ScopeTree) map[int]bool {
 // unused_parameter_identifiers are the nodes of a parameter that are ESTree Identifiers: what the
 // PatternVisitor of the visitor calls back for, as it visits every child (a `this` parameter is an
 // Identifier; the `bigint` keyword, which tree-sitter reads as a type name, is not).
-fn (c &Checker) unused_parameter_identifiers(n C.TSNode, mut out []C.TSNode) {
+fn (c &Checker) unused_parameter_identifiers(n C.vt_node, mut out []C.vt_node) {
 	match node_kind(n) {
 		'identifier', 'property_identifier', 'shorthand_property_identifier',
 		'shorthand_property_identifier_pattern', 'statement_identifier', 'undefined' {
@@ -225,7 +225,7 @@ fn unused_is_exported(variable ScopeVariable) bool {
 
 // unused_is_merged_type_declaration ports isMergedTypeDeclaration: a type alias or an interface
 // whose variable is a value too (isMergedTypeValueVariable).
-fn unused_is_merged_type_declaration(variable ScopeVariable, node C.TSNode) bool {
+fn unused_is_merged_type_declaration(variable ScopeVariable, node C.vt_node) bool {
 	return node_kind(node) in ['type_alias_declaration', 'interface_declaration']
 		&& variable.is_type_variable() && variable.is_value_variable()
 }
@@ -239,13 +239,13 @@ fn unused_is_type_only_reference(variable ScopeVariable, reference ScopeReferenc
 		|| (variable.defs.any(it.kind == .variable) && !reference.value_ref)
 }
 
-fn unused_is_inside(inner C.TSNode, outer C.TSNode) bool {
+fn unused_is_inside(inner C.vt_node, outer C.vt_node) bool {
 	return node_start(inner) >= node_start(outer) && node_end(inner) <= node_end(outer)
 }
 
 // unused_parent is the ESTree parent of an expression: without parentheses, and the call for an
 // argument.
-fn unused_parent(node C.TSNode) ?C.TSNode {
+fn unused_parent(node C.vt_node) ?C.vt_node {
 	mut parent := node_parent(node)?
 	for node_kind(parent) in ['parenthesized_expression', 'arguments'] {
 		parent = node_parent(parent)?
@@ -255,7 +255,7 @@ fn unused_parent(node C.TSNode) ?C.TSNode {
 
 // unused_is_unused_expression ports isUnusedExpression: the value of the expression is thrown
 // away.
-fn unused_is_unused_expression(node C.TSNode) bool {
+fn unused_is_unused_expression(node C.vt_node) bool {
 	parent := unused_parent(node) or { return false }
 	match node_kind(parent) {
 		'expression_statement' {
@@ -275,7 +275,7 @@ fn unused_is_unused_expression(node C.TSNode) bool {
 }
 
 // unused_is_left: the node is the left side of an AssignmentExpression.
-fn unused_is_left(parent C.TSNode, node C.TSNode) bool {
+fn unused_is_left(parent C.vt_node, node C.vt_node) bool {
 	if node_kind(parent) !in ['assignment_expression', 'augmented_assignment_expression'] {
 		return false
 	}
@@ -283,7 +283,7 @@ fn unused_is_left(parent C.TSNode, node C.TSNode) bool {
 	return node_key(unwrap_parens(left)) == node_key(node)
 }
 
-fn unused_is_in_loop(node C.TSNode) bool {
+fn unused_is_in_loop(node C.vt_node) bool {
 	mut current := node
 	for {
 		kind := node_kind(current)
@@ -300,7 +300,7 @@ fn unused_is_in_loop(node C.TSNode) bool {
 
 // unused_is_storable_function ports isStorableFunction: the function the reference is in may be
 // called later (it is assigned, passed or returned inside the right side of the assignment).
-fn (c &Checker) unused_is_storable_function(function C.TSNode, rhs C.TSNode) bool {
+fn (c &Checker) unused_is_storable_function(function C.vt_node, rhs C.vt_node) bool {
 	mut node := function
 	for {
 		parent := unused_parent(node) or { return false }
@@ -344,7 +344,7 @@ fn (c &Checker) unused_is_storable_function(function C.TSNode, rhs C.TSNode) boo
 
 // unused_self_reference ports isSelfReference: the reference is made from inside one of the
 // nodes (from a scope whose block is one of them).
-fn unused_self_reference(tree &ScopeTree, from int, nodes []C.TSNode) bool {
+fn unused_self_reference(tree &ScopeTree, from int, nodes []C.vt_node) bool {
 	mut scope := from
 	for scope >= 0 {
 		block := tree.scopes[scope].block
@@ -384,7 +384,7 @@ fn unused_is_type_import(definition ScopeDefinition) bool {
 
 // unused_in_type_predicate ports referenceContainsTypePredicate: the identifier is the parameter
 // name of a type predicate (`value is T`, `asserts value`).
-fn unused_in_type_predicate(identifier C.TSNode) bool {
+fn unused_in_type_predicate(identifier C.vt_node) bool {
 	parent := node_parent(identifier) or { return false }
 	match node_kind(parent) {
 		'asserts' {
@@ -404,10 +404,10 @@ fn unused_in_type_predicate(identifier C.TSNode) bool {
 // than itself.
 fn (c &Checker) unused_is_used(tree &ScopeTree, v int) bool {
 	variable := tree.variables[v]
-	mut function_nodes := []C.TSNode{}
-	mut type_nodes := []C.TSNode{}
-	mut module_nodes := []C.TSNode{}
-	mut enum_nodes := []C.TSNode{}
+	mut function_nodes := []C.vt_node{}
+	mut type_nodes := []C.vt_node{}
+	mut module_nodes := []C.vt_node{}
+	mut enum_nodes := []C.vt_node{}
 	for definition in variable.defs {
 		if definition.kind == .function_name {
 			function_nodes << definition.node
@@ -435,7 +435,7 @@ fn (c &Checker) unused_is_used(tree &ScopeTree, v int) bool {
 		}
 	}
 	variable_scope := tree.scopes[variable.scope].variable_scope
-	mut rhs := ?C.TSNode(none)
+	mut rhs := ?C.vt_node(none)
 	for index in variable.references {
 		reference := tree.references[index]
 		id := reference.identifier
@@ -456,7 +456,7 @@ fn (c &Checker) unused_is_used(tree &ScopeTree, v int) bool {
 			if rhs_node := rhs {
 				if unused_is_inside(id, rhs_node) {
 					mut in_storable_function := false
-					mut function := ?C.TSNode(none)
+					mut function := ?C.vt_node(none)
 					mut current := id
 					for {
 						current = node_parent(current) or { break }
@@ -477,7 +477,7 @@ fn (c &Checker) unused_is_used(tree &ScopeTree, v int) bool {
 		}
 		// getRhsNode: the right side of an assignment to the variable whose value is thrown
 		// away, when the variable cannot be read later.
-		mut next_rhs := ?C.TSNode(none)
+		mut next_rhs := ?C.vt_node(none)
 		if previous := rhs {
 			if unused_is_inside(id, previous) {
 				next_rhs = previous

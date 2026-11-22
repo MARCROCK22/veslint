@@ -19,13 +19,13 @@ const nie_function_or_method = u32(16 | 8192)
 
 // NieCall is a CallExpression or NewExpression whose callee has a name the rule checks.
 struct NieCall {
-	node    C.TSNode
-	callee  C.TSNode
+	node    C.vt_node
+	callee  C.vt_node
 	name    string
-	handler ?C.TSNode // the first argument
+	handler ?C.vt_node // the first argument
 }
 
-fn (mut c Checker) lint_no_implied_eval(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_implied_eval(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut calls := []NieCall{}
 	mut spans := []Span{}
@@ -47,7 +47,7 @@ fn (mut c Checker) lint_no_implied_eval(root C.TSNode, abs_path string, mut stat
 			continue
 		}
 		name := c.nie_callee_name(callee) or { continue }
-		mut handler := ?C.TSNode(none)
+		mut handler := ?C.vt_node(none)
 		if a := args {
 			list := named_children(a)
 			if list.len > 0 {
@@ -107,7 +107,7 @@ fn (mut c Checker) lint_no_implied_eval(root C.TSNode, abs_path string, mut stat
 
 // nie_callee_name ports getCalleeName: an identifier, or a property of `global`, `globalThis` or
 // `window` that is an identifier (even computed, `window[x]`) or a string literal.
-fn (c &Checker) nie_callee_name(callee C.TSNode) ?string {
+fn (c &Checker) nie_callee_name(callee C.vt_node) ?string {
 	if estree_type(callee) == 'Identifier' {
 		return c.identifier_name(callee)
 	}
@@ -135,7 +135,7 @@ fn (c &Checker) nie_callee_name(callee C.TSNode) ?string {
 
 // nie_is_function ports isFunction: function nodes are; literals and templates are not; a call is
 // if it is a `.bind` or its type is a function; anything else by its type.
-fn (mut c Checker) nie_is_function(n C.TSNode) !bool {
+fn (mut c Checker) nie_is_function(n C.vt_node) !bool {
 	match node_kind(n) {
 		'arrow_function', 'function_expression', 'generator_function' {
 			return true
@@ -156,7 +156,7 @@ fn (mut c Checker) nie_is_function(n C.TSNode) !bool {
 }
 
 // nie_is_bind ports isBind: the callee is `bind` or a member access whose property is.
-fn (c &Checker) nie_is_bind(n C.TSNode) bool {
+fn (c &Checker) nie_is_bind(n C.vt_node) bool {
 	if estree_type(n) == 'MemberExpression' {
 		property := member_property(n) or { return false }
 		return c.nie_is_bind(property)
@@ -166,7 +166,7 @@ fn (c &Checker) nie_is_bind(n C.TSNode) bool {
 
 // nie_is_function_type ports isFunctionType: the symbol of the type is a function or a method, the
 // type is the standard library Function, or it has call signatures.
-fn (mut c Checker) nie_is_function_type(n C.TSNode) !bool {
+fn (mut c Checker) nie_is_function_type(n C.vt_node) !bool {
 	t := c.node_type(n) or { return false }
 	if t.symbol != 0 {
 		symbol := c.symbol_of(t)!

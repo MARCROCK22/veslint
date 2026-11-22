@@ -18,7 +18,7 @@ fn sbls_options(given []json2.Any) !bool {
 	return sty_option_string(options, 0, '') != 'never'
 }
 
-fn (mut c Checker) lint_stylistic_block_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_block_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	always := sbls_options(c.rule_options(stylistic_block_spacing))!

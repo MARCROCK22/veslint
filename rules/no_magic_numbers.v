@@ -144,7 +144,7 @@ fn nmag_literal_value(t &estree.EsTree, node int) ?NmagNumber {
 	return none
 }
 
-fn (mut c Checker) lint_no_magic_numbers(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_magic_numbers(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nmag_options(c.rule_options(no_magic_numbers))!
 	mut findings := []Finding{}

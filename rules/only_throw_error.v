@@ -44,12 +44,12 @@ enum OteRethrow {
 
 // OteThrow is the argument of a `throw`, without parentheses.
 struct OteThrow {
-	argument C.TSNode
+	argument C.vt_node
 	rethrow  OteRethrow
-	object   C.TSNode // rethrow == .if_thenable: the object of the `catch` or `then` call
+	object   C.vt_node // rethrow == .if_thenable: the object of the `catch` or `then` call
 }
 
-fn (mut c Checker) lint_only_throw_error(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_only_throw_error(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := ote_options(c.rule_options(only_throw_error))!
 	mut throws := []OteThrow{}
@@ -125,7 +125,7 @@ fn (mut c Checker) lint_only_throw_error(root C.TSNode, abs_path string, mut sta
 // returns): an identifier whose variable has a single variable definition, the first of its
 // definitions being a catch clause, or the first parameter of the arrow function passed as the
 // rejection handler of a `catch` or `then` call.
-fn (mut c Checker) ote_rethrown(root C.TSNode, argument C.TSNode) (OteRethrow, C.TSNode) {
+fn (mut c Checker) ote_rethrown(root C.vt_node, argument C.vt_node) (OteRethrow, C.vt_node) {
 	if node_kind(argument) !in ['identifier', 'undefined'] {
 		return OteRethrow.no, argument
 	}
@@ -165,7 +165,7 @@ fn (mut c Checker) ote_rethrown(root C.TSNode, argument C.TSNode) (OteRethrow, C
 
 // ote_is_first_parameter: `params[0] === def.name`: the first parameter of the arrow function is
 // that identifier itself (not a default value, a pattern or a rest).
-fn ote_is_first_parameter(function C.TSNode, name C.TSNode) bool {
+fn ote_is_first_parameter(function C.vt_node, name C.vt_node) bool {
 	if single := node_field(function, 'parameter') {
 		return node_key(single) == node_key(name)
 	}
@@ -184,7 +184,7 @@ fn ote_is_first_parameter(function C.TSNode, name C.TSNode) bool {
 // ote_rejection_handler_object ports parseCatchCall and parseThenCall for a call whose onRejected
 // argument is `handler`: the object of its callee, `x` in `x.catch(handler)` or
 // `x.then(…, handler)`.
-fn (mut c Checker) ote_rejection_handler_object(call C.TSNode, handler C.TSNode) ?C.TSNode {
+fn (mut c Checker) ote_rejection_handler_object(call C.vt_node, handler C.vt_node) ?C.vt_node {
 	args := call_arguments(call)?
 	callee := unwrap_parens(node_field(call, 'function')?)
 	// The callee must be a MemberExpression: a parenthesized optional chain is a ChainExpression.

@@ -104,7 +104,7 @@ fn unacr_receiver_type_options() UnbTypeOptions {
 
 // unacr_is_definitely_not_function_value ports isDefinitelyNotFunctionValue: a value that cannot
 // be a function, also through `const` variables.
-fn (mut c Checker) unacr_is_definitely_not_function_value(root C.TSNode, t &estree.EsTree, node int, mut visited map[int]bool) bool {
+fn (mut c Checker) unacr_is_definitely_not_function_value(root C.vt_node, t &estree.EsTree, node int, mut visited map[int]bool) bool {
 	n := unb_unwrap_ts(t, node)
 	if t.typ(n) in [.array_expression, .binary_expression, .class_expression, .literal,
 		.object_expression, .template_literal, .unary_expression, .update_expression]
@@ -166,7 +166,7 @@ fn unacr_suggestion_parameters(t &estree.EsTree, call int, callback int, paramet
 }
 
 // unacr_declaration ports getDeclaration: the function a callback refers to, or -1.
-fn (mut c Checker) unacr_declaration(root C.TSNode, t &estree.EsTree, callback int) int {
+fn (mut c Checker) unacr_declaration(root C.vt_node, t &estree.EsTree, callback int) int {
 	if t.typ(callback) == .identifier {
 		v := c.unb_find_variable(root, t, callback)
 		if v < 0 {
@@ -215,7 +215,7 @@ fn (mut c Checker) unacr_declaration(root C.TSNode, t &estree.EsTree, callback i
 
 // unacr_declared_parameter_count ports getDeclaredParameterCount: none when the callback does not
 // refer to a function; a rest parameter takes any number of arguments (max_int).
-fn (mut c Checker) unacr_declared_parameter_count(root C.TSNode, t &estree.EsTree, callback int) ?int {
+fn (mut c Checker) unacr_declared_parameter_count(root C.vt_node, t &estree.EsTree, callback int) ?int {
 	declaration := c.unacr_declaration(root, t, callback)
 	if !unb_is_function(t, declaration) {
 		return none
@@ -252,7 +252,7 @@ fn unacr_predicate_function_type(t &estree.EsTree, node int) bool {
 }
 
 // unacr_type_predicate_callback ports isTypePredicateCallback.
-fn (mut c Checker) unacr_type_predicate_callback(root C.TSNode, t &estree.EsTree, callback int) bool {
+fn (mut c Checker) unacr_type_predicate_callback(root C.vt_node, t &estree.EsTree, callback int) bool {
 	if t.typ(callback) != .identifier {
 		return false
 	}
@@ -289,7 +289,7 @@ fn (mut c Checker) unacr_type_predicate_callback(root C.TSNode, t &estree.EsTree
 	}
 }
 
-fn (mut c Checker) lint_unicorn_no_array_callback_reference(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_array_callback_reference(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ignored_callees := unacr_options(c.rule_options(unicorn_no_array_callback_reference))!
 	mut findings := []Finding{}
@@ -354,7 +354,7 @@ fn (mut c Checker) lint_unicorn_no_array_callback_reference(root C.TSNode, abs_p
 	return findings
 }
 
-fn (mut c Checker) unacr_problem(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, node int, call int, method string, o UnacrMethod) Finding {
+fn (mut c Checker) unacr_problem(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, node int, call int, method string, o UnacrMethod) Finding {
 	name := if t.typ(node) == .identifier { t.string_of(node, .name) or { '' } } else { '' }
 	finding := Finding{
 		stmt:       c.es_tree_position(t, node)

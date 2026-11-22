@@ -9,7 +9,7 @@ const nfa_messages = {
 	'isAFunction': "'{{name}}' is a function."
 }
 
-fn (mut c Checker) lint_no_func_assign(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_func_assign(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['function_declaration', 'function_expression',

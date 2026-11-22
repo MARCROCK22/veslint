@@ -34,7 +34,7 @@ fn nuex_options(options []json2.Any) !NuexOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_unused_expressions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unused_expressions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nuex_options(c.rule_options(no_unused_expressions))!
 	mut findings := []Finding{}
@@ -80,7 +80,7 @@ fn (mut c Checker) lint_no_unused_expressions(root C.TSNode, abs_path string, mu
 // nuex_is_disallowed ports Checker.isDisallowed: the expression has no side effect, by its ESTree
 // type. A ChainExpression is its expression; unknown types (calls, assignments, `await`, `new`,
 // TSSatisfiesExpression…) are allowed.
-fn (c &Checker) nuex_is_disallowed(n C.TSNode, o NuexOptions, depth int) bool {
+fn (c &Checker) nuex_is_disallowed(n C.vt_node, o NuexOptions, depth int) bool {
 	node := unwrap_parens(n)
 	if depth >= max_expression_depth {
 		return false
@@ -140,7 +140,7 @@ fn (c &Checker) nuex_is_disallowed(n C.TSNode, o NuexOptions, depth int) bool {
 // estree's `directive` (a string that is not parenthesized, in the program, a module, a function
 // or a static block); otherwise ESLint's isDirective for ignoreDirectives (looksLikeDirective lets
 // parentheses in, and isTopLevelExpressionStatement leaves static blocks out).
-fn nuex_in_prologue(statement C.TSNode, parser bool) bool {
+fn nuex_in_prologue(statement C.vt_node, parser bool) bool {
 	parent := node_parent(statement) or { return false }
 	if !nuex_can_contain_directive(parent, parser) {
 		return false
@@ -166,7 +166,7 @@ fn nuex_in_prologue(statement C.TSNode, parser bool) bool {
 
 // nuex_can_contain_directive: the body has a directive prologue: the program, the block of a
 // module or namespace, of a function or method, and, for typescript-estree, of a static block.
-fn nuex_can_contain_directive(body C.TSNode, parser bool) bool {
+fn nuex_can_contain_directive(body C.vt_node, parser bool) bool {
 	if node_kind(body) == 'program' {
 		return true
 	}

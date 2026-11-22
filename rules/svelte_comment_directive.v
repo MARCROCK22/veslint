@@ -382,7 +382,7 @@ fn (mut c Checker) svcd_comment_directive_run(report_unused bool) SvcdRun {
 
 // The rule's reports (the unused directives, with reportUnusedDisableDirectives): those of the
 // directives that suppress something are dropped by the postprocess.
-fn (mut c Checker) lint_svelte_comment_directive(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_comment_directive(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	report_unused := svcd_options(c.rule_options(svelte_comment_directive))!
 	if !c.is_svelte() {
 		return []
@@ -490,7 +490,7 @@ fn (mut c Checker) svcd_system_set() (SvcdSet, []Finding) {
 }
 
 // svelte/system reports only its settings' errors (the postprocess applies its directives).
-fn (mut c Checker) lint_svelte_system(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_system(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

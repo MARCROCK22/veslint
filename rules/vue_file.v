@@ -73,7 +73,7 @@ pub fn (mut c Checker) set_vue(doc &vue.Document, ts_path string) {
 
 // index_file builds the token ends (file_token_ends_of) and the node index of the tree of the file
 // being linted, from one walk of the tree.
-fn (mut c Checker) index_file(root C.TSNode) {
+fn (mut c Checker) index_file(root C.vt_node) {
 	index, ends := treesitter.new_node_index_and_token_ends(root)
 	c.tokens = c.file_token_ends_of(ends)
 	c.node_index = index
@@ -234,7 +234,7 @@ fn (c &Checker) file_offset_of_ts_end(b int) int {
 // vue_es_tree takes the ESTree of a .vue file from its document, which converted it from the same
 // tree, as vue-eslint-parser gives it: the Program has the range of the script (not the file's),
 // and the source text is the whole file.
-fn (mut c Checker) vue_es_tree(root C.TSNode) {
+fn (mut c Checker) vue_es_tree(root C.vt_node) {
 	script := &c.vue.doc.script
 	source := if script.has_es {
 		script.es
@@ -269,7 +269,7 @@ fn (mut c Checker) vue_es_tree(root C.TSNode) {
 // the masked script has between two scripts, and with the `<script>` and `</script>` punctuators
 // it puts among them, one for each tag of the scripts (their range is the tag's): ESLint's token
 // queries find them before the first token of the script and after its last one.
-fn (c &Checker) vue_tag_tokens(tokens &SourceTokens, root C.TSNode) &SourceTokens {
+fn (c &Checker) vue_tag_tokens(tokens &SourceTokens, root C.vt_node) &SourceTokens {
 	script := &c.vue.doc.script
 	tags := script.tokens.filter(it.typ == 'Punctuator' && it.value in ['<script>', '</script>'])
 	if tags.len == 0 && script.split_offsets.len == 0 {

@@ -39,7 +39,7 @@ mut:
 	scope NuretScopeInfo
 }
 
-fn (mut c Checker) lint_no_useless_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	an := c.code_path_analysis(root, abs_path) or { return findings }

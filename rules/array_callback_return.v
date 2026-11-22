@@ -44,7 +44,7 @@ mut:
 	current_segments []int // a Set: insertion order, no duplicates
 }
 
-fn (mut c Checker) lint_array_callback_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_array_callback_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := acr_options(c.rule_options(array_callback_return))!
 	mut findings := []Finding{}
@@ -216,7 +216,7 @@ fn acr_is_void(t &estree.EsTree, node int) bool {
 }
 
 // acr_wrap_braces is curlyWrapFixer: `{` after the arrow, `}` after the last token of the function.
-fn (mut c Checker) acr_wrap_braces(root C.TSNode, t &estree.EsTree, node int) ?Suggestion {
+fn (mut c Checker) acr_wrap_braces(root C.vt_node, t &estree.EsTree, node int) ?Suggestion {
 	body := t.node(node, .body)?
 	tokens := c.source_tokens(root)
 	mut arrow := tokens.before(t.nodes[body].start, false)?
@@ -232,7 +232,7 @@ fn (mut c Checker) acr_wrap_braces(root C.TSNode, t &estree.EsTree, node int) ?S
 }
 
 // acr_prepend_void is voidPrependFixer.
-fn (mut c Checker) acr_prepend_void(root C.TSNode, t &estree.EsTree, expression int, arrow bool) ?Suggestion {
+fn (mut c Checker) acr_prepend_void(root C.vt_node, t &estree.EsTree, expression int, arrow bool) ?Suggestion {
 	n := t.ts_node(expression)?
 	return Suggestion{
 		message_id: 'prependVoid'
@@ -241,7 +241,7 @@ fn (mut c Checker) acr_prepend_void(root C.TSNode, t &estree.EsTree, expression 
 }
 
 // acr_check_last_segment ports checkLastSegment.
-fn (mut c Checker) acr_check_last_segment(root C.TSNode, t &estree.EsTree, an &codepath.Analysis, o AcrOptions, info AcrFuncInfo, node int) ?Finding {
+fn (mut c Checker) acr_check_last_segment(root C.vt_node, t &estree.EsTree, an &codepath.Analysis, o AcrOptions, info AcrFuncInfo, node int) ?Finding {
 	mut message_id := ''
 	mut suggestions := []Suggestion{}
 	body := t.node(node, .body)?
@@ -278,7 +278,7 @@ fn (mut c Checker) acr_check_last_segment(root C.TSNode, t &estree.EsTree, an &c
 }
 
 // acr_check_return is the ReturnStatement listener.
-fn (mut c Checker) acr_check_return(root C.TSNode, t &estree.EsTree, o AcrOptions, info AcrFuncInfo, node int) ?Finding {
+fn (mut c Checker) acr_check_return(root C.vt_node, t &estree.EsTree, o AcrOptions, info AcrFuncInfo, node int) ?Finding {
 	mut message_id := ''
 	mut suggestions := []Suggestion{}
 	argument := t.node(node, .argument) or { -1 }

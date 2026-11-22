@@ -53,7 +53,7 @@ fn scst_options(given []json2.Any, core bool) !ScstOptions {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_comma_style(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_comma_style(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := scst_options(c.rule_options(stylistic_comma_style), c.vue_wrap_core)!

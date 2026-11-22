@@ -19,14 +19,14 @@ fn tsnit_options(options []json2.Any) !bool {
 	return true
 }
 
-fn (mut c Checker) lint_ts_no_invalid_this(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_ts_no_invalid_this(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	return c.nith_lint(root, tsnit_options(c.rule_options(ts_no_invalid_this))!, true, mut stats)
 }
 
 // tsnit_this_is_valid_here is the top of the wrapper's thisIsValidStack at a ThisExpression: the
 // closest AccessorProperty or PropertyDefinition (true), or FunctionDeclaration or
 // FunctionExpression (whether it has a parameter `this`) around it; false without one.
-fn tsnit_this_is_valid_here(this C.TSNode) bool {
+fn tsnit_this_is_valid_here(this C.vt_node) bool {
 	mut child := this
 	mut current := node_parent(this) or { return false }
 	for {
@@ -55,7 +55,7 @@ fn tsnit_this_is_valid_here(this C.TSNode) bool {
 	return false
 }
 
-fn tsnit_has_this_parameter(function C.TSNode) bool {
+fn tsnit_has_this_parameter(function C.vt_node) bool {
 	parameters := node_field(function, 'parameters') or { return false }
 	for p in named_children(parameters) {
 		if pattern := node_field(p, 'pattern') {

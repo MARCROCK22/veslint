@@ -19,7 +19,7 @@ struct NubProblem {
 	group      int
 }
 
-fn (mut c Checker) lint_no_useless_backreference(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_backreference(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['regex'], []) {
@@ -36,7 +36,7 @@ fn (mut c Checker) lint_no_useless_backreference(root C.TSNode, abs_path string,
 	}
 	for traced in c.es_global_references(root, trace) {
 		stats.checked++
-		mut args := []C.TSNode{}
+		mut args := []C.vt_node{}
 		if arguments := node_field(traced.node, 'arguments') {
 			if node_kind(arguments) == 'arguments' {
 				args = named_children(arguments).filter(node_kind(it) != 'comment')
@@ -71,7 +71,7 @@ fn nub_is_lookaround(n regexpp.Node) bool {
 }
 
 // nub_check ports checkRegex.
-fn nub_check(node C.TSNode, pattern []u16, flags string, mut findings []Finding) {
+fn nub_check(node C.vt_node, pattern []u16, flags string, mut findings []Finding) {
 	ast := regexpp.parse_pattern(pattern, 0, pattern.len, es_regex_pattern_flags(flags),
 		regexpp.Options{}) or { return }
 	for event in ast.visit_events() {

@@ -10,7 +10,7 @@ const fd_messages = {
 	'incorrectDirection': 'The update clause in this loop moves the variable in the wrong direction.'
 }
 
-fn (mut c Checker) lint_for_direction(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_for_direction(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['for_statement'], []) {
@@ -39,7 +39,7 @@ fn (mut c Checker) lint_for_direction(root C.TSNode, abs_path string, mut stats 
 			} else {
 				if position == 'left' { 1 } else { -1 }
 			}
-			mut mutating := []C.TSNode{}
+			mut mutating := []C.vt_node{}
 			c.fd_modifying(update, counter, mut mutating)
 			if mutating.len == 1 && c.fd_direction(mutating[0], counter) == wrong {
 				// From the `for` to the token before the body (its `)`).
@@ -61,14 +61,14 @@ fn (mut c Checker) lint_for_direction(root C.TSNode, abs_path string, mut stats 
 }
 
 // fd_is_counter: an Identifier named `counter`.
-fn (c &Checker) fd_is_counter(n C.TSNode, counter string) bool {
+fn (c &Checker) fd_is_counter(n C.vt_node, counter string) bool {
 	node := unwrap_parens(n)
 	return node_kind(node) in ['identifier', 'undefined'] && c.identifier_name(node) == counter
 }
 
 // fd_modifying ports getModifyingExpressions: the updates and assignments of the counter in the
 // update clause and in its sequences.
-fn (c &Checker) fd_modifying(n C.TSNode, counter string, mut out []C.TSNode) {
+fn (c &Checker) fd_modifying(n C.vt_node, counter string, mut out []C.vt_node) {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'sequence_expression' {
@@ -94,7 +94,7 @@ fn (c &Checker) fd_modifying(n C.TSNode, counter string, mut out []C.TSNode) {
 
 // fd_direction ports getDirectionFromExpression: 1 when the expression increases the counter, -1
 // when it decreases it, 0 when it is not known.
-fn (mut c Checker) fd_direction(n C.TSNode, counter string) int {
+fn (mut c Checker) fd_direction(n C.vt_node, counter string) int {
 	if node_kind(n) == 'update_expression' {
 		operator := operator_of(n)
 		return if operator == '++' {

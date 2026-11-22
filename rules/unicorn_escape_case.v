@@ -71,7 +71,7 @@ fn uec_fixed(original string, pattern bool, lowercase bool) string {
 	return out.bytestr()
 }
 
-fn (mut c Checker) lint_unicorn_escape_case(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_escape_case(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	lowercase := uec_options(c.rule_options(unicorn_escape_case))!
 	mut findings := []Finding{}

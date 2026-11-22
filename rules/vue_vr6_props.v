@@ -25,7 +25,7 @@ const vx6_object_flag_array_like = u32(8 | 256 | 16384) // Tuple, EvolvingArray,
 
 // vx6_type_prop is the `required` and `types` of a type prop whose node is a
 // TSPropertySignature or TSMethodSignature.
-fn (mut c Checker) vx6_type_prop(root C.TSNode, t &estree.EsTree, member int, abs_path string, mut stats Stats) Vx6TypeProp {
+fn (mut c Checker) vx6_type_prop(root C.vt_node, t &estree.EsTree, member int, abs_path string, mut stats Stats) Vx6TypeProp {
 	required := !(t.flag(member, .optional) or { false })
 	if t.typ(member) == .ts_method_signature {
 		return Vx6TypeProp{required, ['Function']}
@@ -38,7 +38,7 @@ fn (mut c Checker) vx6_type_prop(root C.TSNode, t &estree.EsTree, member int, ab
 }
 
 // vx6_infer_runtime_type ports inferRuntimeType.
-fn (mut c Checker) vx6_infer_runtime_type(root C.TSNode, t &estree.EsTree, node int, abs_path string, mut checked map[int]bool, mut stats Stats) []string {
+fn (mut c Checker) vx6_infer_runtime_type(root C.vt_node, t &estree.EsTree, node int, abs_path string, mut checked map[int]bool, mut stats Stats) []string {
 	match t.typ(node) {
 		.ts_string_keyword, .ts_template_literal_type {
 			return ['String']
@@ -124,7 +124,7 @@ fn (mut c Checker) vx6_infer_runtime_type(root C.TSNode, t &estree.EsTree, node 
 
 // vx6_infer_type_reference is the TSTypeReference case of inferRuntimeType for an identifier
 // name: none when it falls through to the checker.
-fn (mut c Checker) vx6_infer_type_reference(root C.TSNode, t &estree.EsTree, node int, name string, abs_path string, mut checked map[int]bool, mut stats Stats) ?[]string {
+fn (mut c Checker) vx6_infer_type_reference(root C.vt_node, t &estree.EsTree, node int, name string, abs_path string, mut checked map[int]bool, mut stats Stats) ?[]string {
 	if ts := t.ts_node(node) {
 		tree := c.scope_tree(root)
 		v := tree.find_variable(tree.get_scope(ts), name, t.nodes[node].start)
@@ -366,7 +366,7 @@ mut:
 
 // vx6_with_defaults_expressions ports getWithDefaultsPropExpressions (collectPropExpressions:
 // through `const` references and spreads).
-fn (mut c Checker) vx6_with_defaults_expressions(root C.TSNode, t &estree.EsTree, call int) Vx6WithDefaults {
+fn (mut c Checker) vx6_with_defaults_expressions(root C.vt_node, t &estree.EsTree, call int) Vx6WithDefaults {
 	mut out := Vx6WithDefaults{}
 	if !vue_has_with_defaults(t, call) {
 		return out
@@ -381,7 +381,7 @@ fn (mut c Checker) vx6_with_defaults_expressions(root C.TSNode, t &estree.EsTree
 	return out
 }
 
-fn (mut c Checker) vx6_collect_prop_expressions(root C.TSNode, t &estree.EsTree, node int, mut result map[string]int, mut visited map[int]bool) bool {
+fn (mut c Checker) vx6_collect_prop_expressions(root C.vt_node, t &estree.EsTree, node int, mut result map[string]int, mut visited map[int]bool) bool {
 	object := c.vue_object_or_array(root, t, node)
 	if object < 0 || t.typ(object) != .object_expression {
 		return false

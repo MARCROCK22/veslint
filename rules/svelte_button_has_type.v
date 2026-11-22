@@ -28,7 +28,7 @@ fn sbht_options(options []json2.Any) !SbhtOptions {
 	}
 }
 
-fn (mut c Checker) lint_svelte_button_has_type(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_button_has_type(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := sbht_options(c.rule_options(svelte_button_has_type))!
 	if !c.is_svelte() {
 		return []

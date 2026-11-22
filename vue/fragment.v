@@ -4,9 +4,6 @@ import estree
 import jsregexp
 import treesitter
 
-fn C.ts_node_is_error(self C.TSNode) bool
-fn C.ts_node_is_missing(self C.TSNode) bool
-
 // ExprContext parses the code vue-eslint-parser hands to the script parser for template
 // expressions (the port of src/script/index.ts and src/template/index.ts), and holds what that
 // needs: the tree-sitter parsers and the token replacements to apply to the document.
@@ -90,13 +87,9 @@ pub fn (p &Parsers) close() {
 	C.ts_parser_delete(p.tsx)
 }
 
-// parse parses with the dialect's parser; the tree must be deleted.
-fn parse_ts(parser &C.TSParser, code string) !&C.TSTree {
-	tree := C.ts_parser_parse_string(parser, unsafe { nil }, &char(code.str), u32(code.len))
-	if isnil(tree) {
-		return error('tree-sitter could not parse a snippet')
-	}
-	return tree
+// parse parses with the dialect's parser; the rows must be freed.
+fn parse_ts(parser &C.TSParser, code string) !&C.vt_rows {
+	return treesitter.parse_with(parser, code, 'a snippet')
 }
 
 // Fragment is a parsed snippet (parseScriptFragment): its program, tokens and comments, with file
@@ -150,7 +143,7 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 	mut message := 'Parsing error.'
 	mut toks := []SnipToken{}
 	mut comms := []SnipToken{}
-	if C.ts_node_has_error(root) {
+	if C.vt_node_has_error(root) {
 		error_at = first_error_offset(root)
 	} else {
 		toks, comms = snippet_tokens(root, code, c.tsx_mode)
@@ -180,7 +173,7 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 	if error_at >= 0 {
 		// The message is TypeScript's diagnostic, which tree-sitter does not give: see
 		// ParseError.ts_message.
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 		c.doc.snippets << Snippet{
 			code:    code
 			tsx:     c.tsx_mode
@@ -245,26 +238,18 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 }
 
 // first_error_offset is where the first ERROR or MISSING node of the tree starts.
-fn first_error_offset(root C.TSNode) int {
-	mut cursor := C.ts_tree_cursor_new(root)
-	defer {
-		C.ts_tree_cursor_delete(&cursor)
-	}
-	for {
-		node := C.ts_tree_cursor_current_node(&cursor)
-		if C.ts_node_is_error(node) || C.ts_node_is_missing(node) {
+fn first_error_offset(root C.vt_node) int {
+	first, last := treesitter.flat_range(root)
+	mut i := first
+	for i <= last {
+		node := treesitter.flat_node(root, i)
+		if C.vt_node_is_error(node) || C.vt_node_is_missing(node) {
 			return treesitter.node_start(node)
 		}
-		if C.ts_node_has_error(node) && C.ts_tree_cursor_goto_first_child(&cursor) {
-			continue
-		}
-		for !C.ts_tree_cursor_goto_next_sibling(&cursor) {
-			if !C.ts_tree_cursor_goto_parent(&cursor) {
-				return treesitter.node_start(root)
-			}
-		}
+		// Only the subtrees with an error are entered.
+		i = if C.vt_node_has_error(node) { i + 1 } else { treesitter.flat_last(root, i) + 1 }
 	}
-	return 0
+	return treesitter.node_start(root)
 }
 
 // Reserved words tree-sitter takes for identifiers where TypeScript's parser fails.

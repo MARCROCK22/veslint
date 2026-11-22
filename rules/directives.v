@@ -178,7 +178,7 @@ fn parse_list_config(value string) []string {
 
 // inline_config reads the comments of the file: the rules they leave for it, the disable
 // directives and the problems of the comments themselves.
-fn (mut c Checker) inline_config(root C.TSNode, config LintConfig) InlineConfig {
+fn (mut c Checker) inline_config(root C.vt_node, config LintConfig) InlineConfig {
 	mut result := InlineConfig{
 		rules: config.rules.clone()
 		lines: offsets.line_starts(c.src)

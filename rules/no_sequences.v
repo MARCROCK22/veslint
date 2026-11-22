@@ -16,7 +16,7 @@ fn nseq_allow_parentheses(options []json2.Any) !bool {
 	return o.bool_value('allowInParentheses')!
 }
 
-fn (mut c Checker) lint_no_sequences(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_sequences(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_parentheses := nseq_allow_parentheses(c.rule_options(no_sequences))!
 	mut findings := []Finding{}
@@ -67,7 +67,7 @@ fn (mut c Checker) lint_no_sequences(root C.TSNode, abs_path string, mut stats S
 // nseq_requires_extra_parens ports requiresExtraParens: the node is where the grammar already has
 // parentheses (the test of an if, while or do-while, the discriminant of a switch, the object of
 // a with) or the body of an arrow.
-fn (c &Checker) nseq_requires_extra_parens(node C.TSNode, parent C.TSNode) bool {
+fn (c &Checker) nseq_requires_extra_parens(node C.vt_node, parent C.vt_node) bool {
 	field := match node_kind(parent) {
 		'if_statement', 'while_statement', 'do_statement' { 'condition' }
 		'switch_statement' { 'value' }

@@ -9,7 +9,7 @@ const vue_no_arrow_functions_in_watch_messages = {
 	'noArrowFunctionsInWatch': 'You should not use an arrow function to define a watcher.'
 }
 
-fn (mut c Checker) lint_vue_no_arrow_functions_in_watch(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_arrow_functions_in_watch(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

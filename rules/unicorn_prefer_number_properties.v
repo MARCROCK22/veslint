@@ -20,7 +20,7 @@ fn upnp_options(options []json2.Any) !(bool, bool) {
 
 // upnp_is_base10_or_no_radix_parse_int ports isBase10OrNoRadixParseIntCall: `parseInt(x)` or
 // `parseInt(x, 10)` (a radix whose static value is 10), the same as `Number.parseInt()`.
-fn (mut c Checker) upnp_is_base10_or_no_radix_parse_int(t &estree.EsTree, node int, root C.TSNode) bool {
+fn (mut c Checker) upnp_is_base10_or_no_radix_parse_int(t &estree.EsTree, node int, root C.vt_node) bool {
 	parent := t.nodes[node].parent
 	if parent < 0 || t.typ(parent) != .call_expression || t.node(parent, .callee) or { -1 } != node {
 		return false
@@ -49,7 +49,7 @@ fn (mut c Checker) upnp_is_call_with_number_argument(t &estree.EsTree, node int,
 		&& c.unb_is_number(t, arguments[0], mut ctx)
 }
 
-fn (mut c Checker) lint_unicorn_prefer_number_properties(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_number_properties(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	check_infinity, check_nan := upnp_options(c.rule_options(unicorn_prefer_number_properties))!
 	mut findings := []Finding{}

@@ -964,7 +964,7 @@ fn prepare_file(parser treesitter.Parser, path string, project_override string, 
 	src, _, not_utf8 := read_source(path)!
 	tree := parser.parse(src) or { return error('${path}: ${err.msg()}') }
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	if treesitter.tree_has_error(tree) {
 		eprintln('warning: ${path}: tree-sitter found syntax errors; results may be partial')

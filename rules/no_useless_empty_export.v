@@ -10,7 +10,7 @@ const nuee_messages = {
 	'uselessExport': 'Empty export does nothing and can be removed.'
 }
 
-fn (mut c Checker) lint_no_useless_empty_export(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_empty_export(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	// In a definition file `export {}` makes the file a module even with other exports.
@@ -19,7 +19,7 @@ fn (mut c Checker) lint_no_useless_empty_export(root C.TSNode, abs_path string, 
 	}
 	// Only the Program is checked: the rule also visits TSModuleDeclaration, but its body is a
 	// TSModuleBlock and not a list of statements.
-	mut empty_exports := []C.TSNode{}
+	mut empty_exports := []C.vt_node{}
 	mut found_other_export := false
 	for statement in named_children(root) {
 		match node_kind(statement) {
@@ -56,7 +56,7 @@ fn (mut c Checker) lint_no_useless_empty_export(root C.TSNode, abs_path string, 
 
 // nuee_is_empty_export ports isEmptyExport: an ExportNamedDeclaration without specifiers nor
 // declaration (`export {}`, `export type {}`, `export {} from 'x'`).
-fn nuee_is_empty_export(statement C.TSNode) bool {
+fn nuee_is_empty_export(statement C.vt_node) bool {
 	for child in children(statement) {
 		if node_kind(child) == 'export_clause' {
 			return named_children(child).len == 0

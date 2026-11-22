@@ -45,14 +45,14 @@ fn cta_options(options []json2.Any) !CtaOptions {
 // maybe in parentheses), its type without parentheses and the text of that type, `const` for a
 // const assertion, whose `const` is an anonymous token in tree-sitter.
 struct CtaAssertion {
-	node       C.TSNode
-	expression C.TSNode
-	type_node  C.TSNode
+	node       C.vt_node
+	expression C.vt_node
+	type_node  C.vt_node
 	is_const   bool
 	type_text  string
 }
 
-fn (mut c Checker) lint_consistent_type_assertions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_consistent_type_assertions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := cta_options(c.rule_options(consistent_type_assertions))!
 	mut findings := []Finding{}
@@ -72,7 +72,7 @@ fn (mut c Checker) lint_consistent_type_assertions(root C.TSNode, abs_path strin
 	return findings
 }
 
-fn (c &Checker) cta_assertion(node C.TSNode) ?CtaAssertion {
+fn (c &Checker) cta_assertion(node C.vt_node) ?CtaAssertion {
 	parts := named_children(node)
 	if node_kind(node) == 'as_expression' {
 		if parts.len == 0 {
@@ -170,7 +170,7 @@ fn (mut c Checker) cta_as_fix(a CtaAssertion) Fix {
 // tree-sitter's parent, but for the `arguments` of a call or a `new` (TypeScript has none), the
 // parentheses of a statement (part of its syntax) and a spread in an object or in JSX (a
 // SpreadAssignment or a JsxSpreadAttribute).
-fn cta_parent_precedence(n C.TSNode) int {
+fn cta_parent_precedence(n C.vt_node) int {
 	parent := node_parent(n) or { return precedence_invalid }
 	match node_kind(parent) {
 		'arguments' {
@@ -272,7 +272,7 @@ fn (mut c Checker) cta_suggestions(a CtaAssertion, annotation_id string, satisfi
 
 // cta_estree_parent is the ESTree parent of an assertion, without the parentheses around it, and
 // the node of the assertion as a child of that parent.
-fn cta_estree_parent(n C.TSNode) ?(C.TSNode, C.TSNode) {
+fn cta_estree_parent(n C.vt_node) ?(C.vt_node, C.vt_node) {
 	mut child := n
 	mut parent := node_parent(n)?
 	for node_kind(parent) == 'parenthesized_expression' {
@@ -284,7 +284,7 @@ fn cta_estree_parent(n C.TSNode) ?(C.TSNode, C.TSNode) {
 
 // cta_declarator is the VariableDeclarator the assertion initializes, if its id has no type
 // annotation.
-fn cta_declarator(n C.TSNode) ?C.TSNode {
+fn cta_declarator(n C.vt_node) ?C.vt_node {
 	parent, child := cta_estree_parent(n)?
 	if node_kind(parent) != 'variable_declarator' {
 		return none
@@ -302,7 +302,7 @@ fn cta_declarator(n C.TSNode) ?C.TSNode {
 // cta_is_as_parameter ports isAsParameter: the parent is a NewExpression, a CallExpression, a
 // ThrowStatement, an AssignmentPattern, a JSXExpressionContainer, or the TemplateLiteral of a
 // tagged template.
-fn cta_is_as_parameter(n C.TSNode) bool {
+fn cta_is_as_parameter(n C.vt_node) bool {
 	parent, child := cta_estree_parent(n) or { return false }
 	match node_kind(parent) {
 		'arguments' {

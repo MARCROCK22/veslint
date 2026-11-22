@@ -31,7 +31,7 @@ pub fn is_svelte_module_path(path string) bool {
 pub fn (p &Parsers) module_virtual(src string) !ModuleVirtual {
 	tree := parse_ts(p.ts, src)!
 	defer {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 	}
 	root := treesitter.root_node(tree)
 	mut referenced := map[string]bool{}
@@ -74,7 +74,7 @@ pub fn (p &Parsers) module_virtual(src string) !ModuleVirtual {
 }
 
 // node_is_name_of: `n` is the `name` of its declaration `parent` (or the import's binding).
-fn node_is_name_of(parent C.TSNode, n C.TSNode) bool {
+fn node_is_name_of(parent C.vt_node, n C.vt_node) bool {
 	if name := treesitter.node_field(parent, 'name') {
 		return treesitter.node_start(name) == treesitter.node_start(n)
 	}

@@ -32,7 +32,7 @@ fn nri_options(options []json2.Any) !NriOptions {
 	}
 }
 
-fn (mut c Checker) lint_no_require_imports(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_require_imports(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := nri_options(c.rule_options(no_require_imports))!
 	mut findings := []Finding{}
@@ -105,7 +105,7 @@ fn (mut c Checker) lint_no_require_imports(root C.TSNode, abs_path string, mut s
 
 // nri_is_allowed: the argument is a string literal or a template literal whose static value
 // (getStaticStringValue) one of the `allow` patterns matches (`importPath.match(pattern)`).
-fn (c &Checker) nri_is_allowed(o NriOptions, argument C.TSNode) !bool {
+fn (c &Checker) nri_is_allowed(o NriOptions, argument C.vt_node) !bool {
 	node := unwrap_parens(argument)
 	if node_kind(node) !in ['string', 'template_string'] {
 		return false

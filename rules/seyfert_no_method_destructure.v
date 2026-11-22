@@ -12,12 +12,12 @@ const sy_nmd_messages = {
 	'methodDestructure': '`{{name}}` is a method of a seyfert class; destructuring it loses its `this` binding and it will throw when called. Keep it on the object and call `object.{{name}}(...)`.'
 }
 
-fn (mut c Checker) lint_seyfert_no_method_destructure(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_seyfert_no_method_destructure(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	// Each ObjectPattern with the node whose type is asked: the `init` of its VariableDeclarator,
 	// or the pattern itself.
-	mut patterns := []C.TSNode{}
-	mut sources := []C.TSNode{}
+	mut patterns := []C.vt_node{}
+	mut sources := []C.vt_node{}
 	for pattern in c.nodes_of_kind(root, c'object_pattern') {
 		mut source := pattern
 		if parent := treesitter.node_parent(pattern) {
@@ -57,7 +57,7 @@ fn (mut c Checker) lint_seyfert_no_method_destructure(root C.TSNode, abs_path st
 
 // sy_nmd_property_key is the key of a Property of an ObjectPattern that is not computed; none for a
 // RestElement or a computed key.
-fn sy_nmd_property_key(property C.TSNode) ?C.TSNode {
+fn sy_nmd_property_key(property C.vt_node) ?C.vt_node {
 	return match node_kind(property) {
 		'shorthand_property_identifier_pattern' {
 			property
@@ -77,7 +77,7 @@ fn sy_nmd_property_key(property C.TSNode) ?C.TSNode {
 }
 
 // sy_nmd_key_name is the name of a key: an Identifier's, or String(value) of a Literal.
-fn (c &Checker) sy_nmd_key_name(key C.TSNode) ?string {
+fn (c &Checker) sy_nmd_key_name(key C.vt_node) ?string {
 	return match node_kind(key) {
 		'string' { c.literal_string_value(key) }
 		'number' { js_number_string(c.text(key)) }

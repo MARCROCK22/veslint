@@ -32,7 +32,7 @@ fn (c &Checker) can_continue_expression_in_class_body(token SourceToken) bool {
 // with `(`, `[`, `*` or a template and takes the place of the node would continue the token before
 // it. prevNode, the innermost ESTree node that contains that token (getNodeByRangeIndex), is the
 // leaf of a name or a literal, or else the node the token belongs to.
-fn (mut c Checker) eslint_needs_preceding_semicolon(n C.TSNode, start int) bool {
+fn (mut c Checker) eslint_needs_preceding_semicolon(n C.vt_node, start int) bool {
 	tokens := c.source_tokens(n)
 	previous := tokens.before(start, false) or { return false }
 	text := c.token_text(previous)
@@ -60,7 +60,7 @@ fn (mut c Checker) eslint_needs_preceding_semicolon(n C.TSNode, start int) bool 
 		}
 	}
 	// A TSDeclareFunction, a TSImportEqualsDeclaration and the TypeScript types.
-	if esl_estree_owner(owner).kind == 'function_signature' && !C.ts_node_is_named(leaf) {
+	if esl_estree_owner(owner).kind == 'function_signature' && !C.vt_node_is_named(leaf) {
 		return false
 	}
 	if esl_in_import_equals(leaf) || esl_in_type(leaf) {
@@ -106,7 +106,7 @@ fn (mut c Checker) eslint_needs_preceding_semicolon(n C.TSNode, start int) bool 
 	}
 	if previous.kind in [.identifier, .keyword] {
 		// The id of a declarator without an initializer, or the label of a break or continue.
-		if node_kind(owner) == 'variable_declarator' && C.ts_node_is_named(leaf) {
+		if node_kind(owner) == 'variable_declarator' && C.vt_node_is_named(leaf) {
 			if name := node_field(owner, 'name') {
 				if node_key(name) == node_key(leaf) {
 					if _ := node_field(owner, 'value') {
@@ -116,12 +116,12 @@ fn (mut c Checker) eslint_needs_preceding_semicolon(n C.TSNode, start int) bool 
 				}
 			}
 		}
-		if node_kind(owner) in ['break_statement', 'continue_statement'] && C.ts_node_is_named(leaf) {
+		if node_kind(owner) in ['break_statement', 'continue_statement'] && C.vt_node_is_named(leaf) {
 			return false
 		}
 		// A keyword of the statement it belongs to (NODE_TYPES_BY_KEYWORD).
 		expected := semicolon_keyword_nodes[text] or { return true }
-		if C.ts_node_is_named(leaf) {
+		if C.vt_node_is_named(leaf) {
 			return true
 		}
 		return node_kind(owner) != expected
@@ -139,7 +139,7 @@ fn (mut c Checker) eslint_needs_preceding_semicolon(n C.TSNode, start int) bool 
 
 // esl_estree_owner is the ESTree node a token of `owner` belongs to: parentheses and the lists of
 // arguments and of parameters are not ESTree nodes, the `else` of an IfStatement is its own.
-fn esl_estree_owner(owner C.TSNode) EslOwner {
+fn esl_estree_owner(owner C.vt_node) EslOwner {
 	mut node := owner
 	for node_kind(node) in ['parenthesized_expression', 'arguments', 'formal_parameters', 'else_clause'] {
 		node = node_parent(node) or { break }
@@ -151,13 +151,13 @@ fn esl_estree_owner(owner C.TSNode) EslOwner {
 }
 
 struct EslOwner {
-	node C.TSNode
+	node C.vt_node
 	kind string
 }
 
 // esl_in_import_equals: the token is part of a TSImportEqualsDeclaration (`import x = require('y')`,
 // `import x = A.B`), where prevNode or its parent is a child of it.
-fn esl_in_import_equals(leaf C.TSNode) bool {
+fn esl_in_import_equals(leaf C.vt_node) bool {
 	mut node := leaf
 	for {
 		node = node_parent(node) or { return false }
@@ -175,7 +175,7 @@ fn esl_in_import_equals(leaf C.TSNode) bool {
 // token is in a TSTypeAnnotation, or is the operator or the type of a TSAsExpression or a
 // TSSatisfiesExpression, or part of a TSTypeAliasDeclaration but its name (a function type has a
 // TSTypeAnnotation for its return type too).
-fn esl_in_type(leaf C.TSNode) bool {
+fn esl_in_type(leaf C.vt_node) bool {
 	start := node_start(leaf)
 	mut previous := leaf
 	mut node := leaf

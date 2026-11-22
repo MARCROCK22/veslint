@@ -11,7 +11,7 @@ const vue_require_render_return_messages = {
 	'expectedReturn': 'Expected to return a value in render function.'
 }
 
-fn (mut c Checker) lint_vue_require_render_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_render_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

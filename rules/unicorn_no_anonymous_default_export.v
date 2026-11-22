@@ -12,7 +12,7 @@ const unade_messages = {
 	'no-anonymous-default-export/suggestion': 'Name it as `{{name}}`.'
 }
 
-fn (mut c Checker) lint_unicorn_no_anonymous_default_export(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_anonymous_default_export(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -78,7 +78,7 @@ fn unade_export_statement(t &estree.EsTree, node int) int {
 
 // unade_suggestion_name ports getSuggestionName: the camel-cased file name, free in the scope of
 // the node.
-fn (mut c Checker) unade_suggestion_name(root C.TSNode, t &estree.EsTree, node int, abs_path string) ?string {
+fn (mut c Checker) unade_suggestion_name(root C.vt_node, t &estree.EsTree, node int, abs_path string) ?string {
 	mut name := os.file_name(abs_path).all_before('.')
 	name = ucc_camel_case(name)
 	if !un_is_identifier_name(name) {
@@ -103,7 +103,7 @@ fn (mut c Checker) unade_suggestion_name(root C.TSNode, t &estree.EsTree, node i
 	})
 }
 
-fn (mut c Checker) unade_problem(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, node int, abs_path string) Finding {
+fn (mut c Checker) unade_problem(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, node int, abs_path string) Finding {
 	suggestion_name := c.unade_suggestion_name(root, t, node, abs_path) or { '' }
 	mut finding := if unade_is_class(t, node) {
 		// getClassHeadLocation: from the class to the token before its body.

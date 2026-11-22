@@ -21,7 +21,7 @@ fn vue_max_props_options(options []json2.Any) !f64 {
 	return value.f64()
 }
 
-fn (mut c Checker) lint_vue_max_props(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_max_props(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	max_props := vue_max_props_options(c.rule_options(vue_max_props))!
 	mut findings := []Finding{}

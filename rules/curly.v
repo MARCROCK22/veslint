@@ -40,8 +40,8 @@ fn cu_options(options []json2.Any) !CuOptions {
 // CuCheck is a prepared check: the statement, its body, the keyword and whether it is a
 // condition's, whether the body has braces and whether it should (-1: either way).
 struct CuCheck {
-	node      C.TSNode
-	body      C.TSNode
+	node      C.vt_node
+	body      C.vt_node
 	name      string
 	condition bool
 	actual    bool
@@ -49,7 +49,7 @@ mut:
 	expected int
 }
 
-fn (mut c Checker) lint_curly(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_curly(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := cu_options(c.rule_options(curly))!
 	mut findings := []Finding{}
@@ -148,9 +148,9 @@ fn (mut c Checker) lint_curly(root C.TSNode, abs_path string, mut stats Stats) !
 }
 
 // cu_prepare ports prepareCheck: whether the body should have braces.
-fn (mut c Checker) cu_prepare(root C.TSNode, o CuOptions, node C.TSNode, body C.TSNode, name string, condition bool) CuCheck {
+fn (mut c Checker) cu_prepare(root C.vt_node, o CuOptions, node C.vt_node, body C.vt_node, name string, condition bool) CuCheck {
 	has_block := node_kind(body) == 'statement_block'
-	statements := if has_block { ner_statements(body) } else { []C.TSNode{} }
+	statements := if has_block { ner_statements(body) } else { []C.vt_node{} }
 	mut expected := -1
 	if has_block && (statements.len != 1 || c.cu_braces_necessary(root, body, statements)) {
 		expected = 1
@@ -183,7 +183,7 @@ fn (mut c Checker) cu_prepare(root C.TSNode, o CuOptions, node C.TSNode, body C.
 }
 
 // cu_last_excluding_semicolon is the last token of a node, or the one before it when it is `;`.
-fn (mut c Checker) cu_last_excluding_semicolon(root C.TSNode, n C.TSNode) ?SourceToken {
+fn (mut c Checker) cu_last_excluding_semicolon(root C.vt_node, n C.vt_node) ?SourceToken {
 	tokens := c.source_tokens(root)
 	last := tokens.before(node_end(n), false)?
 	if c.src[last.start..last.end] == ';' {
@@ -194,7 +194,7 @@ fn (mut c Checker) cu_last_excluding_semicolon(root C.TSNode, n C.TSNode) ?Sourc
 
 // cu_collapsed_one_liner ports isCollapsedOneLiner: the token before the body and its last one
 // (a `;` aside) are on the same line.
-fn (mut c Checker) cu_collapsed_one_liner(root C.TSNode, body C.TSNode) bool {
+fn (mut c Checker) cu_collapsed_one_liner(root C.vt_node, body C.vt_node) bool {
 	tokens := c.source_tokens(root)
 	before := tokens.before(node_start(body), false) or { return false }
 	last := c.cu_last_excluding_semicolon(root, body) or { return false }
@@ -202,7 +202,7 @@ fn (mut c Checker) cu_collapsed_one_liner(root C.TSNode, body C.TSNode) bool {
 }
 
 // cu_one_liner ports isOneLiner: the statement starts and ends (a `;` aside) on the same line.
-fn (mut c Checker) cu_one_liner(root C.TSNode, statement C.TSNode) bool {
+fn (mut c Checker) cu_one_liner(root C.vt_node, statement C.vt_node) bool {
 	if node_kind(statement) == 'empty_statement' {
 		return true
 	}
@@ -212,7 +212,7 @@ fn (mut c Checker) cu_one_liner(root C.TSNode, statement C.TSNode) bool {
 
 // cu_braces_necessary ports areBracesNecessary for a block with one statement: a lexical
 // declaration, or an `if` without `else` that would take an `else` that follows the block.
-fn (mut c Checker) cu_braces_necessary(root C.TSNode, block C.TSNode, statements []C.TSNode) bool {
+fn (mut c Checker) cu_braces_necessary(root C.vt_node, block C.vt_node, statements []C.vt_node) bool {
 	statement := statements[0]
 	if ncd_is_lexical(statement) {
 		return true
@@ -226,7 +226,7 @@ fn (mut c Checker) cu_braces_necessary(root C.TSNode, block C.TSNode, statements
 }
 
 // cu_has_unsafe_if ports hasUnsafeIf: an `if` without `else` ends the statement.
-fn cu_has_unsafe_if(n C.TSNode) bool {
+fn cu_has_unsafe_if(n C.vt_node) bool {
 	return match node_kind(n) {
 		'if_statement' {
 			alternate := ner_alternate(n) or { return true }
@@ -244,7 +244,7 @@ fn cu_has_unsafe_if(n C.TSNode) bool {
 
 // cu_unexpected_fix is the fix of a body with unnecessary braces: the braces are removed, unless
 // the statement after them would need a semicolon.
-fn (mut c Checker) cu_unexpected_fix(root C.TSNode, check CuCheck) (bool, Fix) {
+fn (mut c Checker) cu_unexpected_fix(root C.vt_node, check CuCheck) (bool, Fix) {
 	tokens := c.source_tokens(root)
 	body := check.body
 	open := tokens.after(node_start(body), false) or { return false, Fix{} }
@@ -269,7 +269,7 @@ fn (mut c Checker) cu_unexpected_fix(root C.TSNode, check CuCheck) (bool, Fix) {
 
 // cu_needs_semicolon ports needsSemicolon: what follows the closing brace would continue the last
 // statement of the block once the braces are gone.
-fn (mut c Checker) cu_needs_semicolon(root C.TSNode, close SourceToken) bool {
+fn (mut c Checker) cu_needs_semicolon(root C.vt_node, close SourceToken) bool {
 	tokens := c.source_tokens(root)
 	before := tokens.before(close.start, false) or { return false }
 	if c.src[before.start..before.end] == ';' {
@@ -279,7 +279,7 @@ fn (mut c Checker) cu_needs_semicolon(root C.TSNode, close SourceToken) bool {
 	// The node of the token before: a BlockStatement that is not a function expression's body
 	// ends a statement.
 	mut last_node := before.node
-	if !C.ts_node_is_named(last_node) {
+	if !C.vt_node_is_named(last_node) {
 		last_node = node_parent(last_node) or { last_node }
 	}
 	if node_kind(last_node) == 'statement_block' {

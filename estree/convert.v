@@ -2,9 +2,6 @@ module estree
 
 import treesitter { node_end, node_kind, node_start }
 
-fn C.ts_tree_cursor_reset(self &C.TSTreeCursor, node C.TSNode)
-fn C.ts_tree_cursor_current_field_id(self &C.TSTreeCursor) u16
-fn C.ts_node_language(self C.TSNode) &C.TSLanguage
 fn C.ts_language_symbol_count(self &C.TSLanguage) u32
 fn C.ts_language_field_count(self &C.TSLanguage) u32
 fn C.ts_language_field_name_for_id(self &C.TSLanguage, id u16) &char
@@ -31,22 +28,19 @@ pub:
 // BOM), `tsx` tells that it was parsed with the tsx dialect (the tree already reflects it). A tree
 // with ERROR or MISSING nodes is an error (Options.allow_errors converts it anyway). The strings
 // of the result may point into `src`.
-pub fn convert(root C.TSNode, src string, tsx bool) !EsTree {
+pub fn convert(root C.vt_node, src string, tsx bool) !EsTree {
 	return convert_with(root, src, tsx, Options{})
 }
 
 // convert_with is convert with options.
-pub fn convert_with(root C.TSNode, src string, tsx bool, opts Options) !EsTree {
-	if !opts.allow_errors && C.ts_node_has_error(root) {
+pub fn convert_with(root C.vt_node, src string, tsx bool, opts Options) !EsTree {
+	if !opts.allow_errors && C.vt_node_has_error(root) {
 		return error('the tree has syntax errors (ERROR or MISSING nodes)')
 	}
 	mut c := new_converter(root, src, tsx, opts)
 	// About half as many ESTree nodes as visible tree-sitter nodes (no punctuation): reserved at
 	// once rather than grown by doubling, which copied the nodes and made the collector run.
-	c.t.nodes = []EsNode{cap: int(C.ts_node_descendant_count(root)) / 2 + 16}
-	defer {
-		C.ts_tree_cursor_delete(&c.cursor)
-	}
+	c.t.nodes = []EsNode{cap: int(C.vt_node_descendant_count(root)) / 2 + 16}
 	c.t.root = c.program(root)
 	c.t.src = src
 	c.t.line_starts, c.t.line_units = line_index(src)
@@ -62,19 +56,16 @@ pub fn convert_with(root C.TSNode, src string, tsx bool, opts Options) !EsTree {
 // The nodes of their subtrees are those of convert_with's tree (the same types, properties and
 // positions); only the functions' own range may differ, and what is around them is left out. The
 // errors are convert_with's: the whole tree is checked for syntax errors.
-pub fn convert_functions(root C.TSNode, src string, tsx bool, opts Options, functions []C.TSNode) !EsTree {
-	if !opts.allow_errors && C.ts_node_has_error(root) {
+pub fn convert_functions(root C.vt_node, src string, tsx bool, opts Options, functions []C.vt_node) !EsTree {
+	if !opts.allow_errors && C.vt_node_has_error(root) {
 		return error('the tree has syntax errors (ERROR or MISSING nodes)')
 	}
 	mut c := new_converter(root, src, tsx, opts)
 	mut count := 0
 	for f in functions {
-		count += int(C.ts_node_descendant_count(f))
+		count += int(C.vt_node_descendant_count(f))
 	}
 	c.t.nodes = []EsNode{cap: count / 2 + 16}
-	defer {
-		C.ts_tree_cursor_delete(&c.cursor)
-	}
 	program := c.mk(.program, root, 0, src.len)
 	mut body := []int{cap: functions.len}
 	for f in functions {
@@ -95,7 +86,7 @@ pub fn convert_functions(root C.TSNode, src string, tsx bool, opts Options, func
 
 // function_part converts a function of convert_functions the way the conversion of its parent
 // does.
-fn (mut c Converter) function_part(n C.TSNode) int {
+fn (mut c Converter) function_part(n C.vt_node) int {
 	kind := kind_of(n)
 	return match kind {
 		'function_declaration', 'generator_function_declaration' {
@@ -106,7 +97,7 @@ fn (mut c Converter) function_part(n C.TSNode) int {
 		}
 		'method_definition' {
 			parent := C.vt_node_parent(n)
-			in_object := !C.ts_node_is_null(parent) && kind_of(parent) == 'object'
+			in_object := !C.vt_node_is_null(parent) && kind_of(parent) == 'object'
 			c.method(n, kind, [], c.start(n), c.end(n), in_object)
 		}
 		'class_static_block' {
@@ -124,13 +115,12 @@ fn (mut c Converter) function_part(n C.TSNode) int {
 
 // new_converter is a converter of the tree of `root`, with the names of the grammar's fields and
 // where the comments that run to the end of a line may end.
-fn new_converter(root C.TSNode, src string, tsx bool, opts Options) Converter {
-	lang := C.ts_node_language(root)
+fn new_converter(root C.vt_node, src string, tsx bool, opts Options) Converter {
+	lang := C.vt_node_language(root)
 	mut c := Converter{
 		src:         src
 		tsx:         tsx
 		opts:        opts
-		cursor:      C.ts_tree_cursor_new(root)
 		kind_names:  []string{len: int(C.ts_language_symbol_count(lang))}
 		field_names: []string{len: int(C.ts_language_field_count(lang)) + 1}
 	}
@@ -149,8 +139,7 @@ struct Converter {
 	tsx  bool // unused: the dialect only matters to tree-sitter
 	opts Options
 mut:
-	t      EsTree
-	cursor C.TSTreeCursor
+	t EsTree
 	// The kind of each symbol of the grammar (filled when first seen) and the name of each
 	// field.
 	kind_names  []string
@@ -164,12 +153,12 @@ mut:
 	// The node that an `await` used as an identifier applies to (see await_identifier).
 	sub_start int = -1
 	sub_kind  string
-	sub_await C.TSNode
+	sub_await C.vt_node
 }
 
 // Kid is a child of a tree-sitter node (comments and other extras left out).
 struct Kid {
-	n     C.TSNode
+	n     C.vt_node
 	kind  string
 	field string
 	named bool
@@ -179,60 +168,38 @@ fn (k Kid) is_tok(tok string) bool {
 	return !k.named && k.kind == tok && node_end(k.n) > node_start(k.n)
 }
 
-// The children come from the flat tree (flat_tree.h) when the node is in it, else from a walk of
-// the converter's cursor: the same nodes, with the field the cursor gives them.
-fn (mut c Converter) kids(n C.TSNode) []Kid {
-	index := C.vt_flat_find(n)
-	if index >= 0 {
-		flat := C.vt_flat_nodes()
-		if i64(unsafe { flat[index].last }) == index {
-			return []Kid{}
-		}
-		mut out := []Kid{cap: int(C.ts_node_child_count(n))}
-		mut child := u32(index + 1)
-		for child != treesitter.flat_none {
-			k := unsafe { &flat[child] }
-			if k.flags & treesitter.flat_extra == 0 {
-				out << Kid{
-					n:     k.node
-					kind:  c.symbol_name(k.symbol, k.node)
-					field: c.field_names[k.field]
-					named: k.flags & treesitter.flat_named != 0
-				}
-			}
-			child = k.next
-		}
-		return out
+// kids are the children of `n` in its rows, with the field each has under it.
+fn (mut c Converter) kids(n C.vt_node) []Kid {
+	mut child := C.vt_node_first_child(n)
+	if C.vt_node_is_null(child) {
+		return []Kid{}
 	}
-	C.ts_tree_cursor_reset(&c.cursor, n)
-	mut out := []Kid{cap: int(C.ts_node_child_count(n))}
-	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
-		return out
-	}
-	for {
-		k := C.ts_tree_cursor_current_node(&c.cursor)
-		if !C.ts_node_is_extra(k) {
+	mut out := []Kid{cap: int(C.vt_node_child_count(n))}
+	flat := C.vt_node_row(C.vt_node_at(C.vt_node_rows(n), 0))
+	mut at := child.index
+	for at != treesitter.row_none {
+		k := unsafe { &flat[at] }
+		if k.flags & treesitter.row_extra == 0 {
+			node := C.vt_node_at(C.vt_node_rows(n), at)
 			out << Kid{
-				n:     k
-				kind:  c.kind_name(k)
-				field: c.field_names[C.ts_tree_cursor_current_field_id(&c.cursor)]
-				named: C.ts_node_is_named(k)
+				n:     node
+				kind:  c.symbol_name(k.symbol, node)
+				field: c.field_names[k.field]
+				named: k.flags & treesitter.row_named != 0
 			}
 		}
-		if !C.ts_tree_cursor_goto_next_sibling(&c.cursor) {
-			break
-		}
+		at = k.next
 	}
 	return out
 }
 
 // kind_name is node_kind with a cache per symbol.
-fn (mut c Converter) kind_name(n C.TSNode) string {
-	return c.symbol_name(C.ts_node_symbol(n), n)
+fn (mut c Converter) kind_name(n C.vt_node) string {
+	return c.symbol_name(C.vt_node_symbol(n), n)
 }
 
 // symbol_name is the kind of `n`, whose symbol is `sym`.
-fn (mut c Converter) symbol_name(sym u16, n C.TSNode) string {
+fn (mut c Converter) symbol_name(sym u16, n C.vt_node) string {
 	symbol := int(sym)
 	if symbol < c.kind_names.len {
 		name := c.kind_names[symbol]
@@ -248,141 +215,77 @@ fn (mut c Converter) symbol_name(sym u16, n C.TSNode) string {
 
 // named are the named children (no comments): kids(n).filter(it.named), without the array of
 // all the kids.
-fn (mut c Converter) named(n C.TSNode) []Kid {
-	index := C.vt_flat_find(n)
-	if index >= 0 {
-		flat := C.vt_flat_nodes()
-		if i64(unsafe { flat[index].last }) == index {
-			return []Kid{}
-		}
-		mut out := []Kid{cap: int(C.ts_node_named_child_count(n))}
-		mut child := u32(index + 1)
-		for child != treesitter.flat_none {
-			k := unsafe { &flat[child] }
-			if k.flags & (treesitter.flat_extra | treesitter.flat_named) == treesitter.flat_named {
-				out << Kid{
-					n:     k.node
-					kind:  c.symbol_name(k.symbol, k.node)
-					field: c.field_names[k.field]
-					named: true
-				}
-			}
-			child = k.next
-		}
-		return out
+fn (mut c Converter) named(n C.vt_node) []Kid {
+	mut child := C.vt_node_first_child(n)
+	if C.vt_node_is_null(child) {
+		return []Kid{}
 	}
-	C.ts_tree_cursor_reset(&c.cursor, n)
-	mut out := []Kid{cap: int(C.ts_node_named_child_count(n))}
-	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
-		return out
-	}
-	for {
-		k := C.ts_tree_cursor_current_node(&c.cursor)
-		if !C.ts_node_is_extra(k) && C.ts_node_is_named(k) {
+	mut out := []Kid{cap: int(C.vt_node_named_child_count(n))}
+	flat := C.vt_node_row(C.vt_node_at(C.vt_node_rows(n), 0))
+	mut at := child.index
+	for at != treesitter.row_none {
+		k := unsafe { &flat[at] }
+		if k.flags & (treesitter.row_extra | treesitter.row_named) == treesitter.row_named {
+			node := C.vt_node_at(C.vt_node_rows(n), at)
 			out << Kid{
-				n:     k
-				kind:  c.kind_name(k)
-				field: c.field_names[C.ts_tree_cursor_current_field_id(&c.cursor)]
+				n:     node
+				kind:  c.symbol_name(k.symbol, node)
+				field: c.field_names[k.field]
 				named: true
 			}
 		}
-		if !C.ts_tree_cursor_goto_next_sibling(&c.cursor) {
-			break
-		}
+		at = k.next
 	}
 	return out
 }
 
 // first_named_kid is first_named(c.kids(n)), without the array of the kids.
-fn (mut c Converter) first_named_kid(n C.TSNode) ?Kid {
-	index := C.vt_flat_find(n)
-	if index >= 0 {
-		flat := C.vt_flat_nodes()
-		if i64(unsafe { flat[index].last }) == index {
-			return none
-		}
-		mut child := u32(index + 1)
-		for child != treesitter.flat_none {
-			k := unsafe { &flat[child] }
-			if k.flags & (treesitter.flat_extra | treesitter.flat_named) == treesitter.flat_named {
-				return Kid{
-					n:     k.node
-					kind:  c.symbol_name(k.symbol, k.node)
-					field: c.field_names[k.field]
-					named: true
-				}
-			}
-			child = k.next
-		}
+fn (mut c Converter) first_named_kid(n C.vt_node) ?Kid {
+	mut child := C.vt_node_first_child(n)
+	if C.vt_node_is_null(child) {
 		return none
 	}
-	C.ts_tree_cursor_reset(&c.cursor, n)
-	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
-		return none
-	}
-	for {
-		k := C.ts_tree_cursor_current_node(&c.cursor)
-		if !C.ts_node_is_extra(k) && C.ts_node_is_named(k) {
+	flat := C.vt_node_row(C.vt_node_at(C.vt_node_rows(n), 0))
+	mut at := child.index
+	for at != treesitter.row_none {
+		k := unsafe { &flat[at] }
+		if k.flags & (treesitter.row_extra | treesitter.row_named) == treesitter.row_named {
+			node := C.vt_node_at(C.vt_node_rows(n), at)
 			return Kid{
-				n:     k
-				kind:  c.kind_name(k)
-				field: c.field_names[C.ts_tree_cursor_current_field_id(&c.cursor)]
+				n:     node
+				kind:  c.symbol_name(k.symbol, node)
+				field: c.field_names[k.field]
 				named: true
 			}
 		}
-		if !C.ts_tree_cursor_goto_next_sibling(&c.cursor) {
-			break
-		}
+		at = k.next
 	}
 	return none
 }
 
 // field is the first kid with that field name, found without the array of the kids.
-fn (mut c Converter) field(n C.TSNode, name string) ?Kid {
-	index := C.vt_flat_find(n)
-	if index >= 0 {
-		flat := C.vt_flat_nodes()
-		if i64(unsafe { flat[index].last }) == index {
-			return none
-		}
-		mut child := u32(index + 1)
-		for child != treesitter.flat_none {
-			k := unsafe { &flat[child] }
-			if k.flags & treesitter.flat_extra == 0 && k.field != 0 {
-				field := c.field_names[k.field]
-				if field == name {
-					return Kid{
-						n:     k.node
-						kind:  c.symbol_name(k.symbol, k.node)
-						field: field
-						named: k.flags & treesitter.flat_named != 0
-					}
-				}
-			}
-			child = k.next
-		}
+fn (mut c Converter) field(n C.vt_node, name string) ?Kid {
+	mut child := C.vt_node_first_child(n)
+	if C.vt_node_is_null(child) {
 		return none
 	}
-	C.ts_tree_cursor_reset(&c.cursor, n)
-	if !C.ts_tree_cursor_goto_first_child(&c.cursor) {
-		return none
-	}
-	for {
-		k := C.ts_tree_cursor_current_node(&c.cursor)
-		if !C.ts_node_is_extra(k) {
-			field := c.field_names[C.ts_tree_cursor_current_field_id(&c.cursor)]
+	flat := C.vt_node_row(C.vt_node_at(C.vt_node_rows(n), 0))
+	mut at := child.index
+	for at != treesitter.row_none {
+		k := unsafe { &flat[at] }
+		if k.flags & treesitter.row_extra == 0 && k.field != 0 {
+			field := c.field_names[k.field]
 			if field == name {
+				node := C.vt_node_at(C.vt_node_rows(n), at)
 				return Kid{
-					n:     k
-					kind:  c.kind_name(k)
+					n:     node
+					kind:  c.symbol_name(k.symbol, node)
 					field: field
-					named: C.ts_node_is_named(k)
+					named: k.flags & treesitter.row_named != 0
 				}
 			}
 		}
-		if !C.ts_tree_cursor_goto_next_sibling(&c.cursor) {
-			break
-		}
+		at = k.next
 	}
 	return none
 }
@@ -427,17 +330,17 @@ fn first_named(kids []Kid) ?Kid {
 	return none
 }
 
-fn kind_of(n C.TSNode) string {
+fn kind_of(n C.vt_node) string {
 	return node_kind(n)
 }
 
-fn (c &Converter) start(n C.TSNode) int {
+fn (c &Converter) start(n C.vt_node) int {
 	return node_start(n)
 }
 
 // end is the end of the last token of the node: tree-sitter may end a node after a comment (when
 // its last child is an automatic `;`, which has no width).
-fn (c &Converter) end(n C.TSNode) int {
+fn (c &Converter) end(n C.vt_node) int {
 	e := node_end(n)
 	if c.may_end_in_comment(e) {
 		return c.last_token_end(n)
@@ -503,35 +406,42 @@ fn line_comment_ends(src string) []int {
 
 // last_token_end is the end of the last child that is neither an extra (a comment) nor without
 // width, down to a leaf.
-fn (c &Converter) last_token_end(n C.TSNode) int {
-	count := int(C.ts_node_child_count(n))
-	if count == 0 {
+fn (c &Converter) last_token_end(n C.vt_node) int {
+	mut child := C.vt_node_first_child(n)
+	if C.vt_node_is_null(child) {
 		return node_end(n)
 	}
-	for k := count - 1; k >= 0; k-- {
-		child := C.ts_node_child(n, u32(k))
-		if C.ts_node_is_extra(child) || node_end(child) == node_start(child) {
-			continue
+	// The last child, then back.
+	for {
+		next := C.vt_node_next(child)
+		if C.vt_node_is_null(next) {
+			break
 		}
-		return c.last_token_end(child)
+		child = next
+	}
+	for !C.vt_node_is_null(child) {
+		if !C.vt_node_is_extra(child) && node_end(child) != node_start(child) {
+			return c.last_token_end(child)
+		}
+		child = C.vt_node_prev_sibling(child)
 	}
 	return node_start(n)
 }
 
 // prev_token_end is the end of the last token before the node (TypeScript's full start of a node
 // that starts there), skipping comments and tokens without width; 0 at the start of the text.
-fn (c &Converter) prev_token_end(n C.TSNode) int {
+fn (c &Converter) prev_token_end(n C.vt_node) int {
 	mut cur := n
 	for {
-		mut prev := C.ts_node_prev_sibling(cur)
-		for !C.ts_node_is_null(prev) {
-			if !C.ts_node_is_extra(prev) && node_end(prev) > node_start(prev) {
+		mut prev := C.vt_node_prev_sibling(cur)
+		for !C.vt_node_is_null(prev) {
+			if !C.vt_node_is_extra(prev) && node_end(prev) > node_start(prev) {
 				return c.last_token_end(prev)
 			}
-			prev = C.ts_node_prev_sibling(prev)
+			prev = C.vt_node_prev_sibling(prev)
 		}
 		parent := C.vt_node_parent(cur)
-		if C.ts_node_is_null(parent) {
+		if C.vt_node_is_null(parent) {
 			return 0
 		}
 		cur = parent
@@ -578,7 +488,7 @@ fn (c &Converter) skip_white_space(from int, limit int) int {
 	return i
 }
 
-fn (c &Converter) text(n C.TSNode) string {
+fn (c &Converter) text(n C.vt_node) string {
 	return c.slice(node_start(n), node_end(n))
 }
 
@@ -588,7 +498,7 @@ fn (c &Converter) slice(start int, end int) string {
 
 // --- Node building ---
 
-fn (mut c Converter) mk(typ NodeType, n C.TSNode, start int, end int) int {
+fn (mut c Converter) mk(typ NodeType, n C.vt_node, start int, end int) int {
 	c.t.nodes << EsNode{
 		typ:    typ
 		start:  start
@@ -600,7 +510,7 @@ fn (mut c Converter) mk(typ NodeType, n C.TSNode, start int, end int) int {
 	return c.t.nodes.len - 1
 }
 
-fn (mut c Converter) mkn(typ NodeType, n C.TSNode) int {
+fn (mut c Converter) mkn(typ NodeType, n C.vt_node) int {
 	return c.mk(typ, n, c.start(n), c.end(n))
 }
 
@@ -716,7 +626,7 @@ fn (mut c Converter) extend(i int, start int, end int) {
 }
 
 // ident creates an Identifier.
-fn (mut c Converter) ident_at(n C.TSNode, start int, end int, name string) int {
+fn (mut c Converter) ident_at(n C.vt_node, start int, end int, name string) int {
 	i := c.mk(.identifier, n, start, end)
 	c.plist(i, .decorators, [])
 	c.pstr(i, .name, name)
@@ -724,15 +634,15 @@ fn (mut c Converter) ident_at(n C.TSNode, start int, end int, name string) int {
 	return i
 }
 
-fn (mut c Converter) ident(n C.TSNode) int {
+fn (mut c Converter) ident(n C.vt_node) int {
 	return c.ident_at(n, c.start(n), c.end(n), identifier_name(c.text(n)))
 }
 
 // --- Program and statements ---
 
-fn (mut c Converter) program(root C.TSNode) int {
+fn (mut c Converter) program(root C.vt_node) int {
 	kids := c.kids(root)
-	mut stmts := []C.TSNode{}
+	mut stmts := []C.vt_node{}
 	for k in kids {
 		if k.named && k.kind != 'hash_bang_line' {
 			stmts << k.n
@@ -750,7 +660,7 @@ fn (mut c Converter) program(root C.TSNode) int {
 
 // is_module ports TypeScript's isFileProbablyExternalModule: an import or export at the top
 // level (isAnExternalModuleIndicatorNode), or `import.meta` anywhere.
-fn (mut c Converter) is_module(root C.TSNode, stmts []C.TSNode) bool {
+fn (mut c Converter) is_module(root C.vt_node, stmts []C.vt_node) bool {
 	for s in stmts {
 		match kind_of(s) {
 			'import_statement' {
@@ -776,13 +686,13 @@ fn (mut c Converter) is_module(root C.TSNode, stmts []C.TSNode) bool {
 
 // body converts a list of statements; with `directives`, the leading string expression
 // statements are directives.
-fn (mut c Converter) body(stmts []C.TSNode, directives bool) []int {
+fn (mut c Converter) body(stmts []C.vt_node, directives bool) []int {
 	mut out := []int{cap: stmts.len}
 	mut allow := directives
 	// The previous statement is kept in a variable, not read as stmts[k - 1]: with -prod, gcc
 	// may then keep only a pointer before the array's data, which the collector does not see
 	// as a reference to it (v-bugs/README.md).
-	mut prev := ?C.TSNode(none)
+	mut prev := ?C.vt_node(none)
 	for s in stmts {
 		before := out.len
 		// `declare module 'x';`: the `;` is part of the declaration, not an empty statement.
@@ -814,7 +724,7 @@ fn (mut c Converter) body(stmts []C.TSNode, directives bool) []int {
 	return out
 }
 
-fn (mut c Converter) is_directive(s C.TSNode) bool {
+fn (mut c Converter) is_directive(s C.vt_node) bool {
 	if kind_of(s) != 'expression_statement' {
 		return false
 	}
@@ -824,7 +734,7 @@ fn (mut c Converter) is_directive(s C.TSNode) bool {
 
 // absorbs_semicolon: a module declaration without body, after which tree-sitter puts the `;` in an
 // empty statement while TypeScript ends the declaration with it.
-fn (mut c Converter) absorbs_semicolon(prev C.TSNode) bool {
+fn (mut c Converter) absorbs_semicolon(prev C.vt_node) bool {
 	mut n := prev
 	for {
 		match kind_of(n) {
@@ -866,7 +776,7 @@ fn (mut c Converter) absorb_into_inner(i int, end int) {
 	}
 }
 
-fn (mut c Converter) statement(s C.TSNode, mut out []int) {
+fn (mut c Converter) statement(s C.vt_node, mut out []int) {
 	kind := kind_of(s)
 	match kind {
 		'expression_statement' {
@@ -894,7 +804,7 @@ fn (mut c Converter) statement(s C.TSNode, mut out []int) {
 }
 
 // stmt converts a statement that is one ESTree node.
-fn (mut c Converter) stmt(s C.TSNode) int {
+fn (mut c Converter) stmt(s C.vt_node) int {
 	kind := kind_of(s)
 	match kind {
 		'expression_statement' {
@@ -1025,13 +935,13 @@ fn (mut c Converter) stmt(s C.TSNode) int {
 	}
 }
 
-fn (mut c Converter) block(s C.TSNode, directives bool) int {
+fn (mut c Converter) block(s C.vt_node, directives bool) int {
 	i := c.mkn(.block_statement, s)
 	c.plist(i, .body, c.body(c.named(s).map(it.n), directives))
 	return i
 }
 
-fn (mut c Converter) switch_case(n C.TSNode) int {
+fn (mut c Converter) switch_case(n C.vt_node) int {
 	kids := c.kids(n)
 	i := c.mkn(.switch_case, n)
 	c.plist(i, .consequent, c.body(fields_of(kids, 'body').map(it.n), false))
@@ -1043,7 +953,7 @@ fn (mut c Converter) switch_case(n C.TSNode) int {
 	return i
 }
 
-fn (mut c Converter) catch_clause(n C.TSNode) int {
+fn (mut c Converter) catch_clause(n C.vt_node) int {
 	kids := c.kids(n)
 	i := c.mkn(.catch_clause, n)
 	c.pnode(i, .body, c.block(field_of(kids, 'body') or { return i }.n, false))
@@ -1060,13 +970,13 @@ fn (mut c Converter) catch_clause(n C.TSNode) int {
 }
 
 // annotate gives a binding name its type annotation and extends it over it.
-fn (mut c Converter) annotate(id int, annotation C.TSNode) {
+fn (mut c Converter) annotate(id int, annotation C.vt_node) {
 	ta := c.type_annotation(annotation)
 	c.pnode(id, .type_annotation, ta)
 	c.extend(id, c.t.nodes[ta].start, c.t.nodes[ta].end)
 }
 
-fn (mut c Converter) for_stmt(s C.TSNode) int {
+fn (mut c Converter) for_stmt(s C.vt_node) int {
 	kids := c.kids(s)
 	i := c.mkn(.for_statement, s)
 	c.pnode(i, .body, c.stmt(field_of(kids, 'body') or { return i }.n))
@@ -1100,7 +1010,7 @@ fn (mut c Converter) for_stmt(s C.TSNode) int {
 	return i
 }
 
-fn (mut c Converter) for_in(s C.TSNode) int {
+fn (mut c Converter) for_in(s C.vt_node) int {
 	kids := c.kids(s)
 	op := field_of(kids, 'operator') or { return -1 }
 	is_of := op.kind == 'of'
@@ -1161,7 +1071,7 @@ fn (c Ctx) start_or(n int) int {
 	return if c.start >= 0 { c.start } else { n }
 }
 
-fn (mut c Converter) var_decl(s C.TSNode, ctx Ctx) int {
+fn (mut c Converter) var_decl(s C.vt_node, ctx Ctx) int {
 	kids := c.kids(s)
 	kinds := fields_of(kids, 'kind')
 	kind := if kinds.len > 0 { kinds.map(it.kind).join(' ') } else { 'var' }
@@ -1181,7 +1091,7 @@ fn (mut c Converter) var_decl(s C.TSNode, ctx Ctx) int {
 	return i
 }
 
-fn (mut c Converter) declarator(d C.TSNode) int {
+fn (mut c Converter) declarator(d C.vt_node) int {
 	kids := c.kids(d)
 	i := c.mkn(.variable_declarator, d)
 	c.pbool(i, .definite, has_tok(kids, '!'))

@@ -147,21 +147,21 @@ enum NdepRole {
 
 // NdepCheck is an Identifier, PrivateIdentifier or Super the rule checks.
 struct NdepCheck {
-	node   C.TSNode
+	node   C.vt_node
 	role   NdepRole
-	object C.TSNode // property roles: the ObjectExpression or ObjectPattern (node.parent.parent)
+	object C.vt_node // property roles: the ObjectExpression or ObjectPattern (node.parent.parent)
 	// Call-like (getCallLikeNode): the call, `new` or tagged template whose callee ends at the node,
 	// and whether the callee's symbol is the node's (the callee is the node or a member whose
 	// property it is) rather than undefined (a computed member).
-	call      ?C.TSNode
+	call      ?C.vt_node
 	from_node bool
 	meta_name bool // the `target` of `new.target` (`node` is the meta_property)
 }
 
 // NdepMember is a MemberExpression with a computed property.
 struct NdepMember {
-	object   C.TSNode
-	property C.TSNode
+	object   C.vt_node
+	property C.vt_node
 }
 
 // NdepState holds what the rule computes for a file.
@@ -179,7 +179,7 @@ mut:
 	declaration_names map[string]string
 }
 
-fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_deprecated(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	o := ndep_options(c.rule_options(no_deprecated))!
 	import_ranges := c.nodes_of_kind(root, c'import_statement').map([node_start(it), node_end(it)])
@@ -236,7 +236,7 @@ fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats 
 				if role == .skip {
 					continue
 				}
-				mut call := ?C.TSNode(none)
+				mut call := ?C.vt_node(none)
 				mut from_node := false
 				if role == .normal {
 					call, from_node = ndep_call_like(node)
@@ -383,9 +383,9 @@ fn (mut c Checker) lint_no_deprecated(root C.TSNode, abs_path string, mut stats 
 
 // NdepLiteralProperty is a Property of an object literal: its key, which may be computed.
 struct NdepLiteralProperty {
-	object   C.TSNode
-	property C.TSNode
-	key      C.TSNode
+	object   C.vt_node
+	property C.vt_node
+	key      C.vt_node
 	computed bool
 }
 
@@ -453,7 +453,7 @@ fn ndep_in_ranges(offset int, ranges [][]int) bool {
 
 // ndep_in_type_query: a member access inside `typeof`, which typescript-estree makes a
 // TSQualifiedName or a TSIndexedAccessType, not a MemberExpression.
-fn ndep_in_type_query(n C.TSNode) bool {
+fn ndep_in_type_query(n C.vt_node) bool {
 	mut node := n
 	for _ in 0 .. max_expression_depth {
 		parent := node_parent(node) or { return false }
@@ -474,7 +474,7 @@ fn ndep_in_type_query(n C.TSNode) bool {
 
 // ndep_call_kind is the SyntaxKind of a call-like node: CallExpression, TaggedTemplateExpression or
 // NewExpression.
-fn ndep_call_kind(call C.TSNode) u32 {
+fn ndep_call_kind(call C.vt_node) u32 {
 	match node_kind(call) {
 		'new_expression' { return ndep_kind_new_expression }
 		'jsx_self_closing_element' { return ndep_kind_jsx_self_closing_element }
@@ -518,7 +518,7 @@ fn (c &Checker) ndep_reported_name(chk NdepCheck) (string, string, Ident) {
 // the visitors' exceptions (an ExportAllDeclaration's name, the computed property of a member, the
 // local name of an ExportSpecifier) and the Property case of getDeprecationReason. Returns the
 // ObjectExpression or ObjectPattern for the Property roles.
-fn ndep_role(n C.TSNode) (NdepRole, C.TSNode) {
+fn ndep_role(n C.vt_node) (NdepRole, C.vt_node) {
 	kind := node_kind(n)
 	parent := node_parent(n) or { return NdepRole.skip, n }
 	match kind {
@@ -581,7 +581,7 @@ fn ndep_role(n C.TSNode) (NdepRole, C.TSNode) {
 }
 
 // ndep_member_name_role: a property_identifier or private_property_identifier, by its parent.
-fn ndep_member_name_role(n C.TSNode, parent C.TSNode) (NdepRole, C.TSNode) {
+fn ndep_member_name_role(n C.vt_node, parent C.vt_node) (NdepRole, C.vt_node) {
 	match node_kind(parent) {
 		'pair', 'method_definition', 'method_signature', 'property_signature', 'enum_assignment',
 		'enum_body', 'ambient_declaration' {
@@ -613,13 +613,13 @@ fn ndep_member_name_role(n C.TSNode, parent C.TSNode) (NdepRole, C.TSNode) {
 	}
 }
 
-fn ndep_is_abstract_field(field C.TSNode) bool {
+fn ndep_is_abstract_field(field C.vt_node) bool {
 	return children_of_kind(field, 'abstract').len > 0
 }
 
 // ndep_type_identifier_role: the names of classes, interfaces, type aliases and type parameters are
 // declarations; the other type_identifiers are references (TSTypeReference, TSQualifiedName…).
-fn ndep_type_identifier_role(n C.TSNode, parent C.TSNode) NdepRole {
+fn ndep_type_identifier_role(n C.vt_node, parent C.vt_node) NdepRole {
 	match node_kind(parent) {
 		'class', 'class_declaration', 'abstract_class_declaration', 'interface_declaration',
 		'type_alias_declaration', 'type_parameter' {
@@ -646,7 +646,7 @@ fn ndep_type_identifier_role(n C.TSNode, parent C.TSNode) NdepRole {
 }
 
 // ndep_identifier_role: an `identifier` by its ESTree parent (parentheses skipped).
-fn ndep_identifier_role(n C.TSNode) (NdepRole, C.TSNode) {
+fn ndep_identifier_role(n C.vt_node) (NdepRole, C.vt_node) {
 	parent := estree_parent(n) or { return NdepRole.skip, n }
 	is_field := fn [n, parent] (field string) bool {
 		value := node_field(parent, field) or { return false }
@@ -732,7 +732,7 @@ fn ndep_identifier_role(n C.TSNode) (NdepRole, C.TSNode) {
 // ndep_parameter_role: a parameter is a declaration (the parent isDeclaration sees is the function,
 // a TSParameterProperty or an AssignmentPattern), except in TSFunctionType, TSConstructorType,
 // TSCallSignatureDeclaration and TSConstructSignatureDeclaration.
-fn ndep_parameter_role(param C.TSNode) NdepRole {
+fn ndep_parameter_role(param C.vt_node) NdepRole {
 	if _ := node_field(param, 'value') {
 		return .skip
 	}
@@ -754,7 +754,7 @@ fn ndep_parameter_role(param C.TSNode) NdepRole {
 // ndep_computed_key_role: `[k]` as the key of a property or member is a declaration (the key of a
 // Property of an ObjectExpression, MethodDefinition, PropertyDefinition, TSPropertySignature,
 // TSMethodSignature), except in an ObjectPattern and in abstract members.
-fn ndep_computed_key_role(n C.TSNode, key C.TSNode) (NdepRole, C.TSNode) {
+fn ndep_computed_key_role(n C.vt_node, key C.vt_node) (NdepRole, C.vt_node) {
 	owner := node_parent(key) or { return NdepRole.skip, n }
 	match node_kind(owner) {
 		'pair_pattern' {
@@ -777,7 +777,7 @@ fn ndep_computed_key_role(n C.TSNode, key C.TSNode) (NdepRole, C.TSNode) {
 // ndep_call_like ports getCallLikeNode: the call, `new` or tagged template whose callee is the node,
 // or a chain of member expressions whose properties lead to it; and whether the callee's symbol is
 // the node's (false through a computed member, whose ElementAccessExpression has no symbol).
-fn ndep_call_like(n C.TSNode) (?C.TSNode, bool) {
+fn ndep_call_like(n C.vt_node) (?C.vt_node, bool) {
 	if node_kind(n) == 'jsx_identifier' {
 		// The name of a JSXOpeningElement (a self-closing element has one too in ESTree).
 		parent := node_parent(n) or { return none, false }
@@ -894,7 +894,7 @@ fn (mut c Checker) ndep_check_reason(chk NdepCheck, symbol SymbolResponse, mut s
 }
 
 // ndep_call_like_reason ports getCallLikeDeprecation.
-fn (mut c Checker) ndep_call_like_reason(call C.TSNode, symbol SymbolResponse, mut st NdepState) !NdepReason {
+fn (mut c Checker) ndep_call_like_reason(call C.vt_node, symbol SymbolResponse, mut st NdepState) !NdepReason {
 	aliased := if !symbol.is_null() && symbol.flags & ndep_symbol_flag_alias != 0 {
 		c.ndep_aliased(symbol, mut st)!
 	} else {
@@ -942,7 +942,7 @@ fn (mut c Checker) ndep_call_like_reason(call C.TSNode, symbol SymbolResponse, m
 }
 
 // ndep_signature_reason ports getJsDocDeprecation(checker.getResolvedSignature(call)).
-fn (mut c Checker) ndep_signature_reason(call C.TSNode, mut st NdepState) !NdepReason {
+fn (mut c Checker) ndep_signature_reason(call C.vt_node, mut st NdepState) !NdepReason {
 	signature := c.resolved_signature(call)!
 	if signature.declaration == '' {
 		return NdepReason{}

@@ -31,16 +31,16 @@ enum NutargOwner {
 // NutargCheck is a TSTypeParameterInstantiation the rule checks.
 struct NutargCheck {
 	owner        NutargOwner
-	last         C.TSNode // its last type argument, without parentheses
-	count        int      // how many type arguments it has
-	name         Span     // the type name, the heritage expression or the `new` callee
-	call         C.TSNode // the CallExpression or NewExpression
+	last         C.vt_node // its last type argument, without parentheses
+	count        int       // how many type arguments it has
+	name         Span      // the type name, the heritage expression or the `new` callee
+	call         C.vt_node // the CallExpression or NewExpression
 	is_new       bool
 	type_context bool // isInTypeContext: TSInterfaceHeritage, TSTypeReference or TSClassImplements
 	fix          Fix  // what removes the last type argument
 }
 
-fn (mut c Checker) lint_no_unnecessary_type_arguments(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unnecessary_type_arguments(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	mut checks := []NutargCheck{}
 	mut spans := []Span{}
@@ -75,7 +75,7 @@ fn (mut c Checker) lint_no_unnecessary_type_arguments(root C.TSNode, abs_path st
 // nutarg_check_of maps a type_arguments node to the TypeScript node that owns it, like
 // esTreeNodeToTSNodeMap; none for the owners getTypeParametersFromNode ignores (instantiation
 // expressions, type queries, import types, type assertions).
-fn (c &Checker) nutarg_check_of(node C.TSNode) ?NutargCheck {
+fn (c &Checker) nutarg_check_of(node C.vt_node) ?NutargCheck {
 	args := named_children(node)
 	if args.len == 0 {
 		return none

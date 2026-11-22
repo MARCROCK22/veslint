@@ -18,7 +18,7 @@ const nupcm_messages = {
 // reads and writes.
 struct NupcmMember {
 	name        string
-	name_node   C.TSNode
+	name_node   C.vt_node
 	is_private  bool // `private`
 	is_hash     bool // `#name`
 	is_accessor bool // a getter, a setter or an `accessor`
@@ -56,7 +56,7 @@ mut:
 
 const nupcm_class_kinds = ['class_declaration', 'abstract_class_declaration', 'class']
 
-fn (mut c Checker) lint_no_unused_private_class_members(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unused_private_class_members(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	tree := c.scope_tree(root)
@@ -100,11 +100,11 @@ fn (c &Checker) nupcm_report(m NupcmMember, mut findings []Finding) {
 // handlers of ClassDeclaration and ClassExpression, FunctionDeclaration, FunctionExpression and
 // StaticBlock (new scopes), MemberExpression, PrivateIdentifier, VariableDeclarator,
 // AssignmentExpression and AssignmentPattern; everything else visits its children.
-fn (mut c Checker) nupcm_visit(mut a NupcmAnalyzer, tree &ScopeTree, n C.TSNode, scope int) {
+fn (mut c Checker) nupcm_visit(mut a NupcmAnalyzer, tree &ScopeTree, n C.vt_node, scope int) {
 	kind := node_kind(n)
 	match kind {
 		'class_declaration', 'abstract_class_declaration', 'class' {
-			c.nupcm_visit_class(mut a, tree, n, []C.TSNode{}, scope)
+			c.nupcm_visit_class(mut a, tree, n, []C.vt_node{}, scope)
 		}
 		'export_statement' {
 			// `@dec export class C {}`: the decorators belong to the class.
@@ -173,7 +173,7 @@ fn (mut c Checker) nupcm_visit(mut a NupcmAnalyzer, tree &ScopeTree, n C.TSNode,
 	}
 }
 
-fn (mut c Checker) nupcm_visit_children(mut a NupcmAnalyzer, tree &ScopeTree, n C.TSNode, scope int) {
+fn (mut c Checker) nupcm_visit_children(mut a NupcmAnalyzer, tree &ScopeTree, n C.vt_node, scope int) {
 	for child in named_children(n) {
 		c.nupcm_visit(mut a, tree, child, scope)
 	}
@@ -181,7 +181,7 @@ fn (mut c Checker) nupcm_visit_children(mut a NupcmAnalyzer, tree &ScopeTree, n 
 
 // nupcm_visit_class ports visitClass and the constructor of ClassScope: the members of the class,
 // then its children in its own scope.
-fn (mut c Checker) nupcm_visit_class(mut a NupcmAnalyzer, tree &ScopeTree, n C.TSNode, outer_decorators []C.TSNode, scope int) {
+fn (mut c Checker) nupcm_visit_class(mut a NupcmAnalyzer, tree &ScopeTree, n C.vt_node, outer_decorators []C.vt_node, scope int) {
 	index := a.classes.len
 	mut class := NupcmClass{}
 	if name := node_field(n, 'name') {
@@ -209,7 +209,7 @@ fn (mut c Checker) nupcm_visit_class(mut a NupcmAnalyzer, tree &ScopeTree, n C.T
 // nupcm_collect_members ports the members of ClassScope: the parameter properties of the
 // constructor, the methods, accessors and fields (abstract or not) with a name that is not
 // computed (or a literal); not the static blocks nor the index signatures.
-fn (mut c Checker) nupcm_collect_members(mut a NupcmAnalyzer, class int, body C.TSNode) {
+fn (mut c Checker) nupcm_collect_members(mut a NupcmAnalyzer, class int, body C.vt_node) {
 	for member in named_children(body) {
 		kind := node_kind(member)
 		if kind !in ['method_definition', 'method_signature', 'abstract_method_signature',
@@ -249,7 +249,7 @@ fn (mut c Checker) nupcm_collect_members(mut a NupcmAnalyzer, class int, body C.
 
 // nupcm_add_parameter_property adds a TSParameterProperty (a parameter of the constructor with a
 // modifier) as an instance member.
-fn (mut c Checker) nupcm_add_parameter_property(mut a NupcmAnalyzer, class int, parameter C.TSNode) {
+fn (mut c Checker) nupcm_add_parameter_property(mut a NupcmAnalyzer, class int, parameter C.vt_node) {
 	if node_kind(parameter) !in ['required_parameter', 'optional_parameter'] {
 		return
 	}
@@ -273,7 +273,7 @@ fn (mut c Checker) nupcm_add_parameter_property(mut a NupcmAnalyzer, class int, 
 
 // nupcm_member_name ports extractNameForMember: the key, the name as written and the node of a
 // member name; none for a computed name that is not a literal.
-fn (c &Checker) nupcm_member_name(key C.TSNode) ?(string, string, C.TSNode) {
+fn (c &Checker) nupcm_member_name(key C.vt_node) ?(string, string, C.vt_node) {
 	match node_kind(key) {
 		'computed_property_name' {
 			inner := unwrap_parens(first_named(key)?)
@@ -297,7 +297,7 @@ fn (c &Checker) nupcm_member_name(key C.TSNode) ?(string, string, C.TSNode) {
 
 // nupcm_computed_name ports extractComputedName: `String(value)` of a literal ('null' for
 // `null`), or the raw text of a template without substitutions.
-fn (c &Checker) nupcm_computed_name(n C.TSNode) ?string {
+fn (c &Checker) nupcm_computed_name(n C.vt_node) ?string {
 	match node_kind(n) {
 		'template_string' {
 			if named_children(n).any(node_kind(it) == 'template_substitution') {
@@ -318,7 +318,7 @@ fn (c &Checker) nupcm_computed_name(n C.TSNode) ?string {
 // nupcm_intermediate creates the IntermediateScope of a function: `this` is the class for a class
 // method; for a function whose first parameter is `this: C`, the closest enclosing class named
 // C; otherwise there is none.
-fn (mut c Checker) nupcm_intermediate(mut a NupcmAnalyzer, n C.TSNode, upper int) int {
+fn (mut c Checker) nupcm_intermediate(mut a NupcmAnalyzer, n C.vt_node, upper int) int {
 	mut this_context := -1
 	mut is_static := false
 	parent := node_parent(n) or { n }
@@ -349,7 +349,7 @@ fn (mut c Checker) nupcm_intermediate(mut a NupcmAnalyzer, n C.TSNode, upper int
 
 // nupcm_annotation_reference is the name of the type annotation of a parameter when it is a
 // TSTypeReference whose name is an Identifier (`x: C` or `x: C<T>`).
-fn nupcm_annotation_reference(parameter C.TSNode) ?C.TSNode {
+fn nupcm_annotation_reference(parameter C.vt_node) ?C.vt_node {
 	annotation := node_field(parameter, 'type')?
 	t := unwrap_type_parens(first_named(annotation)?)
 	match node_kind(t) {
@@ -371,7 +371,7 @@ fn nupcm_annotation_reference(parameter C.TSNode) ?C.TSNode {
 // Property, the rest to its FunctionExpression, which is an IntermediateScope; the overloads
 // (TSEmptyBodyFunctionExpression) and abstract methods have none. The `#name` of a class method is
 // its definition, not a use; the one of an abstract method is visited.
-fn (mut c Checker) nupcm_visit_method(mut a NupcmAnalyzer, tree &ScopeTree, n C.TSNode, scope int) {
+fn (mut c Checker) nupcm_visit_method(mut a NupcmAnalyzer, tree &ScopeTree, n C.vt_node, scope int) {
 	key := node_field(n, 'name') or { n }
 	if node_kind(key) == 'computed_property_name' {
 		c.nupcm_visit_children(mut a, tree, key, scope)
@@ -398,7 +398,7 @@ fn (mut c Checker) nupcm_visit_method(mut a NupcmAnalyzer, tree &ScopeTree, n C.
 // function expression that is the value of a PropertyDefinition is an IntermediateScope whose
 // `this` is the class; the `#name` of a PropertyDefinition is its definition, and the one of the
 // others is visited as a use.
-fn (mut c Checker) nupcm_visit_field(mut a NupcmAnalyzer, tree &ScopeTree, n C.TSNode, scope int) {
+fn (mut c Checker) nupcm_visit_field(mut a NupcmAnalyzer, tree &ScopeTree, n C.vt_node, scope int) {
 	is_property := children_of_kind(n, 'accessor').len == 0
 		&& children_of_kind(n, 'abstract').len == 0
 	key := node_field(n, 'name') or { n }
@@ -450,7 +450,7 @@ fn (c &Checker) nupcm_class_named(a NupcmAnalyzer, scope int, name string) int {
 // nupcm_private_name ports the PrivateIdentifier visitor: the member of that `#name` of the closest
 // scope whose `this` has it (a class cannot have a static and an instance private member with the
 // same name, and an inner class cannot reach a private member of an outer one it shadows).
-fn (mut c Checker) nupcm_private_name(mut a NupcmAnalyzer, n C.TSNode, parent C.TSNode, scope int) {
+fn (mut c Checker) nupcm_private_name(mut a NupcmAnalyzer, n C.vt_node, parent C.vt_node, scope int) {
 	key := '#private@@${c.identifier_name(n)}'
 	mut s := scope
 	for s >= 0 {
@@ -468,7 +468,7 @@ fn (mut c Checker) nupcm_private_name(mut a NupcmAnalyzer, n C.TSNode, parent C.
 
 // nupcm_member_expression ports the MemberExpression visitor for a property that is not `#name`:
 // the member of the class the object is (getObjectClass) with that name.
-fn (mut c Checker) nupcm_member_expression(mut a NupcmAnalyzer, tree &ScopeTree, n C.TSNode, scope int) {
+fn (mut c Checker) nupcm_member_expression(mut a NupcmAnalyzer, tree &ScopeTree, n C.vt_node, scope int) {
 	property := member_property(n) or { return }
 	if node_kind(property) == 'private_property_identifier' {
 		return
@@ -491,7 +491,7 @@ fn (mut c Checker) nupcm_member_expression(mut a NupcmAnalyzer, tree &ScopeTree,
 // nupcm_object_class ports getObjectClass: `this`; the name of an enclosing class (static); a
 // variable whose first definition is `const self = this` never written again; or a parameter
 // typed `C` (instance) or `typeof C` (static), C an enclosing class.
-fn (c &Checker) nupcm_object_class(a NupcmAnalyzer, tree &ScopeTree, member C.TSNode, object C.TSNode, scope int) ?(int, bool) {
+fn (c &Checker) nupcm_object_class(a NupcmAnalyzer, tree &ScopeTree, member C.vt_node, object C.vt_node, scope int) ?(int, bool) {
 	if node_kind(object) == 'this' {
 		if a.scopes[scope].this_context < 0 {
 			return none
@@ -569,7 +569,7 @@ fn (c &Checker) nupcm_object_class(a NupcmAnalyzer, tree &ScopeTree, member C.TS
 // `n` creates (ScopeManager#acquire, which takes the first scope of a node: the
 // function-expression-name scope of a named function expression, the class field initializer
 // scope of a field value), the first scope upwards that declares `name`.
-fn nupcm_find_variable(t &ScopeTree, n C.TSNode, name string) int {
+fn nupcm_find_variable(t &ScopeTree, n C.vt_node, name string) int {
 	mut s := nupcm_nearest_scope(t, n)
 	for s >= 0 {
 		if v := t.set_get(s, name) {
@@ -582,9 +582,9 @@ fn nupcm_find_variable(t &ScopeTree, n C.TSNode, name string) int {
 
 // nupcm_nearest_scope ports findNearestScope: the first scope the node or its closest ancestor
 // creates (a method's name and decorators are outside its function).
-fn nupcm_nearest_scope(t &ScopeTree, n C.TSNode) int {
+fn nupcm_nearest_scope(t &ScopeTree, n C.vt_node) int {
 	mut node := n
-	mut from := ?C.TSNode(none)
+	mut from := ?C.vt_node(none)
 	for _ in 0 .. 100000 {
 		if node_kind(node) == 'decorator' {
 			if parent := node_parent(node) {
@@ -614,7 +614,7 @@ fn nupcm_nearest_scope(t &ScopeTree, n C.TSNode) int {
 
 // nupcm_this_destructuring ports handleThisDestructuring: an object pattern assigned from `this`
 // (`const { x } = this`) reads the members its keys name.
-fn (mut c Checker) nupcm_this_destructuring(mut a NupcmAnalyzer, n C.TSNode, pattern_field string, value_field string, scope int) {
+fn (mut c Checker) nupcm_this_destructuring(mut a NupcmAnalyzer, n C.vt_node, pattern_field string, value_field string, scope int) {
 	pattern := node_field(n, pattern_field) or { return }
 	value := node_field(n, value_field) or { return }
 	if node_kind(pattern) != 'object_pattern' || node_kind(unwrap_parens(value)) != 'this' {
@@ -661,7 +661,7 @@ fn (mut c Checker) nupcm_this_destructuring(mut a NupcmAnalyzer, n C.TSNode, pat
 
 // nupcm_es_parent is the ESTree parent of an expression (parentheses are not nodes); none for
 // the outermost element of an optional chain, whose parent is its ChainExpression.
-fn nupcm_es_parent(n C.TSNode) ?C.TSNode {
+fn nupcm_es_parent(n C.vt_node) ?C.vt_node {
 	if is_chain_element(n) && is_estree_chain_root(n) {
 		return none
 	}
@@ -672,7 +672,7 @@ fn nupcm_es_parent(n C.TSNode) ?C.TSNode {
 	return parent
 }
 
-fn nupcm_field_is(parent C.TSNode, field string, child C.TSNode) bool {
+fn nupcm_field_is(parent C.vt_node, field string, child C.vt_node) bool {
 	value := node_field(parent, field) or { return false }
 	return node_key(unwrap_parens(value)) == node_key(child)
 }
@@ -681,7 +681,7 @@ fn nupcm_field_is(parent C.TSNode, field string, child C.TSNode) bool {
 // the `#name`) writes the member when it is the target of `=`, of a for-in/of, of a default value,
 // of a compound assignment or an increment that is a statement of its own, or a target in an
 // object pattern, a rest element or an array pattern; otherwise it reads it.
-fn nupcm_count_reference(node C.TSNode, mut m NupcmMember) {
+fn nupcm_count_reference(node C.vt_node, mut m NupcmMember) {
 	grandparent := nupcm_es_parent(node) or {
 		m.reads++
 		return

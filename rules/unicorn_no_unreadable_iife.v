@@ -10,7 +10,7 @@ const unui_messages = {
 	'suggestion':         'Use a block statement body.'
 }
 
-fn (mut c Checker) lint_unicorn_no_unreadable_iife(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_unreadable_iife(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

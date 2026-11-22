@@ -37,20 +37,20 @@ fn at_options(options []json2.Any) !bool {
 
 struct AwaitThenableTargets {
 mut:
-	awaits      []C.TSNode // await_expression
-	aggregators []C.TSNode // calls to Promise.all and the like
-	loops       []C.TSNode // for await (… of …)
-	resources   []C.TSNode // the initializers of `await using` declarations
+	awaits      []C.vt_node // await_expression
+	aggregators []C.vt_node // calls to Promise.all and the like
+	loops       []C.vt_node // for await (… of …)
+	resources   []C.vt_node // the initializers of `await using` declarations
 	// the declaration of each of `resources`, and how many declarators it has
-	declarations []C.TSNode
+	declarations []C.vt_node
 	declarators  []int
 }
 
-fn (mut c Checker) lint_await_thenable(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_await_thenable(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut sw := time.new_stopwatch()
 	allow_mixed := at_options(c.rule_options(await_thenable))!
 	mut targets := AwaitThenableTargets{}
-	mut wanted := []C.TSNode{}
+	mut wanted := []C.vt_node{}
 	for node in c.nodes_of_kind(root, c'await_expression') {
 		// In ESTree parentheses are not nodes: the argument is what is inside them.
 		arg := unwrap_parens(first_named_child(node) or { continue })
@@ -209,7 +209,7 @@ fn (mut c Checker) check_await_thenable(targets AwaitThenableTargets, allow_mixe
 // at_remove_await is the suggestion that removes the first `await` token of a node (a `for
 // await` loop or an `await using` declaration), with what follows it up to the next token or
 // comment (getAwaitTokenRemovalRange).
-fn (mut c Checker) at_remove_await(node C.TSNode, message_id string) ![]Suggestion {
+fn (mut c Checker) at_remove_await(node C.vt_node, message_id string) ![]Suggestion {
 	for child in children(node) {
 		if node_kind(child) == 'await' {
 			_, suggestion := c.suggestion(message_id, map[string]string{}, [
@@ -224,7 +224,7 @@ fn (mut c Checker) at_remove_await(node C.TSNode, message_id string) ![]Suggesti
 // at_remove_await_expression is the removeAwait suggestion of an await expression: its `await`
 // goes, and the argument gets parentheses where it would start an arrow function body or an
 // expression statement with `{`, `class` or `function`.
-fn (mut c Checker) at_remove_await_expression(node C.TSNode, arg C.TSNode) ![]Suggestion {
+fn (mut c Checker) at_remove_await_expression(node C.vt_node, arg C.vt_node) ![]Suggestion {
 	for child in children(node) {
 		if node_kind(child) != 'await' {
 			continue
@@ -244,7 +244,7 @@ fn (mut c Checker) at_remove_await_expression(node C.TSNode, arg C.TSNode) ![]Su
 
 // at_has_maybe_awaitable_value ports hasMaybeAwaitableValue: some part of the constrained type of
 // the argument has values (getValueTypesOfArrayLike) of which some may be awaitable.
-fn (mut c Checker) at_has_maybe_awaitable_value(arg C.TSNode) !bool {
+fn (mut c Checker) at_has_maybe_awaitable_value(arg C.vt_node) !bool {
 	t := c.node_type(arg) or { return false }
 	at := c.symbol_location(arg)
 	for part in c.constituents(c.constrained(t)!)! {
@@ -259,7 +259,7 @@ fn (mut c Checker) at_has_maybe_awaitable_value(arg C.TSNode) !bool {
 
 // aggregator_callee returns the `X.all` of `X.all(…)` (or `X['all']`, or parenthesized), like
 // isPromiseAggregatorMethod before looking at the type of X.
-fn (mut c Checker) aggregator_callee(call C.TSNode) ?C.TSNode {
+fn (mut c Checker) aggregator_callee(call C.vt_node) ?C.vt_node {
 	mut callee := node_field(call, 'function') or { return none }
 	for node_kind(callee) == 'parenthesized_expression' {
 		callee = first_named_child(callee) or { return none }
@@ -272,7 +272,7 @@ fn (mut c Checker) aggregator_callee(call C.TSNode) ?C.TSNode {
 }
 
 // first_argument is the first argument of a call; tagged templates do not count.
-fn first_argument(call C.TSNode) ?C.TSNode {
+fn first_argument(call C.vt_node) ?C.vt_node {
 	args := node_field(call, 'arguments') or { return none }
 	if node_kind(args) != 'arguments' {
 		return none
@@ -283,7 +283,7 @@ fn first_argument(call C.TSNode) ?C.TSNode {
 
 // aggregator_inputs are the nodes whose type is checked: the elements of an array literal or the
 // whole argument.
-fn aggregator_inputs(arg C.TSNode) []C.TSNode {
+fn aggregator_inputs(arg C.vt_node) []C.vt_node {
 	if node_kind(arg) == 'array' {
 		return named_children(arg).map(unwrap_parens(it))
 	}
@@ -292,7 +292,7 @@ fn aggregator_inputs(arg C.TSNode) []C.TSNode {
 
 // is_for_await_of: `for await (… of …)`. The `await` is the one before the parenthesis, not that
 // of a header that declares with `await using`.
-fn is_for_await_of(loop C.TSNode) bool {
+fn is_for_await_of(loop C.vt_node) bool {
 	op := node_field(loop, 'operator') or { return false }
 	if node_kind(op) != 'of' {
 		return false

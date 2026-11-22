@@ -32,12 +32,12 @@ fn (mut c Conv) convert_generics(script int) {
 	c.generics_code = text
 	tree := parse_ts(c.parsers.ts, text) or { return }
 	root := treesitter.root_node(tree)
-	if C.ts_node_has_error(root) {
-		treesitter.tree_delete(tree)
+	if C.vt_node_has_error(root) {
+		treesitter.rows_free(tree)
 		return
 	}
 	es := convert_es(root, text) or {
-		treesitter.tree_delete(tree)
+		treesitter.rows_free(tree)
 		return
 	}
 	c.generics_tree = tree

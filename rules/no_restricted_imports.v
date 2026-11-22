@@ -218,7 +218,7 @@ fn nrim_is_or_are(names []string) string {
 	return if names.len == 1 { 'is' } else { 'are' }
 }
 
-fn (mut c Checker) lint_no_restricted_imports(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_restricted_imports(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut o := nrim_options(c.rule_options(no_restricted_imports))!
 	mut findings := []Finding{}
@@ -343,7 +343,7 @@ fn nrim_finding(position Ident, plain string, custom_id string, custom string, d
 }
 
 // nrim_check_paths ports checkRestrictedPathAndReport.
-fn (c &Checker) nrim_check_paths(node C.TSNode, source string, names NrimNames, type_only bool, o NrimOptions, mut findings []Finding) {
+fn (c &Checker) nrim_check_paths(node C.vt_node, source string, names NrimNames, type_only bool, o NrimOptions, mut findings []Finding) {
 	entries := o.paths[source] or { return }
 	for entry in entries {
 		custom := entry.message
@@ -411,7 +411,7 @@ fn (c &Checker) nrim_check_paths(node C.TSNode, source string, names NrimNames, 
 }
 
 // nrim_report_pattern ports reportPathForPatterns.
-fn (c &Checker) nrim_report_pattern(node C.TSNode, group NrimPattern, names NrimNames, source string, type_only bool, mut findings []Finding) {
+fn (c &Checker) nrim_report_pattern(node C.vt_node, group NrimPattern, names NrimNames, source string, type_only bool, mut findings []Finding) {
 	if group.allow_type_imports && type_only {
 		return
 	}

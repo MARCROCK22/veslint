@@ -9,7 +9,7 @@ const poho_messages = {
 	'useHasOwn': "Use 'Object.hasOwn()' instead of 'Object.prototype.hasOwnProperty.call()'."
 }
 
-fn (mut c Checker) lint_prefer_object_has_own(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_object_has_own(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['call_expression'], []) {
@@ -62,7 +62,7 @@ fn (mut c Checker) lint_prefer_object_has_own(root C.TSNode, abs_path string, mu
 
 // poho_left_hand_object ports hasLeftHandObject: `{}.hasOwnProperty`,
 // `Object.hasOwnProperty` or `Object.prototype.hasOwnProperty`.
-fn (mut c Checker) poho_left_hand_object(member C.TSNode) bool {
+fn (mut c Checker) poho_left_hand_object(member C.vt_node) bool {
 	object := unwrap_parens(node_field(member, 'object') or { return false })
 	if node_kind(object) == 'object' && !named_children(object).any(node_kind(it) != 'comment') {
 		return true

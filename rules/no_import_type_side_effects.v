@@ -10,7 +10,7 @@ const nitse_messages = {
 	'useTopLevelQualifier': 'TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.'
 }
 
-fn (mut c Checker) lint_no_import_type_side_effects(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_import_type_side_effects(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -50,8 +50,8 @@ fn (mut c Checker) lint_no_import_type_side_effects(root C.TSNode, abs_path stri
 
 // nitse_type_specifiers are the specifiers of an import when it has some and every one is an
 // ImportSpecifier with its own `type` (a default or namespace import is not one); none otherwise.
-fn nitse_type_specifiers(node C.TSNode) ?[]C.TSNode {
-	mut specifiers := []C.TSNode{}
+fn nitse_type_specifiers(node C.vt_node) ?[]C.vt_node {
+	mut specifiers := []C.vt_node{}
 	for clause in named_children(node) {
 		if node_kind(clause) != 'import_clause' {
 			continue

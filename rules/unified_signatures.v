@@ -39,7 +39,7 @@ struct UsParam {
 	end       int // where the ESTree parameter ends (its annotation or default value included)
 	optional  bool
 	has_type  bool
-	type_node C.TSNode // the type of the annotation, without parentheses
+	type_node C.vt_node // the type of the annotation, without parentheses
 	has_name  bool
 	name      string
 	is_this   bool // an Identifier named `this`
@@ -76,7 +76,7 @@ mut:
 	overloads       map[string][]UsSignature
 }
 
-fn (mut c Checker) lint_unified_signatures(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unified_signatures(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := us_options(c.rule_options(unified_signatures))!
 	mut findings := []Finding{}
@@ -195,10 +195,10 @@ fn (c &Checker) us_unified_type_text(p0 UsParam, p1 UsParam) string {
 	if !p0.has_type || !p1.has_type {
 		return c.us_union_member_text(if p0.has_type { p0.type_node } else { p1.type_node })
 	}
-	mut members := []C.TSNode{}
+	mut members := []C.vt_node{}
 	us_union_members(p0.type_node, mut members, 0)
 	us_union_members(p1.type_node, mut members, 0)
-	mut unique := []C.TSNode{}
+	mut unique := []C.vt_node{}
 	mut texts := []string{}
 	for member in members {
 		text := c.text(member)
@@ -212,7 +212,7 @@ fn (c &Checker) us_unified_type_text(p0 UsParam, p1 UsParam) string {
 
 // us_union_members ports getUnionMembers: the members of a union, through nested unions (and the
 // parentheses ESTree does not have).
-fn us_union_members(n C.TSNode, mut out []C.TSNode, depth int) {
+fn us_union_members(n C.vt_node, mut out []C.vt_node, depth int) {
 	node := unwrap_type_parens(n)
 	if node_kind(node) == 'union_type' && depth < max_expression_depth {
 		for member in named_children(node) {
@@ -224,7 +224,7 @@ fn us_union_members(n C.TSNode, mut out []C.TSNode, depth int) {
 }
 
 // us_union_member_text ports getUnionMemberText.
-fn (c &Checker) us_union_member_text(n C.TSNode) string {
+fn (c &Checker) us_union_member_text(n C.vt_node) string {
 	text := c.text(n)
 	return if node_kind(n) in ['conditional_type', 'constructor_type', 'function_type'] {
 		'(${text})'
@@ -238,7 +238,7 @@ fn (c &Checker) us_union_member_text(n C.TSNode) string {
 // (also inside an export), a method without body of a ClassDeclaration (not of a class
 // expression), or a member of an interface or a type literal; getters and setters are not
 // overloads. none for the others, which no scope takes.
-fn us_scope_of(node C.TSNode) ?(C.TSNode, ?C.TSNode) {
+fn us_scope_of(node C.vt_node) ?(C.vt_node, ?C.vt_node) {
 	if node_kind(node) == 'function_signature' {
 		mut parent := node_parent(node)?
 		if node_kind(parent) == 'ambient_declaration' {
@@ -278,7 +278,7 @@ fn us_scope_of(node C.TSNode) ?(C.TSNode, ?C.TSNode) {
 }
 
 // us_is_module_block: the body of a namespace, a module or `global` (a TSModuleBlock).
-fn us_is_module_block(n C.TSNode) bool {
+fn us_is_module_block(n C.vt_node) bool {
 	if node_kind(n) != 'statement_block' {
 		return false
 	}
@@ -289,7 +289,7 @@ fn us_is_module_block(n C.TSNode) bool {
 
 // us_is_class_declaration: a ClassDeclaration, also `export default class {}`, which tree-sitter
 // has as a class expression.
-fn us_is_class_declaration(n C.TSNode) bool {
+fn us_is_class_declaration(n C.vt_node) bool {
 	match node_kind(n) {
 		'class_declaration', 'abstract_class_declaration' {
 			return true
@@ -307,7 +307,7 @@ fn us_is_class_declaration(n C.TSNode) bool {
 // us_overload_key ports getOverloadKey: the name of a TSDeclareFunction (or the type of the
 // export of `export default function (): void;`), and for the others whether the key is computed
 // and whether it is static, followed by getOverloadInfo.
-fn (c &Checker) us_overload_key(node C.TSNode) ?string {
+fn (c &Checker) us_overload_key(node C.vt_node) ?string {
 	match node_kind(node) {
 		'function_signature' {
 			if name := node_field(node, 'name') {
@@ -344,7 +344,7 @@ fn (c &Checker) us_overload_key(node C.TSNode) ?string {
 
 // us_key_info is getOverloadInfo for a key: `private_identifier_<name>`, `identifier_<name>`, or
 // the `raw` of a Literal, which other expressions do not have ('undefined').
-fn (c &Checker) us_key_info(key C.TSNode, computed bool) string {
+fn (c &Checker) us_key_info(key C.vt_node, computed bool) string {
 	expression := if computed {
 		unwrap_parens(first_named(key) or { return 'undefined' })
 	} else {
@@ -362,7 +362,7 @@ fn (c &Checker) us_key_info(key C.TSNode, computed bool) string {
 
 // us_signature reads a SignatureDefinition (for a method, its value: a
 // TSEmptyBodyFunctionExpression, which starts at its parameters or its type parameters).
-fn (c &Checker) us_signature(node C.TSNode) UsSignature {
+fn (c &Checker) us_signature(node C.vt_node) UsSignature {
 	mut params := []UsParam{}
 	if list := node_field(node, 'parameters') {
 		for p in named_children(list) {
@@ -445,7 +445,7 @@ fn (c &Checker) us_signature(node C.TSNode) UsSignature {
 
 // us_signature_end is where the ESTree node of a signature ends: after the `;` (or, in a type, the
 // `,`) that ends it, which TypeScript's node includes.
-fn (mut c Checker) us_signature_end(node C.TSNode) int {
+fn (mut c Checker) us_signature_end(node C.vt_node) int {
 	end := c.es_end(node)
 	parent := node_parent(node) or { node }
 	if next := c.source_tokens(node).after(end, false) {
@@ -458,7 +458,7 @@ fn (mut c Checker) us_signature_end(node C.TSNode) int {
 }
 
 // us_param reads a parameter as typescript-estree converts it.
-fn (c &Checker) us_param(p C.TSNode) UsParam {
+fn (c &Checker) us_param(p C.vt_node) UsParam {
 	pattern := node_field(p, 'pattern') or { node_field(p, 'name') or { p } }
 	mut has_value := false
 	if _ := node_field(p, 'value') {
@@ -532,7 +532,7 @@ fn (c &Checker) us_param(p C.TSNode) UsParam {
 }
 
 // us_can_be_unified ports signaturesCanBeUnified.
-fn (mut c Checker) us_can_be_unified(root C.TSNode, a UsSignature, b UsSignature, o UsOptions, type_parameters []string) bool {
+fn (mut c Checker) us_can_be_unified(root C.vt_node, a UsSignature, b UsSignature, o UsOptions, type_parameters []string) bool {
 	if o.ignore_differently_named_parameters {
 		for i in 0 .. if a.params.len < b.params.len { a.params.len } else { b.params.len } {
 			pa := a.params[i]
@@ -556,7 +556,7 @@ fn (mut c Checker) us_can_be_unified(root C.TSNode, a UsSignature, b UsSignature
 
 // us_block_comment ports getBlockCommentForNode: the value of the last block comment right
 // before the node.
-fn (mut c Checker) us_block_comment(root C.TSNode, start int) (bool, string) {
+fn (mut c Checker) us_block_comment(root C.vt_node, start int) (bool, string) {
 	comments := c.source_tokens(root).comments_before(start)
 	for i := comments.len - 1; i >= 0; i-- {
 		if comments[i].kind == .block_comment {
@@ -608,7 +608,7 @@ fn (c &Checker) us_uses_type_parameter(s UsSignature, outer []string) bool {
 	return false
 }
 
-fn (c &Checker) us_contains_type_parameter(n C.TSNode, outer []string, depth int) bool {
+fn (c &Checker) us_contains_type_parameter(n C.vt_node, outer []string, depth int) bool {
 	if depth > max_expression_depth {
 		return false
 	}

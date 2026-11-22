@@ -11,7 +11,7 @@ const unuca_messages = {
 	'no-useless-collection-argument/suggestion': 'Remove the {{description}}'
 }
 
-fn (mut c Checker) lint_unicorn_no_useless_collection_argument(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_useless_collection_argument(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

@@ -2,7 +2,7 @@ module estree
 
 // JSX (the tsx dialect).
 
-fn (mut c Converter) jsx_element(n C.TSNode) int {
+fn (mut c Converter) jsx_element(n C.vt_node) int {
 	kids := c.kids(n)
 	if kind_of(n) == 'jsx_self_closing_element' {
 		i := c.mkn(.jsx_element, n)
@@ -39,7 +39,7 @@ fn (mut c Converter) jsx_element(n C.TSNode) int {
 	return i
 }
 
-fn (mut c Converter) jsx_opening(n C.TSNode, kids []Kid, self_closing bool) int {
+fn (mut c Converter) jsx_opening(n C.vt_node, kids []Kid, self_closing bool) int {
 	i := c.mkn(.jsx_opening_element, n)
 	mut attrs := []int{}
 	for k in kids {
@@ -98,7 +98,7 @@ fn (mut c Converter) jsx_opening(n C.TSNode, kids []Kid, self_closing bool) int 
 }
 
 // jsx_name converts the name of an attribute.
-fn (mut c Converter) jsx_name(n C.TSNode) int {
+fn (mut c Converter) jsx_name(n C.vt_node) int {
 	if kind_of(n) == 'jsx_namespace_name' {
 		return c.jsx_namespace(n)
 	}
@@ -107,7 +107,7 @@ fn (mut c Converter) jsx_name(n C.TSNode) int {
 	return i
 }
 
-fn (mut c Converter) jsx_namespace(n C.TSNode) int {
+fn (mut c Converter) jsx_namespace(n C.vt_node) int {
 	named := c.named(n)
 	i := c.mkn(.jsx_namespaced_name, n)
 	if named.len == 2 {
@@ -123,7 +123,7 @@ fn (mut c Converter) jsx_namespace(n C.TSNode) int {
 
 // jsx_tag_name converts the name of an element: JSXIdentifier, JSXMemberExpression or
 // JSXNamespacedName.
-fn (mut c Converter) jsx_tag_name(n C.TSNode) int {
+fn (mut c Converter) jsx_tag_name(n C.vt_node) int {
 	match kind_of(n) {
 		'jsx_member_expression', 'member_expression', 'nested_identifier' {
 			kids := c.kids(n)
@@ -146,7 +146,7 @@ fn (mut c Converter) jsx_tag_name(n C.TSNode) int {
 	}
 }
 
-fn (mut c Converter) jsx_expression(n C.TSNode) int {
+fn (mut c Converter) jsx_expression(n C.vt_node) int {
 	kids := c.kids(n)
 	inner := first_named(kids) or {
 		i := c.mkn(.jsx_expression_container, n)
@@ -168,7 +168,7 @@ fn (mut c Converter) jsx_expression(n C.TSNode) int {
 
 // jsx_children converts the children between the tags: the text between elements and
 // expressions is a JSXText, also when it is only white space.
-fn (mut c Converter) jsx_children(n C.TSNode, kids []Kid) []int {
+fn (mut c Converter) jsx_children(n C.vt_node, kids []Kid) []int {
 	mut out := []int{}
 	open := field_of(kids, 'open_tag') or { return out }
 	mut text_start := c.end(open.n)
@@ -200,7 +200,7 @@ fn (mut c Converter) jsx_children(n C.TSNode, kids []Kid) []int {
 	return out
 }
 
-fn (mut c Converter) jsx_text(n C.TSNode, start int, end int) int {
+fn (mut c Converter) jsx_text(n C.vt_node, start int, end int) int {
 	i := c.mk(.jsx_text, n, start, end)
 	i_raw := c.slice(start, end)
 	c.pstr(i, .raw, i_raw)

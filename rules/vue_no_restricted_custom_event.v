@@ -47,7 +47,7 @@ fn vnrce_options(options []json2.Any) ![]VnrceOption {
 	return out
 }
 
-fn (mut c Checker) lint_vue_no_restricted_custom_event(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_restricted_custom_event(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	// defineTemplateBodyVisitor gives no listener, not even the script's, outside a .vue file.
 	if !c.is_vue() {
 		return []

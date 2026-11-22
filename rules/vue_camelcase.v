@@ -244,7 +244,7 @@ fn vcamel_declared_variables(tree &ScopeTree, t &estree.EsTree, node int) []int 
 
 // vcamel_id_of is the ESTree Identifier of a variable's name or reference: of a shorthand
 // property, which has its key and its value on the same tree-sitter node, the value.
-fn (mut c Checker) vcamel_id_of(t &estree.EsTree, n C.TSNode) ?int {
+fn (mut c Checker) vcamel_id_of(t &estree.EsTree, n C.vt_node) ?int {
 	id := c.es_index_of(t, n)?
 	parent := vcamel_parent(t, id)
 	if parent >= 0 && t.typ(parent) == .property && vcamel_is(t, parent, .key, id) {
@@ -263,7 +263,7 @@ fn (mut c Checker) vcamel_id_of(t &estree.EsTree, n C.TSNode) ?int {
 	return id
 }
 
-fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_camelcase_base(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	o := vcamel_options(c.rule_options(vue_wrap_camelcase))!
 	t := c.es_tree(root, abs_path) or { return []Finding{} }
 	mut x := VcamelCtx{
@@ -338,7 +338,7 @@ fn (mut c Checker) lint_camelcase_base(root C.TSNode, abs_path string, mut stats
 
 // vcamel_program ports the `Program` listener as it runs on the template: on the global scope of
 // the script (its globals without declarations and the references that resolve to nothing).
-fn (mut c Checker) vcamel_program(root C.TSNode, abs_path string) ![]Finding {
+fn (mut c Checker) vcamel_program(root C.vt_node, abs_path string) ![]Finding {
 	o := vcamel_options(c.rule_options(vue_camelcase))!
 	// Every name it reports has a `_`: a script without one needs no scope tree.
 	if !c.vue.doc.script.code.contains('_') {

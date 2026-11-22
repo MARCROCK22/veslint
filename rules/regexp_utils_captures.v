@@ -170,7 +170,7 @@ const rx_object_prototype_names = ['constructor', 'hasOwnProperty', 'isPrototype
 	'__lookupGetter__', '__lookupSetter__']
 
 // rx_capturing_group_references ports getCapturingGroupReferences of the RegExpContext.
-fn (mut c Checker) rx_capturing_group_references(root C.TSNode, t &estree.EsTree, abs_path string, re &RxRegExp, strict_types bool) []RxCgRef {
+fn (mut c Checker) rx_capturing_group_references(root C.vt_node, t &estree.EsTree, abs_path string, re &RxRegExp, strict_types bool) []RxCgRef {
 	ctx := RxCgCtx{
 		flags:    re.flags
 		count:    rx_capturing_groups(&re.ast).len
@@ -193,7 +193,7 @@ fn (mut c Checker) rx_capturing_group_references(root C.TSNode, t &estree.EsTree
 	return out
 }
 
-fn (mut c Checker) rxcg_is_string(root C.TSNode, t &estree.EsTree, ctx RxCgCtx, node int) bool {
+fn (mut c Checker) rxcg_is_string(root C.vt_node, t &estree.EsTree, ctx RxCgCtx, node int) bool {
 	return if ctx.strict {
 		c.rx_is_string(root, t, ctx.abs_path, node)
 	} else {
@@ -201,7 +201,7 @@ fn (mut c Checker) rxcg_is_string(root C.TSNode, t &estree.EsTree, ctx RxCgCtx, 
 	}
 }
 
-fn (mut c Checker) rxcg_for_argument(root C.TSNode, t &estree.EsTree, call int, argument int, ctx RxCgCtx) []RxCgRef {
+fn (mut c Checker) rxcg_for_argument(root C.vt_node, t &estree.EsTree, call int, argument int, ctx RxCgCtx) []RxCgRef {
 	methods := {
 		'match':      1
 		'search':     1
@@ -254,7 +254,7 @@ fn (mut c Checker) rxcg_for_argument(root C.TSNode, t &estree.EsTree, call int, 
 	}
 }
 
-fn (mut c Checker) rxcg_for_member(root C.TSNode, t &estree.EsTree, member int, object int, ctx RxCgCtx) []RxCgRef {
+fn (mut c Checker) rxcg_for_member(root C.vt_node, t &estree.EsTree, member int, object int, ctx RxCgCtx) []RxCgRef {
 	parent := rxcg_call_of_callee(t, member)
 	if parent < 0 || !rx_is_known_method_call(t, parent, {
 		'test': 1
@@ -281,7 +281,7 @@ fn (mut c Checker) rxcg_for_member(root C.TSNode, t &estree.EsTree, member int, 
 	return out
 }
 
-fn (mut c Checker) rxcg_for_string_match(root C.TSNode, t &estree.EsTree, call int, argument int, ctx RxCgCtx) []RxCgRef {
+fn (mut c Checker) rxcg_for_string_match(root C.vt_node, t &estree.EsTree, call int, argument int, ctx RxCgCtx) []RxCgRef {
 	if ctx.flags.global {
 		return [RxCgRef{
 			typ:  .without_ref
@@ -300,7 +300,7 @@ fn (mut c Checker) rxcg_for_string_match(root C.TSNode, t &estree.EsTree, call i
 	return out
 }
 
-fn (mut c Checker) rxcg_for_string_replace(root C.TSNode, t &estree.EsTree, call int, argument int, ctx RxCgCtx, on string) []RxCgRef {
+fn (mut c Checker) rxcg_for_string_replace(root C.vt_node, t &estree.EsTree, call int, argument int, ctx RxCgCtx, on string) []RxCgRef {
 	args := t.list(call, .arguments) or { []int{} }
 	replacement := if args.len > 1 { args[1] } else { -1 }
 	if replacement >= 0 && t.typ(replacement) in [.function_expression, .arrow_function_expression] {
@@ -367,7 +367,7 @@ fn rxcg_replacement_ref(element RxReplacement, with_range bool) RxCgRef {
 	}
 }
 
-fn (mut c Checker) rxcg_for_string_match_all(root C.TSNode, t &estree.EsTree, call int, argument int, ctx RxCgCtx) []RxCgRef {
+fn (mut c Checker) rxcg_for_string_match_all(root C.vt_node, t &estree.EsTree, call int, argument int, ctx RxCgCtx) []RxCgRef {
 	mut out := []RxCgRef{}
 	mut use_ret := false
 	for iteration_ref in c.rx_property_references(root, t, call) {
@@ -419,7 +419,7 @@ fn (mut c Checker) rxcg_for_string_match_all(root C.TSNode, t &estree.EsTree, ca
 	return out
 }
 
-fn (mut c Checker) rxcg_for_exec_result(root C.TSNode, t &estree.EsTree, call int) []RxCgRef {
+fn (mut c Checker) rxcg_for_exec_result(root C.vt_node, t &estree.EsTree, call int) []RxCgRef {
 	mut out := []RxCgRef{}
 	for ref in c.rx_property_references(root, t, call) {
 		for cg_ref in c.rxcg_for_match_array_reference(root, t, ref) {
@@ -432,7 +432,7 @@ fn (mut c Checker) rxcg_for_exec_result(root C.TSNode, t &estree.EsTree, call in
 	return out
 }
 
-fn (mut c Checker) rxcg_for_replacer_function(root C.TSNode, t &estree.EsTree, f int, argument int, on string, ctx RxCgCtx) []RxCgRef {
+fn (mut c Checker) rxcg_for_replacer_function(root C.vt_node, t &estree.EsTree, f int, argument int, on string, ctx RxCgCtx) []RxCgRef {
 	params := t.list(f, .params) or { []int{} }
 	if params.len < 2 && !params.any(t.typ(it) == .rest_element) {
 		return [RxCgRef{
@@ -494,7 +494,7 @@ fn (mut c Checker) rxcg_for_replacer_function(root C.TSNode, t &estree.EsTree, f
 	return out
 }
 
-fn (mut c Checker) rxcg_for_match_array_reference(root C.TSNode, t &estree.EsTree, ref RxPropRef) []RxCgRef {
+fn (mut c Checker) rxcg_for_match_array_reference(root C.vt_node, t &estree.EsTree, ref RxPropRef) []RxCgRef {
 	if ref.kind !in [.member, .destructuring] {
 		return [RxCgRef{
 			typ:      .unknown_ref
@@ -537,7 +537,7 @@ fn (mut c Checker) rxcg_for_match_array_reference(root C.TSNode, t &estree.EsTre
 	return out
 }
 
-fn (mut c Checker) rxcg_for_array_method_of_match_all(root C.TSNode, t &estree.EsTree, call int, method string, argument int, ctx RxCgCtx) []RxCgRef {
+fn (mut c Checker) rxcg_for_array_method_of_match_all(root C.vt_node, t &estree.EsTree, call int, method string, argument int, ctx RxCgCtx) []RxCgRef {
 	array_method := rx_well_known_array_methods[method] or { RxArrayMethod{} }
 	mut out := []RxCgRef{}
 	args := t.list(call, .arguments) or { []int{} }

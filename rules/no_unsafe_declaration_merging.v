@@ -10,7 +10,7 @@ const nudm_messages = {
 	'unsafeMerging': 'Unsafe declaration merging between classes and interfaces.'
 }
 
-fn (mut c Checker) lint_no_unsafe_declaration_merging(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_declaration_merging(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -47,7 +47,7 @@ fn (mut c Checker) lint_no_unsafe_declaration_merging(root C.TSNode, abs_path st
 
 // nudm_check ports checkUnsafeDeclaration: the variable the name has in `scope` has several
 // definitions and one of them is a declaration of the unsafe kind.
-fn (c &Checker) nudm_check(tree &ScopeTree, scope int, id C.TSNode, unsafe_kinds []string, mut findings []Finding) {
+fn (c &Checker) nudm_check(tree &ScopeTree, scope int, id C.vt_node, unsafe_kinds []string, mut findings []Finding) {
 	variable := tree.own_variable(scope, c.identifier_name(id))
 	if variable < 0 {
 		return

@@ -9,7 +9,7 @@ const dcl_messages = {
 	'notLast': 'Default clause should be the last clause.'
 }
 
-fn (mut c Checker) lint_default_case_last(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_default_case_last(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['switch_statement'], []) {

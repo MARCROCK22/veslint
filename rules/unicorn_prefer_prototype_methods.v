@@ -14,7 +14,7 @@ const uppm_messages = {
 const uppm_object_prototype_methods = ['hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable',
 	'toLocaleString', 'toString', 'valueOf']
 
-fn (mut c Checker) lint_unicorn_prefer_prototype_methods(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_prototype_methods(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }

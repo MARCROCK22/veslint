@@ -10,7 +10,7 @@ const peo_messages = {
 	'useExponentiation': "Use the '**' operator instead of 'Math.pow'."
 }
 
-fn (mut c Checker) lint_prefer_exponentiation_operator(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_exponentiation_operator(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	trace := {
@@ -37,7 +37,7 @@ fn (mut c Checker) lint_prefer_exponentiation_operator(root C.TSNode, abs_path s
 }
 
 // peo_fix writes `base**exponent`, with the parentheses each part and the whole need.
-fn (mut c Checker) peo_fix(root C.TSNode, call C.TSNode) (bool, Fix) {
+fn (mut c Checker) peo_fix(root C.vt_node, call C.vt_node) (bool, Fix) {
 	args := (call_arguments(call) or { return false, Fix{} }).filter(node_kind(it) != 'comment')
 	tokens := c.source_tokens(root)
 	end := c.es_end(call)
@@ -106,7 +106,7 @@ fn (mut c Checker) peo_fix(root C.TSNode, call C.TSNode) (bool, Fix) {
 
 // peo_needs_parens ports doesExponentiationExpressionNeedParens: the parent binds stronger than
 // `**`, except where the expression is an operand on its own.
-fn (mut c Checker) peo_needs_parens(call C.TSNode) bool {
+fn (mut c Checker) peo_needs_parens(call C.vt_node) bool {
 	parent := cti_estree_parent(call) or { return false }
 	key := node_key(call)
 	mut needs := false
@@ -141,7 +141,7 @@ fn (mut c Checker) peo_needs_parens(call C.TSNode) bool {
 }
 
 // peo_is_expression: the ESTree type of the node ends with "Expression".
-fn peo_is_expression(n C.TSNode) bool {
+fn peo_is_expression(n C.vt_node) bool {
 	return node_kind(n) in ['binary_expression', 'unary_expression', 'update_expression',
 		'await_expression', 'yield_expression', 'call_expression', 'new_expression', 'member_expression',
 		'subscript_expression', 'ternary_expression', 'assignment_expression',

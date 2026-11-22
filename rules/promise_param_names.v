@@ -46,7 +46,7 @@ fn prm_param_names_options(options []json2.Any) !PrmParamNames {
 	}
 }
 
-fn (mut c Checker) lint_promise_param_names(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_promise_param_names(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := prm_param_names_options(c.rule_options(promise_param_names))!
 	mut findings := []Finding{}

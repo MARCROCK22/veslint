@@ -35,7 +35,7 @@ fn sscs_options(given []json2.Any) !SscsOptions {
 	}
 }
 
-fn (mut c Checker) lint_stylistic_switch_colon_spacing(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_stylistic_switch_colon_spacing(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := sscs_options(c.rule_options(stylistic_switch_colon_spacing))!

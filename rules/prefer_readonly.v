@@ -43,8 +43,8 @@ fn prd_options(options []json2.Any) !PrdOptions {
 
 // PrdMember is a private member that is not readonly: a class property or a parameter property.
 struct PrdMember {
-	node         C.TSNode
-	name_node    C.TSNode
+	node         C.vt_node
+	name_node    C.vt_node
 	name         string // getMemberName
 	is_static    bool
 	is_parameter bool
@@ -53,13 +53,13 @@ struct PrdMember {
 // PrdAccess is a modification of a member by name: what it is a member of and whether it is
 // directly in the constructor.
 struct PrdAccess {
-	object         C.TSNode
+	object         C.vt_node
 	name           string
 	in_constructor bool
 }
 
 struct PrdClass {
-	node C.TSNode
+	node C.vt_node
 	span Span
 mut:
 	members  []PrdMember
@@ -76,17 +76,17 @@ enum PrdRelation {
 // PrdReport is a member to report, with what its type annotation needs.
 struct PrdReport {
 	member      PrdMember
-	scope_node  C.TSNode
+	scope_node  C.vt_node
 	violating   TypeResponse
 	initializer TypeResponse
 	// The type annotation is asked for: the member is a property without one, with a value, an
 	// identifier for a name and modifications in the constructor.
 	wants_annotation bool
 mut:
-	enum_node ?C.TSNode // the declaration the name of the type resolves to, if it is an enum
+	enum_node ?C.vt_node // the declaration the name of the type resolves to, if it is an enum
 }
 
-fn (mut c Checker) lint_prefer_readonly(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_readonly(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := prd_options(c.rule_options(prefer_readonly))!
 	mut sw := time.new_stopwatch()
 	mut classes := []PrdClass{}
@@ -138,7 +138,7 @@ fn (mut c Checker) lint_prefer_readonly(root C.TSNode, abs_path string, mut stat
 			name := c.prd_modified_name(access) or { continue }
 			// The class the access is in, and whether it is directly in its constructor.
 			mut owner := -1
-			mut first_function := ?C.TSNode(none)
+			mut first_function := ?C.vt_node(none)
 			mut node := access
 			for {
 				node = node_parent(node) or { break }
@@ -290,7 +290,7 @@ fn (mut c Checker) lint_prefer_readonly(root C.TSNode, abs_path string, mut stat
 // prd_declared ports addDeclaredVariable for a class property or a parameter of a constructor:
 // it is private (or its name is a `#name`), neither readonly nor an accessor, and has a name
 // getMemberName knows. A parameter must have the `private` modifier.
-fn (c &Checker) prd_declared(node C.TSNode, is_parameter bool, options PrdOptions) ?PrdMember {
+fn (c &Checker) prd_declared(node C.vt_node, is_parameter bool, options PrdOptions) ?PrdMember {
 	name_node := node_field(node, if is_parameter { 'pattern' } else { 'name' })?
 	mut is_private := false
 	for child in children(node) {
@@ -326,7 +326,7 @@ fn (c &Checker) prd_declared(node C.TSNode, is_parameter bool, options PrdOption
 
 // prd_member_name ports getMemberName: the text of an identifier, of a `#name`, of a string or of
 // a number; for a computed name, that of a number or the source of `Symbol.something`.
-fn (c &Checker) prd_member_name(name C.TSNode) ?string {
+fn (c &Checker) prd_member_name(name C.vt_node) ?string {
 	match node_kind(name) {
 		'property_identifier', 'identifier' {
 			return c.identifier_name(name)
@@ -362,7 +362,7 @@ fn (c &Checker) prd_member_name(name C.TSNode) ?string {
 // prd_modified_name is the name of the member an access modifies, if it does (the MemberExpression
 // handler): for `a.b`, by the shape of its parents; for `a['b']`, only as the target of an
 // assignment, with its static name.
-fn (mut c Checker) prd_modified_name(access C.TSNode) ?string {
+fn (mut c Checker) prd_modified_name(access C.vt_node) ?string {
 	parent := node_parent(access)?
 	parent_kind := node_kind(parent)
 	if node_kind(access) == 'subscript_expression' {
@@ -406,7 +406,7 @@ fn (mut c Checker) prd_modified_name(access C.TSNode) ?string {
 
 // prd_is_destructuring_assignment ports isDestructuringAssignment: from the parent of the access,
 // up through array and object literals and their spreads, to a `=` whose left side that is.
-fn prd_is_destructuring_assignment(access C.TSNode) bool {
+fn prd_is_destructuring_assignment(access C.vt_node) bool {
 	mut current := node_parent(access) or { return false }
 	for {
 		parent := node_parent(current) or { break }
@@ -526,7 +526,7 @@ fn (mut c Checker) prd_readonly_position(member PrdMember) int {
 
 // prd_enum_in_scope: the declaration of the first type definition of the variable called `name`
 // in the scope of the member, when it is an enum.
-fn (mut c Checker) prd_enum_in_scope(member C.TSNode, name string) ?C.TSNode {
+fn (mut c Checker) prd_enum_in_scope(member C.vt_node, name string) ?C.vt_node {
 	mut root := member
 	for {
 		root = node_parent(root) or { break }
@@ -549,7 +549,7 @@ fn (mut c Checker) prd_enum_in_scope(member C.TSNode, name string) ?C.TSNode {
 
 // prd_declaration_span is the TypeScript node of a declaration: `export` and `declare` are its
 // modifiers.
-fn prd_declaration_span(declaration C.TSNode) Span {
+fn prd_declaration_span(declaration C.vt_node) Span {
 	mut first := declaration
 	for {
 		parent := node_parent(first) or { break }

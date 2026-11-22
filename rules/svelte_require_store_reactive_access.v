@@ -19,7 +19,7 @@ struct SvrsraContext {
 	b        SvscBridge
 	typed    bool
 	abs_path string
-	root     C.TSNode
+	root     C.vt_node
 mut:
 	store_variables map[int]bool // ES checker: lint variable -> declared with `const`
 	creator_calls   map[int]bool // view nodes of the calls of writable/readable/derived
@@ -186,7 +186,7 @@ fn (c &Checker) svrsra_element_of(attr int) int {
 	return if start_tag >= 0 { c.svelte.doc.nodes[start_tag].parent } else { -1 }
 }
 
-fn (mut c Checker) lint_svelte_require_store_reactive_access(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_require_store_reactive_access(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_svelte() {
 		return []
 	}

@@ -9,7 +9,7 @@ const pfo_messages = {
 	'preferForOf': 'Expected a `for-of` loop instead of a `for` loop with this simple iteration.'
 }
 
-fn (mut c Checker) lint_prefer_for_of(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_prefer_for_of(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	mut checked := 0
@@ -59,7 +59,7 @@ fn (mut c Checker) lint_prefer_for_of(root C.TSNode, abs_path string, mut stats 
 }
 
 // pfo_is_literal ports isLiteral: a numeric Literal (not a BigInt) whose value is `value`.
-fn (c &Checker) pfo_is_literal(n C.TSNode, value string) bool {
+fn (c &Checker) pfo_is_literal(n C.vt_node, value string) bool {
 	node := unwrap_parens(n)
 	if node_kind(node) != 'number' {
 		return false
@@ -72,14 +72,14 @@ fn (c &Checker) pfo_is_literal(n C.TSNode, value string) bool {
 }
 
 // pfo_is_identifier ports isMatchingIdentifier.
-fn (c &Checker) pfo_is_identifier(n C.TSNode, name string) bool {
+fn (c &Checker) pfo_is_identifier(n C.vt_node, name string) bool {
 	node := unwrap_parens(n)
 	return estree_type(node) == 'Identifier' && c.identifier_name(node) == name
 }
 
 // pfo_less_than_length ports isLessThanLengthExpression: `i < x.length` (also `x[length]`) gives
 // `x`; an optional chain (`x?.length`) is a ChainExpression, not a MemberExpression.
-fn (c &Checker) pfo_less_than_length(n C.TSNode, name string) ?C.TSNode {
+fn (c &Checker) pfo_less_than_length(n C.vt_node, name string) ?C.vt_node {
 	node := unwrap_parens(n)
 	if node_kind(node) != 'binary_expression' || operator_of(node) != '<' {
 		return none
@@ -98,7 +98,7 @@ fn (c &Checker) pfo_less_than_length(n C.TSNode, name string) ?C.TSNode {
 }
 
 // pfo_is_increment ports isIncrement: `i++`, `++i`, `i += 1`, `i = i + 1` or `i = 1 + i`.
-fn (c &Checker) pfo_is_increment(n C.TSNode, name string) bool {
+fn (c &Checker) pfo_is_increment(n C.vt_node, name string) bool {
 	node := unwrap_parens(n)
 	match node_kind(node) {
 		'update_expression' {
@@ -132,7 +132,7 @@ fn (c &Checker) pfo_is_increment(n C.TSNode, name string) bool {
 // pfo_only_used_with_array ports isIndexOnlyUsedWithArray: inside the body, every reference to
 // the index is the property of a member access of the same array (by text, not `this`) that is
 // not assigned to.
-fn (c &Checker) pfo_only_used_with_array(tree &ScopeTree, body C.TSNode, index int, array C.TSNode) bool {
+fn (c &Checker) pfo_only_used_with_array(tree &ScopeTree, body C.vt_node, index int, array C.vt_node) bool {
 	array_text := c.text(array)
 	for r in tree.variables[index].references {
 		id := tree.references[r].identifier
@@ -154,7 +154,7 @@ fn (c &Checker) pfo_only_used_with_array(tree &ScopeTree, body C.TSNode, index i
 }
 
 // pfo_is_assignee ports isAssignee (util/isAssignee): the node is written by its parent.
-fn pfo_is_assignee(node C.TSNode) bool {
+fn pfo_is_assignee(node C.vt_node) bool {
 	// The outermost element of an optional chain has a ChainExpression as its parent.
 	if is_chain_element(node) && is_estree_chain_root(node) {
 		return false
@@ -194,7 +194,7 @@ fn pfo_is_assignee(node C.TSNode) bool {
 }
 
 // pfo_field_is: the field of `parent`, without parentheses, is `node`.
-fn pfo_field_is(parent C.TSNode, field string, node C.TSNode) bool {
+fn pfo_field_is(parent C.vt_node, field string, node C.vt_node) bool {
 	value := node_field(parent, field) or { return false }
 	return node_key(unwrap_parens(value)) == node_key(node)
 }

@@ -12,7 +12,7 @@ const vue_no_deprecated_destroyed_lifecycle_messages = {
 	'deprecatedBeforeDestroy': 'The `beforeDestroy` lifecycle hook is deprecated. Use `beforeUnmount` instead.'
 }
 
-fn (mut c Checker) lint_vue_no_deprecated_destroyed_lifecycle(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_deprecated_destroyed_lifecycle(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	s := c.vue_script(root, abs_path) or { return findings }

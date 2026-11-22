@@ -57,7 +57,7 @@ fn ema_options(options []json2.Any) !EmaOptions {
 	}
 }
 
-fn (mut c Checker) lint_explicit_member_accessibility(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_explicit_member_accessibility(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := ema_options(c.rule_options(explicit_member_accessibility))!
 	mut findings := []Finding{}

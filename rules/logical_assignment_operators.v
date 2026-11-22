@@ -40,7 +40,7 @@ fn lao_options(options []json2.Any) !LaoOptions {
 	}
 }
 
-fn (mut c Checker) lint_logical_assignment_operators(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_logical_assignment_operators(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	o := lao_options(c.rule_options(logical_assignment_operators))!
 	mut findings := []Finding{}
@@ -74,7 +74,7 @@ fn (mut c Checker) lint_logical_assignment_operators(root C.TSNode, abs_path str
 }
 
 // lao_is_strict: the global scope is strict (a "use strict" directive at the start of the file).
-fn (c &Checker) lao_is_strict(root C.TSNode) bool {
+fn (c &Checker) lao_is_strict(root C.vt_node) bool {
 	for statement in named_children(root) {
 		if node_kind(statement) == 'comment' {
 			continue
@@ -95,7 +95,7 @@ fn (c &Checker) lao_is_strict(root C.TSNode) bool {
 }
 
 // lao_inside_with ports isInsideWithBlock: the node is inside the body of a `with`.
-fn lao_inside_with(n C.TSNode) bool {
+fn lao_inside_with(n C.vt_node) bool {
 	mut current := n
 	for {
 		parent := node_parent(current) or { return false }
@@ -111,19 +111,19 @@ fn lao_inside_with(n C.TSNode) bool {
 	return false
 }
 
-fn lao_is_identifier(n C.TSNode) bool {
+fn lao_is_identifier(n C.vt_node) bool {
 	return node_kind(n) in ['identifier', 'undefined']
 }
 
 // lao_cannot_be_getter ports cannotBeGetter: an identifier outside a `with`.
-fn lao_cannot_be_getter(n C.TSNode, strict bool) bool {
+fn lao_cannot_be_getter(n C.vt_node, strict bool) bool {
 	node := unwrap_parens(n)
 	return lao_is_identifier(node) && (strict || !lao_inside_with(node))
 }
 
 // lao_accesses_single_property ports accessesSingleProperty: one property of an identifier,
 // `this` or `super`.
-fn lao_accesses_single_property(n C.TSNode, strict bool) bool {
+fn lao_accesses_single_property(n C.vt_node, strict bool) bool {
 	node := unwrap_parens(n)
 	if !strict && lao_inside_with(node) {
 		return lao_is_identifier(node)
@@ -143,7 +143,7 @@ fn lao_accesses_single_property(n C.TSNode, strict bool) bool {
 }
 
 // lao_is_reference ports isReference: an identifier other than `undefined`, or a member.
-fn (c &Checker) lao_is_reference(n C.TSNode) bool {
+fn (c &Checker) lao_is_reference(n C.vt_node) bool {
 	node := unwrap_parens(n)
 	return (lao_is_identifier(node) && c.identifier_name(node) != 'undefined')
 		|| estree_type(node) == 'MemberExpression'
@@ -151,7 +151,7 @@ fn (c &Checker) lao_is_reference(n C.TSNode) bool {
 
 // lao_report reports with the changes as a fix when `fixed`, as a suggestion otherwise; no
 // change when `fixes` is empty.
-fn (mut c Checker) lao_report(node C.TSNode, message_id string, suggestion_id string, operator string, fixes []Fix, fixed bool, mut findings []Finding) ! {
+fn (mut c Checker) lao_report(node C.vt_node, message_id string, suggestion_id string, operator string, fixes []Fix, fixed bool, mut findings []Finding) ! {
 	data := {
 		'operator': operator
 	}
@@ -180,7 +180,7 @@ fn (mut c Checker) lao_report(node C.TSNode, message_id string, suggestion_id st
 }
 
 // lao_operator_token is the first token with that text after the node.
-fn (mut c Checker) lao_operator_token(root C.TSNode, after C.TSNode, text string) ?SourceToken {
+fn (mut c Checker) lao_operator_token(root C.vt_node, after C.vt_node, text string) ?SourceToken {
 	tokens := c.source_tokens(root)
 	mut token := tokens.after(c.es_end(unwrap_parens(after)), false)?
 	for c.src[token.start..token.end] != text {
@@ -189,11 +189,11 @@ fn (mut c Checker) lao_operator_token(root C.TSNode, after C.TSNode, text string
 	return token
 }
 
-fn (mut c Checker) lao_has_comments(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) lao_has_comments(root C.vt_node, n C.vt_node) bool {
 	return c.source_tokens(root).comments_inside(node_start(n), c.es_end(n)).len > 0
 }
 
-fn (mut c Checker) lao_never(root C.TSNode, strict bool, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) lao_never(root C.vt_node, strict bool, node C.vt_node, mut findings []Finding) ! {
 	assignment_operator := operator_of(node)
 	if assignment_operator !in ['&&=', '||=', '??='] {
 		return
@@ -218,7 +218,7 @@ fn (mut c Checker) lao_never(root C.TSNode, strict bool, node C.TSNode, mut find
 		strict), mut findings)!
 }
 
-fn (mut c Checker) lao_assignment(root C.TSNode, strict bool, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) lao_assignment(root C.vt_node, strict bool, node C.vt_node, mut findings []Finding) ! {
 	left := node_field(node, 'left') or { return }
 	right := unwrap_parens(node_field(node, 'right') or { return })
 	if estree_binary_kind(right) != 'LogicalExpression' {
@@ -250,7 +250,7 @@ fn (mut c Checker) lao_assignment(root C.TSNode, strict bool, node C.TSNode, mut
 		strict), mut findings)!
 }
 
-fn (mut c Checker) lao_logical(root C.TSNode, strict bool, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) lao_logical(root C.vt_node, strict bool, node C.vt_node, mut findings []Finding) ! {
 	if estree_binary_kind(node) != 'LogicalExpression' {
 		return
 	}
@@ -287,12 +287,12 @@ fn (mut c Checker) lao_logical(root C.TSNode, strict bool, node C.TSNode, mut fi
 
 // LaoExistence is what getExistence finds in the test of an if: the reference and the operator.
 struct LaoExistence {
-	reference C.TSNode
+	reference C.vt_node
 	operator  string
 }
 
 // lao_is_undefined ports isUndefined: the global `undefined`, or `void 0`.
-fn (mut c Checker) lao_is_undefined(root C.TSNode, n C.TSNode) bool {
+fn (mut c Checker) lao_is_undefined(root C.vt_node, n C.vt_node) bool {
 	node := unwrap_parens(n)
 	if lao_is_identifier(node) && c.identifier_name(node) == 'undefined' {
 		return c.es_is_global_reference(root, node)
@@ -305,7 +305,7 @@ fn (mut c Checker) lao_is_undefined(root C.TSNode, n C.TSNode) bool {
 }
 
 // lao_existence ports getExistence.
-fn (mut c Checker) lao_existence(root C.TSNode, test C.TSNode) ?LaoExistence {
+fn (mut c Checker) lao_existence(root C.vt_node, test C.vt_node) ?LaoExistence {
 	expression := unwrap_parens(test)
 	negated := node_kind(expression) == 'unary_expression' && operator_of(expression) == '!'
 	base := if negated { unwrap_parens(node_field(expression, 'argument')?) } else { expression }
@@ -356,7 +356,7 @@ fn (mut c Checker) lao_existence(root C.TSNode, test C.TSNode) ?LaoExistence {
 	return none
 }
 
-fn (mut c Checker) lao_if(root C.TSNode, strict bool, node C.TSNode, mut findings []Finding) ! {
+fn (mut c Checker) lao_if(root C.vt_node, strict bool, node C.vt_node, mut findings []Finding) ! {
 	if _ := node_field(node, 'alternative') {
 		return
 	}

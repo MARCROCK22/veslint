@@ -20,7 +20,7 @@ fn snucn_options(options []json2.Any) ![]SvrxMatcher {
 	return out
 }
 
-fn (mut c Checker) lint_svelte_no_unused_class_name(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_no_unused_class_name(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	allowed := snucn_options(c.rule_options(svelte_no_unused_class_name))!
 	if !c.is_svelte() {
 		return []

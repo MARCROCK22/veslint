@@ -33,7 +33,7 @@ fn vncon_allowed(options []json2.Any) []string {
 	return out
 }
 
-fn (mut c Checker) vue_wrap_no_console_base(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) vue_wrap_no_console_base(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	mut findings := []Finding{}
 	allowed := vncon_allowed(c.rule_options(vue_wrap_no_console))
 	t := c.es_tree(root, abs_path) or { return findings }

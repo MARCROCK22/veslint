@@ -74,10 +74,10 @@ fn sbe_options(options []json2.Any) !SbeOptions {
 struct SbeState {
 mut:
 	traversed map[u64]bool
-	checks    []C.TSNode // the nodes of checkNode, in the order they are found
+	checks    []C.vt_node // the nodes of checkNode, in the order they are found
 }
 
-fn (mut c Checker) lint_strict_boolean_expressions(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_strict_boolean_expressions(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := sbe_options(c.rule_options(strict_boolean_expressions))!
 	mut sw := time.new_stopwatch()
 	nodes := c.nodes_of_kinds(root, ['call_expression', 'ternary_expression', 'do_statement',
@@ -116,7 +116,7 @@ fn (mut c Checker) lint_strict_boolean_expressions(root C.TSNode, abs_path strin
 	// The traversal, in the order ESLint visits the nodes: the first context that reaches a node
 	// decides whether it is a condition.
 	mut state := SbeState{}
-	mut predicates := []C.TSNode{}
+	mut predicates := []C.vt_node{}
 	for node in nodes {
 		match node_kind(node) {
 			'call_expression' {
@@ -209,7 +209,7 @@ fn (mut c Checker) lint_strict_boolean_expressions(root C.TSNode, abs_path strin
 
 // sbe_traverse_node ports traverseNode: a logical expression gives its operands; any other node
 // is checked if it is a condition. A node is only looked at once.
-fn sbe_traverse_node(raw C.TSNode, is_condition bool, mut state SbeState) {
+fn sbe_traverse_node(raw C.vt_node, is_condition bool, mut state SbeState) {
 	node := unwrap_parens(raw)
 	key := node_key(node)
 	if state.traversed[key] {
@@ -228,7 +228,7 @@ fn sbe_traverse_node(raw C.TSNode, is_condition bool, mut state SbeState) {
 
 // sbe_traverse_logical ports traverseLogicalExpression: the left operand is always a condition;
 // the right one only if the expression is.
-fn sbe_traverse_logical(node C.TSNode, is_condition bool, mut state SbeState) {
+fn sbe_traverse_logical(node C.vt_node, is_condition bool, mut state SbeState) {
 	if left := node_field(node, 'left') {
 		sbe_traverse_node(left, true, mut state)
 	}
@@ -240,33 +240,33 @@ fn sbe_traverse_logical(node C.TSNode, is_condition bool, mut state SbeState) {
 // sbe_asserted_argument ports findTruthinessAssertedArgument: the argument that the signature of
 // the call asserts (`asserts x`, without a type), among those before any spread; an empty list
 // if there is none.
-fn (mut c Checker) sbe_asserted_argument(call C.TSNode) ![]C.TSNode {
+fn (mut c Checker) sbe_asserted_argument(call C.vt_node) ![]C.vt_node {
 	// `import(…)` is an ImportExpression in ESTree, or a type, not a call.
 	if function := node_field(call, 'function') {
 		if node_kind(unwrap_parens(function)) == 'import' {
-			return []C.TSNode{}
+			return []C.vt_node{}
 		}
 	}
-	mut checkable := []C.TSNode{}
-	for arg in call_args(call) or { return []C.TSNode{} } {
+	mut checkable := []C.vt_node{}
+	for arg in call_args(call) or { return []C.vt_node{} } {
 		if node_kind(arg) == 'spread_element' {
 			break
 		}
 		checkable << arg
 	}
 	if checkable.len == 0 || !c.sbe_may_assert(call)! {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
 	signature := c.resolved_signature(call)!
 	if signature.id == 0 {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
 	predicate := c.type_predicate(signature.id)!
 	if !predicate.found || predicate.kind != predicate_asserts_identifier || !predicate.typ.is_null() {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
 	if predicate.parameter_index < 0 || predicate.parameter_index >= checkable.len {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
 	return [checkable[predicate.parameter_index]]
 }
@@ -279,7 +279,7 @@ const sbe_syntax_kind_type_predicate = u32(184)
 // from the first of them: if none can assert, the call is not resolved, which most calls are
 // spared. Any other callee (a union, a type parameter, `any`, an optional chain, a node tsgo has
 // no counterpart for) is left to the resolved signature.
-fn (mut c Checker) sbe_may_assert(call C.TSNode) !bool {
+fn (mut c Checker) sbe_may_assert(call C.vt_node) !bool {
 	callee := c.node_type(node_field(call, 'function') or { return true }) or { return true }
 	if callee.flags != type_flag_object || callee.object_flags & object_flag_mapped != 0 {
 		return true
@@ -320,20 +320,20 @@ fn (mut c Checker) sbe_signature_may_assert(signature tsgo.SignatureResponse) !b
 
 // sbe_predicate ports isArrayMethodCallWithPredicate and gives the first argument of such a call
 // (`array.filter(…)` and the like), which may be a spread.
-fn (mut c Checker) sbe_predicate(call C.TSNode) ![]C.TSNode {
-	callee := unwrap_parens(node_field(call, 'function') or { return []C.TSNode{} })
+fn (mut c Checker) sbe_predicate(call C.vt_node) ![]C.vt_node {
+	callee := unwrap_parens(node_field(call, 'function') or { return []C.vt_node{} })
 	if !is_member(callee) || is_estree_chain_root(callee) {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
-	name := c.static_member_string(callee) or { return []C.TSNode{} }
+	name := c.static_member_string(callee) or { return []C.vt_node{} }
 	if name !in array_predicate_methods {
-		return []C.TSNode{}
+		return []C.vt_node{}
 	}
 	return c.array_predicate_callback(call)!
 }
 
 // sbe_length_object: the object of `object.length`, when the node is that member access.
-fn sbe_length_object(node C.TSNode) ?C.TSNode {
+fn sbe_length_object(node C.vt_node) ?C.vt_node {
 	if node_kind(node) != 'member_expression' || is_estree_chain_root(node) {
 		return none
 	}
@@ -479,7 +479,7 @@ struct SbeWrap {
 }
 
 // sbe_suggestions ports getSuggestionsForConditionError.
-fn (mut c Checker) sbe_suggestions(node C.TSNode, report_type string) ![]Suggestion {
+fn (mut c Checker) sbe_suggestions(node C.vt_node, report_type string) ![]Suggestion {
 	inner := es_child(node)
 	mut negation := ?EsNode(none)
 	if parent := inner.parent() {
@@ -579,7 +579,7 @@ fn (mut c Checker) sbe_suggestions(node C.TSNode, report_type string) ![]Suggest
 
 // sbe_is_array_length ports isArrayLengthExpression: `array.length`, of an array or of a union of
 // arrays.
-fn (mut c Checker) sbe_is_array_length(node C.TSNode) !bool {
+fn (mut c Checker) sbe_is_array_length(node C.vt_node) !bool {
 	object := sbe_length_object(node) or { return false }
 	property := node_field(node, 'property') or { return false }
 	if c.identifier_name(property) != 'length' {
@@ -591,7 +591,7 @@ fn (mut c Checker) sbe_is_array_length(node C.TSNode) !bool {
 
 // sbe_check_predicate ports checkArrayMethodCallPredicate: the predicate of an array method must
 // return a boolean.
-fn (mut c Checker) sbe_check_predicate(predicate C.TSNode, options SbeOptions) ![]Finding {
+fn (mut c Checker) sbe_check_predicate(predicate C.vt_node, options SbeOptions) ![]Finding {
 	kind := node_kind(predicate)
 	is_function := kind in ['arrow_function', 'function_expression', 'generator_function']
 	// The message for a function that is `async` by accident.
@@ -649,7 +649,7 @@ fn (mut c Checker) sbe_check_predicate(predicate C.TSNode, options SbeOptions) !
 
 // sbe_return_type_fixes ports the fixer of `explicitBooleanReturnType`: `: boolean` after the
 // parameters, in parentheses if the only parameter of an arrow function has none.
-fn (mut c Checker) sbe_return_type_fixes(function C.TSNode) ?[]Fix {
+fn (mut c Checker) sbe_return_type_fixes(function C.vt_node) ?[]Fix {
 	if node_kind(function) == 'arrow_function' {
 		// isParenlessArrowFunction
 		if parameter := node_field(function, 'parameter') {

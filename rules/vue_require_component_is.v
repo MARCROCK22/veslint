@@ -9,7 +9,7 @@ const vrci_messages = {
 	'requireComponentIs': "Expected '<component>' elements to have 'v-bind:is' attribute."
 }
 
-fn (mut c Checker) lint_vue_require_component_is(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_require_component_is(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.vue_has_template() {
 		return []
 	}

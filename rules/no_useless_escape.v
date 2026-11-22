@@ -26,7 +26,7 @@ fn nue_options(options []json2.Any) ![]string {
 	return o.string_list('allowRegexCharacters')!
 }
 
-fn (mut c Checker) lint_no_useless_escape(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_useless_escape(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allowed := nue_options(c.rule_options(no_useless_escape))!
 	mut findings := []Finding{}
@@ -76,7 +76,7 @@ fn (mut c Checker) lint_no_useless_escape(root C.TSNode, abs_path string, mut st
 
 // nue_report ports report: the backslash at `offset`, with the suggestions to remove it and (unless
 // `no_backslash`) to escape it.
-fn (c &Checker) nue_report(node C.TSNode, offset int, character string, no_backslash bool) Finding {
+fn (c &Checker) nue_report(node C.vt_node, offset int, character string, no_backslash bool) Finding {
 	mut suggestions := [
 		Suggestion{
 			message_id: if c.nue_is_directive(node) {
@@ -106,7 +106,7 @@ fn (c &Checker) nue_report(node C.TSNode, offset int, character string, no_backs
 
 // nue_is_directive: the string is a directive of a program or function body (isDirective of its
 // parent).
-fn (c &Checker) nue_is_directive(node C.TSNode) bool {
+fn (c &Checker) nue_is_directive(node C.vt_node) bool {
 	if node_kind(node) != 'string' {
 		return false
 	}
@@ -128,8 +128,8 @@ fn (c &Checker) nue_is_directive(node C.TSNode) bool {
 
 // nue_directive_prologue are the leading statements of a body that are a string alone (ESTree's
 // directives).
-fn nue_directive_prologue(body C.TSNode) []C.TSNode {
-	mut out := []C.TSNode{}
+fn nue_directive_prologue(body C.vt_node) []C.vt_node {
+	mut out := []C.vt_node{}
 	for statement in named_children(body) {
 		kind := node_kind(statement)
 		if kind in ['comment', 'hash_bang_line', 'html_comment'] {
@@ -149,7 +149,7 @@ fn nue_directive_prologue(body C.TSNode) []C.TSNode {
 
 // nue_string ports validateString over the text of a string literal or template element that
 // starts at `start`: each `\` followed by something other than a digit.
-fn (c &Checker) nue_string(node C.TSNode, start int, value string, template bool, mut findings []Finding) {
+fn (c &Checker) nue_string(node C.vt_node, start int, value string, template bool, mut findings []Finding) {
 	mut i := 0
 	for i < value.len {
 		if value[i] != `\\` || i + 1 >= value.len {
@@ -182,7 +182,7 @@ fn (c &Checker) nue_string(node C.TSNode, start int, value string, template bool
 }
 
 // nue_regexp ports validateRegExp.
-fn (c &Checker) nue_regexp(node C.TSNode, allowed []string, mut findings []Finding) {
+fn (c &Checker) nue_regexp(node C.vt_node, allowed []string, mut findings []Finding) {
 	pattern, flags := c.es_regex_literal(node) or { return }
 	unicode_sets := flags.contains('v')
 	ast := regexpp.parse_pattern(pattern, 0, pattern.len, es_regex_pattern_flags(flags),

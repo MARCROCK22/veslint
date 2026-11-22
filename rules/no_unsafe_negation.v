@@ -18,7 +18,7 @@ fn nun_options(options []json2.Any) !bool {
 	return o.bool_value('enforceForOrderingRelations')!
 }
 
-fn (mut c Checker) lint_no_unsafe_negation(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_unsafe_negation(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	ordering := nun_options(c.rule_options(no_unsafe_negation))!
 	mut findings := []Finding{}

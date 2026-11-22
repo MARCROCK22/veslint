@@ -76,7 +76,7 @@ fn upmma_flat_plus(t &estree.EsTree, node int, mut plus []int) []int {
 }
 
 // upmma_static_number ports getStaticNumber.
-fn (mut c Checker) upmma_static_number(root C.TSNode, t &estree.EsTree, from int) ?f64 {
+fn (mut c Checker) upmma_static_number(root C.vt_node, t &estree.EsTree, from int) ?f64 {
 	mut node := un_unwrap_ts_expression(t, from)
 	node = un_unwrap_ts_expression(t, c.un_const_initializer(root, t, node) or { node })
 	operator := if t.typ(node) == .unary_expression { t.string_of(node, .operator) or { '' } } else { '' }
@@ -159,7 +159,7 @@ fn upmma_value_unused(t &estree.EsTree, from int) bool {
 }
 
 // upmma_can_fix_log ports canAutoFixLogCall.
-fn (mut c Checker) upmma_can_fix_log(root C.TSNode, t &estree.EsTree, node int, value_node int) bool {
+fn (mut c Checker) upmma_can_fix_log(root C.vt_node, t &estree.EsTree, node int, value_node int) bool {
 	if upmma_value_unused(t, node) {
 		return true
 	}
@@ -169,7 +169,7 @@ fn (mut c Checker) upmma_can_fix_log(root C.TSNode, t &estree.EsTree, node int, 
 }
 
 // upmma_can_fix_squares ports canAutoFixSquareExpressions.
-fn (mut c Checker) upmma_can_fix_squares(root C.TSNode, t &estree.EsTree, node int, expressions []int) bool {
+fn (mut c Checker) upmma_can_fix_squares(root C.vt_node, t &estree.EsTree, node int, expressions []int) bool {
 	mut values := []f64{}
 	for expression in expressions {
 		values << c.upmma_static_number(root, t, t.node(expression, .left) or { return false }) or {
@@ -217,7 +217,7 @@ fn upmma_with_fix(finding Finding, has_fix bool, fix Fix, can_auto_fix bool) Fin
 	}
 }
 
-fn (mut c Checker) lint_unicorn_prefer_modern_math_apis(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_prefer_modern_math_apis(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	t := c.es_tree(root, abs_path) or { return findings }
@@ -284,7 +284,7 @@ fn (mut c Checker) lint_unicorn_prefer_modern_math_apis(root C.TSNode, abs_path 
 }
 
 // upmma_log_checks ports the four checks of `Math.log(x)` with a constant.
-fn (mut c Checker) upmma_log_checks(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, node int) []Finding {
+fn (mut c Checker) upmma_log_checks(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, node int) []Finding {
 	mut out := []Finding{}
 	operator := t.string_of(node, .operator) or { return out }
 	left := t.node(node, .left) or { return out }
@@ -320,7 +320,7 @@ fn (mut c Checker) upmma_log_checks(root C.TSNode, t &estree.EsTree, tokens &Sou
 	return out
 }
 
-fn (mut c Checker) upmma_log_finding(root C.TSNode, t &estree.EsTree, tokens &SourceTokens, node int, log_call int, method string, description string) Finding {
+fn (mut c Checker) upmma_log_finding(root C.vt_node, t &estree.EsTree, tokens &SourceTokens, node int, log_call int, method string, description string) Finding {
 	value := (t.list(log_call, .arguments) or { []int{} })[0]
 	value_start, value_end := c.un_parenthesized_range(t, tokens, value)
 	// The replacement is built from the argument alone, so a comment elsewhere would be lost.

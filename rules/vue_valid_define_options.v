@@ -15,7 +15,7 @@ const vue_valid_define_options_messages = {
 	'typeArgs':           '`defineOptions()` cannot accept type arguments.'
 }
 
-fn (mut c Checker) lint_vue_valid_define_options(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_valid_define_options(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	if !c.is_vue() {
 		return []
 	}

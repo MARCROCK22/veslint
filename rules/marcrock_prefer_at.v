@@ -455,7 +455,7 @@ fn (mut c Checker) mpa_declarator_init(m &MpaCtx, v int) int {
 
 // mpa_es_of is the ESTree node a tree-sitter expression is: the outermost one made from it (a
 // template literal, not its only quasi), inside its parentheses.
-fn (mut c Checker) mpa_es_of(m &MpaCtx, n C.TSNode) int {
+fn (mut c Checker) mpa_es_of(m &MpaCtx, n C.vt_node) int {
 	t := m.t
 	mut node := c.es_index_of(t, n) or {
 		if node_kind(n) == 'parenthesized_expression' {
@@ -1319,7 +1319,7 @@ fn (mut c Checker) mpa_check_member(m &MpaCtx, node int) ?Finding {
 	}
 }
 
-fn (mut c Checker) lint_marcrock_prefer_at(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_marcrock_prefer_at(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	options := mpa_options(c.rule_options(marcrock_prefer_at))!

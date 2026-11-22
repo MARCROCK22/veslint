@@ -48,7 +48,7 @@ fn unib_options(options []json2.Any) !UnibOptions {
 	}
 }
 
-fn (mut c Checker) lint_unicorn_no_instanceof_builtins(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_unicorn_no_instanceof_builtins(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	opts := unib_options(c.rule_options(unicorn_no_instanceof_builtins))!
 	mut findings := []Finding{}
@@ -145,7 +145,7 @@ fn (c &Checker) unib_instanceof_token(t &estree.EsTree, tokens &SourceTokens, le
 
 // unib_constructor ports getConstructor: the name of the constructor and how it is written, for
 // `Name` or `global.Name` (`globalThis`, `self` and `window` too) of the global object.
-fn (mut c Checker) unib_constructor(root C.TSNode, t &estree.EsTree, node int) ?(string, string) {
+fn (mut c Checker) unib_constructor(root C.vt_node, t &estree.EsTree, node int) ?(string, string) {
 	if t.typ(node) == .identifier {
 		name := t.string_of(node, .name)?
 		return name, name

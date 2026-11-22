@@ -20,7 +20,7 @@ fn npe_options(options []json2.Any) !bool {
 	return o.bool_value('allowVoid') or { false }
 }
 
-fn (mut c Checker) lint_no_promise_executor_return(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_no_promise_executor_return(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	allow_void := npe_options(c.rule_options(no_promise_executor_return))!
 	mut findings := []Finding{}
@@ -102,13 +102,13 @@ fn (mut c Checker) lint_no_promise_executor_return(root C.TSNode, abs_path strin
 	return findings
 }
 
-fn npe_is_void(n C.TSNode) bool {
+fn npe_is_void(n C.vt_node) bool {
 	return node_kind(n) == 'unary_expression' && operator_of(n) == 'void'
 }
 
 // npe_is_executor ports isPromiseExecutor: the first argument of `new Promise(…)`, where
 // `Promise` is the global one.
-fn (mut c Checker) npe_is_executor(root C.TSNode, f C.TSNode) bool {
+fn (mut c Checker) npe_is_executor(root C.vt_node, f C.vt_node) bool {
 	mut current := f
 	mut parent := node_parent(current) or { return false }
 	for node_kind(parent) == 'parenthesized_expression' {
@@ -133,7 +133,7 @@ fn (mut c Checker) npe_is_executor(root C.TSNode, f C.TSNode) bool {
 
 // npe_void_fix ports voidPrependFixer: `void ` (with parentheses when the expression binds less
 // tightly) before the first token after the `return` or `=>`, as one merged fix.
-fn (mut c Checker) npe_void_fix(root C.TSNode, expression C.TSNode, arrow bool) Fix {
+fn (mut c Checker) npe_void_fix(root C.vt_node, expression C.vt_node, arrow bool) Fix {
 	requires_parens := es_precedence(expression) < npe_void_precedence
 		&& !c.es_is_parenthesised(expression)
 	tokens := c.source_tokens(root)

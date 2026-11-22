@@ -9,7 +9,7 @@ const vot_messages = {
 	'top': "All 'var' declarations must be at the top of the function scope."
 }
 
-fn (mut c Checker) lint_vars_on_top(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vars_on_top(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	for node in c.nodes_of_kinds(root, ['variable_declaration', 'for_in_statement'], []) {
@@ -78,7 +78,7 @@ fn (mut c Checker) lint_vars_on_top(root C.TSNode, abs_path string, mut stats St
 
 // vot_is_on_top ports isVarOnTop: only directives, imports (unless in a static block) and variable
 // declarations come before the node in the body.
-fn vot_is_on_top(node C.TSNode, body C.TSNode, static_block bool) bool {
+fn vot_is_on_top(node C.vt_node, body C.vt_node, static_block bool) bool {
 	statements := named_children(body).filter(node_kind(it) != 'comment')
 	mut i := 0
 	if !static_block {
@@ -98,7 +98,7 @@ fn vot_is_on_top(node C.TSNode, body C.TSNode, static_block bool) bool {
 	return false
 }
 
-fn vot_looks_like_directive(n C.TSNode) bool {
+fn vot_looks_like_directive(n C.vt_node) bool {
 	if node_kind(n) != 'expression_statement' {
 		return false
 	}
@@ -106,14 +106,14 @@ fn vot_looks_like_directive(n C.TSNode) bool {
 	return expressions.len == 1 && node_kind(unwrap_parens(expressions[0])) == 'string'
 }
 
-fn vot_looks_like_import(n C.TSNode) bool {
+fn vot_looks_like_import(n C.vt_node) bool {
 	// `import a = require('b')` is a TSImportEqualsDeclaration.
 	return node_kind(n) == 'import_statement'
 		&& !children(n).any(node_kind(it) == 'import_require_clause')
 }
 
 // vot_is_variable_declaration: a VariableDeclaration (`declare` ones too) or an export of one.
-fn vot_is_variable_declaration(n C.TSNode) bool {
+fn vot_is_variable_declaration(n C.vt_node) bool {
 	mut node := n
 	if node_kind(node) == 'export_statement' {
 		node = node_field(node, 'declaration') or { return false }

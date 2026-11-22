@@ -994,7 +994,7 @@ fn (x &SviCtx) parent_of(r svelte.Ref) ?svelte.Ref {
 	return sv_snode_ref(p)
 }
 
-fn (mut c Checker) lint_svelte_indent(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_indent(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	opts := svi_options(c.rule_options(svelte_indent))!
 	if !c.is_svelte() || !c.sv_file_path(abs_path).ends_with('.svelte') {
 		return []

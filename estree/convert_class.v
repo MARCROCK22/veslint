@@ -2,7 +2,7 @@ module estree
 
 // Classes, their members, parameters and decorators.
 
-fn (mut c Converter) decorator(n C.TSNode) int {
+fn (mut c Converter) decorator(n C.vt_node) int {
 	i := c.mkn(.decorator, n)
 	if e := c.first_named_kid(n) {
 		c.pnode(i, .expression, c.expr(e.n))
@@ -10,7 +10,7 @@ fn (mut c Converter) decorator(n C.TSNode) int {
 	return i
 }
 
-fn (mut c Converter) class(s C.TSNode, declaration bool, ctx Ctx) int {
+fn (mut c Converter) class(s C.vt_node, declaration bool, ctx Ctx) int {
 	kids := c.kids(s)
 	typ := if declaration { NodeType.class_declaration } else { NodeType.class_expression }
 	i := c.mk(typ, s, ctx.start_or(c.start(s)), c.end(s))
@@ -69,7 +69,7 @@ fn (mut c Converter) class(s C.TSNode, declaration bool, ctx Ctx) int {
 
 // heritage converts a type of `implements` or of an interface's `extends` to a TSClassImplements
 // or a TSInterfaceHeritage.
-fn (mut c Converter) heritage(n C.TSNode, typ NodeType) int {
+fn (mut c Converter) heritage(n C.vt_node, typ NodeType) int {
 	i := c.mkn(typ, n)
 	if kind_of(n) == 'generic_type' {
 		kids := c.kids(n)
@@ -84,7 +84,7 @@ fn (mut c Converter) heritage(n C.TSNode, typ NodeType) int {
 }
 
 // heritage_expr converts the name of a heritage type to an Identifier or a MemberExpression.
-fn (mut c Converter) heritage_expr(n C.TSNode) int {
+fn (mut c Converter) heritage_expr(n C.vt_node) int {
 	match kind_of(n) {
 		'nested_type_identifier', 'nested_identifier' {
 			kids := c.kids(n)
@@ -120,7 +120,7 @@ fn (mut c Converter) heritage_expr(n C.TSNode) int {
 
 // class_members converts the members of a class body. Decorators of methods are children of the
 // body before the method; a `;` after a member without body belongs to it.
-fn (mut c Converter) class_members(body C.TSNode) []int {
+fn (mut c Converter) class_members(body C.vt_node) []int {
 	kids := c.kids(body)
 	mut out := []int{}
 	mut decorators := []Kid{}
@@ -300,7 +300,7 @@ fn (mut c Converter) class_member(kid Kid, decorators []Kid, start int, end int)
 
 // method converts a method of a class (MethodDefinition, TSAbstractMethodDefinition) or of an
 // object literal (Property).
-fn (mut c Converter) method(n C.TSNode, kind string, decorators []Kid, start int, end int, in_object bool) int {
+fn (mut c Converter) method(n C.vt_node, kind string, decorators []Kid, start int, end int, in_object bool) int {
 	kids := c.kids(n)
 	m := c.modifiers(kids)
 	name := field_of(kids, 'name') or { return -1 }
@@ -401,7 +401,7 @@ fn (mut c Converter) method(n C.TSNode, kind string, decorators []Kid, start int
 	return i
 }
 
-fn (mut c Converter) index_signature(n C.TSNode, start int, end int) int {
+fn (mut c Converter) index_signature(n C.vt_node, start int, end int) int {
 	kids := c.kids(n)
 	m := c.modifiers(kids)
 	i := c.mk(.ts_index_signature, n, start, end)
@@ -433,7 +433,7 @@ fn (mut c Converter) index_signature(n C.TSNode, start int, end int) int {
 
 // params converts formal parameters; `decorators`: the decorators of each parameter are set on it
 // (convertParameters), which object methods do not do.
-fn (mut c Converter) params(n C.TSNode, decorators bool) []int {
+fn (mut c Converter) params(n C.vt_node, decorators bool) []int {
 	mut out := []int{}
 	for k in c.kids(n) {
 		if k.kind in ['required_parameter', 'optional_parameter'] {
@@ -443,7 +443,7 @@ fn (mut c Converter) params(n C.TSNode, decorators bool) []int {
 	return out
 }
 
-fn (mut c Converter) param(p C.TSNode, optional bool, with_decorators bool) int {
+fn (mut c Converter) param(p C.vt_node, optional bool, with_decorators bool) int {
 	kids := c.kids(p)
 	m := c.modifiers(kids)
 	pat := field_of(kids, 'pattern') or { field_of(kids, 'name') or { return -1 } }

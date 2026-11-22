@@ -25,7 +25,7 @@ fn vue_no_boolean_default_options(options []json2.Any) !string {
 	return error('the option of `${vue_no_boolean_default}` must be "default-false" or "no-default"')
 }
 
-fn (mut c Checker) lint_vue_no_boolean_default(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_vue_no_boolean_default(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	style := vue_no_boolean_default_options(c.rule_options(vue_no_boolean_default))!
 	mut findings := []Finding{}
@@ -60,7 +60,7 @@ fn (mut c Checker) lint_vue_no_boolean_default(root C.TSNode, abs_path string, m
 }
 
 // vnbd_process is processProp; `others` are the other defaults of each prop (withDefaults first).
-fn (mut c Checker) vnbd_process(root C.TSNode, t &estree.EsTree, prop VueProp, others map[string][]int, style string, abs_path string, mut findings []Finding, mut stats Stats) {
+fn (mut c Checker) vnbd_process(root C.vt_node, t &estree.EsTree, prop VueProp, others map[string][]int, style string, abs_path string, mut findings []Finding, mut stats Stats) {
 	if prop.kind == .object {
 		value := prop.value
 		is_boolean := vnbd_is_boolean_identifier(t, value) || (t.typ(value) == .object_expression

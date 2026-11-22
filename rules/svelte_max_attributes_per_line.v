@@ -55,7 +55,7 @@ fn (c &Checker) smapl_report(attributes []int, index int, mut findings []Finding
 	}
 }
 
-fn (mut c Checker) lint_svelte_max_attributes_per_line(root C.TSNode, abs_path string, mut stats Stats) ![]Finding {
+fn (mut c Checker) lint_svelte_max_attributes_per_line(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	options := smapl_options(c.rule_options(svelte_max_attributes_per_line))!
 	if !c.is_svelte() {
 		return []
