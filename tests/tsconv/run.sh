@@ -39,3 +39,17 @@ wait
 cat "$OUT"/diff.*.tsv | LC_ALL=C sort > "$OUT/diff.tsv"
 rm -f "$OUT"/diff.*.tsv
 python3 tests/tsconv/summary.py "$OUT/diff.tsv"
+# The files that differ (or crash), as paths relative to the repository (or to the corpus), against
+# known.txt's.
+main=$(dirname "$(readlink -f build)")
+awk -F'\t' '$2 == "differ" || $2 == "differ-ts-error" || $2 == "crash" { print $1 }' "$OUT/diff.tsv" |
+	sed -e "s|^$PWD/||" -e "s|^$main/||" -e "s|^build/estree-oracle/corpus/||" | LC_ALL=C sort -u > "$OUT/differ.rel"
+grep -v '^#' tests/tsconv/known.txt | cut -f1 | LC_ALL=C sort -u > "$OUT/known.rel"
+# Only the known files of the sets that were run count.
+LC_ALL=C comm -12 "$OUT/known.rel" <(sed -e "s|^$PWD/||" -e "s|^$main/||" -e "s|^build/estree-oracle/corpus/||" "$OUT/list.txt" | LC_ALL=C sort -u) > "$OUT/known.here"
+if diff "$OUT/known.here" "$OUT/differ.rel"; then
+	echo "tsconv: identical to tree-sitter's trees but the $(wc -l < "$OUT/known.here") known differences"
+else
+	echo "tsconv: unexpected differences (< known, > now)"
+	exit 1
+fi

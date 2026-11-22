@@ -1,0 +1,58 @@
+# The files tests/tsconv/run.sh expects to differ from tree-sitter's tree, all where tree-sitter is
+# wrong and the converter gives what TypeScript (and so typescript-estree) reads: a path relative
+# to the repository (or to build/estree-oracle/corpus for the upstream cases), a tab, the reason.
+build/eval/spider-byte-mut-return-await/src/commands/hero/about.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+build/eval/spider-byte-mut-return-await/src/lib/managers/api.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+build/eval/spider-byte-mut-return-await/src/locales/en-US/common.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+build/eval/spider-byte-mut-return-await/src/locales/es-419/common.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+build/eval/spider-byte-mut-return-await/src/utils/images/_.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+build/eval/spider-byte-mut-return-await/src/utils/images/ranked.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/rules/@typescript-eslint/no-confusing-void-expression/await-script/cases.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/rules/@typescript-eslint/no-floating-promises/await-script/cases.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/rules/@typescript-eslint/no-unnecessary-template-expression/await-outside-async/cases.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/rules/@typescript-eslint/no-unsafe-argument/await-script/cases.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/rules/@typescript-eslint/no-unsafe-call/await-outside-async/cases.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/rules/@typescript-eslint/no-unsafe-member-access/await-outside-async/cases.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/rules/@typescript-eslint/restrict-template-expressions/await-outside-async/cases.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/scope/await-outside.ts	`await` outside an async function is a name in TypeScript (a call, an index, a tagged template, a binary operand); tree-sitter reads an await expression
+tests/scope/patterns-invalid.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/0011a62ef8dd94fd.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/02610384a37b5acb.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/074b37d68dd15492.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/079a7143fcefb7e4.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/10acefc8d404c924.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/110b4253061bfd97.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/123ddc4b86a979c5.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/12dd7cb668e0f1e9.ts	`new C()(⏎)` is a call of `new C()` in TypeScript (tests/estree/known.txt)
+up/136b14c730aa4fa5.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/1462b54c25ca434b.ts	`yield` outside a generator is a name in TypeScript (tests/estree/known.txt)
+up/148a167986441806.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/1d5b02f8bc4bc4f2.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/2ab53b7efe93dbd9.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/3bb12bb05660abc8.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/427b9ac39f4197b0.tsx	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/47ac0eff501c07c5.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/4bcd50792f29d244.ts	`yield` outside a generator is a name in TypeScript (tests/estree/known.txt)
+up/505f9aae9f5174d1.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/54bfdd9e99694f1a.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/5591efeabd68476c.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/591c4b51aebed18f.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/689cbddcff403a0f.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/6c1a3406c7599623.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/768de5989321c30b.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/76e004c71d747755.tsx	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/7db2e99917b1c1ac.tsx	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/84e806ac48318856.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/84fc4e1d617a402a.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/8b0c0015e5db69e9.tsx	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/abe8c91f862514eb.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/c2b9c212a9d358c0.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/c4933d785a3901a5.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/c51276f78ede7f37.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/c78bac2872ea2aab.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/c937390282bd2c83.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/d26e742d4f422607.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/d889bdcacef67c94.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/ddacad012482a57a.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/de5247d1f7f372de.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
+up/eadad290c6f39a1d.ts	tree-sitter has an error where TypeScript (and typescript-estree) parse cleanly
