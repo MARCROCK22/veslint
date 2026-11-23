@@ -1086,7 +1086,7 @@ cat > "$TMP/all.json" << 'JSON'
   "@typescript-eslint/return-await": [2, "in-try-catch"], "@typescript-eslint/no-misused-promises": [2],
   "@typescript-eslint/no-unsafe-argument": [2], "@typescript-eslint/no-unsafe-assignment": [2],
   "@typescript-eslint/no-unsafe-call": [2], "@typescript-eslint/no-unsafe-member-access": [2, {"allowOptionalChaining": false}],
-  "@typescript-eslint/no-unsafe-return": [2], "semi": [2, "always"], "@stylistic/indent": [1, 2]
+  "@typescript-eslint/no-unsafe-return": [2], "semi": [2, "always"], "@stylistic/indent-binary-ops": [1, 2]
 JSON
 # A rule whose schema needs options (tests/rules/required_options.json) gets those.
 python3 -c 'import json; [print(f", \"{r}\": {json.dumps([2, *o])}") for r, o in json.load(open("tests/rules/required_options.json")).items()]' >> "$TMP/all.json"
@@ -1164,7 +1164,7 @@ for ((n = 0; n < jobs_started; n++)); do
 	fi
 done
 if [[ $jobs_started -eq 0 ]]; then
-	if [[ $code -eq 1 && $rerun_failed -eq 0 && -s "$TMP/all.out" ]] && grep -q 'ignores them: semi, @stylistic/indent$' "$TMP/all.err"; then
+	if [[ $code -eq 1 && $rerun_failed -eq 0 && -s "$TMP/all.out" ]] && grep -q 'ignores them: semi, @stylistic/indent-binary-ops$' "$TMP/all.err"; then
 		ok "--config with every rule on every fixture ($(wc -l < "$TMP/all.out") findings; each rule alone on them with VESLINT_MATRIX=1)"
 	else
 		ko "--config with every rule on every fixture (code $code)"
@@ -1177,7 +1177,7 @@ fi
 if [[ $jobs_started -eq 0 ]]; then
 	:
 elif [[ $code -eq 1 && $rerun_failed -eq 0 ]] && diff <(sort "$TMP/all.out") <(grep -vxF -f <(grep -v '^#' tests/rules/every.known.txt) "$TMP/per-rule.out" | sort) > /dev/null &&
-	grep -q 'ignores them: semi, @stylistic/indent$' "$TMP/all.err"; then
+	grep -q 'ignores them: semi, @stylistic/indent-binary-ops$' "$TMP/all.err"; then
 	ok "--config with every rule: the same findings as each --rule ($(wc -l < "$TMP/all.out"))"
 else
 	ko "--config with every rule (code $code)"
