@@ -26,32 +26,32 @@
 <path class="rest" d="M116,116h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
 <text class="value" x="494" y="130">14 s</text>
 <text class="tool accent-text" x="106" y="158" text-anchor="end">veslint</text>
-<path class="accent" d="M116,144h45.221474761896054a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-45.221474761896054z"/>
-<text class="value" x="173.22147476189605" y="158">1.8 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<path class="accent" d="M116,144h42.228751147623235a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-42.228751147623235z"/>
+<text class="value" x="170.22875114762323" y="158">1.7 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
 <text class="tool" x="106" y="186" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,172h44.57619298001643a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-44.57619298001643z"/>
-<text class="value" x="172.57619298001643" y="186">1.8 s<tspan class="parity" dx="8">1,304 of ESLint's 1,376 problems</tspan></text>
+<path class="rest" d="M116,172h43.813068009805264a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-43.813068009805264z"/>
+<text class="value" x="171.81306800980525" y="186">1.8 s<tspan class="parity" dx="8">1,304 of ESLint's 1,376 problems</tspan></text>
 <line class="axis" x1="116" y1="112" x2="116" y2="194"/>
 <text class="panel" x="24" y="229">recharts<tspan class="sub" dx="8">294 files, 51,054 lines</tspan></text>
 <text class="tool" x="106" y="254" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,240h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
 <text class="value" x="494" y="254">23 s</text>
 <text class="tool accent-text" x="106" y="282" text-anchor="end">veslint</text>
-<path class="accent" d="M116,268h50.568250500236935a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-50.568250500236935z"/>
-<text class="value" x="178.56825050023693" y="282">3.4 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<path class="accent" d="M116,268h50.38617109922326a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-50.38617109922326z"/>
+<text class="value" x="178.38617109922325" y="282">3.4 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
 <text class="tool" x="106" y="310" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,296h68.40313668366733a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-68.40313668366733z"/>
-<text class="value" x="196.40313668366733" y="310">4.5 s<tspan class="parity" dx="8">168 of ESLint's 175 problems</tspan></text>
+<path class="rest" d="M116,296h69.86542137383351a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-69.86542137383351z"/>
+<text class="value" x="197.8654213738335" y="310">4.6 s<tspan class="parity" dx="8">168 of ESLint's 175 problems</tspan></text>
 <line class="axis" x1="116" y1="236" x2="116" y2="318"/>
 <text class="panel" x="24" y="353">TypeScript compiler<tspan class="sub" dx="8">602 files, 381,174 lines</tspan></text>
 <text class="tool" x="106" y="378" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,364h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
 <text class="value" x="494" y="378">72 s</text>
 <text class="tool accent-text" x="106" y="406" text-anchor="end">veslint</text>
-<path class="accent" d="M116,392h40.29108072551487a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-40.29108072551487z"/>
-<text class="value" x="168.29108072551486" y="406">8.6 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<path class="accent" d="M116,392h38.39043463538481a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-38.39043463538481z"/>
+<text class="value" x="166.3904346353848" y="406">8.2 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
 <text class="tool" x="106" y="434" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,420h28.55766860097001a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-28.55766860097001z"/>
-<text class="value" x="156.55766860097" y="434">6.3 s<tspan class="parity" dx="8">2,980 of ESLint's 3,790 problems</tspan></text>
+<path class="rest" d="M116,420h28.158043366359728a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-28.158043366359728z"/>
+<text class="value" x="156.15804336635972" y="434">6.2 s<tspan class="parity" dx="8">2,980 of ESLint's 3,790 problems</tspan></text>
 <line class="axis" x1="116" y1="360" x2="116" y2="442"/>
 </svg>

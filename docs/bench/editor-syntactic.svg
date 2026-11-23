@@ -24,28 +24,28 @@
 <text class="sub" x="24" y="90">Intel Core i3-4150T CPU, 4 CPUs, Linux. Each panel has its own scale.</text>
 <text class="panel" x="24" y="121">zod<tspan class="sub" dx="8">src/v4/core/schemas.ts, 5,226 lines</tspan></text>
 <text class="tool" x="106" y="146" text-anchor="end">ESLint</text>
-<path class="rest" d="M116,132h354.07812945537495a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-354.07812945537495z"/>
-<text class="value" x="482.07812945537495" y="146">339 ms</text>
+<path class="rest" d="M116,132h346.22177992607334a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-346.22177992607334z"/>
+<text class="value" x="474.22177992607334" y="146">333 ms</text>
 <text class="tool accent-text" x="106" y="174" text-anchor="end">veslint</text>
-<path class="accent" d="M116,160h35.77473624180212a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-35.77473624180212z"/>
-<text class="value" x="163.77473624180212" y="174">38 ms</text>
+<path class="accent" d="M116,160h39.13335228888258a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-39.13335228888258z"/>
+<text class="value" x="167.13335228888258" y="174">41 ms</text>
 <text class="tool" x="106" y="202" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,188h98.97120045623039a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-98.97120045623039z"/>
-<text class="value" x="226.9712004562304" y="202">98 ms</text>
+<path class="rest" d="M116,188h101.72931475689508a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-101.72931475689508z"/>
+<text class="value" x="229.72931475689506" y="202">101 ms</text>
 <text class="tool" x="106" y="230" text-anchor="end">Biome</text>
 <path class="rest" d="M116,216h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
-<text class="value" x="494" y="230">351 ms</text>
+<text class="value" x="494" y="230">352 ms</text>
 <line class="axis" x1="116" y1="128" x2="116" y2="238"/>
 <text class="panel" x="24" y="273">recharts<tspan class="sub" dx="8">src/state/selectors/axisSelectors.ts, 2,417 lines</tspan></text>
 <text class="tool" x="106" y="298" text-anchor="end">ESLint</text>
-<path class="rest" d="M116,284h156.2161808057648a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-156.2161808057648z"/>
-<text class="value" x="284.2161808057648" y="298">132 ms</text>
+<path class="rest" d="M116,284h158.58677144728225a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-158.58677144728225z"/>
+<text class="value" x="286.5867714472822" y="298">134 ms</text>
 <text class="tool accent-text" x="106" y="326" text-anchor="end">veslint</text>
-<path class="accent" d="M116,312h19.874877169996722a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-19.874877169996722z"/>
-<text class="value" x="147.87487716999672" y="326">20 ms</text>
+<path class="accent" d="M116,312h21.07858546168959a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-21.07858546168959z"/>
+<text class="value" x="149.07858546168958" y="326">21 ms</text>
 <text class="tool" x="106" y="354" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,340h2.181460858172289a2.181460858172289,2.181460858172289 0 0 1 2.181460858172289,2.181460858172289v13.637078283655422a2.181460858172289,2.181460858172289 0 0 1 -2.181460858172289,2.181460858172289h-2.181460858172289z"/>
-<text class="value" x="128.36292171634457" y="354">3.6 ms</text>
+<path class="rest" d="M116,340h1.99901768172888a1.99901768172888,1.99901768172888 0 0 1 1.99901768172888,1.99901768172888v14.00196463654224a1.99901768172888,1.99901768172888 0 0 1 -1.99901768172888,1.99901768172888h-1.99901768172888z"/>
+<text class="value" x="127.99803536345776" y="354">3.3 ms</text>
 <text class="tool" x="106" y="382" text-anchor="end">Biome</text>
 <path class="rest" d="M116,368h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
 <text class="value" x="494" y="382">305 ms</text>
@@ -53,15 +53,15 @@
 <text class="panel" x="24" y="425">TypeScript compiler<tspan class="sub" dx="8">src/compiler/parser.ts, 10,823 lines</tspan></text>
 <text class="tool" x="106" y="450" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,436h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
-<text class="value" x="494" y="450">649 ms</text>
+<text class="value" x="494" y="450">670 ms</text>
 <text class="tool accent-text" x="106" y="478" text-anchor="end">veslint</text>
-<path class="accent" d="M116,464h52.99768696993061a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-52.99768696993061z"/>
-<text class="value" x="180.9976869699306" y="478">100 ms</text>
+<path class="accent" d="M116,464h56.01940008953888a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-56.01940008953888z"/>
+<text class="value" x="184.01940008953886" y="478">109 ms</text>
 <text class="tool" x="106" y="506" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,492h64.35158057054741a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-64.35158057054741z"/>
-<text class="value" x="192.3515805705474" y="506">120 ms</text>
+<path class="rest" d="M116,492h56.79241904193403a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-56.79241904193403z"/>
+<text class="value" x="184.79241904193404" y="506">110 ms</text>
 <text class="tool" x="106" y="534" text-anchor="end">Biome</text>
-<path class="rest" d="M116,520h214.97609868928296a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-214.97609868928296z"/>
-<text class="value" x="342.97609868928294" y="534">384 ms</text>
+<path class="rest" d="M116,520h216.4760483509924a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-216.4760483509924z"/>
+<text class="value" x="344.4760483509924" y="534">399 ms</text>
 <line class="axis" x1="116" y1="432" x2="116" y2="542"/>
 </svg>
