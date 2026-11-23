@@ -3,6 +3,7 @@ module rules
 import esquery
 import estree
 import math
+import svelte
 import time
 import treesitter { Ident }
 import x.json2
@@ -264,12 +265,22 @@ struct StiState {
 	src  string
 	opts StiOptions
 mut:
-	all      []SourceToken // tokens and comments
-	toks     []SourceToken // tokens
-	tok_all  []i32         // the index in `all` of each token
-	all_tok  []i32         // the index in `toks` of each token of `all`, -1 for a comment
-	line     []i32         // the line (from 1) where each token or comment of `all` starts
-	end_line []i32         // the line where it ends
+	// A .svelte file is linted as svelte-eslint-parser gives it to ESLint: one AST of the whole
+	// file, the Svelte nodes and the ESTree of the script and the template expressions (`t` is
+	// the document's ESTree, in offsets of the file), with the tokens of the whole file. A node
+	// is its index in `t`, or, for a Svelte node, n_es plus its index in sv.nodes.
+	sv      &svelte.Document = unsafe { nil }
+	n_es    int
+	parents []int    // of each node in the traversal (ESLint's `parent`), for a .svelte file
+	values  []string // the `value` of each token of `all`, for a .svelte file
+	// The offsets where the lines start (ESLint's lines).
+	line_starts []int
+	all         []SourceToken // tokens and comments
+	toks        []SourceToken // tokens
+	tok_all     []i32         // the index in `all` of each token
+	all_tok     []i32         // the index in `toks` of each token of `all`, -1 for a comment
+	line        []i32         // the line (from 1) where each token or comment of `all` starts
+	end_line    []i32         // the line where it ends
 	// firstTokensByLineNumber, by line from 1: -1 if none.
 	first_of_line []i32
 	indent_char   string
@@ -309,39 +320,163 @@ fn (mut s StiState) unmark(ai int, flag u8) {
 	s.flags[ai] &= ~flag
 }
 
+// start, end: the range of a node (an ESTree node or a Svelte node).
+@[inline]
+fn (s &StiState) start(id int) int {
+	return if id < s.n_es { s.t.nodes[id].start } else { s.sv.nodes[id - s.n_es].start }
+}
+
+@[inline]
+fn (s &StiState) end(id int) int {
+	return if id < s.n_es { s.t.nodes[id].end } else { s.sv.nodes[id - s.n_es].end }
+}
+
+// parent is ESLint's `node.parent` (-1: none).
+fn (s &StiState) parent(id int) int {
+	if id < 0 {
+		return -1
+	}
+	if s.sv != unsafe { nil } {
+		return s.parents[id]
+	}
+	return s.t.nodes[id].parent
+}
+
+// type_name is a node's `type` ('' for no node).
+fn (s &StiState) type_name(id int) string {
+	if id < 0 {
+		return ''
+	}
+	if s.sv != unsafe { nil } {
+		return if id < s.n_es {
+			s.sv.es_type_name(id)
+		} else {
+			s.sv.nodes[id - s.n_es].typ.type_name()
+		}
+	}
+	return s.t.typ(id).type_name()
+}
+
+// is_es: the node is an ESTree node of that type.
+fn (s &StiState) is_es(id int, typ estree.NodeType) bool {
+	return id >= 0 && id < s.n_es && s.t.nodes[id].typ == typ
+}
+
+// es_typ is the type of an ESTree node, none for no node or a Svelte node.
+fn (s &StiState) es_typ(id int) ?estree.NodeType {
+	if id < 0 || id >= s.n_es {
+		return none
+	}
+	return s.t.nodes[id].typ
+}
+
 fn (mut c Checker) lint_stylistic_indent(root C.vt_node, abs_path string, mut stats Stats) ![]Finding {
 	sw := time.new_stopwatch()
 	mut findings := []Finding{}
 	opts := sti_options(c.rule_options(stylistic_indent))!
-	t := c.es_tree(root, abs_path) or { return findings }
-	tokens := c.un_tokens(t)
-	mut s := sti_new_state(t, tokens, c.src, opts)
-	stats.checked += t.nodes.len
+	if c.is_svelte() {
+		// A .svelte file: the rule runs on its document (its findings are in offsets of the file,
+		// which svelte_move_findings keeps).
+		doc := c.svelte.doc
+		mut events := []StiEvent{cap: c.sv_steps().len}
+		for step in c.sv_steps() {
+			events << StiEvent{
+				node:  if step.node.es { step.node.idx } else { doc.es.nodes.len + step.node.idx }
+				leave: step.leave
+			}
+		}
+		mut s := sti_svelte_state(doc, opts)
+		stats.checked += events.len / 2
+		s.run(events, mut findings)!
+	} else {
+		t := c.es_tree(root, abs_path) or { return findings }
+		tokens := c.un_tokens(t)
+		mut s := sti_new_state(t, tokens.all, c.src, t.line_starts, opts)
+		stats.checked += t.nodes.len
+		s.run([], mut findings)!
+	}
+	stats.eval_ms += ms(sw.elapsed())
+	return findings
+}
+
+// StiEvent is a step of a traversal given as a list (a .svelte file's: Checker.sv_steps).
+struct StiEvent {
+	node  int
+	leave bool
+}
+
+// run is the rule on the file: the traversal, then Program:exit.
+fn (mut s StiState) run(events []StiEvent, mut findings []Finding) ! {
+	t := s.t
+	opts := s.opts
+	n_ids := s.n_es + if s.sv != unsafe { nil } { s.sv.nodes.len } else { 0 }
 	// The ignored nodes, in the order ESLint adds them to its set: those of an `ignoredNodes`
 	// selector when entering them, those of an unknown type when leaving them (`*:exit`).
-	mut by_selector := []bool{len: t.nodes.len}
-	if opts.ignored_nodes.len > 0 {
+	mut by_selector := []bool{len: n_ids}
+	if opts.ignored_nodes.len > 0 && s.sv == unsafe { nil } {
 		for m in esquery.run(t, opts.ignored_nodes)! {
 			by_selector[m.node] = true
 		}
 	}
+	mut selectors := []esquery.EslintSelector{}
+	if opts.ignored_nodes.len > 0 && s.sv != unsafe { nil } {
+		for source in opts.ignored_nodes {
+			selectors << esquery.parse_eslint(source)!
+		}
+	}
 	mut known := []i8{len: 256}
-	mut is_ignored := []bool{len: t.nodes.len}
+	mut known_names := map[string]bool{}
+	mut is_ignored := []bool{len: n_ids}
 	mut ignored_nodes := []int{}
-	mut walk := StiWalk{}
+	mut ancestors := []int{} // a .svelte file's, for its parents and its selectors
+	if s.sv != unsafe { nil } {
+		s.parents = []int{len: n_ids, init: -1}
+	}
+	mut walk := StiWalk{
+		events: events
+	}
 	walk.start(t)
 	for {
 		node, leave := walk.next(t)
 		if node < 0 {
 			break
 		}
-		if leave {
-			typ := int(t.typ(node))
-			if known[typ] == 0 {
-				known[typ] = if t.typ(node).type_name() in sti_known_nodes { i8(1) } else { i8(2) }
+		if s.sv != unsafe { nil } {
+			if leave {
+				ancestors.delete_last()
+			} else {
+				s.parents[node] = if ancestors.len > 0 { ancestors.last() } else { -1 }
+				for sel in selectors {
+					if s.sv_selector_matches(sel, node, ancestors)! {
+						by_selector[node] = true
+					}
+				}
+				ancestors << node
 			}
-			if known[typ] == 1 {
-				continue
+		}
+		if leave {
+			if s.sv == unsafe { nil } {
+				typ := int(t.typ(node))
+				if known[typ] == 0 {
+					known[typ] = if t.typ(node).type_name() in sti_known_nodes {
+						i8(1)
+					} else {
+						i8(2)
+					}
+				}
+				if known[typ] == 1 {
+					continue
+				}
+			} else {
+				name := s.type_name(node)
+				is_known := known_names[name] or {
+					k := name in sti_known_nodes
+					known_names[name] = k
+					k
+				}
+				if is_known {
+					continue
+				}
 			}
 		} else if !by_selector[node] {
 			continue
@@ -365,7 +500,8 @@ fn (mut c Checker) lint_stylistic_indent(root C.vt_node, abs_path string, mut st
 		}
 	}
 	// The queued offset listeners of the nodes that are not ignored, in the order of the
-	// traversal: on entering a node `*` (the least specific selector), then its type's listener.
+	// traversal: on entering a node `*` (the least specific selector), then its type's listener
+	// (none for a Svelte node).
 	walk.start(t)
 	for {
 		node, leave := walk.next(t)
@@ -376,21 +512,23 @@ fn (mut c Checker) lint_stylistic_indent(root C.vt_node, abs_path string, mut st
 			continue
 		}
 		if leave {
-			if t.typ(node) in [.do_while_statement, .for_statement, .for_in_statement,
+			if node < s.n_es && t.typ(node) in [.do_while_statement, .for_statement, .for_in_statement,
 				.for_of_statement, .if_statement, .while_statement, .with_statement] {
 				s.statement_exit(node)
 			}
 			continue
 		}
 		s.any_node(node)
-		s.enter(node, mut findings)
+		if node < s.n_es {
+			s.enter(node, mut findings)
+		}
 	}
 	// Update the offsets of the ignored nodes so that their tokens are not reported.
 	for node in ignored_nodes {
 		s.ignore_node(node)
 	}
 	s.add_parens_indent()
-	for i in 1 .. t.line_starts.len + 1 {
+	for i in 1 .. s.line_starts.len + 1 {
 		first := int(s.first_of_line[i])
 		if first < 0 {
 			// Don't check indentation on blank lines.
@@ -431,26 +569,36 @@ fn (mut c Checker) lint_stylistic_indent(root C.vt_node, abs_path string, mut st
 		}
 		findings << s.report(first, s.indent_text(desired))
 	}
-	stats.eval_ms += ms(sw.elapsed())
-	return findings
 }
 
 // StiWalk is the traversal of ESLint (EsTree.steps) without the array of its steps: the nodes
 // to enter, and the nodes to leave as -2 - index.
 struct StiWalk {
+	// events, when not empty, are the traversal (a .svelte file's) instead of the tree's.
+	events []StiEvent
 mut:
 	stack []int
+	next  int
 }
 
 fn (mut w StiWalk) start(t &estree.EsTree) {
+	w.next = 0
 	w.stack.clear()
-	if t.root >= 0 {
+	if w.events.len == 0 && t.root >= 0 {
 		w.stack << t.root
 	}
 }
 
 // next is the next step of the traversal (a node, and whether it is left), -1 at the end.
 fn (mut w StiWalk) next(t &estree.EsTree) (int, bool) {
+	if w.events.len > 0 {
+		if w.next >= w.events.len {
+			return -1, false
+		}
+		e := w.events[w.next]
+		w.next++
+		return e.node, e.leave
+	}
 	for w.stack.len > 0 {
 		top := w.stack.pop()
 		if top < -1 {
@@ -487,19 +635,19 @@ fn (mut w StiWalk) next(t &estree.EsTree) (int, bool) {
 	return -1, false
 }
 
-fn sti_new_state(t &estree.EsTree, tokens &SourceTokens, src string, opts StiOptions) StiState {
-	all := tokens.all
+fn sti_new_state(t &estree.EsTree, all []SourceToken, src string, line_starts []int, opts StiOptions) StiState {
 	mut s := StiState{
 		t:             unsafe { t }
 		src:           src
 		opts:          opts
+		n_es:          t.nodes.len
+		line_starts:   line_starts
 		all:           all
-		toks:          tokens.tokens
-		tok_all:       []i32{cap: tokens.tokens.len}
+		tok_all:       []i32{cap: all.len}
 		all_tok:       []i32{len: all.len, init: -1}
 		line:          []i32{len: all.len}
 		end_line:      []i32{len: all.len}
-		first_of_line: []i32{len: t.line_starts.len + 2, init: -1}
+		first_of_line: []i32{len: line_starts.len + 2, init: -1}
 		indent_char:   if opts.tab { '\t' } else { ' ' }
 		index_map:     []i32{len: src.len + 1}
 		descriptors:   []StiDescriptor{cap: 1024}
@@ -511,10 +659,11 @@ fn sti_new_state(t &estree.EsTree, tokens &SourceTokens, src string, opts StiOpt
 		if !token.is_comment() {
 			s.all_tok[ai] = i32(s.tok_all.len)
 			s.tok_all << i32(ai)
+			s.toks << token
 		}
 	}
 	// The lines of the tokens, in one sweep (their starts and their ends grow with their index).
-	starts := t.line_starts
+	starts := line_starts
 	mut line := 0
 	mut end_line := 0
 	for ai, token in all {
@@ -547,6 +696,99 @@ fn sti_new_state(t &estree.EsTree, tokens &SourceTokens, src string, opts StiOpt
 	return s
 }
 
+// sti_svelte_state is the state of the rule on a .svelte file: its document's ESTree (in offsets
+// of the file), its tokens and comments (svelte-eslint-parser's, with their values) and its lines
+// (svelte-eslint-parser's: they end at LF, CRLF and CR).
+fn sti_svelte_state(doc &svelte.Document, opts StiOptions) StiState {
+	mut all := []SourceToken{cap: doc.tokens.len + doc.comments.len}
+	mut values := []string{cap: doc.tokens.len + doc.comments.len}
+	mut i := 0
+	mut j := 0
+	for i < doc.tokens.len || j < doc.comments.len {
+		take_comment := j < doc.comments.len
+			&& (i >= doc.tokens.len || doc.comments[j].start < doc.tokens[i].start)
+		token := if take_comment { doc.comments[j] } else { doc.tokens[i] }
+		if take_comment {
+			j++
+		} else {
+			i++
+		}
+		all << SourceToken{
+			start: token.start
+			end:   token.end
+			kind:  sti_svelte_token_kind(token.typ)
+		}
+		values << token.value
+	}
+	src := doc.src
+	mut starts := [0]
+	for k := 0; k < src.len; k++ {
+		if src[k] == `\r` {
+			if k + 1 < src.len && src[k + 1] == `\n` {
+				k++
+			}
+			starts << k + 1
+		} else if src[k] == `\n` {
+			starts << k + 1
+		}
+	}
+	mut s := sti_new_state(&doc.es, all, src, starts, opts)
+	s.sv = unsafe { doc }
+	s.values = values
+	return s
+}
+
+// sti_svelte_token_kind is the kind of a token (or comment) of svelte-eslint-parser's type: the
+// tokens of the markup (HTMLText, HTMLIdentifier, HTMLComment, MustacheKeyword) are no
+// punctuators, identifiers or comments for the rule.
+fn sti_svelte_token_kind(typ string) SourceTokenKind {
+	return match typ {
+		'Punctuator' { .punctuator }
+		'Keyword' { .keyword }
+		'Identifier' { .identifier }
+		'String' { .string_ }
+		'Template' { .template }
+		'Numeric' { .numeric }
+		'RegularExpression' { .regular_expression }
+		'Boolean' { .boolean }
+		'Null' { .null_ }
+		'PrivateIdentifier' { .private_identifier }
+		'Line' { .line_comment }
+		'Block' { .block_comment }
+		'Shebang' { .shebang_comment }
+		'HTMLIdentifier', 'MustacheKeyword', 'JSXIdentifier' { .jsx_identifier }
+		else { .jsx_text }
+	}
+}
+
+// sv_selector_matches: an ignoredNodes selector matches a node of a .svelte file when ESLint
+// enters it, as svelte/indent matches them (rules/svelte_indent.v): a plain type (or `*`) any node
+// of that type; another selector the ESTree nodes, with their ESTree ancestors.
+fn (s &StiState) sv_selector_matches(sel esquery.EslintSelector, node int, ancestors []int) !bool {
+	match sel.root.kind {
+		.wildcard {
+			return true
+		}
+		.identifier {
+			return sel.root.value == s.type_name(node)
+		}
+		else {}
+	}
+	if node >= s.n_es {
+		return false
+	}
+	if types := sel.node_types {
+		if s.type_name(node) !in types {
+			return false
+		}
+	}
+	mut ancestry := []int{}
+	for k := ancestors.len - 1; k >= 0 && ancestors[k] < s.n_es; k-- {
+		ancestry << ancestors[k]
+	}
+	return esquery.matches(s.t, node, &sel.root, ancestry)!
+}
+
 // sti_is_blank: `text.trim()` is empty.
 fn sti_is_blank(text string) bool {
 	mut i := 0
@@ -569,6 +811,9 @@ fn (s &StiState) text(ai int) string {
 
 // value is token.value: a comment without its delimiters, a PrivateIdentifier without its `#`.
 fn (s &StiState) value(ai int) string {
+	if s.values.len > 0 {
+		return s.values[ai]
+	}
 	token := s.all[ai]
 	return match token.kind {
 		.line_comment, .shebang_comment { src_view(s.src, token.start + 2, token.end) }
@@ -624,8 +869,8 @@ fn (s &StiState) first_token(node int) int {
 
 // first_token_skip is getFirstToken(node, { skip }).
 fn (s &StiState) first_token_skip(node int, skip int) int {
-	k := source_tokens_index(s.toks, s.t.nodes[node].start) + skip
-	if k < s.toks.len && s.toks[k].start < s.t.nodes[node].end {
+	k := source_tokens_index(s.toks, s.start(node)) + skip
+	if k < s.toks.len && s.toks[k].start < s.end(node) {
 		return int(s.tok_all[k])
 	}
 	return -1
@@ -633,8 +878,8 @@ fn (s &StiState) first_token_skip(node int, skip int) int {
 
 // first_token_where is getFirstToken(node, filter).
 fn (s &StiState) first_token_where(node int, f StiFilter, v string) int {
-	end := s.t.nodes[node].end
-	for k := source_tokens_index(s.toks, s.t.nodes[node].start); k < s.toks.len
+	end := s.end(node)
+	for k := source_tokens_index(s.toks, s.start(node)); k < s.toks.len
 		&& s.toks[k].start < end; k++ {
 		if s.pass(k, f, v) {
 			return int(s.tok_all[k])
@@ -650,8 +895,8 @@ fn (s &StiState) last_token(node int) int {
 
 // last_token_skip is getLastToken(node, { skip }).
 fn (s &StiState) last_token_skip(node int, skip int) int {
-	k := source_tokens_index(s.toks, s.t.nodes[node].end) - 1 - skip
-	if k >= 0 && s.toks[k].start >= s.t.nodes[node].start {
+	k := source_tokens_index(s.toks, s.end(node)) - 1 - skip
+	if k >= 0 && s.toks[k].start >= s.start(node) {
 		return int(s.tok_all[k])
 	}
 	return -1
@@ -659,8 +904,8 @@ fn (s &StiState) last_token_skip(node int, skip int) int {
 
 // last_token_where is getLastToken(node, filter).
 fn (s &StiState) last_token_where(node int, f StiFilter, v string) int {
-	start := s.t.nodes[node].start
-	for k := source_tokens_index(s.toks, s.t.nodes[node].end) - 1; k >= 0
+	start := s.start(node)
+	for k := source_tokens_index(s.toks, s.end(node)) - 1; k >= 0
 		&& s.toks[k].start >= start; k-- {
 		if s.pass(k, f, v) {
 			return int(s.tok_all[k])
@@ -721,7 +966,7 @@ fn (s &StiState) count_between(left_end int, right_start int, f StiFilter) int {
 
 // line_of is the line (from 1) of a byte offset.
 fn (s &StiState) line_of(offset int) int {
-	starts := s.t.line_starts
+	starts := s.line_starts
 	mut lo := 0
 	mut hi := starts.len
 	for lo + 1 < hi {
@@ -743,12 +988,12 @@ fn (s &StiState) same_line(left int, right int) bool {
 
 // nodes_same_line is isTokenOnSameLine(left, right) of two nodes.
 fn (s &StiState) nodes_same_line(left int, right int) bool {
-	return s.line_of(s.t.nodes[left].end) == s.line_of(s.t.nodes[right].start)
+	return s.line_of(s.end(left)) == s.line_of(s.start(right))
 }
 
 // single_line is isSingleLine(node).
 fn (s &StiState) single_line(node int) bool {
-	return s.line_of(s.t.nodes[node].start) == s.line_of(s.t.nodes[node].end)
+	return s.line_of(s.start(node)) == s.line_of(s.end(node))
 }
 
 // is_first_of_line is tokenInfo.isFirstTokenOfLine(token).
@@ -759,13 +1004,12 @@ fn (s &StiState) is_first_of_line(ai int) bool {
 
 // token_indent is tokenInfo.getTokenIndent(token): the text of its line before it.
 fn (s &StiState) token_indent(ai int) string {
-	return src_view(s.src, s.t.line_starts[int(s.line[ai]) - 1], s.all[ai].start)
+	return src_view(s.src, s.line_starts[int(s.line[ai]) - 1], s.all[ai].start)
 }
 
 // column is token.loc.start.column (UTF-16 units).
 fn (s &StiState) column(ai int) int {
-	_, column := s.t.line_column(s.all[ai].start)
-	return column
+	return utf16_length_of(src_view(s.src, s.line_starts[int(s.line[ai]) - 1], s.all[ai].start))
 }
 
 // has_blank_lines_between ports hasBlankLinesBetween.
@@ -1214,8 +1458,8 @@ fn (mut s StiState) add_parens_indent() {
 // ignore_node ports ignoreNode: the tokens of an unknown node whose offset does not depend on
 // another of its tokens keep their indentation.
 fn (mut s StiState) ignore_node(node int) {
-	lo := source_tokens_index(s.all, s.t.nodes[node].start)
-	hi := source_tokens_index(s.all, s.t.nodes[node].end)
+	lo := source_tokens_index(s.all, s.start(node))
+	hi := source_tokens_index(s.all, s.end(node))
 	for ai in lo .. hi {
 		dependency := s.first_dependency(ai)
 		if dependency < 0 || dependency < lo || dependency >= hi {
@@ -1231,17 +1475,16 @@ fn (mut s StiState) ignore_node(node int) {
 
 // is_on_first_line_of_statement ports isOnFirstLineOfStatement.
 fn (s &StiState) is_on_first_line_of_statement(token int, leaf int) bool {
-	t := s.t
 	mut node := leaf
-	for t.nodes[node].parent >= 0 {
-		name := t.typ(t.nodes[node].parent).type_name()
+	for s.parent(node) >= 0 {
+		name := s.type_name(s.parent(node))
 		if name.ends_with('Statement') || name.ends_with('Declaration') {
 			break
 		}
-		node = t.nodes[node].parent
+		node = s.parent(node)
 	}
-	parent := t.nodes[node].parent
-	return parent < 0 || s.line_of(t.nodes[parent].start) == int(s.line[token])
+	parent := s.parent(node)
+	return parent < 0 || s.line_of(s.start(parent)) == int(s.line[token])
 }
 
 // check_assignment_operator ports checkAssignmentOperator.
@@ -1312,9 +1555,8 @@ fn (mut s StiState) check_conditional_node(node int, test int, consequent int, a
 	}
 	// A conditional type chained in the alternate of another one and written compactly aligns
 	// with the enclosing chain.
-	parent := t.nodes[node].parent
-	aligns := t.typ(node) == .ts_conditional_type && parent >= 0
-		&& t.typ(parent) == .ts_conditional_type
+	parent := s.parent(node)
+	aligns := t.typ(node) == .ts_conditional_type && s.is_es(parent, .ts_conditional_type)
 		&& (t.node(parent, .false_type) or { -1 }) == node && s.nodes_same_line(test, consequent)
 	question := s.first_between(t.nodes[test].end, t.nodes[consequent].start, .question, '')
 	colon := s.first_between(t.nodes[consequent].end, t.nodes[alternate].start, .colon, '')
@@ -1422,46 +1664,45 @@ fn (mut s StiState) check_member_expression(node int, object int, property int, 
 // is_outer_iife ports isOuterIIFE.
 fn (s &StiState) is_outer_iife(node int) bool {
 	t := s.t
-	parent := t.nodes[node].parent
-	if parent < 0 || t.typ(parent) != .call_expression
-		|| (t.node(parent, .callee) or { -1 }) != node {
+	parent := s.parent(node)
+	if !s.is_es(parent, .call_expression) || (t.node(parent, .callee) or { -1 }) != node {
 		return false
 	}
-	mut statement := t.nodes[parent].parent
-	for statement >= 0 {
+	mut statement := s.parent(parent)
+	for statement >= 0 && statement < s.n_es {
 		typ := t.typ(statement)
 		if (typ == .unary_expression
 			&& (t.string_of(statement, .operator) or { '' }) in ['!', '~', '+', '-'])
 			|| typ in [.assignment_expression, .logical_expression, .sequence_expression,
 				.variable_declarator] {
-			statement = t.nodes[statement].parent
+			statement = s.parent(statement)
 			continue
 		}
 		break
 	}
-	if statement < 0 || t.typ(statement) !in [.expression_statement, .variable_declaration] {
+	if (s.es_typ(statement) or { return false }) !in [.expression_statement, .variable_declaration] {
 		return false
 	}
-	grand := t.nodes[statement].parent
-	return grand >= 0 && t.typ(grand) == .program
+	return s.type_name(s.parent(statement)) == 'Program'
 }
 
 // check_block_like_node ports checkBlockLikeNode.
 fn (mut s StiState) check_block_like_node(node int) {
 	t := s.t
-	parent := t.nodes[node].parent
+	parent := s.parent(node)
+	parent_type := s.type_name(parent)
 	level := if parent >= 0 && s.is_outer_iife(parent) {
 		s.opts.outer_iife_body
-	} else if parent >= 0 && t.typ(parent) in [.function_expression, .arrow_function_expression] {
+	} else if parent_type in ['FunctionExpression', 'ArrowFunctionExpression'] {
 		StiOff{.number, s.opts.fe_body}
-	} else if parent >= 0 && t.typ(parent) == .function_declaration {
+	} else if parent_type == 'FunctionDeclaration' {
 		StiOff{.number, s.opts.fd_body}
 	} else {
 		StiOff{.number, 1}
 	}
 	first := s.first_token(node)
 	// A block that is not a lone statement: its opening brace aligns with the parent.
-	if parent >= 0 && t.typ(parent) !in [.program, .block_statement, .static_block, .switch_case] {
+	if parent >= 0 && parent_type !in ['Program', 'BlockStatement', 'StaticBlock', 'SwitchCase'] {
 		s.set_offset(first, s.first_token(parent), 0)
 	}
 	key := if t.typ(node) == .ts_enum_body { estree.Key.members } else { estree.Key.body }
@@ -1527,7 +1768,7 @@ fn (mut s StiState) check_class_property(node int) {
 fn (mut s StiState) any_node(node int) {
 	first := s.first_token(node)
 	if first >= 0 && !s.has(first, sti_ignored_first) && !s.single_line(node) {
-		s.set_offsets(s.t.nodes[node].start, s.t.nodes[node].end, first, 0, false)
+		s.set_offsets(s.start(node), s.end(node), first, 0, false)
 	}
 }
 
@@ -1850,8 +2091,7 @@ fn (mut s StiState) enter(node int, mut findings []Finding) {
 		}
 		.ts_type_annotation {
 			// The return types of functions are handled by their listener.
-			parent := t.nodes[node].parent
-			if parent >= 0 && t.typ(parent) in [.function_declaration, .function_expression] {
+			if s.type_name(s.parent(node)) in ['FunctionDeclaration', 'FunctionExpression'] {
 				return
 			}
 			colon := s.first_token(node)
@@ -2079,7 +2319,7 @@ fn (mut s StiState) template_literal(node int) {
 		}
 		// A block from the indentation of the line of `${` (the text before it, `${` excluded).
 		end := t.nodes[previous].end
-		line_start := t.line_starts[s.line_of(end) - 1]
+		line_start := s.line_starts[s.line_of(end) - 1]
 		text := if end - 2 > line_start { s.src[line_start..end - 2] } else { '' }
 		mut num_indentation := 0
 		for num_indentation < text.len && text[num_indentation] in [` `, `\t`] {
@@ -2220,8 +2460,8 @@ fn sti_reindent_text(raw string, indent string) string {
 // level from the line of the element.
 fn (mut s StiState) jsx_text(node int, mut findings []Finding) {
 	t := s.t
-	parent := t.nodes[node].parent
-	if parent < 0 || t.typ(parent) !in [.jsx_element, .jsx_fragment] {
+	parent := s.parent(node)
+	if s.type_name(parent) !in ['JSXElement', 'JSXFragment'] {
 		return
 	}
 	value := t.string_of(node, .value) or { return }
@@ -2230,7 +2470,7 @@ fn (mut s StiState) jsx_text(node int, mut findings []Finding) {
 		return
 	}
 	parent_start := t.nodes[parent].start
-	parent_text := s.src[t.line_starts[s.line_of(parent_start) - 1]..parent_start]
+	parent_text := s.src[s.line_starts[s.line_of(parent_start) - 1]..parent_start]
 	mut parent_indent := 0
 	for parent_indent < parent_text.len && parent_text[parent_indent] == s.indent_char[0] {
 		parent_indent++
@@ -2301,7 +2541,7 @@ fn (s &StiState) report(ai int, needed string) Finding {
 			tabs++
 		}
 	}
-	line_start := s.t.line_starts[int(s.line[ai]) - 1]
+	line_start := s.line_starts[int(s.line[ai]) - 1]
 	return Finding{
 		stmt:       Ident{
 			start_byte: line_start

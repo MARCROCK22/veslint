@@ -75,6 +75,13 @@ tests/rules/@stylistic/indent/offset-ternary/cases.ts:24:1	@stylistic/indent	wro
 tests/rules/@stylistic/indent/outer-iife-0/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 2.
 tests/rules/@stylistic/indent/outer-iife-off/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.
 tests/rules/@stylistic/indent/static-block/cases.ts:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.
+tests/rules/@stylistic/indent/svelte/cases.svelte:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.
+tests/rules/@stylistic/indent/svelte/cases.svelte:9:1	@stylistic/indent	wrongIndentation	Expected indentation of 10 spaces but found 8.
+tests/rules/@stylistic/indent/svelte/cases.svelte:10:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.
+tests/rules/@stylistic/indent/svelte/cases.svelte:12:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.
+tests/rules/@stylistic/indent/svelte/cases.svelte:13:1	@stylistic/indent	wrongIndentation	Expected indentation of 10 spaces but found 6.
+tests/rules/@stylistic/indent/svelte/cases.svelte:14:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.
+tests/rules/@stylistic/indent/svelte/cases.svelte:18:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.
 tests/rules/@stylistic/indent/switch-case-0/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 4.
 tests/rules/@stylistic/indent/switch-case-0/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 8.
 tests/rules/@stylistic/indent/switch-case-2/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.

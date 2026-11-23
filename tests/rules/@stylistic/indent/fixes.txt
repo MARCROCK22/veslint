@@ -75,6 +75,13 @@ tests/rules/@stylistic/indent/offset-ternary/cases.ts:24:1	@stylistic/indent	wro
 tests/rules/@stylistic/indent/outer-iife-0/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 2.	fix	28	30		end	3	3
 tests/rules/@stylistic/indent/outer-iife-off/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	87	93	  	end	7	7
 tests/rules/@stylistic/indent/static-block/cases.ts:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	40	44	      	end	4	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	189	193	      	end	8	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:9:1	@stylistic/indent	wrongIndentation	Expected indentation of 10 spaces but found 8.	fix	213	221	          	end	9	9
+tests/rules/@stylistic/indent/svelte/cases.svelte:10:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	233	237	      	end	10	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:12:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	258	262	      	end	12	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:13:1	@stylistic/indent	wrongIndentation	Expected indentation of 10 spaces but found 6.	fix	278	284	          	end	13	7
+tests/rules/@stylistic/indent/svelte/cases.svelte:14:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	295	299	      	end	14	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:18:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	334	338	      	end	18	5
 tests/rules/@stylistic/indent/switch-case-0/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 4.	fix	57	61		end	5	5
 tests/rules/@stylistic/indent/switch-case-0/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 8.	fix	69	77	    	end	6	9
 tests/rules/@stylistic/indent/switch-case-2/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	63	65	    	end	5	3
