@@ -122,6 +122,9 @@ fn test_convert_gives_tree_sitters_rows() {
 		['b.tsx', 'const e = <div className="a &amp; b" {...p}>\n  text &lt; {x}\n  <A.B<T> />\n</div>;\n'],
 		['c.ts', ''],
 		['d.ts', '#!/usr/bin/env node\n\n  /* only a comment */\n'],
+		// JSDoc types, which TypeScript's parser reads in a TypeScript file (its checker reports
+		// them): tree-sitter's non_null_type, flow_maybe_type and existential_type.
+		['e.ts', 'type V = T!\ntype W = ?T\ntype X = *\ntype Y = Array<T![]>\nlet z: ?(A | B)!\n'],
 	]
 	for c in cases {
 		tsx := c[0].ends_with('.tsx')

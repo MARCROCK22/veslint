@@ -184,6 +184,8 @@ var (
 	sAddingTypeAnnotation           = namedSymbol("adding_type_annotation")
 	sOptingTypeAnnotation           = namedSymbol("opting_type_annotation")
 	sNonNullType                    = namedSymbol("non_null_type")
+	sFlowMaybeType                  = namedSymbol("flow_maybe_type")
+	sExistentialType                = namedSymbol("existential_type")
 	aUniqueSymbol                   = anonymousSymbol("unique symbol")
 	aImport                         = anonymousSymbol("import")
 	aMeta                           = anonymousSymbol("meta")
@@ -2184,9 +2186,44 @@ func (c *VeslintConverter) typ(n *ast.Node, field uint16) {
 		c.templateLiteralType(n, field)
 	case ast.KindImportType:
 		c.importType(n, field)
+	case ast.KindJSDocNonNullableType, ast.KindJSDocNullableType, ast.KindJSDocAllType:
+		c.jsdocType(n, field)
 	default:
 		c.generic(n, field)
 	}
+}
+
+// jsdocType writes the JSDoc types TypeScript's parser reads in a TypeScript file (its checker
+// reports them) as tree-sitter's grammar has them: `T!` a non_null_type, `?T` a flow_maybe_type, `*`
+// an existential_type. The others (`!T`, `T?` outside a tuple) are syntax errors for the grammar,
+// which has no node of them.
+func (c *VeslintConverter) jsdocType(n *ast.Node, field uint16) {
+	switch n.Kind {
+	case ast.KindJSDocAllType:
+		// The node and its `*` token.
+		c.open(c.named(sExistentialType), field, c.start(n))
+		c.tok(0)
+		c.close(n.End())
+		return
+	case ast.KindJSDocNonNullableType:
+		inner := n.AsJSDocNonNullableType().Type
+		if c.start(inner) == c.start(n) {
+			c.open(c.named(sNonNullType), field, c.start(n))
+			c.typ(inner, 0)
+			c.close(n.End())
+			return
+		}
+	case ast.KindJSDocNullableType:
+		inner := n.AsJSDocNullableType().Type
+		if c.start(inner) != c.start(n) {
+			c.open(c.named(sFlowMaybeType), field, c.start(n))
+			c.tok(0)
+			c.typ(inner, 0)
+			c.close(n.End())
+			return
+		}
+	}
+	c.generic(n, field)
 }
 
 func (c *VeslintConverter) typeQueryName(n *ast.Node, field uint16) {
