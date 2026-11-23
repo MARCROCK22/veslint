@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 # veslint integration tests (PROMPT.md §5, §7 and §9). Run with `make test`.
 set -uo pipefail
-cd "$(dirname "$0")/.."
+# mapfile and `wait -n` need bash 4.3 or later; macOS's /bin/bash is 3.2.
+if ((BASH_VERSINFO[0] < 4 || (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] < 3))); then
+	echo "tests/run.sh needs bash 4.3 or later, not $BASH_VERSION (on macOS: brew install bash)" >&2
+	exit 2
+fi
+# The directories by their real paths, as the programs under test get them (getcwd): on macOS
+# $TMPDIR is under /var, a symlink to /private/var, and a relative path resolves under /private/var.
+cd -P "$(dirname "$0")/.."
 ROOT=$(pwd)
 V=${V:-v}
-TMP=$(mktemp -d)
+TMP=$(cd -P "$(mktemp -d)" && pwd)
 trap 'rm -rf "$TMP"' EXIT
 pass=0
 fail=0
@@ -15,6 +22,9 @@ export VESLINT_CONFIG_CACHE=0
 # skipped; see internals.md, "Windows".
 windows=0
 case $(uname -s) in MINGW* | MSYS* | CYGWIN*) windows=1 ;; esac
+# veslint restricts its CPUs on Linux only (cpu_limit_linux.c.v).
+linux=0
+[[ $(uname -s) != Linux ]] || linux=1
 exe=''
 [[ $windows -eq 0 ]] || exe=.exe
 # Lists of files go in the byte order of their names, the same everywhere (the expected outputs
@@ -37,7 +47,7 @@ ko() {
 # upstream tests) run
 # JOBS at a time (the CPUs by default), each with its veslint and its tsgo; their lines are printed
 # in the order of a serial run.
-JOBS=${JOBS:-$(nproc 2> /dev/null || echo 2)}
+JOBS=${JOBS:-$(nproc 2> /dev/null || getconf _NPROCESSORS_ONLN 2> /dev/null || echo 2)}
 [[ $JOBS -ge 1 ]] || JOBS=1
 # throttle waits until fewer than JOBS background jobs run.
 throttle() {
@@ -339,7 +349,7 @@ if [[ $windows -eq 0 ]]; then
 	code=0
 	(cd tests/projects && ../../veslint --config resolved.json --fixes "${projects_files[@]}") > "$TMP/projects.out" 2> "$TMP/projects.err" || code=$?
 	if [[ $code -eq 1 ]] && diff -u tests/projects/expected.txt <(sed "s|$ROOT/tests/projects|<tests/projects>|g" "$TMP/projects.out") &&
-		grep -qx "$(wc -l < tests/projects/expected.txt) problems in ${#projects_files[@]} files" "$TMP/projects.err"; then
+		grep -qx "$(wc -l < tests/projects/expected.txt | tr -d ' ') problems in ${#projects_files[@]} files" "$TMP/projects.err"; then
 		ok "files in no project: ESLint's parsing error for each, the others linted ($(grep -c $'\tfatal\t' tests/projects/expected.txt) errors)"
 	else
 		ko "files in no project (code $code)"
@@ -350,14 +360,14 @@ if [[ $windows -eq 0 ]]; then
 	(cd "$TMP/projects" && "$ROOT/veslint" --config resolved.json --fixes --fix "${projects_files[@]}") > "$TMP/projects-fix.out" 2> "$TMP/projects-fix.err" || code=$?
 	fixed_ok=1
 	for file in "${projects_files[@]}"; do
-		if grep -qP "^\\Q$file\\E:0:0\t" tests/projects/expected-fix.txt; then
+		if cut -f1 tests/projects/expected-fix.txt | grep -qxF "$file:0:0"; then
 			cmp -s "tests/projects/$file" "$TMP/projects/$file" || fixed_ok=0
 		else
 			cmp -s <(sed 's/^let /const /' "tests/projects/$file") "$TMP/projects/$file" || fixed_ok=0
 		fi
 	done
 	if [[ $code -eq 1 && $fixed_ok -eq 1 ]] && diff -u tests/projects/expected-fix.txt <(sed "s|$TMP/projects|<tests/projects>|g" "$TMP/projects-fix.out") &&
-		grep -qx "$(wc -l < tests/projects/expected-fix.txt) problems in ${#projects_files[@]} files; 8 files fixed" "$TMP/projects-fix.err"; then
+		grep -qx "$(wc -l < tests/projects/expected-fix.txt | tr -d ' ') problems in ${#projects_files[@]} files; 8 files fixed" "$TMP/projects-fix.err"; then
 		ok "--fix with files in no project: their parsing errors, and the other files fixed"
 	else
 		ko "--fix with files in no project (code $code, files as expected: $fixed_ok)"
@@ -475,7 +485,7 @@ json_config() { # folder file.json
 	local code=0
 	sed "s|<tests/config>|$ROOT/tests/config|" "tests/config/$1/$2" > "$TMP/$1-$2"
 	(cd tests/config && ../../veslint --config "$TMP/$1-$2" --fixes "$1/a.ts" "$1/b.ts" "$1/c.ts") > "$TMP/json-config.out" 2> "$TMP/json-config.err" || code=$?
-	if [[ $code -eq 1 ]] && diff -u <(grep -P "^$1/[abc]\\.ts:" tests/config/expected.txt) "$TMP/json-config.out"; then
+	if [[ $code -eq 1 ]] && diff -u <(grep -E "^$1/[abc]\\.ts:" tests/config/expected.txt) "$TMP/json-config.out"; then
 		ok "--config $1/$2: as with the ESLint configuration"
 	else
 		ko "--config $1/$2 (code $code)"
@@ -532,7 +542,7 @@ printf '{"compilerOptions":{"strict":true,"noEmit":true,"jsx":"preserve"}}\n' > 
 printf 'export const f = <T,>(x: T) => x;\n' > "$TMP/broken-fix/generic.tsx"
 ./veslint --fix --rule @stylistic/comma-dangle --no-config-lookup "$TMP/broken-fix/generic.tsx" > "$TMP/broken-fix.out" 2> /dev/null
 if [[ $(< "$TMP/broken-fix/generic.tsx") == 'export const f = <T>(x: T) => x;' ]] &&
-	grep -qP ':1:28\teslint\tfatal\tParsing error: Unexpected token' "$TMP/broken-fix.out"; then
+	grep -qF $':1:28\teslint\tfatal\tParsing error: Unexpected token' "$TMP/broken-fix.out"; then
 	ok "--fix stops at a fix TypeScript cannot parse"
 else
 	ko "--fix stops at a fix TypeScript cannot parse"
@@ -826,7 +836,7 @@ expect_usage_error "--rule cannot be combined with --all-identifiers" "cannot be
 code=0
 printf '%s' '{"rules": {"@typescript-eslint/prefer-find": "error"}, "languageOptions": {"ecmaVersion": 2019, "globals": {"parseInt": "off", "parseFloat": "off", "Number": "off", "isNaN": false}}}' > "$TMP/globals.json"
 ./veslint --config "$TMP/globals.json" tests/config/globals/a.ts > "$TMP/globals.out" 2> "$TMP/globals.err" || code=$?
-if [[ $code -eq 1 ]] && diff -u <(grep -P '^globals/a\.ts:.*\t@typescript-eslint/prefer-find\t' tests/config/expected.txt | cut -f1-4) <(sed 's|^tests/config/||' "$TMP/globals.out"); then
+if [[ $code -eq 1 ]] && diff -u <(grep -E $'^globals/a\\.ts:.*\t@typescript-eslint/prefer-find\t' tests/config/expected.txt | cut -f1-4) <(sed 's|^tests/config/||' "$TMP/globals.out"); then
 	ok "--config with languageOptions: ecmaVersion and globals"
 else
 	ko "--config with languageOptions (code $code)"
@@ -881,7 +891,7 @@ else
 	cat "$TMP/vue-server.err"
 fi
 if (cd tests/vue-lint/fixtures && ../../../veslint both-scripts.vue) > "$TMP/vue-types.out" 2> "$TMP/vue-types.err" &&
-	grep -qP '^both-scripts\.vue:9:5\tcount\tnumber$' "$TMP/vue-types.out"; then
+	grep -qxF $'both-scripts.vue:9:5\tcount\tnumber' "$TMP/vue-types.out"; then
 	ok "Vue files: the identifiers of a script and their types"
 else
 	ko "Vue files: the identifiers of a script and their types"
@@ -1001,8 +1011,8 @@ else
 	cat "$TMP/svelte-server.err"
 fi
 if (cd tests/svelte-lint/fixtures && ../../../veslint runes.svelte util.ts) > "$TMP/svelte-types.out" 2> "$TMP/svelte-types.err" &&
-	grep -qP '^runes\.svelte:34:17\titem\tstring$' "$TMP/svelte-types.out" &&
-	grep -qP '^util\.ts:5:14\tcomponent\tComponent<Record<string, unknown>, Record<string, never>>$' "$TMP/svelte-types.out"; then
+	grep -qxF $'runes.svelte:34:17\titem\tstring' "$TMP/svelte-types.out" &&
+	grep -qxF $'util.ts:5:14\tcomponent\tComponent<Record<string, unknown>, Record<string, never>>' "$TMP/svelte-types.out"; then
 	ok "Svelte files: the identifiers of a component and their types; an import of one is the *.svelte module"
 else
 	ko "Svelte files: the identifiers of a component and their types"
@@ -1260,7 +1270,7 @@ for json in tests/config-errors/*.json; do
 	[[ $(basename "$json") == tsconfig.json ]] && continue
 	code=0
 	./veslint --config "$json" tests/config-errors/cases.ts > /dev/null 2> "$TMP/config-error.err" || code=$?
-	if [[ $code -eq 2 ]] && diff -u <(printf 'veslint: %s: ' "$json"; cat "${json%.json}.txt") <(head -n -1 "$TMP/config-error.err"); then
+	if [[ $code -eq 2 ]] && diff -u <(printf 'veslint: %s: ' "$json"; cat "${json%.json}.txt") <(sed '$d' "$TMP/config-error.err"); then
 		ok "--config $json: ESLint's error"
 	else
 		ko "--config $json (code $code)"
@@ -1276,7 +1286,7 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		code=0
 		RULES=$(basename "$json") VESLINT_ESLINT_DIR=build/eval/spider-byte ./veslint --config tests/config-errors/eslint.config.mjs \
 			tests/config-errors/cases.ts > /dev/null 2> "$TMP/config-error.err" || code=$?
-		if [[ $code -ne 2 ]] || ! diff -u <(printf 'veslint: tests/config-errors/eslint.config.mjs: '; cat "${json%.json}.txt") <(head -n -1 "$TMP/config-error.err"); then
+		if [[ $code -ne 2 ]] || ! diff -u <(printf 'veslint: tests/config-errors/eslint.config.mjs: '; cat "${json%.json}.txt") <(sed '$d' "$TMP/config-error.err"); then
 			same=1
 			echo "$json (code $code)"
 		fi
@@ -1442,7 +1452,7 @@ if [[ $windows -eq 0 && $(platform_package) == typescript-linux-x64 ]] && comman
 fi
 # veslint keeps itself and the tsgo it starts on two of the CPUs it may use (cpus.v), on
 # VESLINT_CPUS of them, and on all of them with VESLINT_CPUS=0; on Linux only.
-if [[ $windows -eq 0 ]]; then
+if [[ $linux -eq 1 ]]; then
 	allowed_cpus=$(env -u OMP_NUM_THREADS -u OMP_THREAD_LIMIT nproc)
 	expect_error "tsgo runs on two CPUs" "simulated failure on CPUs: $((allowed_cpus < 2 ? allowed_cpus : 2))." \
 		env -u VESLINT_CPUS "$(sandbox cpus)" app.ts
@@ -1677,7 +1687,7 @@ fi
 # after its first lint, while both are alive (on Linux only); with TypeScript in its process, the
 # threads of the Go runtime are its own.
 for transport in process inproc; do
-	if [[ $windows -eq 1 ]]; then
+	if [[ $linux -eq 0 ]]; then
 		echo "skip   --server on two CPUs ($transport): veslint restricts its CPUs on Linux only"
 	elif VESLINT_TSGO=$transport python3 - ./veslint tests/config "${config_abs[0]}" 2> "$TMP/server-cpus.err" << 'PY'
 import json, os, subprocess, sys

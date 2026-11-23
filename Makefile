@@ -12,7 +12,8 @@ CC_V     := clang
 TS_LTO   := -flto
 AR_LTO   := ar
 SHA256   := shasum -a 256
-# V built from source has no tcc libgc.a on macOS: `v test` builds the bundled collector instead.
+# V built from source has no tcc libgc.a on macOS: `v test` and the V programs tests/run.sh runs
+# build the bundled collector instead.
 TEST_VFLAGS := -d use_bundled_libgc
 else
 PLATFORM := linux-x64
@@ -132,7 +133,7 @@ run: veslint
 
 test: veslint
 	@start=$$(date +%s); VFLAGS="$$VFLAGS $(TEST_VFLAGS)" $(V) test . && echo "time   v test: $$(( $$(date +%s) - start )) s"
-	V=$(V) tests/run.sh
+	VFLAGS="$$VFLAGS $(TEST_VFLAGS)" V=$(V) tests/run.sh
 
 bench: veslint
 	$(V) run tests/gen_bench.vsh build/bench
