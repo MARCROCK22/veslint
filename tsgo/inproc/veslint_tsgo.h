@@ -56,6 +56,11 @@ enum {
 // veslint_tsgo_convert converts one file (flags: 1 for TSX, plus 2 for ESLint's sourceType
 // "script"), its text without a BOM.
 extern int veslint_tsgo_convert(int flags, char* text, size_t text_len, veslint_tsgo_row** rows, size_t* count);
+// veslint_tsgo_convert_file is veslint_tsgo_convert for a file of a program of the session
+// `handle`, whose AST it converts when it is the one a parse of the text gives: `params` name the
+// snapshot, the project and the file as the parameters of veslint/nodesAtRanges, without values.
+extern int veslint_tsgo_convert_file(long long handle, char* params, size_t params_len, int flags, char* text,
+	size_t text_len, veslint_tsgo_row** rows, size_t* count);
 
 // Boehm's GC_do_blocking, declared here: V calls its collector through wrappers of its own and the
 // C it generates does not include gc.h, so without this the call was an implicit declaration (a
@@ -93,6 +98,7 @@ enum {
 	veslint_tsgo_op_close,
 	veslint_tsgo_op_convert_language,
 	veslint_tsgo_op_convert,
+	veslint_tsgo_op_convert_file,
 };
 
 static void* veslint_tsgo_run(void* data) {
@@ -127,6 +133,12 @@ static void* veslint_tsgo_run(void* data) {
 	case veslint_tsgo_op_convert:
 		call->result = veslint_tsgo_convert(call->flag, call->a, call->a_len, (veslint_tsgo_row**)&call->out,
 			&call->out_len);
+		break;
+	// handle: the session, a: the text, b: the snapshot, project and path (veslint_tsgo_convert_file),
+	// flag: the flags; out and out_len as for veslint_tsgo_op_convert.
+	case veslint_tsgo_op_convert_file:
+		call->result = veslint_tsgo_convert_file(call->handle, call->b, call->b_len, call->flag, call->a, call->a_len,
+			(veslint_tsgo_row**)&call->out, &call->out_len);
 		break;
 	}
 	return NULL;
