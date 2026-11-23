@@ -570,6 +570,9 @@ struct RuleFile {
 	has_bom  bool
 	not_utf8 bool   // the bytes are not valid UTF-8: tsgo is served `src`
 	note     string // ESLint's message for a file it does not lint (ignored, or without configuration)
+	// typescript-eslint's error for a file in none of the projects it takes the types from, which
+	// ESLint reports as a parsing error instead of linting the file (projects.v).
+	fatal string
 	// A .vue file: tsgo has its script in a virtual twin, at ts_path with the text twin_code
 	// (vue_files.v); ts_path is abs_path for any other file. A .svelte file too (svelte_files.v).
 	vue       bool
@@ -665,12 +668,21 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		} else {
 			[]string{}
 		}
+		mut fatal := ''
 		tsconfig := if named.len > 0 {
 			''
 		} else if project_override != '' {
 			project_override
 		} else {
-			find_tsconfig(abs_path)!
+			find_tsconfig(abs_path) or {
+				if is_vue || is_svelte {
+					return err
+				}
+				found, message := without_tsconfig(abs_path, opts.loaded, lint_configs,
+					opts.files.map(os.abs_path(it))) or { return err }
+				fatal = message
+				found
+			}
 		}
 		for t in named {
 			if t !in tsconfigs {
@@ -685,6 +697,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			abs_path:       abs_path
 			tsconfig:       tsconfig
 			named:          named
+			fatal:          fatal
 			src:            src
 			has_bom:        has_bom
 			not_utf8:       not_utf8
@@ -705,9 +718,19 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	}
 	bench.files = files.len
 	if tsconfigs.len == 0 {
-		// ESLint lints none of the files: only its message for each one.
+		// ESLint lints none of the files: only its message for each one (or its parsing error).
 		mut summary := RuleSummary{}
+		mut notes := 0
 		for f in files {
+			if f.fatal != '' {
+				if opts.summary {
+					summary.add(rules.problem_rule, f.path, false)
+				} else {
+					print(fatal_report(f.path, f.fatal).stdout)
+				}
+				continue
+			}
+			notes++
 			if opts.summary {
 				summary.add(rules.problem_rule, f.path, true)
 			} else {
@@ -715,11 +738,17 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			}
 		}
 		print(summary.table())
-		eprintln('${files.len} problems in ${files.len} files (${files.len} of them warnings)')
-		return 0
+		if notes == files.len {
+			eprintln('${files.len} problems in ${files.len} files (${files.len} of them warnings)')
+		} else {
+			eprintln(summary_line(files.len, files.len, notes))
+		}
+		return files.len - notes
 	}
 	mut served := map[string]string{}
-	mut virtual := map[string]string{}
+	// The tsconfigs of the default project's files (find_file_projects) are virtual files.
+	mut virtual := default_project_tsconfigs(opts.loaded, files.filter(it.note == ''
+		&& it.fatal == '').map(it.abs_path))
 	for f in files {
 		if f.vue || f.svelte {
 			virtual[f.ts_path] = f.twin_code
@@ -730,17 +759,19 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		}
 	}
 	plan := &LintPlan{
-		loaded:       unsafe { &opts.loaded }
-		lint_configs: lint_configs
-		fix:          opts.fix
-		fixes:        opts.fixes
-		timeout:      timeout
-		tsconfigs:    tsconfigs
-		served:       served
-		virtual:      virtual
-		lazy:         !opts.fix && !configs_need_types(lint_configs)
+		loaded:         unsafe { &opts.loaded }
+		lint_configs:   lint_configs
+		fix:            opts.fix
+		fixes:          opts.fixes
+		timeout:        timeout
+		tsconfigs:      tsconfigs
+		forced_project: project_override != ''
+		served:         served
+		virtual:        virtual
+		lazy:           !opts.fix && !configs_need_types(lint_configs)
 	}
-	mut workers := worker_count(opts.fix, files.filter(it.note == '').len, usable_cpus())
+	mut workers := worker_count(opts.fix, files.filter(it.note == '' && it.fatal == '').len,
+		usable_cpus())
 	// Which file validates the inline options of those rules first changes the messages: one worker
 	// validates them in the order of the files.
 	if workers > 1 && files.any(rules.mentions_order_sensitive_schema(it.src)) {
@@ -774,6 +805,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	// The reports in the order of the files, up to the first that failed, as one worker gives them.
 	mut problems := 0
 	mut warnings := 0
+	mut write_failures := 0
 	mut summary := RuleSummary{}
 	for index, f in files {
 		if index >= failed_at {
@@ -789,7 +821,20 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			warnings++
 			continue
 		}
+		if f.fatal != '' {
+			// Without a tsconfig at all (run_rules): no worker lints it.
+			if opts.summary {
+				summary.add(rules.problem_rule, f.path, false)
+			} else {
+				print(fatal_report(f.path, f.fatal).stdout)
+			}
+			problems++
+			continue
+		}
 		outcome := outcomes[index] or { break }
+		if outcome.write_failed {
+			write_failures++
+		}
 		eprint(outcome.warnings)
 		eprint(outcome.report.stderr)
 		if opts.summary {
@@ -848,6 +893,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	fixed_note := if opts.fix { '; ${fixed_files} files fixed' } else { '' }
 	eprintln(summary_line(problems, files.len, warnings) + fixed_note)
 	print_bench(opts, mut bench, total)
+	// A file --fix could not write fails the run, as ESLint's does (its error stops it with code
+	// 2, after it wrote the other files): veslint still prints every report, and ends with code 1.
+	if write_failures > 0 && problems - warnings == 0 {
+		return 1
+	}
 	return problems - warnings
 }
 
