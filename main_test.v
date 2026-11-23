@@ -347,3 +347,23 @@ fn test_worker_count() {
 	assert worker_count(false, 1000, 2) == 2
 	assert worker_count(false, 0, 4) == 1
 }
+
+// The parsing errors of a file in no project (projects.v) say where the file is as Node's
+// path.relative and typescript-estree's describeFilePath do, and allowDefaultProject's patterns as
+// JSON.stringify writes them.
+fn test_paths_of_project_errors() {
+	$if !windows {
+		assert node_relative('/a/b', '/a/b/c/d.ts') == 'c/d.ts'
+		assert node_relative('/a/b', '/a/x.ts') == '../x.ts'
+		assert node_relative('/a/b/', '/a/b') == ''
+		assert node_relative('/a/b', '/c/d.ts') == '../../c/d.ts'
+		assert describe_file_path('/a/b/c.ts', '/a/b') == '<tsconfigRootDir>/c.ts'
+		assert describe_file_path('/a/x.ts', '/a/b') == '/a/x.ts'
+		assert path_contains('/a/b', '/a/b')
+		assert path_contains('/a/b/', '/a/b/c')
+		assert !path_contains('/a/b', '/a/bc')
+	}
+	assert json_stringify('src/x*.ts') == '"src/x*.ts"'
+	assert json_stringify('a"b\\c\n\t\u0001') == '"a\\"b\\\\c\\n\\t\\u0001"'
+	assert json_stringify('ñ/é') == '"ñ/é"'
+}

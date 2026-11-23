@@ -38,8 +38,10 @@ struct LintPlan {
 	timeout      time.Duration
 	// The tsconfigs of the files, before the snapshot gives those of `parserOptions.project`.
 	tsconfigs []string
-	served    map[string]string
-	virtual   map[string]string
+	// --project: every file takes the tsconfig given.
+	forced_project bool
+	served         map[string]string
+	virtual        map[string]string
 	// No rule needs types: the checkers make a snapshot only if a file asks for one.
 	lazy bool
 }
@@ -172,6 +174,21 @@ fn (mut w Worker) open(plan &LintPlan) ! {
 		}
 		w.tsconfigs << opened
 	}
+	// The project typescript-eslint takes each file from, or its parsing error.
+	found := find_file_projects(mut w.client, mut w.files, snap, plan.loaded, is_single_run(plan.fix),
+		plan.forced_project)!
+	if found.opened.len > 0 {
+		if plan.lazy {
+			snap = config_snapshot(mut w.client, snap, found.opened)!
+		} else {
+			previous_snapshot := snap.snapshot
+			snap = w.client.update_snapshot_files(snap, found.opened, tsgo.FileChangeSet{})!
+			if snap.snapshot != previous_snapshot {
+				w.client.release_snapshot(previous_snapshot)!
+			}
+		}
+		w.tsconfigs << found.opened
+	}
 	w.snap = snap
 	w.snapshot_ms = ms(sw.elapsed())
 	w.projects = map_projects(w.tsconfigs, snap)!
@@ -185,7 +202,7 @@ fn (mut w Worker) open(plan &LintPlan) ! {
 fn (mut w Worker) mark_last_files(plan &LintPlan) {
 	if !plan.fix {
 		for index, f in w.files {
-			if f.note == '' {
+			if f.note == '' && f.fatal == '' && f.unlinted == '' {
 				w.last_of_project[w.projects[f.tsconfig]] = index
 			}
 		}
@@ -205,6 +222,17 @@ fn (mut w Worker) close() {
 // lint lints the file `index` (not a file with a note): with --fix, until its fixes are applied.
 fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 	f := w.files[index]
+	if f.fatal != '' {
+		return FileOutcome{
+			report:   fatal_report(f.path, f.fatal)
+			findings: [fatal_finding(f.fatal)]
+		}
+	}
+	if f.unlinted != '' {
+		return FileOutcome{
+			warnings: f.unlinted
+		}
+	}
 	config_index := plan.loaded.file_config[f.abs_path] or { 0 }
 	mut lint_config := plan.lint_configs[config_index]
 	if f.abs_path in plan.loaded.file_runes {
@@ -449,7 +477,8 @@ fn (mut q FileQueue) take(worker int) int {
 			q.ends[most]--
 			index = q.ends[most]
 		}
-		if q.files[index].note == '' {
+		// A file without a tsconfig has its parsing error already (run_rules).
+		if q.files[index].note == '' && q.files[index].fatal == '' {
 			return index
 		}
 	}

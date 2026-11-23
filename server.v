@@ -620,18 +620,25 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 		} else {
 			[]string{}
 		}
+		mut fatal := ''
 		tsconfig := if named.len > 0 {
 			''
 		} else if project_override != '' {
 			project_override
 		} else {
 			find_tsconfig(abs_path) or {
-				errors.writeln('veslint: ${err.msg()}')
-				return ServerAnswer{
-					id:     id
-					code:   1
-					stderr: errors.str()
+				// Not in any project: typescript-eslint's parsing error (run_rules).
+				fatal = missing_tsconfig_fatal(abs_path, loaded.config_entry(abs_path),
+					loaded.service_patterns(files.map(os.abs_path(it))))
+				if fatal == '' || is_vue || is_svelte {
+					errors.writeln('veslint: ${err.msg()}')
+					return ServerAnswer{
+						id:     id
+						code:   1
+						stderr: errors.str()
+					}
 				}
+				''
 			}
 		}
 		for t in named {
@@ -652,6 +659,7 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 			path:     path
 			abs_path: abs_path
 			tsconfig: tsconfig
+			fatal:    fatal
 			named:    named
 			src:      src
 			has_bom:  has_bom
@@ -714,9 +722,33 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 				stderr: errors.str()
 			}
 		}
+		mut all := tsconfigs.clone()
 		if opened.len > 0 {
-			mut all := tsconfigs.clone()
 			all << opened
+			s.snapshot_for(all, lazy) or {
+				s.stop()
+				errors.writeln('veslint: ${err.msg()}')
+				return ServerAnswer{
+					id:     id
+					code:   1
+					stderr: errors.str()
+				}
+			}
+		}
+		// The project typescript-eslint takes each file from, or its parsing error, as in a
+		// single run of the command line.
+		found := find_file_projects(mut s.client, mut entries, s.snap, loaded, is_single_run(false),
+			project_override != '') or {
+			s.stop()
+			errors.writeln('veslint: ${err.msg()}')
+			return ServerAnswer{
+				id:     id
+				code:   1
+				stderr: errors.str()
+			}
+		}
+		if found.opened.len > 0 {
+			all << found.opened
 			s.snapshot_for(all, lazy) or {
 				s.stop()
 				errors.writeln('veslint: ${err.msg()}')
@@ -744,6 +776,15 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 			out.writeln(note_line(f.path, f.note))
 			problems++
 			warnings++
+			continue
+		}
+		if f.fatal != '' {
+			out.write_string(fatal_report(f.path, f.fatal).stdout)
+			problems++
+			continue
+		}
+		if f.unlinted != '' {
+			errors.write_string(f.unlinted)
 			continue
 		}
 		config_index := loaded.file_config[f.abs_path] or { 0 }

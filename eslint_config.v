@@ -90,11 +90,40 @@ const loadEstree = () => {
     } catch {}
     const dir = path.dirname(base.resolve('@typescript-eslint/typescript-estree/package.json'));
     estree = {
+      dir,
       resolveProjectList: base(path.join(dir, 'dist', 'parseSettings', 'resolveProjectList.js')).resolveProjectList,
       getInferredTSConfigRootDir: base(path.join(dir, 'dist', 'parseSettings', 'candidateTSConfigRootDirs.js')).getInferredTSConfigRootDir,
     };
   } catch {}
   return estree;
+};
+// The minimatch typescript-estree matches allowDefaultProject with: the one of the typescript-estree
+// of the configuration, or of the one next to ESLint (a configuration may import typescript-eslint
+// by a path).
+let minimatchOf;
+const loadMinimatch = () => {
+  if (minimatchOf !== undefined) return minimatchOf;
+  minimatchOf = null;
+  const fromEslint = createRequire(path.join(process.cwd(), 'veslint.js'));
+  for (const dir of [loadEstree()?.dir, () => path.dirname(fromEslint.resolve('@typescript-eslint/typescript-estree/package.json'))]) {
+    try {
+      const found = typeof dir === 'function' ? dir() : dir;
+      if (!found) continue;
+      minimatchOf = createRequire(path.join(found, 'package.json'))('minimatch').minimatch;
+      if (minimatchOf) break;
+    } catch {}
+  }
+  minimatchOf ??= null;
+  return minimatchOf;
+};
+// The tsconfigRootDir typescript-estree uses: the given one, the one it infers, or ESLint's cwd.
+const rootDir = given => {
+  if (typeof given.tsconfigRootDir === 'string') return path.resolve(given.tsconfigRootDir);
+  try {
+    return loadEstree()?.getInferredTSConfigRootDir?.() ?? cwd;
+  } catch {
+    return cwd;
+  }
 };
 // The tsconfig files `parserOptions.project` names, as typescript-estree resolves them (in their
 // order, with the globs expanded, relative to tsconfigRootDir: the given one, the one inferred, or
@@ -104,14 +133,7 @@ const projectList = given => {
   const list = (Array.isArray(given.project) ? given.project : [given.project]).filter(p => typeof p === 'string');
   if (list.length === 0) return true;
   const resolver = loadEstree();
-  let root = cwd;
-  if (typeof given.tsconfigRootDir === 'string') {
-    root = path.resolve(given.tsconfigRootDir);
-  } else {
-    try {
-      root = resolver?.getInferredTSConfigRootDir?.() ?? cwd;
-    } catch {}
-  }
+  const root = rootDir(given);
   let paths = [...new Set(list.map(p => path.resolve(root, p)))];
   if (resolver?.resolveProjectList) {
     try {
@@ -181,20 +203,24 @@ for (const file of files) {
   const given = config.languageOptions?.parserOptions ?? {};
   const service = given.projectService || (given.project && given.projectService !== false && process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true');
   const parserOptions = service ? { projectService: true } : given.project ? { project: projectList(given) } : given.programs ? { project: true } : {};
+  // A file typescript-eslint finds in no project with these options: its parsing error says where
+  // the file is from the tsconfigRootDir.
+  if (!service && given.project) parserOptions.tsconfigRootDir = rootDir(given);
+  // A file allowDefaultProject matches (filePathMatchedBy of typescript-estree, on its path from
+  // the tsconfigRootDir), which the project service takes from its default project.
+  let defaultProject = false;
   if (service) {
     // What decides whether a single run takes a file from a Program made for its tsconfig
     // instead of the project service (useSingleRunProgramForProjectService of typescript-estree).
-    let root = cwd;
-    if (typeof given.tsconfigRootDir === 'string') {
-      root = path.resolve(given.tsconfigRootDir);
-    } else {
-      try {
-        root = loadEstree()?.getInferredTSConfigRootDir?.() ?? cwd;
-      } catch {}
-    }
+    const root = rootDir(given);
     parserOptions.tsconfigRootDir = root;
     const allowDefaultProject = typeof given.projectService === 'object' ? given.projectService?.allowDefaultProject : undefined;
-    if (allowDefaultProject?.length) parserOptions.projectService = { allowDefaultProject };
+    if (allowDefaultProject?.length) {
+      parserOptions.projectService = { allowDefaultProject };
+      const minimatch = loadMinimatch();
+      const relative = path.relative(root, path.resolve(file));
+      defaultProject = !!minimatch && allowDefaultProject.some(pattern => minimatch(relative, pattern, { dot: true }));
+    }
     if (given.extraFileExtensions?.length) parserOptions.extraFileExtensions = given.extraFileExtensions;
     if (given.programs != null) parserOptions.programs = true;
     if (given.disallowAutomaticSingleRunInference) parserOptions.disallowAutomaticSingleRunInference = true;
@@ -241,6 +267,7 @@ for (const file of files) {
     configs.push(slim);
   }
   const entry = { path: file, config: indexes.get(key) };
+  if (defaultProject) entry.defaultProject = true;
   // A function as parserOptions.svelteConfig.compilerOptions.runes, which JSON leaves out of the
   // configuration: svelte-eslint-parser (isRunesAsParseContext, with parserOptions.filePath)
   // and eslint-plugin-svelte (getWarningsFromCode, with context.filename) call it with the path
@@ -317,6 +344,60 @@ struct ConfigEntry {
 	projects []string
 	// The shared settings of the configuration (`settings`), which rules read.
 	settings map[string]json2.Any
+	// Where typescript-eslint gets the types (projects.v), the tsconfigRootDir (absolute; '' for
+	// the current directory) and the patterns of `projectService.allowDefaultProject`, which its
+	// parsing error for a file in no project names.
+	types                 TypeSource
+	tsconfig_root         string
+	allow_default_project []string
+}
+
+// root_dir is the tsconfigRootDir of a configuration.
+fn (e ConfigEntry) root_dir() string {
+	return if e.tsconfig_root != '' { e.tsconfig_root } else { os.getwd() }
+}
+
+// type_options reads, from the `languageOptions.parserOptions` of a configuration, where
+// typescript-eslint gets the types (createParseSettings of typescript-estree): the project service
+// when `projectService` is set, else the programs of `project` (or of `programs`), else
+// `fallback`; with the tsconfigRootDir (relative to `base`) and allowDefaultProject's patterns.
+fn type_options(config map[string]json2.Any, base string, fallback TypeSource) (TypeSource, string, []string) {
+	mut options := map[string]json2.Any{}
+	if language := config['languageOptions'] {
+		if language is map[string]json2.Any {
+			if parser := language.as_map()['parserOptions'] {
+				if parser is map[string]json2.Any {
+					options = parser.as_map().clone()
+				}
+			}
+		}
+	}
+	mut root := ''
+	if given := options['tsconfigRootDir'] {
+		if given is string {
+			root = if os.is_abs_path(given) {
+				given
+			} else {
+				os.abs_path(os.join_path(base, given))
+			}
+		}
+	}
+	service := options['projectService'] or { json2.Any(false) }
+	if js_truthy(service) {
+		mut patterns := []string{}
+		if service is map[string]json2.Any {
+			if listed := service.as_map()['allowDefaultProject'] {
+				if listed is []json2.Any {
+					patterns = listed.map(it.str())
+				}
+			}
+		}
+		return .service, root, patterns
+	}
+	if js_truthy(options['project'] or { json2.Any(false) }) || 'programs' in options {
+		return .project, root, []string{}
+	}
+	return fallback, root, []string{}
 }
 
 // language_options reads the `languageOptions` of a configuration.
@@ -572,6 +653,32 @@ struct LoadedConfig {
 	file_runes map[string]json2.Any
 	resolved   string // the resolved JSON, for --print-config
 	only_rule  string // the rule of --rule, the only one that runs
+	// The files (absolute paths) allowDefaultProject matches (`defaultProject` in the resolved
+	// JSON).
+	default_project map[string]bool
+}
+
+// service_patterns are the allowDefaultProject patterns of the project service typescript-eslint
+// lints `files` (absolute paths, in the order they are linted) with: it makes one for the process,
+// with the options of the first file whose configuration has the project service
+// (populateProjectService of typescript-estree), and its errors name those patterns.
+fn (l &LoadedConfig) service_patterns(files []string) []string {
+	for file in files {
+		if file in l.file_notes {
+			continue
+		}
+		entry := l.config_entry(file)
+		if entry.types == .service {
+			return entry.allow_default_project
+		}
+	}
+	return []string{}
+}
+
+// config_entry is the configuration of a file (absolute path).
+fn (l &LoadedConfig) config_entry(abs_path string) ConfigEntry {
+	index := l.file_config[abs_path] or { 0 }
+	return if index < l.configs.len { l.configs[index] } else { ConfigEntry{} }
 }
 
 // named_projects are the tsconfig files `parserOptions.project` names in the configuration of a
@@ -697,24 +804,30 @@ fn load_config_resolving(path string, files []string, lookup bool, reuse bool, m
 			plugins = listed.map(it.str().all_before(':'))
 		}
 	}
+	// veslint gets the types of such a configuration as the project service does.
+	types, tsconfig_root, allow_default_project := type_options(root.as_map(), os.getwd(),
+		.service)
 	return LoadedConfig{
 		configs:     [
 			ConfigEntry{
-				setup:                setup
-				language:             language_options(root.as_map())
-				plugins:              plugins
-				project_programs:     uses_project_programs(root.as_map())
-				service_program_root: single_run_program_root(root.as_map(), os.getwd())
-				projects:             named_projects_of(root.as_map(), tsconfig_root_dir(root.as_map()))
-				report_unused:        linter_severity(linter['reportUnusedDisableDirectives'] or {
+				setup:                 setup
+				types:                 types
+				tsconfig_root:         tsconfig_root
+				allow_default_project: allow_default_project
+				language:              language_options(root.as_map())
+				plugins:               plugins
+				project_programs:      uses_project_programs(root.as_map())
+				service_program_root:  single_run_program_root(root.as_map(), os.getwd())
+				projects:              named_projects_of(root.as_map(), tsconfig_root_dir(root.as_map()))
+				report_unused:         linter_severity(linter['reportUnusedDisableDirectives'] or {
 					json2.Any(i64(1))
 				})
-				no_inline_config:     (linter['noInlineConfig'] or { json2.Any(false) }).bool()
-				report_unused_inline: linter_severity(linter['reportUnusedInlineConfigs'] or {
+				no_inline_config:      (linter['noInlineConfig'] or { json2.Any(false) }).bool()
+				report_unused_inline:  linter_severity(linter['reportUnusedInlineConfigs'] or {
 					json2.Any(i64(0))
 				})
-				all_rules:            all_rules
-				settings:             config_settings(root.as_map())
+				all_rules:             all_rules
+				settings:              config_settings(root.as_map())
 			},
 		]
 		file_config: file_config
@@ -783,22 +896,26 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 		config := item.as_map()
 		section := (config['rules'] or { json2.Any(map[string]json2.Any{}) }).as_map()
 		linter := (config['linterOptions'] or { json2.Any(map[string]json2.Any{}) }).as_map()
+		types, tsconfig_root, allow_default_project := type_options(config, base_dir, .none)
 		configs << ConfigEntry{
-			language:             language_options(config)
-			project_programs:     uses_project_programs(config)
-			service_program_root: single_run_program_root(config, base_dir)
-			projects:             named_projects_of(config, base_dir)
-			setup:                rule_setup(section, path)!
+			types:                 types
+			tsconfig_root:         tsconfig_root
+			allow_default_project: allow_default_project
+			language:              language_options(config)
+			project_programs:      uses_project_programs(config)
+			service_program_root:  single_run_program_root(config, base_dir)
+			projects:              named_projects_of(config, base_dir)
+			setup:                 rule_setup(section, path)!
 			// ESLint's default for a flat configuration is "warn".
-			report_unused:        linter_severity(linter['reportUnusedDisableDirectives'] or {
+			report_unused:         linter_severity(linter['reportUnusedDisableDirectives'] or {
 				json2.Any(i64(1))
 			})
-			no_inline_config:     (linter['noInlineConfig'] or { json2.Any(false) }).bool()
-			report_unused_inline: linter_severity(linter['reportUnusedInlineConfigs'] or {
+			no_inline_config:      (linter['noInlineConfig'] or { json2.Any(false) }).bool()
+			report_unused_inline:  linter_severity(linter['reportUnusedInlineConfigs'] or {
 				json2.Any(i64(0))
 			})
-			all_rules:            section
-			settings:             config_settings(config)
+			all_rules:             section
+			settings:              config_settings(config)
 		}
 	}
 	mut by_path := map[string]json2.Any{}
@@ -814,6 +931,7 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 	mut file_config := map[string]int{}
 	mut file_notes := map[string]string{}
 	mut file_runes := map[string]json2.Any{}
+	mut default_project := map[string]bool{}
 	for file in files {
 		abs := os.abs_path(file)
 		item := by_path[abs] or {
@@ -832,12 +950,16 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 		if runes := entry['svelteConfigRunes'] {
 			file_runes[abs] = runes
 		}
+		if js_truthy(entry['defaultProject'] or { json2.Any(false) }) {
+			default_project[abs] = true
+		}
 	}
 	return LoadedConfig{
 		configs:           configs
 		file_config:       file_config
 		file_notes:        file_notes
 		file_runes:        file_runes
+		default_project:   default_project
 		plugin_rules:      (object['pluginRules'] or { json2.Any([]json2.Any{}) }).as_array().map(it.str())
 		strict_plugins:    'pluginRules' in object
 		typescript_eslint: (object['typescriptEslint'] or { json2.Any(true) }).bool()

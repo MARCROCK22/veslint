@@ -283,6 +283,101 @@ if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslin
 		cat "$TMP/config-bun.err"
 	fi
 fi
+# Files in none of the projects typescript-eslint takes the types from (tests/projects): each is
+# ESLint's fatal parsing error at 0:0, with typescript-estree's message (the project service's, with
+# allowDefaultProject's patterns, or that of `parserOptions.project`, which is another one when the
+# run is not a single one, as with --fix), and the other files are linted and fixed. A file in the
+# tsconfig of a directory above the closest one, or in a project the closest one references, has
+# the types of that project. expected.txt and expected-fix.txt (`<tests/projects>` in the place of
+# the directory) are checked against ESLint by tests/rules/reference.sh; d-out.ts, which only the
+# default project of allowDefaultProject has, is not linted, with a warning.
+projects_files=(default-project/d-in.ts default-project/d-out.ts default-project/in.ts default-project/out.ts
+	project/a.ts project/b.ts service/.generated/g.d.ts service/a.ts service/b.ts service/c.ts
+	service/nested/x.ts service/nested/y.ts service/solution/s.ts)
+projects_warning='warning: default-project/d-out.ts: not linted: only the default project of allowDefaultProject has it, which veslint does not make'
+if [[ $windows -eq 0 ]]; then
+	code=0
+	(cd tests/projects && ../../veslint --config resolved.json --fixes "${projects_files[@]}") > "$TMP/projects.out" 2> "$TMP/projects.err" || code=$?
+	if [[ $code -eq 1 ]] && diff -u tests/projects/expected.txt <(sed "s|$ROOT/tests/projects|<tests/projects>|g" "$TMP/projects.out") &&
+		grep -qxF "$projects_warning" "$TMP/projects.err" && grep -qx '19 problems in 13 files' "$TMP/projects.err"; then
+		ok "files in no project: ESLint's parsing error for each, the others linted ($(grep -c $'\tfatal\t' tests/projects/expected.txt) errors)"
+	else
+		ko "files in no project (code $code)"
+		cat "$TMP/projects.err"
+	fi
+	cp -r tests/projects "$TMP/projects"
+	code=0
+	(cd "$TMP/projects" && "$ROOT/veslint" --config resolved.json --fixes --fix "${projects_files[@]}") > "$TMP/projects-fix.out" 2> "$TMP/projects-fix.err" || code=$?
+	fixed_ok=1
+	for file in "${projects_files[@]}"; do
+		if grep -qP "^\\Q$file\\E:0:0\t" tests/projects/expected-fix.txt || [[ $file == default-project/d-out.ts ]]; then
+			cmp -s "tests/projects/$file" "$TMP/projects/$file" || fixed_ok=0
+		else
+			cmp -s <(sed 's/^let /const /' "tests/projects/$file") "$TMP/projects/$file" || fixed_ok=0
+		fi
+	done
+	if [[ $code -eq 1 && $fixed_ok -eq 1 ]] && diff -u tests/projects/expected-fix.txt <(sed "s|$TMP/projects|<tests/projects>|g" "$TMP/projects-fix.out") &&
+		grep -qx '12 problems in 13 files; 7 files fixed' "$TMP/projects-fix.err"; then
+		ok "--fix with files in no project: their parsing errors, and the other files fixed"
+	else
+		ko "--fix with files in no project (code $code, files as expected: $fixed_ok)"
+		cat "$TMP/projects-fix.err"
+	fi
+	# The server answers as the command line, and so does a JSON with a `rules` section (veslint
+	# gets the types of its files as the project service does).
+	python3 -c 'import json, sys; print(json.dumps({"id": 1, "config": "resolved.json", "files": sys.argv[1:]}))' "${projects_files[@]/#/$ROOT/tests/projects/}" > "$TMP/server-projects.jsonl"
+	code=0
+	(cd tests/projects && ../../veslint --config resolved.json --fixes "${projects_files[@]/#/$ROOT/tests/projects/}") > "$TMP/cli-projects.out" 2> "$TMP/cli-projects.err" || code=$?
+	if [[ $code -eq 1 ]] && diff -u tests/projects/expected.txt <(sed -e "s|^$ROOT/tests/projects/||" -e "s|$ROOT/tests/projects|<tests/projects>|g" "$TMP/cli-projects.out") &&
+		python3 tests/server_client.py ./veslint tests/projects "$TMP/server-projects.jsonl" > "$TMP/server-projects.out" 2> "$TMP/server-projects.err" &&
+		python3 - "$TMP/server-projects.out" "$TMP/cli-projects.out" "$TMP/cli-projects.err" "$code" "$PWD/tests/projects" << 'PY'
+import json, sys
+answer = json.loads(open(sys.argv[1]).readline())
+cwd = sys.argv[5]
+got = (answer['stdout'].replace('<cwd>', cwd), answer['stderr'].replace('<cwd>', cwd), answer['code'])
+sys.exit(0 if got == (open(sys.argv[2]).read(), open(sys.argv[3]).read(), int(sys.argv[4])) else 1)
+PY
+	then
+		ok "--server: files in no project as on the command line"
+	else
+		ko "--server: files in no project"
+		cat "$TMP/server-projects.err"
+	fi
+	code=0
+	(cd tests/projects && ../../veslint --config rules.json --fixes $(printf '%s\n' "${projects_files[@]}" | grep '^service/')) > "$TMP/projects-rules.out" 2> "$TMP/projects-rules.err" || code=$?
+	if [[ $code -eq 1 ]] && diff -u <(grep '^service/' tests/projects/expected.txt | sed 's|\\nallowDefaultProject is set to .*||') <(sed "s|$ROOT/tests/projects|<tests/projects>|g" "$TMP/projects-rules.out"); then
+		ok "--config rules.json: files in no project as with the project service"
+	else
+		ko "--config rules.json with files in no project (code $code)"
+		cat "$TMP/projects-rules.err"
+	fi
+	# Without a tsconfig.json at all: the parsing error, and the run goes on.
+	mkdir -p "$TMP/no-tsconfig/src"
+	cp tests/projects/service/b.ts "$TMP/no-tsconfig/src/"
+	cp tests/projects/rules.json "$TMP/no-tsconfig/"
+	code=0
+	(cd "$TMP/no-tsconfig" && "$ROOT/veslint" --config rules.json src) > "$TMP/no-tsconfig.out" 2> "$TMP/no-tsconfig.err" || code=$?
+	if [[ $code -eq 1 ]] && [[ $(cat "$TMP/no-tsconfig.out") == "src/b.ts:0:0"$'\t'"eslint"$'\t'"fatal"$'\t'"Parsing error: $TMP/no-tsconfig/src/b.ts was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject." ]] &&
+		grep -qx '1 problems in 1 files' "$TMP/no-tsconfig.err"; then
+		ok "a file without a tsconfig.json: ESLint's parsing error"
+	else
+		ko "a file without a tsconfig.json (code $code)"
+		cat "$TMP/no-tsconfig.out" "$TMP/no-tsconfig.err"
+	fi
+	if command -v bun > /dev/null && [[ -d build/eval/spider-byte/node_modules/eslint ]]; then
+		code=0
+		(cd tests/projects && VESLINT_ESLINT_DIR=../../build/eval/spider-byte ../../veslint --config eslint.config.mjs --fixes "${projects_files[@]}") > "$TMP/projects-bun.out" 2> "$TMP/projects-bun.err" || code=$?
+		if [[ $code -eq 1 ]] && diff -u tests/projects/expected.txt <(sed "s|$ROOT/tests/projects|<tests/projects>|g" "$TMP/projects-bun.out") &&
+			(cd tests/projects && VESLINT_ESLINT_DIR=../../build/eval/spider-byte ../../veslint --config eslint.config.mjs --print-config "${projects_files[@]}") | diff -u tests/projects/resolved.json -; then
+			ok "files in no project with tests/projects/eslint.config.mjs through bun, and --print-config"
+		else
+			ko "files in no project through bun (code $code)"
+			cat "$TMP/projects-bun.err"
+		fi
+	fi
+else
+	echo "skip   files in no project: the messages have the paths as Node writes them on Windows"
+fi
 # A JSON with a `rules` section is read as ESLint reads a configuration object: veslint gives with
 # it what ESLint gives with the configuration itself (the lines of tests/config/expected.txt).
 # - unused-inline, with reportUnusedInlineConfigs: the rules of the configuration as written

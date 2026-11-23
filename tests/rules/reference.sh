@@ -189,6 +189,39 @@ else
 	cat "$TMP/diff.txt" "$TMP/config.err"
 	fail=1
 fi
+# tests/projects: the files in none of the projects typescript-eslint takes the types from, as
+# ESLint reports them (its parsing error) in a single run (expected.txt) and in a run that is not
+# one (expected-fix.txt, which tests/run.sh lints with --fix: --fix-dry-run with
+# TSESTREE_SINGLE_RUN=false here), whose fixes give each file with `const` for `let`; without
+# default-project/d-out.ts, which veslint does not lint.
+projects_files=(default-project/d-in.ts default-project/in.ts default-project/out.ts project/a.ts project/b.ts
+	service/.generated/g.d.ts service/a.ts service/b.ts service/c.ts service/nested/x.ts service/nested/y.ts
+	service/solution/s.ts)
+for run in single fix; do
+	expected=tests/projects/expected.txt
+	mode=()
+	if [[ $run == fix ]]; then
+		expected=tests/projects/expected-fix.txt
+		mode=(--fix-dry-run)
+	fi
+	(cd tests/projects && TSESTREE_SINGLE_RUN=$([[ $run == fix ]] && echo false || echo true) node "../../$NM/eslint/bin/eslint.js" \
+		--config eslint.config.mjs --format json "${mode[@]}" "${projects_files[@]}") > "$TMP/projects.json" 2> "$TMP/projects.err"
+	if [[ -s "$TMP/projects.json" ]] && (cd tests/projects && python3 ../eslint_lines.py fixes < "$TMP/projects.json") |
+		sed "s|$PWD/tests/projects|<tests/projects>|g" | sort > "$TMP/ref.txt" &&
+		sort "$expected" | diff -u "$TMP/ref.txt" - > "$TMP/diff.txt" &&
+		python3 - "$TMP/projects.json" << 'PY'; then
+import json, re, sys
+for result in json.load(open(sys.argv[1])):
+    if 'output' in result and result['output'] != re.sub(r'^let ', 'const ', open(result['filePath']).read(), flags=re.M):
+        sys.exit(f"{result['filePath']}: ESLint's fixes give another text")
+PY
+		echo "ok     projects ($run run): $(wc -l < "$TMP/ref.txt") ESLint messages"
+	else
+		echo "FAIL   $expected does not match ESLint"
+		cat "$TMP/diff.txt" "$TMP/projects.err"
+		fail=1
+	fi
+done
 # The print-config.json of two folders of tests/config is what `eslint --print-config` prints for
 # their files, with <tests/config> in the place of the directory.
 for folder in unused-inline neighbours; do
