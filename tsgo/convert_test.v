@@ -188,8 +188,9 @@ fn test_convert_reads_top_level_await_by_source_type() {
 // convert_in converts the program's AST of a file when it is the one a parse of the text gives, and
 // parses the text otherwise: the rows are convert's in every case. a.ts is a module; b.ts has no
 // import or export, so the program reads it as a script while ESLint's default sourceType makes it
-// a module (`await (1)` an await expression); c.tsx is TSX; and a text that is not the program's
-// (an unsaved edit) is parsed.
+// a module (`await (1)` an await expression); e.ts is a script too, but without `await` its AST is
+// the same either way; c.tsx is TSX; and a text that is not the program's (an unsaved edit) is
+// parsed.
 fn test_convert_in_gives_the_rows_of_convert() {
 	bin := os.join_path(@VMODROOT, rel_path)
 	if !os.is_file(bin) {
@@ -210,6 +211,7 @@ fn test_convert_in_gives_the_rows_of_convert() {
 		'a.ts':  'import { x } from "./b";\nexport const a = await (x as number);\n'
 		'b.ts':  'const x = 1;\nawait (1);\n'
 		'c.tsx': 'export const e = <div className="a">{1}</div>;\n'
+		'e.ts':  'let y = 2;\nfunction f() {\n  return y;\n}\n'
 	}
 	for name, text in files {
 		os.write_file(os.join_path(dir, name), text) or { panic(err) }

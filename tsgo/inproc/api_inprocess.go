@@ -22,6 +22,7 @@ import (
 
 	"github.com/microsoft/TypeScript/tsc/internal/api/encoder"
 	"github.com/microsoft/TypeScript/tsc/internal/ast"
+	"github.com/microsoft/TypeScript/tsc/internal/binder"
 	"github.com/microsoft/TypeScript/tsc/internal/bundled"
 	"github.com/microsoft/TypeScript/tsc/internal/checker"
 	"github.com/microsoft/TypeScript/tsc/internal/compiler"
@@ -689,7 +690,10 @@ func stopProfile() {
 // VeslintSourceFile is the file of a program that `params` name (the snapshot, the project and
 // the file, as the parameters of veslint/nodesAtRanges, without values), as getSourceFile finds
 // it, or nil when the snapshot, the project, its program or the file is not there. veslint
-// converts it instead of parsing the file's text again (veslint_tsgo_convert_file).
+// converts it instead of parsing the file's text again (veslint_tsgo_convert_file) while the
+// checkers of other threads may read it: it is bound here (the binder is the only one that writes
+// its nodes after the parse, and the sync.Once of the binding orders those writes before the
+// converter's reads).
 func (p *InProcess) VeslintSourceFile(params []byte) *ast.SourceFile {
 	snapshot, projectID, fileName, values, err := readBinaryParams(params)
 	if err != nil || len(values) != 0 || fileName == "" {
@@ -703,5 +707,9 @@ func (p *InProcess) VeslintSourceFile(params []byte) *ast.SourceFile {
 	if err != nil {
 		return nil
 	}
-	return program.GetSourceFile(DocumentIdentifier{FileName: fileName}.ToFileName(program.BaseDirectory()))
+	file := program.GetSourceFile(DocumentIdentifier{FileName: fileName}.ToFileName(program.BaseDirectory()))
+	if file != nil {
+		binder.BindSourceFile(file)
+	}
+	return file
 }

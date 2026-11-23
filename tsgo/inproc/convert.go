@@ -22,7 +22,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/microsoft/TypeScript/tsc/internal/ast"
-	"github.com/microsoft/TypeScript/tsc/internal/binder"
 	"github.com/microsoft/TypeScript/tsc/internal/core"
 	"github.com/microsoft/TypeScript/tsc/internal/scanner"
 	"github.com/microsoft/TypeScript/tsc/internal/tspath"
@@ -194,9 +193,8 @@ func (c *VeslintConverter) Convert(text string) (rows []VeslintRow, diagnostics 
 
 // ConvertFile converts `file`, a file of a program, instead of parsing `text` again, when its AST
 // is the one Convert would parse (SameParse); ok is false otherwise. A file of a program may be
-// read by the checkers of other threads at the same time: it is bound first (the binder is the
-// only one that writes its nodes after the parse, and its sync.Once orders those writes before
-// these reads).
+// read by the checkers of other threads at the same time, so it must be bound already (the binder
+// is the only one that writes its nodes after the parse; InProcess.VeslintSourceFile binds it).
 func (c *VeslintConverter) ConvertFile(file *ast.SourceFile, text string) (rows []VeslintRow, diagnostics []*ast.Diagnostic, ok bool) {
 	if !c.SameParse(file, text) {
 		return nil, nil, false
@@ -205,24 +203,29 @@ func (c *VeslintConverter) ConvertFile(file *ast.SourceFile, text string) (rows 
 	if diagnostics := parseErrors(file); len(diagnostics) > 0 {
 		return nil, diagnostics, true
 	}
-	binder.BindSourceFile(file)
 	c.convert(file)
 	return c.rows, nil, true
 }
 
 // SameParse tells whether `file` (a file of a program) has the AST that Convert parses from
 // `text`: TypeScript's parse depends only on the text, the script kind, whether the file is a
-// declaration file and whether it is a module (where a top-level `await` is an await expression).
-// The converter parses a file as a module unless Script, and as a declaration file never; a
-// program decides from its compiler options (moduleDetection, the module format), so a file whose
-// module-ness differs from ESLint's sourceType is parsed again.
+// declaration file and whether it is a module, where the top-level statements with an identifier
+// `await` are parsed again with `await` an await expression (reparseTopLevelAwait). The converter
+// parses a file as a module unless Script, and as a declaration file never; a program decides
+// module-ness from its compiler options (moduleDetection, the module format) and the imports and
+// exports, so a file without import or export is a script there while ESLint's default sourceType
+// makes it a module. That changes nothing when the text cannot have an identifier `await` (no
+// `await`, and no `\u` escape that could spell it); otherwise such a file is parsed again.
 func (c *VeslintConverter) SameParse(file *ast.SourceFile, text string) bool {
 	kind := core.ScriptKindTS
 	if c.l.tsx {
 		kind = core.ScriptKindTSX
 	}
-	return file != nil && file.ScriptKind == kind && !file.IsDeclarationFile &&
-		(file.ExternalModuleIndicator != nil) == !c.Script && file.Text() == text
+	if file == nil || file.ScriptKind != kind || file.IsDeclarationFile || file.Text() != text {
+		return false
+	}
+	return (file.ExternalModuleIndicator != nil) == !c.Script ||
+		!strings.Contains(text, "await") && !strings.Contains(text, `\u`)
 }
 
 // forget drops what the converter holds of the last file: its AST and text (a converter waits in a

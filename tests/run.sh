@@ -1577,15 +1577,19 @@ else
 fi
 # In a lint with types, the converter converts the program's AST of a file instead of parsing its
 # text again (tsgo.convert_in); VESLINT_CHECK_PROGRAM_AST also converts the text of each such file
-# and reports where the two differ: nowhere, and the output does not change.
+# and reports where the two differ (`veslint_tsgo: checked <path>` where they do not): most files
+# are converted from their program's AST (not those without import or export whose text has an
+# `await` or a `\u` escape), none differently, and the output does not change.
 code=0
 VESLINT_CHECK_PROGRAM_AST=1 ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-program.out" 2> "$TMP/workers-program.err" || code=$?
-if [[ $code -eq 1 ]] && cmp -s "$TMP/workers-inproc.out" "$TMP/workers-program.out" && ! grep -q '^veslint_tsgo: ' "$TMP/workers-program.err"; then
+if [[ $code -eq 1 ]] && cmp -s "$TMP/workers-inproc.out" "$TMP/workers-program.out" &&
+	[[ $(grep -c '^veslint_tsgo: checked ' "$TMP/workers-program.err") -gt 0 ]] &&
+	! grep '^veslint_tsgo: ' "$TMP/workers-program.err" | grep -qv '^veslint_tsgo: checked '; then
 	ok "the program's ASTs converted: the rows of a parse of each file's text"
 else
 	ko "the program's ASTs converted (code $code)"
 	diff "$TMP/workers-inproc.out" "$TMP/workers-program.out" | head -20
-	grep '^veslint_tsgo: ' "$TMP/workers-program.err" | head -20
+	grep '^veslint_tsgo: ' "$TMP/workers-program.err" | grep -v '^veslint_tsgo: checked ' | head -20
 fi
 
 # --server (server.v): a scenario with unsaved text, a file closed without saving, files changed on

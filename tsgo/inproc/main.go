@@ -310,8 +310,8 @@ func veslint_tsgo_convert_file(handle C.longlong, params *C.char, paramsLen C.si
 }
 
 // checkProgramAST (VESLINT_CHECK_PROGRAM_AST=1) converts the text of every file whose program's
-// AST was converted too, and reports on stderr where the rows or diagnostics differ (the text's are
-// then the ones given).
+// AST was converted too, and writes on stderr `veslint_tsgo: checked <path>` for each, or where the
+// rows or diagnostics differ (the text's are then the ones given).
 var checkProgramAST = os.Getenv("VESLINT_CHECK_PROGRAM_AST") == "1"
 
 // convert is veslint_tsgo_convert, of the program's AST `file` when it may be converted.
@@ -413,6 +413,8 @@ func checkConverted(l *parser.VeslintLanguage, script bool, name string, text st
 	}
 	if problem != "" {
 		os.Stderr.WriteString("veslint_tsgo: " + name + ": " + problem + "\n")
+	} else {
+		os.Stderr.WriteString("veslint_tsgo: checked " + name + "\n")
 	}
 	return want, wantDiagnostics, problem == ""
 }
