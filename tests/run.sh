@@ -1580,8 +1580,9 @@ fi
 # and reports where the two differ (`veslint_tsgo: checked <path>` where they do not): most files
 # are converted from their program's AST (not those without import or export whose text has an
 # `await` or a `\u` escape), none differently, and the output does not change.
+# Only TypeScript's parser converts a program's AST, so the test sets it.
 code=0
-VESLINT_CHECK_PROGRAM_AST=1 ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-program.out" 2> "$TMP/workers-program.err" || code=$?
+VESLINT_PARSER=typescript VESLINT_CHECK_PROGRAM_AST=1 ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-program.out" 2> "$TMP/workers-program.err" || code=$?
 if [[ $code -eq 1 ]] && cmp -s "$TMP/workers-inproc.out" "$TMP/workers-program.out" &&
 	[[ $(grep -c '^veslint_tsgo: checked ' "$TMP/workers-program.err") -gt 0 ]] &&
 	! grep '^veslint_tsgo: ' "$TMP/workers-program.err" | grep -qv '^veslint_tsgo: checked '; then
