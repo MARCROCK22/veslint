@@ -1,0 +1,29 @@
+{
+  "name": "@marcrock22/veslint-darwin-arm64",
+  "version": "0.48.0",
+  "description": "The veslint binary for macOS arm64 (Apple silicon). Install @marcrock22/veslint, which runs it.",
+  "files": [
+    "veslint"
+  ],
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "dependencies": {
+    "@typescript/typescript-darwin-arm64": "7.1.0-beta"
+  },
+  "author": "MARCROCK22",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MARCROCK22/veslint.git"
+  },
+  "homepage": "https://github.com/MARCROCK22/veslint#readme",
+  "bugs": {
+    "url": "https://github.com/MARCROCK22/veslint/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -3,7 +3,7 @@
 // and installing a release in the extension's storage; and the one a project installed from npm.
 // Nothing here needs VS Code.
 //
-// A release has, for each platform, `veslint-<version>-<platform>.tar.gz` (Linux) or `.zip`
+// A release has, for each platform, `veslint-<version>-<platform>.tar.gz` (Linux, macOS) or `.zip`
 // (Windows) with a directory of the same name that holds the binary and the TypeScript 7 compiler
 // it runs. It is unpacked with `tar`, which Windows 10 and later also have (and which reads zip).
 const { spawn } = require('node:child_process');
@@ -17,6 +17,7 @@ const latestUrl = `https://api.github.com/repos/${repository}/releases/latest`;
 /** The package of a release for a platform and an architecture; null if there is none. */
 function platformPackage(platform = process.platform, arch = process.arch) {
   if (platform === 'linux' && arch === 'x64') return { suffix: 'linux-x64', extension: '.tar.gz', executable: 'veslint' };
+  if (platform === 'darwin' && (arch === 'arm64' || arch === 'x64')) return { suffix: `darwin-${arch}`, extension: '.tar.gz', executable: 'veslint' };
   if (platform === 'win32' && arch === 'x64') return { suffix: 'win32-x64', extension: '.zip', executable: 'veslint.exe' };
   return null;
 }

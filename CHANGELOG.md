@@ -1,6 +1,6 @@
 # Changelog
 
-Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
+Each version is a release on GitHub with the veslint binaries (Linux x64, macOS arm64 and x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
 ## 0.48.0
 

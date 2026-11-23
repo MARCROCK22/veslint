@@ -9,6 +9,8 @@
     "bin"
   ],
   "optionalDependencies": {
+    "@marcrock22/veslint-darwin-arm64": "0.48.0",
+    "@marcrock22/veslint-darwin-x64": "0.48.0",
     "@marcrock22/veslint-linux-x64": "0.48.0",
     "@marcrock22/veslint-win32-x64": "0.48.0"
   },

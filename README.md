@@ -114,7 +114,7 @@ Install **veslint** from the Visual Studio Marketplace (`MARCROCK22.veslint`), t
 
 ### Command line
 
-Download `veslint-<version>-linux-x64.tar.gz` or `veslint-<version>-win32-x64.zip` from the [releases](https://github.com/MARCROCK22/veslint/releases) and unpack it anywhere. It contains the `veslint` binary and the TypeScript 7 compiler it uses; keep them together. `veslint --version` prints the version.
+Download `veslint-<version>-linux-x64.tar.gz`, `veslint-<version>-darwin-arm64.tar.gz`, `veslint-<version>-darwin-x64.tar.gz` or `veslint-<version>-win32-x64.zip` from the [releases](https://github.com/MARCROCK22/veslint/releases) and unpack it anywhere. It contains the `veslint` binary and the TypeScript 7 compiler it uses; keep them together. `veslint --version` prints the version.
 
 ### npm
 
@@ -125,7 +125,7 @@ npx veslint .
 
 It installs the `veslint` command with the binary of your platform and the TypeScript 7 compiler it uses. `npm install --global @marcrock22/veslint` puts `veslint` in your `PATH`.
 
-veslint runs on **Linux x64** (glibc) and **Windows x64**. On other platforms, [build it from source](#building-from-source).
+veslint runs on **Linux x64** (glibc), **macOS** (arm64 and x64) and **Windows x64**. On other platforms, [build it from source](#building-from-source).
 
 ## Quick start
 
@@ -309,7 +309,7 @@ The extension shows the problems of the TypeScript files you open and type, unde
 
 - **TypeScript only.** JavaScript files are not linted, even in a project with `allowJs`, nor the JavaScript scripts of Vue and Svelte files.
 - **Vue files:** all 256 rules of eslint-plugin-vue. `<!-- eslint-disable -->` comments in a template work when `vue/comment-directive` is on, as with eslint-plugin-vue's processor. Two scripts that are not modules (no `import` or `export`) see each other's globals in veslint, where typescript-eslint has the other `.vue` files of the program as the text of the file.
-- **Linux x64 and Windows x64.** Other platforms need a build from source, which is not tested there.
+- **Linux x64, macOS (arm64 and x64) and Windows x64.** Other platforms need a build from source, which is not tested there.
 - **An `eslint.config.*` needs `bun`** to be read; the resolved configuration (`--print-config`) does not. A cached resolution is reused while the files and modules the configuration read and the environment variables it read stay the same: a configuration that depends on something else (the date, a file it lists but does not read, a new `tsconfig.json` a glob of `parserOptions.project` matches) needs `VESLINT_CONFIG_CACHE=0`.
 - **The newest TypeScript syntax** may not be read yet: veslint warns when a file has syntax it does not understand, and some problems of that file may be missing.
 - **Parsing errors:** a file TypeScript's parser rejects is ESLint's fatal `Parsing error`, with TypeScript's first syntactic diagnostic as tsgo sorts them (by position): when the parser of TypeScript 6, which typescript-estree uses, reported two errors at the same position, the one ESLint prints may be the other (`const b = <` at the end of a file: `Type expected.` in ESLint, `Expression expected.` in veslint). Syntax only veslint's grammar does not read (see above) is linted on with a warning.
@@ -321,7 +321,7 @@ The extension shows the problems of the TypeScript files you open and type, unde
 Requirements:
 
 - [V](https://github.com/vlang/v) at commit `841595141fbb` (the release workflow builds it from the vlang/vc commit `45add16eb714`).
-- GCC, `make`, `git`, `patch` and `npm`. npm only downloads two pinned binaries: TypeScript 7.1.0-beta and the tree-sitter 0.24.4 CLI.
+- GCC (on macOS, the clang of Xcode's command line tools), `make`, `git`, `patch` and `npm`. npm only downloads two pinned binaries: TypeScript 7.1.0-beta and the tree-sitter 0.24.4 CLI.
 - [Go](https://go.dev) 1.27 (with cgo): TypeScript is linked into veslint, built from the Go sources of the commit of TypeScript 7.1.0-beta (`tsgo/inproc/build.sh` fetches them into `build/upstream/typescript-go`). At run time veslint needs nothing else; `VESLINT_TSGO=process` runs the `tsc --api` binary of the npm package instead, over a pipe.
 
 ```sh

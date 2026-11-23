@@ -13,7 +13,7 @@ let bin;
 try {
 	bin = path.join(path.dirname(require.resolve(`${name}/package.json`)), exe);
 } catch {
-	console.error(`veslint: the package ${name} is not installed. veslint runs on Linux x64 (glibc) and Windows x64; on those, install @marcrock22/veslint again without omitting its optional dependencies.`);
+	console.error(`veslint: the package ${name} is not installed. veslint runs on Linux x64 (glibc), macOS (arm64 and x64) and Windows x64; on those, install @marcrock22/veslint again without omitting its optional dependencies.`);
 	process.exit(1);
 }
 

@@ -3,7 +3,23 @@
 TS_TAG   := v0.27.0
 TSTS_TAG := v0.23.2
 TSJS_TAG := v0.23.1
-TSGO     := node_modules/@typescript/typescript-linux-x64/lib/tsc
+# The platform as Node names it (`<process.platform>-<process.arch>`): TypeScript's native compiler
+# is the one of its npm package, and macOS builds with its own toolchain (clang, ar, shasum).
+ifeq ($(shell uname -s),Darwin)
+PLATFORM := darwin-$(if $(filter arm64,$(shell uname -m)),arm64,x64)
+CC_V     := clang
+# Apple's clang has no -ffat-lto-objects: the archive is only bitcode, which ld64 links with LTO.
+TS_LTO   := -flto
+AR_LTO   := ar
+SHA256   := shasum -a 256
+else
+PLATFORM := linux-x64
+CC_V     := gcc
+TS_LTO   := -flto -ffat-lto-objects
+AR_LTO   := gcc-ar
+SHA256   := sha256sum
+endif
+TSGO     := node_modules/@typescript/typescript-$(PLATFORM)/lib/tsc
 TS_CLI   := node_modules/.bin/tree-sitter
 # The TypeScript grammar with the patch from patches/ is generated in build/; vendor/ stays as
 # cloned.
@@ -45,12 +61,12 @@ vendor/tree-sitter-javascript:
 # The flags of vendor/tree-sitter/Makefile, on its single-file build (lib.c includes the rest).
 $(TS_LIB): | vendor/tree-sitter
 	mkdir -p $(dir $@)
-	gcc -O3 -flto -ffat-lto-objects -std=c11 -fPIC -fvisibility=hidden -D_POSIX_C_SOURCE=200112L \
+	$(CC_V) -O3 $(TS_LTO) -std=c11 -fPIC -fvisibility=hidden -D_POSIX_C_SOURCE=200112L \
 		-D_DEFAULT_SOURCE -D_BSD_SOURCE -D_DARWIN_C_SOURCE -Ivendor/tree-sitter/lib/src \
 		-Ivendor/tree-sitter/lib/src/wasm -Ivendor/tree-sitter/lib/include \
 		-c vendor/tree-sitter/lib/src/lib.c -o $(dir $@)lib.o
 	rm -f $@
-	gcc-ar rcs $@ $(dir $@)lib.o
+	$(AR_LTO) rcs $@ $(dir $@)lib.o
 
 # Copies the grammar, applies the patch and regenerates parser.c with the pinned CLI (0.24.4, the one
 # upstream generated v0.23.2's with: without the patch it comes out identical). See internals.md, "Grammar".
@@ -60,7 +76,7 @@ $(TSTS_SRC)/parser.c: $(GRAMMAR_PATCH) $(TS_CLI) | vendor/tree-sitter-typescript
 	cp -r vendor/tree-sitter-typescript/common vendor/tree-sitter-typescript/typescript $(GRAMMAR)/
 	patch -d $(GRAMMAR) -p1 < $(GRAMMAR_PATCH)
 	cd $(GRAMMAR)/typescript && NODE_PATH=$(abspath vendor) $(abspath $(TS_CLI)) generate
-	sha256sum $(GRAMMAR_PATCH) | cut -d' ' -f1 > $(GRAMMAR)/patch.sha256
+	$(SHA256) $(GRAMMAR_PATCH) | cut -d' ' -f1 > $(GRAMMAR)/patch.sha256
 
 build/ts-parser.o: $(TSTS_SRC)/parser.c
 	cc $(GRAMMAR_CFLAGS) -c $< -o $@
@@ -106,7 +122,7 @@ build: veslint
 # 16.1 s, recharts 4.39 -> 4.31 s, zod 2.41 -> 2.38 s (median of 3 alternated runs, minipc, the
 # same memory). V's flag does nothing outside Linux and macOS.
 veslint: $(LIBS) $(TSGO) $(SOURCES) tsgo/inproc/veslint_tsgo.h $(V_BIN)
-	$(V) -prod -d gc_parallel_mark -cc gcc -cflags -DLARGE_CONFIG=1 -o veslint .
+	$(V) -prod -d gc_parallel_mark -cc $(CC_V) -cflags -DLARGE_CONFIG=1 -o veslint .
 
 run: veslint
 	./veslint app.ts
