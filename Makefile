@@ -12,16 +12,12 @@ CC_V     := clang
 TS_LTO   := -flto
 AR_LTO   := ar
 SHA256   := shasum -a 256
-# V built from source has no tcc libgc.a on macOS: `v test` and the V programs tests/run.sh runs
-# build the bundled collector instead.
-TEST_VFLAGS := -d use_bundled_libgc
 else
 PLATFORM := linux-x64
 CC_V     := gcc
 TS_LTO   := -flto -ffat-lto-objects
 AR_LTO   := gcc-ar
 SHA256   := sha256sum
-TEST_VFLAGS :=
 endif
 TSGO     := node_modules/@typescript/typescript-$(PLATFORM)/lib/tsc
 TS_CLI   := node_modules/.bin/tree-sitter
@@ -36,6 +32,9 @@ GRAMMAR_CFLAGS := -O2 -std=c11 -fPIC -I$(TSTS_SRC)
 V ?= v
 # The V binary is a prerequisite of veslint: updating V rebuilds it.
 V_BIN := $(shell command -v $(V))
+# A V built from its C sources (as the release workflow builds it) has no tcc libgc.a: `v test` and
+# the V programs tests/run.sh runs then build the bundled collector.
+TEST_VFLAGS := $(if $(wildcard $(dir $(V_BIN))thirdparty/tcc/lib/libgc.a),,-d use_bundled_libgc)
 
 # TypeScript's API session linked into veslint (tsgo/inproc.c.v): a C archive built with Go from the
 # checkout of the pinned commit (tsgo/inproc/build.sh fetches it when it is missing).
