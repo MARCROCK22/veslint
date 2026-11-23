@@ -12,12 +12,7 @@ const j = 1_00_000;
 const k = 5.;
 const l = 1000.;
 const m = 0.0001;
-const n = 0O7777;
-const o = 0o7777;
-const p = 0X1000;
-const q = 0B1010101;
 const r = 1E5;
-const s = 1234E5;
 const v = 1000.000_0;
 const w = [1000, 2000, 300];
 const x = -1000;
@@ -50,6 +45,27 @@ const br = 0;
 const bs = 1.123;
 const bt = 0b1111_0000;
 
-export { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, v, w, x, y, z, aa, ab, ba, bb, bc, bd, be, bf, bg, bh, bi, bj, bk, bl, bm, bn, bo, bp, bq, br, bs, bt };
+// Not reported on purpose: a literal with a prefix, in either case and as a BigInt too, or with an
+// exponent written `E`. @marcrock22/eslintcf 0.0.2 reports these and fixes them into code that
+// does not parse (`0o_755`, `0X_123_456`, `1E_123`); ESLint's findings are in limitations.txt and
+// fixes.known.txt (MARCROCK22/veslint#38).
+const ca = 0o755;
+const cb = 0o755n;
+const cc = 0O777777;
+const cd = 0B101010;
+const ce = 0X123456;
+const cf = 0O7777;
+const cg = 0o7777;
+const ch = 0X1000;
+const ci = 0B1010101;
+const cj = 1234E5;
+const ck = 1E123;
+const cl = 0B101010n;
+const cm = 0X123456n;
+const cn = 0o1234567;
+const co = 12345.5E10;
+
+export { a, b, c, d, e, f, g, h, i, j, k, l, m, r, v, w, x, y, z, aa, ab, ba, bb, bc, bd, be, bf, bg, bh, bi, bj, bk, bl, bm, bn, bo, bp, bq, br, bs, bt };
+export { ca, cb, cc, cd, ce, cf, cg, ch, ci, cj, ck, cl, cm, cn, co };
 export type { A };
 export { B };
