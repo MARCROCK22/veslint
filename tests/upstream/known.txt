@@ -1807,11 +1807,3 @@ eslint	indent._js_/i382	TypeScript reads `with` after a line break in an export 
 veslint	indent._js_/i382	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
 eslint	indent._js_/i383	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
 veslint	indent._js_/i383	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
-# @stylistic/indent: --server (tests/upstream_check.py) parses with tree-sitter, whose grammar reads
-# these as syntax errors: the attributes of an import after a line break (`import j from "j"\nwith
-# {…}`), and an object pattern with typed properties as the parameter of a function type
-# (`({ a: number }) => void`). TypeScript's parser (the default of the CLI) reads both as ESLint.
-veslint	indent._js_/i380	tree-sitter reads `import … from "…"` and `with` on the next line as a syntax error
-veslint	indent._js_/i381	tree-sitter reads `import … from "…"` and `with` on the next line as a syntax error
-veslint	indent._ts_/i18	tree-sitter reads the object pattern parameter of a function type `({ a: number }) => void` as a syntax error
-veslint	indent._ts_/i19	tree-sitter reads the object pattern parameter of a function type `({ a: number }) => void` as a syntax error

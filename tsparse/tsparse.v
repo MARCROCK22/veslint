@@ -9,7 +9,9 @@ import tsgo
 // Which parser gives the rows of a text: TypeScript's (the converter of tsgo/inproc/convert.go,
 // TypeScript 7.1's parser, whose AST is written as the rows tree-sitter's parse would give) or
 // tree-sitter's. VESLINT_PARSER=typescript or tree-sitter chooses, for every text veslint parses:
-// a file, a .vue or .svelte file's script, a template expression, the code `--server` lints.
+// a file, a .vue or .svelte file's script, a template expression, the code `--server` lints (which
+// parses an edit of a file it has the last tree of with tree-sitter's incremental parse either
+// way: rules.lint_file).
 
 // Source is the parser of a text's rows.
 pub enum Source {
