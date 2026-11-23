@@ -2,6 +2,7 @@ module treesitter
 
 import os
 import rand
+import time
 
 // The incremental parse (Parser.reparse, TreeCache) must give the tree a parse from scratch gives,
 // for any edit.
@@ -293,4 +294,50 @@ fn test_tree_cache_gives_rows_of_its_tree() {
 		rows_free(fresh)
 	}
 	assert cache.entries.len == 1
+}
+
+// A seed gives the cache the tree of a text parsed in another thread (for a file TypeScript's
+// parser read first), which the next parse of the file starts from; a parse that comes first wins.
+fn test_tree_cache_seeds() {
+	p := new_parser() or { panic(err) }
+	tsx := new_tsx_parser() or { panic(err) }
+	defer {
+		p.close()
+		tsx.close()
+	}
+	mut cache := new_tree_cache()
+	defer {
+		cache.clear()
+	}
+	src := 'const a = 1;\nfunction f(x: number) {\n  return x + 1;\n}\n'
+	assert !cache.has(p, 'a.ts')
+	cache.seed(p, 'a.ts', src)
+	// A second seed of the file while the first is on its way does nothing.
+	cache.seed(p, 'a.ts', 'x;')
+	assert cache.seeding.len == 1
+	for _ in 0 .. 1000 {
+		if cache.has(p, 'a.ts') {
+			break
+		}
+		time.sleep(5 * time.millisecond)
+	}
+	assert cache.has(p, 'a.ts')
+	assert !cache.has(tsx, 'a.ts')
+	assert cache.entries['a.ts'].text == src
+	assert cache.seeding.len == 0
+	edited := src.replace('x + 1', 'x + 12')
+	cache.parse_tree(p, 'a.ts', edited) or { panic(err) }
+	assert cache.reparses[int(Reparse.incremental)] + cache.reparses[int(Reparse.fresh)] == 1
+	// The seed of a file the cache has a newer tree of is dropped.
+	cache.seed(p, 'b.ts', 'let b = 1;\n')
+	cache.parse_tree(p, 'b.ts', 'let b = 2;\n') or { panic(err) }
+	for _ in 0 .. 1000 {
+		cache.take_seeds()
+		if cache.seeding.len == 0 {
+			break
+		}
+		time.sleep(5 * time.millisecond)
+	}
+	assert cache.seeding.len == 0
+	assert cache.entries['b.ts'].text == 'let b = 2;\n'
 }
