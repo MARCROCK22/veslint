@@ -12,8 +12,9 @@ import time
 #flag -I @VMODROOT/tsgo/inproc
 #flag @VMODROOT/tsgo/inproc/out/libveslint_tsgo.a
 #flag linux -lpthread -lm
-// Go's runtime and crypto/x509 call into these frameworks on macOS.
-#flag darwin -lpthread -lm -lresolv -framework CoreFoundation -framework Security
+// On macOS Go's runtime, crypto/x509 and TypeScript's file watcher (FSEvents) call into these
+// frameworks.
+#flag darwin -lpthread -lm -lresolv -framework CoreFoundation -framework CoreServices -framework Security
 #flag windows -lws2_32 -lwinmm -lntdll -luserenv -lbcrypt -lsynchronization
 #include "veslint_tsgo.h"
 
