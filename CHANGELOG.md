@@ -2,6 +2,13 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.48.0
+
+- **`@stylistic/indent`** (#39), with all its options and fixes, on .ts, .tsx, .vue and .svelte files: the lines that the fixes of `curly`, `@stylistic/nonblock-statement-body-position` and `@stylistic/multiline-ternary` add are indented in the next fix pass, as with ESLint. @marcrock22/eslintcf 0.0.3 enables it.
+- **A file outside every TypeScript project no longer stops the run** (#37). veslint finds a file's project as typescript-eslint does (the closest tsconfig whose program has it, its references, the tsconfigs above); a file no project has gets ESLint's `Parsing error: … was not found by the project service …` and the other files are linted and fixed. Files of `allowDefaultProject` are linted with a program of their own, and projects made only of `references` (`files: []`) work.
+- **`--fix` on Windows retries a file another process holds** (#36), for up to a minute, instead of stopping with "cannot write …"; a file it still cannot write is reported with its problems and the run goes on with the others (exit code 1).
+- **`marcrock/numeric-separators` leaves prefixed literals alone** (#38): `0o755`, `0O777777`, `0B101010`, `0X123456` and their BigInts are no longer fixed into code that does not parse, nor an uppercase exponent.
+
 ## 0.47.0
 
 - **TypeScript's own parser.** veslint parses TypeScript files with TypeScript 7's parser instead of tree-sitter's grammar, through a converter that gives the same tree, so every rule reports the same problems. With the 56 rules of @eslint/js and typescript-eslint recommended: the TypeScript compiler's sources 2.59 s → 1.76 s, zod 0.37 s → 0.29 s, recharts 0.39 s → 0.32 s; with no-floating-promises: 2.84 s → 2.21 s, 0.54 s → 0.46 s, 0.60 s → 0.52 s; with the 23 type-aware rules: the TypeScript compiler 9.40 s → 8.52 s, recharts 3.50 s → 3.39 s. It uses more memory for now (the TypeScript compiler without types 375 → 574 MiB). `VESLINT_PARSER=tree-sitter` parses with tree-sitter's grammar as before; `.vue` and `.svelte` scripts and `veslint --server` still do.
