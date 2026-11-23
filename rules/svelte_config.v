@@ -6,6 +6,7 @@ import os
 import svelte
 import sync
 import treesitter
+import tsparse
 
 // svelte.config.js as svelte-eslint-parser 1.10.1 reads it (src/svelte-config/): without running
 // it. From the linted file's directory up (the root excluded), the first `svelte.config.js` is
@@ -144,16 +145,18 @@ fn svcfg_parse(src string) SvelteConfigValues {
 	defer {
 		parser.close()
 	}
-	tree := parser.parse(src) or { return SvelteConfigValues{} }
+	parsed := tsparse.parse(parser.ts_parser(), src, 'the file') or { return SvelteConfigValues{} }
+	tree := parsed.rows
 	defer {
 		treesitter.rows_free(tree)
 	}
-	if treesitter.tree_has_error(tree) {
+	if parsed.rejected {
 		return SvelteConfigValues{}
 	}
 	mut t := estree.convert_with(treesitter.root_node(tree), src, false, estree.Options{
-		module:       true
-		regexp_valid: fn (pattern string, flags string) bool {
+		module:          true
+		typescript_rows: parsed.typescript
+		regexp_valid:    fn (pattern string, flags string) bool {
 			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
 		}
 	}) or { return SvelteConfigValues{} }

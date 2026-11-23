@@ -3,6 +3,7 @@ module vue
 import estree
 import jsregexp
 import treesitter
+import tsparse
 
 // ExprContext parses the code vue-eslint-parser hands to the script parser for template
 // expressions (the port of src/script/index.ts and src/template/index.ts), and holds what that
@@ -87,9 +88,10 @@ pub fn (p &Parsers) close() {
 	C.ts_parser_delete(p.tsx)
 }
 
-// parse parses with the dialect's parser; the rows must be freed.
-fn parse_ts(parser &C.TSParser, code string) !&C.vt_rows {
-	return treesitter.parse_with(parser, code, 'a snippet')
+// parse_ts parses with TypeScript's parser (tsparse) in the dialect of `parser`, or with `parser`
+// itself; the rows must be freed.
+fn parse_ts(parser &C.TSParser, code string) !tsparse.Parse {
+	return tsparse.parse(parser, code, 'a snippet')
 }
 
 // Fragment is a parsed snippet (parseScriptFragment): its program, tokens and comments, with file
@@ -121,7 +123,8 @@ fn (c &ExprContext) error_at(message string, u int) ParseError {
 // parse_fragment is parseScriptFragment: parses `code` (decoded text with a wrapper) and moves
 // its nodes, tokens and comments to the file with `calc`.
 fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
-	tree := parse_ts(if c.tsx_mode { c.tsx } else { c.ts }, code)!
+	parsed := parse_ts(if c.tsx_mode { c.tsx } else { c.ts }, code)!
+	tree := parsed.rows
 	root := treesitter.root_node(tree)
 	code_index := new_text_index(code)
 	// The file offset of each byte of the code (a byte inside a character: that character's
@@ -143,26 +146,36 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 	mut message := 'Parsing error.'
 	mut toks := []SnipToken{}
 	mut comms := []SnipToken{}
-	if C.vt_node_has_error(root) {
-		error_at = first_error_offset(root)
+	if parsed.rejected {
+		error_at = parsed.error_offset(code)
+		// TypeScript's parser rejected it: its first diagnostic is the message, until
+		// ParseError.ts_message takes the one vue-eslint-parser reports.
+		if parsed.diagnostics.len > 0 {
+			message = parsed.diagnostics[0].text
+		}
 	} else {
 		toks, comms = snippet_tokens(root, code, c.tsx_mode)
-		if at, msg := reserved_identifier(toks, code) {
-			error_at = at
-			message = msg
-		} else {
-			bad := c.invalid_identifier_char(toks, code)
-			if bad >= 0 {
-				error_at = bad
-				message = 'Invalid character.'
+		// Reserved words and characters tree-sitter's grammar takes in names where TypeScript's
+		// parser fails; TypeScript's rows have none.
+		if !parsed.typescript {
+			if at, msg := reserved_identifier(toks, code) {
+				error_at = at
+				message = msg
+			} else {
+				bad := c.invalid_identifier_char(toks, code)
+				if bad >= 0 {
+					error_at = bad
+					message = 'Invalid character.'
+				}
 			}
 		}
 	}
 	mut es := estree.EsTree{}
 	if error_at < 0 {
 		es = estree.convert_with(root, code, c.tsx_mode, estree.Options{
-			module:       true
-			regexp_valid: fn (pattern string, flags string) bool {
+			module:          true
+			typescript_rows: parsed.typescript
+			regexp_valid:    fn (pattern string, flags string) bool {
 				return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
 			}
 		}) or {
@@ -235,21 +248,6 @@ fn (mut c ExprContext) parse_fragment(code string, calc Calc) !Fragment {
 		snip_start: snip_start
 		snip_end:   snip_end
 	}
-}
-
-// first_error_offset is where the first ERROR or MISSING node of the tree starts.
-fn first_error_offset(root C.vt_node) int {
-	first, last := treesitter.flat_range(root)
-	mut i := first
-	for i <= last {
-		node := treesitter.flat_node(root, i)
-		if C.vt_node_is_error(node) || C.vt_node_is_missing(node) {
-			return treesitter.node_start(node)
-		}
-		// Only the subtrees with an error are entered.
-		i = if C.vt_node_has_error(node) { i + 1 } else { treesitter.flat_last(root, i) + 1 }
-	}
-	return treesitter.node_start(root)
 }
 
 // Reserved words tree-sitter takes for identifiers where TypeScript's parser fails.
