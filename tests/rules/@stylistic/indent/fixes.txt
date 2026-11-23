@@ -1,0 +1,130 @@
+tests/rules/@stylistic/indent/array-first/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 11 spaces but found 2.	fix	28	30	           	end	3	3
+tests/rules/@stylistic/indent/array-off/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	65	71	  	end	7	7
+tests/rules/@stylistic/indent/assignment-operator-2/cases.ts:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	27	29	    	end	4	3
+tests/rules/@stylistic/indent/assignment-operator-2/cases.ts:9:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	68	72	      	end	9	5
+tests/rules/@stylistic/indent/assignment-operator-off/cases.ts:13:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 6.	fix	100	106	    	end	13	7
+tests/rules/@stylistic/indent/call-arguments-2/cases.ts:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	53	55	    	end	4	3
+tests/rules/@stylistic/indent/call-arguments-first/cases.ts:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 4.	fix	53	57	  	end	4	5
+tests/rules/@stylistic/indent/call-arguments-off/cases.ts:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	99	105	  	end	8	7
+tests/rules/@stylistic/indent/cases.ts:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	46	48	    	end	4	3
+tests/rules/@stylistic/indent/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 8.	fix	51	59	    	end	5	9
+tests/rules/@stylistic/indent/cases.ts:13:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 6.	fix	171	177	    	end	13	7
+tests/rules/@stylistic/indent/cases.ts:20:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 0.	fix	240	240	    	end	20	1
+tests/rules/@stylistic/indent/cases.ts:26:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	332	334	    	end	26	3
+tests/rules/@stylistic/indent/cases.ts:27:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 8.	fix	345	353	    	end	27	9
+tests/rules/@stylistic/indent/cases.ts:32:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 6.	fix	429	435	        	end	32	7
+tests/rules/@stylistic/indent/cases.ts:46:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	570	572	    	end	46	3
+tests/rules/@stylistic/indent/cases.ts:49:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 12.	fix	610	622	        	end	49	13
+tests/rules/@stylistic/indent/cases.ts:55:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 6.	fix	703	709	        	end	55	7
+tests/rules/@stylistic/indent/cases.ts:64:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 6.	fix	788	794	    	end	64	7
+tests/rules/@stylistic/indent/cases.ts:67:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	814	818	        	end	67	5
+tests/rules/@stylistic/indent/cases.ts:73:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	851	853	    	end	73	3
+tests/rules/@stylistic/indent/cases.ts:81:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	916	918	    	end	81	3
+tests/rules/@stylistic/indent/cases.ts:93:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	1035	1037	    	end	93	3
+tests/rules/@stylistic/indent/cases.ts:98:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	1088	1090	    	end	98	3
+tests/rules/@stylistic/indent/cases.ts:111:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	1269	1271	    	end	111	3
+tests/rules/@stylistic/indent/cases.ts:123:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	1407	1409	    	end	123	3
+tests/rules/@stylistic/indent/cases.ts:124:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	1417	1421	        	end	124	5
+tests/rules/@stylistic/indent/cases.ts:125:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	1429	1433	        	end	125	5
+tests/rules/@stylistic/indent/cases.ts:145:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	1673	1675	    	end	145	3
+tests/rules/@stylistic/indent/cases.ts:157:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	1779	1781	    	end	157	3
+tests/rules/@stylistic/indent/cases.ts:169:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	1883	1885	    	end	169	3
+tests/rules/@stylistic/indent/cases.ts:192:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 2.	fix	2099	2101	        	end	192	3
+tests/rules/@stylistic/indent/cases.ts:193:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 0.	fix	2107	2107	    	end	193	1
+tests/rules/@stylistic/indent/cases.ts:209:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 6.	fix	2333	2339	        	end	209	7
+tests/rules/@stylistic/indent/cases.ts:213:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 6.	fix	2405	2411	        	end	213	7
+tests/rules/@stylistic/indent/cases.ts:235:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	2747	2749	    	end	235	3
+tests/rules/@stylistic/indent/cases.ts:243:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	2858	2860	    	end	243	3
+tests/rules/@stylistic/indent/cases.ts:261:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 6.	fix	3104	3110	    	end	261	7
+tests/rules/@stylistic/indent/cases.ts:272:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	3227	3229	    	end	272	3
+tests/rules/@stylistic/indent/cases.ts:278:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	3339	3343	        	end	278	5
+tests/rules/@stylistic/indent/cases.ts:279:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	3354	3358	        	end	279	5
+tests/rules/@stylistic/indent/cases.ts:283:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	3397	3399	    	end	283	3
+tests/rules/@stylistic/indent/cases.ts:298:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	3536	3538	    	end	298	3
+tests/rules/@stylistic/indent/cases.ts:307:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	3629	3631	    	end	307	3
+tests/rules/@stylistic/indent/cases.ts:314:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	3706	3708	    	end	314	3
+tests/rules/@stylistic/indent/cases.ts:416:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 2.	fix	4829	4831		end	416	3
+tests/rules/@stylistic/indent/cases.ts:417:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 4.	fix	4853	4857		end	417	5
+tests/rules/@stylistic/indent/cases.ts:420:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 4.	fix	4881	4885		end	420	5
+tests/rules/@stylistic/indent/cases.ts:437:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	5064	5066	    	end	437	3
+tests/rules/@stylistic/indent/flat-ternary/cases.ts:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 4.	fix	127	131	  	end	8	5
+tests/rules/@stylistic/indent/function-declaration-off/cases.ts:9:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	104	110	  	end	9	7
+tests/rules/@stylistic/indent/function-declaration/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 11 spaces but found 2.	fix	44	46	           	end	3	3
+tests/rules/@stylistic/indent/function-declaration/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	86	88	    	end	6	3
+tests/rules/@stylistic/indent/function-declaration/cases.ts:10:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 4.	fix	125	129	  	end	10	5
+tests/rules/@stylistic/indent/function-expression-first/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 20 spaces but found 2.	fix	62	64	                    	end	3	3
+tests/rules/@stylistic/indent/function-expression/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	36	38	    	end	3	3
+tests/rules/@stylistic/indent/function-expression/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 2.	fix	72	74		end	7	3
+tests/rules/@stylistic/indent/ignore-comments/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	98	104	  	end	7	7
+tests/rules/@stylistic/indent/ignored-nodes/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 8.	fix	72	80	    	end	6	9
+tests/rules/@stylistic/indent/ignored-nodes/cases.ts:9:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	106	108	    	end	9	3
+tests/rules/@stylistic/indent/import-first/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 9 spaces but found 2.	fix	24	26	         	end	3	3
+tests/rules/@stylistic/indent/import-off/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	77	83	  	end	7	7
+tests/rules/@stylistic/indent/member-expression-2/cases.ts:2:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	14	16	    	end	2	3
+tests/rules/@stylistic/indent/member-expression-off/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	100	106	  	end	7	7
+tests/rules/@stylistic/indent/object-first/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 12 spaces but found 2.	fix	36	38	            	end	3	3
+tests/rules/@stylistic/indent/object-first/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 11 spaces but found 2.	fix	90	92	           	end	6	3
+tests/rules/@stylistic/indent/object-off/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	56	62	  	end	6	7
+tests/rules/@stylistic/indent/object-off/cases.ts:11:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	116	120	        	end	11	5
+tests/rules/@stylistic/indent/offset-ternary-object/cases.ts:12:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 4.	fix	161	165	  	end	12	5
+tests/rules/@stylistic/indent/offset-ternary-object/cases.ts:13:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 4.	fix	178	182	  	end	13	5
+tests/rules/@stylistic/indent/offset-ternary/cases.ts:18:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	228	234	  	end	18	7
+tests/rules/@stylistic/indent/offset-ternary/cases.ts:21:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 4.	fix	258	262	  	end	21	5
+tests/rules/@stylistic/indent/offset-ternary/cases.ts:23:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	274	278	      	end	23	5
+tests/rules/@stylistic/indent/offset-ternary/cases.ts:24:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	280	282	    	end	24	3
+tests/rules/@stylistic/indent/outer-iife-0/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 2.	fix	28	30		end	3	3
+tests/rules/@stylistic/indent/outer-iife-off/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 6.	fix	87	93	  	end	7	7
+tests/rules/@stylistic/indent/static-block/cases.ts:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	40	44	      	end	4	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	189	193	      	end	8	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:9:1	@stylistic/indent	wrongIndentation	Expected indentation of 10 spaces but found 8.	fix	213	221	          	end	9	9
+tests/rules/@stylistic/indent/svelte/cases.svelte:10:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	233	237	      	end	10	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:12:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	258	262	      	end	12	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:13:1	@stylistic/indent	wrongIndentation	Expected indentation of 10 spaces but found 6.	fix	278	284	          	end	13	7
+tests/rules/@stylistic/indent/svelte/cases.svelte:14:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	295	299	      	end	14	5
+tests/rules/@stylistic/indent/svelte/cases.svelte:18:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	334	338	      	end	18	5
+tests/rules/@stylistic/indent/switch-case-0/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 4.	fix	57	61		end	5	5
+tests/rules/@stylistic/indent/switch-case-0/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 8.	fix	69	77	    	end	6	9
+tests/rules/@stylistic/indent/switch-case-2/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	63	65	    	end	5	3
+tests/rules/@stylistic/indent/switch-case-2/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 4.	fix	73	77	      	end	6	5
+tests/rules/@stylistic/indent/tab-length/cases.ts:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 tabs but found 1.	fix	47	48	\t\t	end	4	2
+tests/rules/@stylistic/indent/tab-length/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 1 tab but found 0.	fix	50	50	\t	end	5	1
+tests/rules/@stylistic/indent/tab-length/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 3 tabs but found 2.	fix	59	61	\t\t\t	end	7	3
+tests/rules/@stylistic/indent/tab-length/cases.ts:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 tabs but found 1.	fix	63	64	\t\t	end	8	2
+tests/rules/@stylistic/indent/tab/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 1 tab but found 0.	fix	209	209	\t	end	5	1
+tests/rules/@stylistic/indent/tab/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 tabs but found 0.	fix	234	234	\t\t	end	7	1
+tests/rules/@stylistic/indent/tab/cases.ts:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 tabs but found 0.	fix	242	242	\t\t	end	8	1
+tests/rules/@stylistic/indent/tab/cases.ts:14:1	@stylistic/indent	wrongIndentation	Expected indentation of 1 tab but found 4 spaces.	fix	289	293	\t	end	14	5
+tests/rules/@stylistic/indent/tab/cases.ts:15:1	@stylistic/indent	wrongIndentation	Expected indentation of 1 tab but found 2.	fix	304	306	\t	end	15	3
+tests/rules/@stylistic/indent/tab/cases.ts:17:1	@stylistic/indent	wrongIndentation	Expected indentation of 1 tab but found 2 spaces.	fix	321	323	\t	end	17	3
+tests/rules/@stylistic/indent/tab/cases.ts:23:1	@stylistic/indent	wrongIndentation	Expected indentation of 1 tab but found 2.	fix	361	363	\t	end	23	3
+tests/rules/@stylistic/indent/tab/cases.ts:31:1	@stylistic/indent	wrongIndentation	Expected indentation of 3 tabs but found 4 spaces.	fix	409	415	\t\t\t	end	31	7
+tests/rules/@stylistic/indent/tab/cases.ts:39:1	@stylistic/indent	wrongIndentation	Expected indentation of 1 tab but found 0.	fix	468	468	\t	end	39	1
+tests/rules/@stylistic/indent/tab/cases.ts:40:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 tabs but found 1.	fix	476	477	\t\t	end	40	2
+tests/rules/@stylistic/indent/tsx-jsx-2/cases.tsx:5:13	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 10.	fix	52	74	\n        text\n      	end	7	7
+tests/rules/@stylistic/indent/tsx-jsx-half/cases.tsx:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 8.	fix	62	70	      	end	6	9
+tests/rules/@stylistic/indent/tsx-tab/cases.tsx:3:9	@stylistic/indent	wrongIndentation	Expected indentation of 3 tabs but found 2 spaces.	fix	27	37	\n\t\t\ttext\n\t\t	end	5	3
+tests/rules/@stylistic/indent/tsx-tab/cases.tsx:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 tabs but found 2 spaces.	fix	45	48	\t\t	end	6	4
+tests/rules/@stylistic/indent/tsx/cases.tsx:4:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 6.	fix	43	49	        	end	4	7
+tests/rules/@stylistic/indent/tsx/cases.tsx:5:6	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 6.	fix	61	99	\n        text\n        more text\n        	end	8	9
+tests/rules/@stylistic/indent/tsx/cases.tsx:12:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 6.	fix	152	158	        	end	12	7
+tests/rules/@stylistic/indent/tsx/cases.tsx:19:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 2.	fix	239	241		end	19	3
+tests/rules/@stylistic/indent/two/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 4.	fix	53	57	  	end	5	5
+tests/rules/@stylistic/indent/two/cases.ts:10:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 6.	fix	89	95	    	end	10	7
+tests/rules/@stylistic/indent/two/cases.ts:16:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 4.	fix	148	152	  	end	16	5
+tests/rules/@stylistic/indent/two/cases.ts:20:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	196	198	    	end	20	3
+tests/rules/@stylistic/indent/two/cases.ts:25:1	@stylistic/indent	wrongIndentation	Expected indentation of 2 spaces but found 3.	fix	235	238	  	end	25	4
+tests/rules/@stylistic/indent/variable-declarator-2/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	26	30	        	end	3	5
+tests/rules/@stylistic/indent/variable-declarator-2/cases.ts:7:1	@stylistic/indent	wrongIndentation	Expected indentation of 12 spaces but found 8.	fix	67	75	            	end	7	9
+tests/rules/@stylistic/indent/variable-declarator-2/cases.ts:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	81	85	        	end	8	5
+tests/rules/@stylistic/indent/variable-declarator-2/cases.ts:9:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	88	92	        	end	9	5
+tests/rules/@stylistic/indent/variable-declarator-first/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 2.	fix	22	24	    	end	3	3
+tests/rules/@stylistic/indent/variable-declarator-first/cases.ts:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 5.	fix	79	84	      	end	8	6
+tests/rules/@stylistic/indent/variable-declarator-first/cases.ts:10:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 2.	fix	103	105	        	end	10	3
+tests/rules/@stylistic/indent/variable-declarator-first/cases.ts:11:1	@stylistic/indent	wrongIndentation	Expected indentation of 6 spaces but found 0.	fix	111	111	      	end	11	1
+tests/rules/@stylistic/indent/variable-declarator-object/cases.ts:3:1	@stylistic/indent	wrongIndentation	Expected indentation of 8 spaces but found 4.	fix	26	30	        	end	3	5
+tests/rules/@stylistic/indent/variable-declarator-object/cases.ts:6:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 5.	fix	59	64	    	end	6	6
+tests/rules/@stylistic/indent/variable-declarator-object/cases.ts:8:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 3.	fix	84	87	    	end	8	4
+tests/rules/@stylistic/indent/variable-declarator-object/cases.ts:9:1	@stylistic/indent	wrongIndentation	Expected indentation of 4 spaces but found 9.	fix	94	103	    	end	9	10
+tests/rules/@stylistic/indent/zero/cases.ts:5:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 4.	fix	45	49		end	5	5
+tests/rules/@stylistic/indent/zero/cases.ts:10:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 2.	fix	79	81		end	10	3
+tests/rules/@stylistic/indent/zero/cases.ts:15:1	@stylistic/indent	wrongIndentation	Expected indentation of 0 spaces but found 2.	fix	110	112		end	15	3

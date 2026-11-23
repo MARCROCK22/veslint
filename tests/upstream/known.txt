@@ -1759,3 +1759,59 @@ veslint	svelte/no-unused-svelte-ignore/i26	<style lang="postcss">: postcss with 
 # esTreeNodeToTSNodeMap (usedTS), maybeString is isString, and `s` is `any`: not reported.
 eslint	regexp/no-missing-g-flag/i9	maybeString is isString with typescript-eslint's parser; `s` is undeclared
 veslint	regexp/no-missing-g-flag/i9	maybeString is isString with typescript-eslint's parser; `s` is undeclared
+# @stylistic/indent: a closing fragment written as `<` and `/>` (`<\n/>`, `< /* c */ />`), which espree
+# reads as `</>`, is a syntax error for TypeScript ("Identifier expected").
+eslint	indent._js_/v507	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v507	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v510	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v510	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v514	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v514	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v515	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v515	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v516	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v516	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v525	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v525	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v526	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v526	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v527	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v527	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v528	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v528	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/v529	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/v529	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/i250	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/i250	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/i253	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/i253	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/i255	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/i255	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+eslint	indent._js_/i258	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+veslint	indent._js_/i258	TypeScript rejects a closing fragment written `<` `/>` (Identifier expected)
+# @stylistic/indent: TypeScript reads a `with` on the line after `export … from "…"` as a `with`
+# statement ("'(' expected"); espree reads the attributes of the export.
+eslint	indent._js_/v697	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+veslint	indent._js_/v697	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+eslint	indent._js_/v698	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+veslint	indent._js_/v698	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+eslint	indent._js_/v699	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+veslint	indent._js_/v699	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+eslint	indent._js_/v700	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+veslint	indent._js_/v700	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+eslint	indent._js_/v704	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+veslint	indent._js_/v704	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+eslint	indent._js_/v705	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+veslint	indent._js_/v705	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+eslint	indent._js_/i382	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+veslint	indent._js_/i382	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+eslint	indent._js_/i383	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+veslint	indent._js_/i383	TypeScript reads `with` after a line break in an export as a with statement ('(' expected)
+# @stylistic/indent: --server (tests/upstream_check.py) parses with tree-sitter, whose grammar reads
+# these as syntax errors: the attributes of an import after a line break (`import j from "j"\nwith
+# {…}`), and an object pattern with typed properties as the parameter of a function type
+# (`({ a: number }) => void`). TypeScript's parser (the default of the CLI) reads both as ESLint.
+veslint	indent._js_/i380	tree-sitter reads `import … from "…"` and `with` on the next line as a syntax error
+veslint	indent._js_/i381	tree-sitter reads `import … from "…"` and `with` on the next line as a syntax error
+veslint	indent._ts_/i18	tree-sitter reads the object pattern parameter of a function type `({ a: number }) => void` as a syntax error
+veslint	indent._ts_/i19	tree-sitter reads the object pattern parameter of a function type `({ a: number }) => void` as a syntax error

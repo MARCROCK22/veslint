@@ -1,0 +1,1 @@
+{"rules": {"prefer-const": "error", "@typescript-eslint/no-floating-promises": "error"}}

@@ -620,18 +620,31 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 		} else {
 			[]string{}
 		}
+		mut fatal := ''
 		tsconfig := if named.len > 0 {
 			''
 		} else if project_override != '' {
 			project_override
 		} else {
 			find_tsconfig(abs_path) or {
-				errors.writeln('veslint: ${err.msg()}')
-				return ServerAnswer{
-					id:     id
-					code:   1
-					stderr: errors.str()
+				// Not in any project (run_rules).
+				found, message := if is_vue || is_svelte {
+					'', ''
+				} else {
+					without_tsconfig(abs_path, loaded, lint_configs, files.map(os.abs_path(it))) or {
+						'', ''
+					}
 				}
+				if found == '' && message == '' {
+					errors.writeln('veslint: ${err.msg()}')
+					return ServerAnswer{
+						id:     id
+						code:   1
+						stderr: errors.str()
+					}
+				}
+				fatal = message
+				found
 			}
 		}
 		for t in named {
@@ -652,6 +665,7 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 			path:     path
 			abs_path: abs_path
 			tsconfig: tsconfig
+			fatal:    fatal
 			named:    named
 			src:      src
 			has_bom:  has_bom
@@ -695,6 +709,11 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 	s.last_key = ''
 	s.prof.files_ms = since_ms(phase)
 	phase.restart()
+	// The tsconfigs of the default project's files (find_file_projects) are virtual files.
+	for path, text in default_project_tsconfigs(loaded, entries.filter(it.note == ''
+		&& it.fatal == '').map(it.abs_path)) {
+		s.set_twin(path, text)
+	}
 	if tsconfigs.len > 0 {
 		s.snapshot_for(tsconfigs, lazy) or {
 			s.stop()
@@ -714,9 +733,34 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 				stderr: errors.str()
 			}
 		}
+		mut all := tsconfigs.clone()
 		if opened.len > 0 {
-			mut all := tsconfigs.clone()
 			all << opened
+			s.snapshot_for(all, lazy) or {
+				s.stop()
+				errors.writeln('veslint: ${err.msg()}')
+				return ServerAnswer{
+					id:     id
+					code:   1
+					stderr: errors.str()
+				}
+			}
+		}
+		// The project typescript-eslint takes each file from, or its parsing error, as in a
+		// single run of the command line.
+		found := find_file_projects(mut s.client, mut entries, s.snap, loaded, lint_configs.map(configs_need_types([
+			it,
+		])), is_single_run(false), project_override != '') or {
+			s.stop()
+			errors.writeln('veslint: ${err.msg()}')
+			return ServerAnswer{
+				id:     id
+				code:   1
+				stderr: errors.str()
+			}
+		}
+		if found.opened.len > 0 {
+			all << found.opened
 			s.snapshot_for(all, lazy) or {
 				s.stop()
 				errors.writeln('veslint: ${err.msg()}')
@@ -744,6 +788,11 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 			out.writeln(note_line(f.path, f.note))
 			problems++
 			warnings++
+			continue
+		}
+		if f.fatal != '' {
+			out.write_string(fatal_report(f.path, f.fatal).stdout)
+			problems++
 			continue
 		}
 		config_index := loaded.file_config[f.abs_path] or { 0 }
