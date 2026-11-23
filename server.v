@@ -858,7 +858,7 @@ fn (mut s Server) lint_loaded(id i64, config string, loaded LoadedConfig, projec
 			s.tsx_parser
 		} else {
 			s.parser
-		}, lint_config, f.src, f.abs_path, mut stats) or {
+		}, lint_config, f.src, if f.vue || f.svelte { f.abs_path } else { f.ts_path }, mut stats) or {
 			if err.msg() == rules.lint_stopped {
 				// Given up between two rules: what the checker holds is what tsgo answered.
 				return ServerAnswer{

@@ -47,16 +47,69 @@ mut:
 	client &tsgo.Client = unsafe { nil }
 	// The lint's snapshot, whose projects have their root files already.
 	snap tsgo.UpdateSnapshotResponse
-	// The root files of each tsconfig (those of `snap`, or parseConfigFile), by path_key.
-	roots map[string]map[string]bool
-	// The files of the program of each tsconfig, by path_key.
-	programs map[string]map[string]bool
-	probe    tsgo.UpdateSnapshotResponse = tsgo.UpdateSnapshotResponse{
+	// tsgo's names of the root files of each tsconfig (those of `snap`, or parseConfigFile), by
+	// path_key.
+	roots map[string]map[string]string
+	// tsgo's names of the files of the program of each tsconfig, by path_key.
+	programs map[string]map[string]string
+	// The same names by the path_key of their real path, for the files looked for through a
+	// symlink (name_in), by the set they are of.
+	real_names map[string]map[string]string
+	probe      tsgo.UpdateSnapshotResponse = tsgo.UpdateSnapshotResponse{
 		snapshot: no_snapshot
 	}
 }
 
-fn (mut s ProjectSearch) roots_have(tsconfig string, key string) !bool {
+// name_in is the name tsgo has the file at `path` by among `names` (a set of `roots` or
+// `programs`, which `set` names), '' when it is not there. tsgo names the files of a project as its
+// tsconfig is spelled, which may go through a symlinked directory where `path` does not, or the
+// other way round (on macOS /var is /private/var, and $TMPDIR is under it): the real paths are
+// compared then, as DeclarationAsts.forget does.
+fn (mut s ProjectSearch) name_in(set string, tsconfig string, names map[string]string, path string) string {
+	if name := names[tsgo.path_key(path)] {
+		return name
+	}
+	real := tsgo.path_key(os.real_path(path))
+	if real == tsgo.path_key(path) && tsgo.path_key(os.real_path(tsconfig)) == tsgo.path_key(tsconfig) {
+		return ''
+	}
+	if set !in s.real_names {
+		mut keys := map[string]string{}
+		for _, name in names {
+			keys[tsgo.path_key(os.real_path(name))] = name
+		}
+		s.real_names[set] = keys.move()
+	}
+	return s.real_names[set][real] or { '' }
+}
+
+// tsgo_name is the path tsgo answers about the file at `path` by, in the project of a tsconfig
+// that has it (roots_have or program_has found it there): `path` itself, unless only its real path
+// is there (name_in).
+fn (mut s ProjectSearch) tsgo_name(tsconfig string, path string) string {
+	key := tsgo.path_key(path)
+	if names := s.roots[tsconfig] {
+		if key in names {
+			return path
+		}
+		name := s.name_in('roots ${tsconfig}', tsconfig, names, path)
+		if name != '' {
+			return name
+		}
+	}
+	if names := s.programs[tsconfig] {
+		if key in names {
+			return path
+		}
+		name := s.name_in('program ${tsconfig}', tsconfig, names, path)
+		if name != '' {
+			return name
+		}
+	}
+	return path
+}
+
+fn (mut s ProjectSearch) roots_have(tsconfig string, path string) !bool {
 	if tsconfig !in s.roots {
 		mut names := []string{}
 		mut known := false
@@ -70,20 +123,20 @@ fn (mut s ProjectSearch) roots_have(tsconfig string, key string) !bool {
 		if !known {
 			names = s.client.parse_config_file(tsconfig)!.file_names
 		}
-		mut keys := map[string]bool{}
+		mut keys := map[string]string{}
 		for name in names {
-			keys[tsgo.path_key(name)] = true
+			keys[tsgo.path_key(name)] = name
 		}
 		s.roots[tsconfig] = keys.move()
 	}
-	return key in s.roots[tsconfig]
+	return s.name_in('roots ${tsconfig}', tsconfig, s.roots[tsconfig], path) != ''
 }
 
-// program_has tells whether the program of a tsconfig has the file (by path_key): one of its root
-// files, or a file they import (typescript-estree's getAstFromProgram, and the project service's
-// containsScriptInfo).
-fn (mut s ProjectSearch) program_has(tsconfig string, key string) !bool {
-	if s.roots_have(tsconfig, key)! {
+// program_has tells whether the program of a tsconfig has the file at `path` (name_in): one of its
+// root files, or a file they import (typescript-estree's getAstFromProgram, and the project
+// service's containsScriptInfo).
+fn (mut s ProjectSearch) program_has(tsconfig string, path string) !bool {
+	if s.roots_have(tsconfig, path)! {
 		return true
 	}
 	if tsconfig !in s.programs {
@@ -106,13 +159,13 @@ fn (mut s ProjectSearch) program_has(tsconfig string, key string) !bool {
 		if project == '' {
 			return error('tsconfig ${tsconfig} is not in the tsgo snapshot (projects: ${s.probe.projects.map(it.id)})')
 		}
-		mut keys := map[string]bool{}
+		mut keys := map[string]string{}
 		for name in s.client.source_file_names(s.probe.snapshot, project)! {
-			keys[tsgo.path_key(name)] = true
+			keys[tsgo.path_key(name)] = name
 		}
 		s.programs[tsconfig] = keys.move()
 	}
-	return key in s.programs[tsconfig]
+	return s.name_in('program ${tsconfig}', tsconfig, s.programs[tsconfig], path) != ''
 }
 
 fn (mut s ProjectSearch) close() {
@@ -132,17 +185,16 @@ fn (mut s ProjectSearch) close() {
 // `root`, the tsconfigRootDir, when the file is under it, and at a node_modules directory). ''
 // when none has it.
 fn (mut s ProjectSearch) service_project(tsconfig string, abs_path string, root string) !string {
-	key := tsgo.path_key(abs_path)
 	mut seen := map[string]bool{}
 	mut current := tsconfig
 	// Whether the search may leave the tsconfigRootDir: only for a file outside it.
 	anywhere := !path_contains(root, os.dir(abs_path))
 	for current != '' {
 		seen[tsgo.path_key(current)] = true
-		if s.program_has(current, key)! {
+		if s.program_has(current, abs_path)! {
 			return current
 		}
-		if found := s.referenced_project(current, key, mut seen) {
+		if found := s.referenced_project(current, abs_path, mut seen) {
 			return found
 		}
 		current = ancestor_tsconfig(current, root, anywhere)
@@ -157,17 +209,17 @@ fn (mut s ProjectSearch) service_project(tsconfig string, abs_path string, root 
 // have the file (isMatchedByConfig, before the project is loaded): tsserver's
 // forEachResolvedProjectReferenceProjectLoad. The references are those of the raw file, which
 // `extends` does not pass on.
-fn (mut s ProjectSearch) referenced_project(tsconfig string, key string, mut seen map[string]bool) ?string {
+fn (mut s ProjectSearch) referenced_project(tsconfig string, path string, mut seen map[string]bool) ?string {
 	for reference in tsconfig_references(tsconfig) {
 		reference_key := tsgo.path_key(reference)
 		if reference_key in seen || !os.is_file(reference) {
 			continue
 		}
 		seen[reference_key] = true
-		if s.roots_have(reference, key) or { false } {
+		if s.roots_have(reference, path) or { false } {
 			return reference
 		}
-		if found := s.referenced_project(reference, key, mut seen) {
+		if found := s.referenced_project(reference, path, mut seen) {
 			return found
 		}
 	}
@@ -271,7 +323,6 @@ fn find_file_projects(mut client tsgo.Client, mut files []RuleFile, snap tsgo.Up
 		entry := loaded.config_entry(f.abs_path)
 		mut fatal := ''
 		mut tsconfig := f.tsconfig
-		key := tsgo.path_key(f.ts_path)
 		match entry.types {
 			.none {
 				continue
@@ -282,7 +333,7 @@ fn find_file_projects(mut client tsgo.Client, mut files []RuleFile, snap tsgo.Up
 					// gave the first whose root files have it, or the closest tsconfig).
 					mut found := ''
 					for named in f.named {
-						if search.program_has(named, key)! {
+						if search.program_has(named, f.ts_path)! {
 							found = named
 							break
 						}
@@ -293,14 +344,14 @@ fn find_file_projects(mut client tsgo.Client, mut files []RuleFile, snap tsgo.Up
 					} else {
 						tsconfig = found
 					}
-				} else if !search.program_has(tsconfig, key)! {
+				} else if !search.program_has(tsconfig, f.ts_path)! {
 					fatal = project_not_found_message(f.abs_path, entry, [tsconfig], single_run)
 				}
 			}
 			.service, .implicit {
 				candidate := !forced && f.abs_path in loaded.default_project
 				found := if forced {
-					if search.program_has(tsconfig, key)! { tsconfig } else { '' }
+					if search.program_has(tsconfig, f.ts_path)! { tsconfig } else { '' }
 				} else if candidate && tsconfig == default_project_tsconfig(f.abs_path, entry).path {
 					// No tsconfig.json at or above the file (without_tsconfig).
 					''
@@ -332,13 +383,18 @@ fn find_file_projects(mut client tsgo.Client, mut files []RuleFile, snap tsgo.Up
 			}
 			continue
 		}
-		if tsconfig != f.tsconfig {
-			if !snap.projects.any(is_project_of(it, tsconfig)) && tsconfig !in result.opened {
+		// tsgo answers about the file by its own name for it, which is another spelling of the path
+		// when one of them goes through a symlink.
+		ts_path := search.tsgo_name(tsconfig, f.ts_path)
+		if tsconfig != f.tsconfig || ts_path != f.ts_path {
+			if tsconfig != f.tsconfig && !snap.projects.any(is_project_of(it, tsconfig))
+				&& tsconfig !in result.opened {
 				result.opened << tsconfig
 			}
 			files[i] = RuleFile{
 				...f
 				tsconfig: tsconfig
+				ts_path:  ts_path
 			}
 		}
 	}

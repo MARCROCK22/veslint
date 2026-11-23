@@ -126,6 +126,32 @@ else
 	ko "symlinked file"
 	cat "$TMP/symlink.err"
 fi
+# A file given through a symlinked directory where its tsconfig is not, or the other way round:
+# tsgo names the files of a project as its tsconfig is spelled, and the file is still linted with
+# its types and reported by the path it is given, as typescript-eslint does.
+if [[ $windows -eq 0 ]]; then
+	mkdir -p "$TMP/spelled/real"
+	ln -s real "$TMP/spelled/link"
+	cp tests/fixtures/tsconfig.json "$TMP/spelled/real/"
+	printf 'async function f() {}\nf();\nexport {};\n' > "$TMP/spelled/real/floating.ts"
+	spelled=(--rule @typescript-eslint/no-floating-promises --project)
+	./veslint "${spelled[@]}" "$TMP/spelled/real/tsconfig.json" "$TMP/spelled/real/floating.ts" > "$TMP/spelled.expected" 2>&1
+	spelled_ok=1
+	grep -q $':2:1\t@typescript-eslint/no-floating-promises\t' "$TMP/spelled.expected" || spelled_ok=0
+	for given in link real; do
+		other=real
+		[[ $given == real ]] && other=link
+		code=0
+		./veslint "${spelled[@]}" "$TMP/spelled/$other/tsconfig.json" "$TMP/spelled/$given/floating.ts" > "$TMP/spelled.out" 2>&1 || code=$?
+		[[ $code -eq 1 ]] && diff -u <(sed "s|$TMP/spelled/real/|$TMP/spelled/$given/|g" "$TMP/spelled.expected") "$TMP/spelled.out" || spelled_ok=0
+	done
+	if [[ $spelled_ok -eq 1 ]]; then
+		ok "a file and its tsconfig spelled through a symlink and not: linted with its types, by the path given"
+	else
+		ko "a file and its tsconfig spelled through a symlink and not"
+		cat "$TMP/spelled.expected" "$TMP/spelled.out"
+	fi
+fi
 
 phase "exact outputs of the identifier modes"
 # Rules: for each tests/rules/<rule id>/ (the directory with an expected.txt, such as
