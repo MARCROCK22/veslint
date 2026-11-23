@@ -1,0 +1,34 @@
+# veslint does not report on purpose the literals with a prefix (/^0[box]/i, a BigInt too) or an
+# exponent written `E`, which @marcrock22/eslintcf 0.0.2 fixes into code that does not parse (a
+# separator right after the prefix or the exponent): MARCROCK22/veslint#38. They are in
+# limitations.txt too.
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:52:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1230	1235	0o_755	end	52	17
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:53:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1248	1254	0o_755n	end	53	18
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:54:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1267	1275	0O_777_777	end	54	20
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:55:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1288	1296	0B_101_010	end	55	20
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:56:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1309	1317	0X_123_456	end	56	20
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:57:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1330	1336	0O7_777	end	57	18
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:58:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1349	1355	0o7_777	end	58	18
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:59:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1368	1374	0X1_000	end	59	18
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:60:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1387	1396	0B1_010_101	end	60	21
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:61:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1409	1415	1_234E5	end	61	18
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:62:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1428	1433	1E_123	end	62	17
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:63:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1446	1455	0B_101_010n	end	63	21
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:64:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1468	1477	0X_123_456n	end	64	21
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:65:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1490	1499	0o1_234_567	end	65	21
+veslint	
+eslint	tests/rules/marcrock/numeric-separators/cases.ts:66:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected	fix	1512	1522	12_345.5E10	end	66	22
+veslint	

@@ -1,0 +1,15 @@
+tests/rules/marcrock/numeric-separators/cases.ts:52:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:53:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:54:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:55:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:56:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:57:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:58:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:59:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:60:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:61:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:62:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:63:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:64:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:65:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+tests/rules/marcrock/numeric-separators/cases.ts:66:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
