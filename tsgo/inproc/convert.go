@@ -139,13 +139,19 @@ type frame struct {
 type VeslintConverter struct {
 	// Script parses as ESLint's sourceType "script" (not a module).
 	Script bool
-	l      *VeslintLanguage
-	text   string
-	file   *ast.SourceFile
-	rows   []VeslintRow
-	stack  []frame
-	sc     *scanner.Scanner
-	lines  []uint32
+	// Grow, when set, holds the rows in memory of the caller's instead of a buffer of the
+	// converter's: it returns a buffer of at least `need` rows that starts with `rows` (nil the
+	// first time of a file). The caller takes the rows Convert returns (the converter forgets
+	// them), so no copy of them is made and the converter keeps no buffer the size of its largest
+	// file between files.
+	Grow  func(rows []VeslintRow, need int) []VeslintRow
+	l     *VeslintLanguage
+	text  string
+	file  *ast.SourceFile
+	rows  []VeslintRow
+	stack []frame
+	sc    *scanner.Scanner
+	lines []uint32
 }
 
 func NewVeslintConverter(l *VeslintLanguage) *VeslintConverter {
@@ -173,14 +179,72 @@ func (c *VeslintConverter) parse(text string) *ast.SourceFile {
 
 // Convert parses `text` (without its BOM, as veslint gives tree-sitter) and returns its rows, or no
 // rows and the parse diagnostics when TypeScript reports some (ESLint's "Parsing error" is the
-// first of them). The rows are the converter's buffer, valid until its next call.
+// first of them). The rows are the converter's buffer, valid until its next call, or the caller's
+// with Grow. The converter keeps nothing of the file or its text afterwards (forget).
 func (c *VeslintConverter) Convert(text string) (rows []VeslintRow, diagnostics []*ast.Diagnostic) {
+	defer c.forget()
 	file := c.parse(text)
 	if diagnostics := parseErrors(file); len(diagnostics) > 0 {
 		return nil, diagnostics
 	}
 	c.convert(file)
 	return c.rows, nil
+}
+
+// ConvertFile converts `file`, a file of a program, instead of parsing `text` again, when its AST
+// is the one Convert would parse (SameParse); ok is false otherwise. A file of a program may be
+// read by the checkers of other threads at the same time, so it must be bound already (the binder
+// is the only one that writes its nodes after the parse; InProcess.VeslintSourceFile binds it).
+func (c *VeslintConverter) ConvertFile(file *ast.SourceFile, text string) (rows []VeslintRow, diagnostics []*ast.Diagnostic, ok bool) {
+	if !c.SameParse(file, text) {
+		return nil, nil, false
+	}
+	defer c.forget()
+	if diagnostics := parseErrors(file); len(diagnostics) > 0 {
+		return nil, diagnostics, true
+	}
+	c.convert(file)
+	return c.rows, nil, true
+}
+
+// SameParse tells whether `file` (a file of a program) has the AST that Convert parses from
+// `text`: TypeScript's parse depends only on the text, the script kind, whether the file is a
+// declaration file and whether it is a module, where the top-level statements with an identifier
+// `await` are parsed again with `await` an await expression (reparseTopLevelAwait). The converter
+// parses a file as a module unless Script, and as a declaration file never; a program decides
+// module-ness from its compiler options (moduleDetection, the module format) and the imports and
+// exports, so a file without import or export is a script there while ESLint's default sourceType
+// makes it a module. That changes nothing when the text cannot have an identifier `await` (no
+// `await`, and no `\u` escape that could spell it); otherwise such a file is parsed again.
+func (c *VeslintConverter) SameParse(file *ast.SourceFile, text string) bool {
+	kind := core.ScriptKindTS
+	if c.l.tsx {
+		kind = core.ScriptKindTSX
+	}
+	if file == nil || file.ScriptKind != kind || file.IsDeclarationFile || file.Text() != text {
+		return false
+	}
+	return (file.ExternalModuleIndicator != nil) == !c.Script ||
+		!strings.Contains(text, "await") && !strings.Contains(text, `\u`)
+}
+
+// forget drops what the converter holds of the last file: its AST and text (a converter waits in a
+// pool between files, and the AST of a large file is tens of megabytes that Go's collector would
+// count as live), and, with Grow, the rows, which are the caller's.
+func (c *VeslintConverter) forget() {
+	c.file = nil
+	c.text = ""
+	c.sc.SetText("")
+	if c.Grow != nil {
+		c.rows = nil
+	}
+}
+
+// initialRows is the room for the rows of a text of `n` bytes that Grow is first asked for, a guess
+// from the size of the text (tree-sitter's rows have every token, the punctuation too): the buffer
+// grows by half when it is not enough, and the caller gives back the room left.
+func initialRows(n int) int {
+	return n/3 + 16
 }
 
 // parseErrors are the parse diagnostics of the file TypeScript 6 (typescript-estree's, so ESLint's)
@@ -207,6 +271,7 @@ func (c *VeslintConverter) Diagnostics(text string) []string {
 
 // ConvertTimed is Convert's two halves, timed (the benchmark of tests/tsconv).
 func (c *VeslintConverter) ConvertTimed(text string) (parse, conversion time.Duration) {
+	defer c.forget()
 	t0 := time.Now()
 	file := c.parse(text)
 	t1 := time.Now()
@@ -219,7 +284,11 @@ func (c *VeslintConverter) ConvertTimed(text string) (parse, conversion time.Dur
 func (c *VeslintConverter) convert(file *ast.SourceFile) {
 	c.file = file
 	c.text = file.Text()
-	c.rows = c.rows[:0]
+	if c.Grow != nil {
+		c.rows = c.Grow(nil, initialRows(len(c.text)))
+	} else {
+		c.rows = c.rows[:0]
+	}
 	c.stack = c.stack[:0]
 	c.sc.SetText(c.text)
 	c.sc.SetLanguageVariant(file.LanguageVariant)
@@ -243,6 +312,9 @@ func (c *VeslintConverter) push(symbol, field uint16, flags uint8, start, end in
 			c.rows[prev].Next = index
 		}
 		top.prev = index
+	}
+	if c.Grow != nil && len(c.rows) == cap(c.rows) {
+		c.rows = c.Grow(c.rows, len(c.rows)+1)
 	}
 	c.rows = append(c.rows, VeslintRow{StartByte: uint32(start), EndByte: uint32(end), Parent: parent, Next: VeslintNone, Prev: prev, Last: index, Symbol: symbol, Field: field, Flags: flags})
 	return index

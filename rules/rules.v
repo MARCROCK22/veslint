@@ -3489,38 +3489,21 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	}
 	// TypeScript's parser (parser_source.v) reads a plain TypeScript file, Svelte's lint code and
 	// the masked script of a .vue file vue/ did not parse (one without a TypeScript script; the
-	// others come parsed by it); tree-sitter parses it when the converter fails. Svelte's lint code
-	// and Vue's masked script are code veslint writes, whose errors are those of the file's parse
-	// (svelte/, vue/): tree-sitter's rows, with their errors, are linted when TypeScript's parser
-	// rejects them, as before the converter.
-	// --server: an edit of a file the cache has a tree of is parsed from it by tree-sitter, faster
-	// than a whole parse by TypeScript's (TypeScript has no incremental parse), when that tree has
-	// no error (where it has one, TypeScript's parser tells whether the code has); a file it has
-	// no tree of is parsed by TypeScript's, and seeded for its next text.
+	// others come parsed by it), also for each text --server lints (TypeScript has no incremental
+	// parse: a whole parse of the text, so that the editor reads code as the command line and
+	// ESLint do); tree-sitter parses it when the converter fails. Svelte's lint code and Vue's
+	// masked script are code veslint writes, whose errors are those of the file's parse (svelte/,
+	// vue/): tree-sitter's rows, with their errors, are linted when TypeScript's parser rejects
+	// them, as before the converter. Their text is not the program's file text.
 	mut typescript := TypeScriptParse{}
-	mut reparsed := unsafe { &C.vt_rows(nil) }
 	if owned && parser_source == .typescript {
-		if cache != unsafe { nil } && cache.enabled() {
-			if cache.has(parser, cache_key) {
-				rows := cache.parse(parser, cache_key, parsed)!
-				if tree_has_error(rows) {
-					treesitter.rows_free(rows)
-				} else {
-					reparsed = rows
-				}
-			} else {
-				cache.seed(parser, cache_key, parsed)
+		typescript = if svelte_file || vue_file {
+			converted := tsparse.convert(parser.ts_parser(), parsed, false, tsgo.ProgramFile{})
+			TypeScriptParse{
+				rows: converted.rows
 			}
-		}
-		if reparsed == unsafe { nil } {
-			typescript = if svelte_file || vue_file {
-				converted := tsparse.convert(parser.ts_parser(), parsed, false)
-				TypeScriptParse{
-					rows: converted.rows
-				}
-			} else {
-				typescript_parse(parser, parsed, config.language, abs_path)
-			}
+		} else {
+			typescript_parse(parser, parsed, config.language, abs_path, c.program_file(abs_path))
 		}
 	}
 	from_typescript := typescript.rows != unsafe { nil }
@@ -3528,8 +3511,6 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	c.rows_from_typescript = from_typescript
 	mut tree := if !owned {
 		c.vue.doc.script.tree
-	} else if reparsed != unsafe { nil } {
-		reparsed
 	} else if typescript.rows != unsafe { nil } {
 		typescript.rows
 	} else if typescript.diagnostics.len > 0 {
@@ -6471,6 +6452,20 @@ fn first_parse_diagnostic(diagnostics []tsgo.Diagnostic, units int) tsgo.Diagnos
 		return d
 	}
 	return diagnostics[0]
+}
+
+// program_file is the file `abs_path` in the program of the checker's project, for the converter
+// (tsgo.convert_in): none without a snapshot (a lint without types builds no program).
+fn (c &Checker) program_file(abs_path string) tsgo.ProgramFile {
+	if c.client == unsafe { nil } || c.snapshot < 0 || c.snapshot_tsconfig != '' {
+		return tsgo.ProgramFile{}
+	}
+	return tsgo.ProgramFile{
+		client:   c.client
+		snapshot: c.snapshot
+		project:  c.project
+		path:     abs_path
+	}
 }
 
 // make_snapshot gives a checker made without a snapshot one with its tsconfig open: a comment

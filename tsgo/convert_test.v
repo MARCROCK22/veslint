@@ -1,5 +1,8 @@
 module tsgo
 
+import os
+import time
+
 // The converter through its C entry point (tsgo/convert.v): its rows against tree-sitter's for a
 // few files, and its other results. tests/tsconv/ is the differential test on the corpus.
 
@@ -180,4 +183,72 @@ fn test_convert_reads_top_level_await_by_source_type() {
 	call_expression := C.ts_language_symbol_for_name(lang, c'call_expression', 15, true)
 	assert module_rows.row(2).symbol == await_expression
 	assert script_rows.row(2).symbol == call_expression
+}
+
+// convert_in converts the program's AST of a file when it is the one a parse of the text gives, and
+// parses the text otherwise: the rows are convert's in every case. a.ts is a module; b.ts has no
+// import or export, so the program reads it as a script while ESLint's default sourceType makes it
+// a module (`await (1)` an await expression); e.ts is a script too, but without `await` its AST is
+// the same either way; c.tsx is TSX; and a text that is not the program's (an unsaved edit) is
+// parsed.
+fn test_convert_in_gives_the_rows_of_convert() {
+	bin := os.join_path(@VMODROOT, rel_path)
+	if !os.is_file(bin) {
+		eprintln('skipped: ${bin} is missing')
+		return
+	}
+	C.veslint_tsgo_convert_languages()
+	dir := os.join_path(os.temp_dir(), 'veslint-convert-in-test-${os.getpid()}')
+	os.mkdir_all(dir) or { panic(err) }
+	defer {
+		os.rmdir_all(dir) or {}
+	}
+	tsconfig := os.join_path(dir, 'tsconfig.json')
+	os.write_file(tsconfig, '{"compilerOptions":{"strict":true,"noEmit":true,"jsx":"preserve"},"include":["*.ts","*.tsx"]}') or {
+		panic(err)
+	}
+	files := {
+		'a.ts':  'import { x } from "./b";\nexport const a = await (x as number);\n'
+		'b.ts':  'const x = 1;\nawait (1);\n'
+		'c.tsx': 'export const e = <div className="a">{1}</div>;\n'
+		'e.ts':  'let y = 2;\nfunction f() {\n  return y;\n}\n'
+	}
+	for name, text in files {
+		os.write_file(os.join_path(dir, name), text) or { panic(err) }
+	}
+	mut c := start(bin, dir, 20 * time.second) or { panic(err) }
+	defer {
+		c.shutdown()
+	}
+	c.initialize() or { panic(err) }
+	snap := c.create_snapshot([tsconfig]) or { panic(err) }
+	mut cases := [][]string{}
+	for name, text in files {
+		cases << [name, text]
+	}
+	cases << ['a.ts', 'export const a = 2;\n']
+	for case in cases {
+		tsx := case[0].ends_with('.tsx')
+		program := ProgramFile{
+			client:   c
+			snapshot: snap.snapshot
+			project:  snap.projects[0].id
+			path:     os.join_path(dir, case[0])
+		}
+		for script in [false, true] {
+			mut got := convert_in(program, case[1], tsx, script)
+			mut want := convert(case[1], tsx, script)
+			assert got.status == .rows, '${case[0]} ${script}'
+			assert converted_rows(got) == converted_rows(want), '${case[0]} ${script}'
+			got.free()
+			want.free()
+		}
+	}
+	// Without a snapshot (a lint without types), the text is parsed.
+	mut got := convert_in(ProgramFile{
+		client: c
+		path:   os.join_path(dir, 'a.ts')
+	}, files['a.ts'], false, false)
+	assert got.status == .rows
+	got.free()
 }

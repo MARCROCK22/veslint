@@ -9,9 +9,7 @@ import tsgo
 // Which parser gives the rows of a text: TypeScript's (the converter of tsgo/inproc/convert.go,
 // TypeScript 7.1's parser, whose AST is written as the rows tree-sitter's parse would give) or
 // tree-sitter's. VESLINT_PARSER=typescript or tree-sitter chooses, for every text veslint parses:
-// a file, a .vue or .svelte file's script, a template expression, the code `--server` lints (which
-// parses an edit of a file it has the last tree of with tree-sitter's incremental parse either
-// way: rules.lint_file).
+// a file, a .vue or .svelte file's script, a template expression, each text `--server` lints.
 
 // Source is the parser of a text's rows.
 pub enum Source {
@@ -82,10 +80,12 @@ pub:
 
 // convert parses `code` with TypeScript's parser in the dialect of `parser` (TSX when it reads the
 // tsx grammar), as a module or, `script`, as ESLint's sourceType "script" (TypeScript then reads a
-// top-level `await` as a name), and gives the rows in the language of `parser`.
-pub fn convert(parser &C.TSParser, code string, script bool) Converted {
+// top-level `await` as a name), and gives the rows in the language of `parser`. `program` is the
+// file in a program of TypeScript whose AST is converted instead when it is the parse of `code`
+// (tsgo.convert_in); tsgo.ProgramFile{} for a text that is no file of a program.
+pub fn convert(parser &C.TSParser, code string, script bool, program tsgo.ProgramFile) Converted {
 	give_languages()
-	mut converted := tsgo.convert(code, treesitter.parser_is_tsx(parser), script)
+	mut converted := tsgo.convert_in(program, code, treesitter.parser_is_tsx(parser), script)
 	match converted.status {
 		.rows {
 			rows := treesitter.adopt_rows_of(parser, converted.rows, converted.count) or {
@@ -133,7 +133,7 @@ pub:
 // with `parser`. `what` names the text in errors.
 pub fn parse(parser &C.TSParser, code string, what string) !Parse {
 	if the_source == .typescript {
-		converted := convert(parser, code, false)
+		converted := convert(parser, code, false, tsgo.ProgramFile{})
 		if converted.rows != unsafe { nil } {
 			return Parse{
 				rows:       converted.rows

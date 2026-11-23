@@ -380,10 +380,6 @@ pub fn trees_differ(a &C.TSTree, b &C.TSTree) i64 {
 // parse from it (Parser.reparse). Its trees are its own: one is freed when a file is parsed again,
 // forgotten or pushed out by others. A parse gives new rows of the tree, which are the caller's.
 //
-// A file TypeScript's parser read first has no tree: seed parses its text in a thread of its own,
-// whose tree the cache takes when it is done (has, parse), so that the next text is parsed from
-// it without the first lint waiting for tree-sitter.
-//
 // VESLINT_INCREMENTAL=0 turns it off (every parse from scratch; veslint --server then reuses no
 // answer either); VESLINT_INCREMENTAL_CHECK=1
 // parses each new text from scratch too and compares both trees: a difference is written to
@@ -395,9 +391,6 @@ mut:
 	order   []string // the keys, the most recently parsed last
 	off     bool
 	check   bool
-	// seeding: the keys whose seed has not come back; seeded: the trees of the seeds.
-	seeding map[string]bool
-	seeded  chan SeededTree = chan SeededTree{cap: max_seeds}
 pub mut:
 	// how many parses of a new text of a file were Reparse.same, .incremental and .fresh
 	reparses [3]int
@@ -411,18 +404,6 @@ struct CachedTree {
 
 // tree_cache_size is how many trees a TreeCache keeps: the files being edited.
 const tree_cache_size = 8
-
-// max_seeds is how many seeds may be on their way at once (TreeCache.seed): a seed's thread never
-// waits to give its tree.
-const max_seeds = 16
-
-// SeededTree is the tree a seed's thread parsed for `key` from `text` (nil when it failed).
-struct SeededTree {
-	key  string
-	text string
-	tree &C.TSTree     = unsafe { nil }
-	lang &C.TSLanguage = unsafe { nil }
-}
 
 pub fn new_tree_cache() &TreeCache {
 	return &TreeCache{
@@ -441,7 +422,6 @@ pub fn (mut c TreeCache) parse(p &Parser, key string, src string) !&C.vt_rows {
 
 // parse_tree is the tree parse gives the rows of.
 pub fn (mut c TreeCache) parse_tree(p &Parser, key string, src string) !&C.TSTree {
-	c.take_seeds()
 	mut tree := &C.TSTree(unsafe { nil })
 	if entry := c.entries[key] {
 		c.entries.delete(key)
@@ -471,80 +451,16 @@ pub fn (mut c TreeCache) parse_tree(p &Parser, key string, src string) !&C.TSTre
 	} else {
 		tree = p.parse_tree(src)!
 	}
-	c.keep(key, src, tree, p.lang)
-	return tree
-}
-
-// keep makes `tree`, parsed from `src`, the tree of `key`.
-fn (mut c TreeCache) keep(key string, src string, tree &C.TSTree, lang &C.TSLanguage) {
-	// The tree and the language are tree-sitter's (C memory), not V values on the stack.
-	c.entries[key] = unsafe {
-		CachedTree{
-			text: src
-			tree: tree
-			lang: lang
-		}
+	c.entries[key] = CachedTree{
+		text: src
+		tree: tree
+		lang: p.lang
 	}
 	c.order << key
 	for c.order.len > tree_cache_size {
 		c.forget(c.order[0])
 	}
-}
-
-// has: the cache has a tree of `key` of the language of `p`, for a parse of its next text.
-pub fn (mut c TreeCache) has(p &Parser, key string) bool {
-	c.take_seeds()
-	entry := c.entries[key] or { return false }
-	return voidptr(entry.lang) == voidptr(p.lang)
-}
-
-// seed parses `src`, the text of `key`, with tree-sitter in a thread of its own (the dialect of
-// `p`), unless a seed of `key` is on its way: the cache takes its tree at its next has or parse
-// that finds it done, while it has no newer tree of `key`.
-pub fn (mut c TreeCache) seed(p &Parser, key string, src string) {
-	if c.off || c.seeding[key] || c.seeding.len >= max_seeds {
-		return
-	}
-	c.seeding[key] = true
-	spawn seed_tree(c.seeded, p.tsx, key, src)
-}
-
-// seed_tree is a seed's thread: its own parser (tree-sitter's are not shared between threads).
-fn seed_tree(out chan SeededTree, tsx bool, key string, src string) {
-	p := new_parser_for(tsx) or {
-		out <- SeededTree{
-			key: key
-		}
-		return
-	}
-	tree := p.parse_tree(src) or { unsafe { nil } }
-	out <- SeededTree{
-		key:  key
-		text: src
-		tree: tree
-		lang: p.lang
-	}
-	p.close()
-}
-
-// take_seeds keeps the trees of the seeds that are done, but for files the cache has a newer tree
-// of (a parse of theirs came first).
-fn (mut c TreeCache) take_seeds() {
-	for c.seeding.len > 0 {
-		mut seeded := SeededTree{}
-		if c.seeded.try_pop(mut seeded) != .success {
-			return
-		}
-		c.seeding.delete(seeded.key)
-		if isnil(seeded.tree) {
-			continue
-		}
-		if seeded.key in c.entries {
-			C.ts_tree_delete(seeded.tree)
-			continue
-		}
-		c.keep(seeded.key, seeded.text, seeded.tree, seeded.lang)
-	}
+	return tree
 }
 
 // enabled: the cache keeps trees (not VESLINT_INCREMENTAL=0).

@@ -1575,6 +1575,22 @@ else
 	diff "$TMP/workers-inproc.out" "$TMP/workers-checked.out" | head -20
 	head -c 2000 "$TMP/workers-checked.err"
 fi
+# In a lint with types, the converter converts the program's AST of a file instead of parsing its
+# text again (tsgo.convert_in); VESLINT_CHECK_PROGRAM_AST also converts the text of each such file
+# and reports where the two differ (`veslint_tsgo: checked <path>` where they do not): most files
+# are converted from their program's AST (not those without import or export whose text has an
+# `await` or a `\u` escape), none differently, and the output does not change.
+code=0
+VESLINT_CHECK_PROGRAM_AST=1 ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-program.out" 2> "$TMP/workers-program.err" || code=$?
+if [[ $code -eq 1 ]] && cmp -s "$TMP/workers-inproc.out" "$TMP/workers-program.out" &&
+	[[ $(grep -c '^veslint_tsgo: checked ' "$TMP/workers-program.err") -gt 0 ]] &&
+	! grep '^veslint_tsgo: ' "$TMP/workers-program.err" | grep -qv '^veslint_tsgo: checked '; then
+	ok "the program's ASTs converted: the rows of a parse of each file's text"
+else
+	ko "the program's ASTs converted (code $code)"
+	diff "$TMP/workers-inproc.out" "$TMP/workers-program.out" | head -20
+	grep '^veslint_tsgo: ' "$TMP/workers-program.err" | grep -v '^veslint_tsgo: checked ' | head -20
+fi
 
 # --server (server.v): a scenario with unsaved text, a file closed without saving, files changed on
 # disk, a reset, errors, and a declaration the server keeps between snapshots that changes
@@ -1619,18 +1635,22 @@ else
 	cat "$TMP/server-pipeline.out"
 fi
 # Random edits of files linted as unsaved text, one after the other (tests/server_edits.py): a
-# server that parses each edit from the tree of the text before answers what one that parses every
-# text from scratch answers, and the trees are the same (VESLINT_INCREMENTAL_CHECK): the TypeScript
-# files of tests/config, the Vue and the Svelte fixtures.
+# server that keeps its last tree and answer answers what one that parses every text from scratch
+# and lints every request answers: the TypeScript files of tests/config, the Vue and the Svelte
+# fixtures. TypeScript's parser parses each text whole; with VESLINT_PARSER=tree-sitter the first
+# parses each edit from the tree of the text before, and the trees are the same
+# (VESLINT_INCREMENTAL_CHECK).
 mapfile -t edited_config < <(cd tests/config && find . -name '*.ts' | sed 's|^\./||' | sorted)
-if (cd tests/config && python3 ../server_edits.py ../../veslint 1 8 . resolved.json "${edited_config[@]}") > "$TMP/server-edits.out" 2>&1 &&
-	(cd tests/vue-lint/fixtures && python3 ../../server_edits.py ../../../veslint 2 6 . ../rules.json ./*.vue) >> "$TMP/server-edits.out" 2>&1 &&
-	(cd tests/svelte-lint/fixtures && python3 ../../server_edits.py ../../../veslint 3 6 . ../rules.json ./*.svelte ./*.svelte.ts) >> "$TMP/server-edits.out" 2>&1; then
-	ok "--server: random edits parsed from the tree of the text before answer as parsed from scratch ($(grep -o '^[0-9]* requests' "$TMP/server-edits.out" | awk '{n += $1} END {print n}') requests)"
-else
-	ko "--server: random edits parsed incrementally (tests/server_edits.py)"
-	cat "$TMP/server-edits.out"
-fi
+for parser in typescript tree-sitter; do
+	if (cd tests/config && VESLINT_PARSER=$parser python3 ../server_edits.py ../../veslint 1 8 . resolved.json "${edited_config[@]}") > "$TMP/server-edits.out" 2>&1 &&
+		(cd tests/vue-lint/fixtures && VESLINT_PARSER=$parser python3 ../../server_edits.py ../../../veslint 2 6 . ../rules.json ./*.vue) >> "$TMP/server-edits.out" 2>&1 &&
+		(cd tests/svelte-lint/fixtures && VESLINT_PARSER=$parser python3 ../../server_edits.py ../../../veslint 3 6 . ../rules.json ./*.svelte ./*.svelte.ts) >> "$TMP/server-edits.out" 2>&1; then
+		ok "--server ($parser's parser): random edits answer as parsed from scratch ($(grep -o '^[0-9]* requests' "$TMP/server-edits.out" | awk '{n += $1} END {print n}') requests)"
+	else
+		ko "--server ($parser's parser): random edits (tests/server_edits.py)"
+		cat "$TMP/server-edits.out"
+	fi
+done
 # A server keeps every thread of its own and of its tsgo on two CPUs as well (cpus.v): looked at
 # after its first lint, while both are alive (on Linux only); with TypeScript in its process, the
 # threads of the Go runtime are its own.

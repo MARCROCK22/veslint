@@ -22,14 +22,15 @@ struct TypeScriptParse {
 // typescript_parse parses `src` with TypeScript's parser in the dialect of `parser` (TSX for a
 // .tsx file) and as ESLint's sourceType says: ESLint gives the parser the sourceType of its parser
 // options or of its language options, and typescript-estree makes a "module" a module whatever it
-// contains (top-level `await` is then an await expression).
-fn typescript_parse(parser treesitter.Parser, src string, language LanguageOptions, path string) TypeScriptParse {
+// contains (top-level `await` is then an await expression). `program` is the file in TypeScript's
+// program, whose AST is converted when it is the one the parse would give (tsgo.convert_in).
+fn typescript_parse(parser treesitter.Parser, src string, language LanguageOptions, path string, program tsgo.ProgramFile) TypeScriptParse {
 	source_type := if language.parser_source_type != '' {
 		language.parser_source_type
 	} else {
 		language.source_type
 	}
-	converted := tsparse.convert(parser.ts_parser(), src, source_type != 'module')
+	converted := tsparse.convert(parser.ts_parser(), src, source_type != 'module', program)
 	if converted.failed != '' && tsparse.debugging() {
 		eprintln('debug: ${path}: ${converted.failed}; tree-sitter parses it')
 	}

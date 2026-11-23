@@ -32,6 +32,7 @@ pub const row_has_error = u8(16)
 
 const op_convert_language = 6
 const op_convert = 7
+const op_convert_file = 8
 
 // ConvertStatus is what a conversion gave.
 pub enum ConvertStatus {
@@ -83,6 +84,49 @@ pub fn convert(text string, tsx bool, script bool) Converted {
 		a_len: uint(text.len)
 	}
 	C.veslint_tsgo_invoke(&call)
+	return converted_of(call)
+}
+
+// ProgramFile names a file of a program of TypeScript in this process: the client of the session,
+// the snapshot, the project and the file's path, as a request for the file gives them.
+pub struct ProgramFile {
+pub:
+	client   &Client = unsafe { nil }
+	snapshot int     = -1
+	project  string
+	path     string
+}
+
+// convert_in is convert for `program`, a file of a program of TypeScript in this process (none
+// when its client is not in this process or has no snapshot): the converter converts the
+// program's AST of the file when it is the one a parse of `text` gives, so that the file is not
+// parsed again, and parses `text` otherwise. The rows are the same.
+pub fn convert_in(program ProgramFile, text string, tsx bool, script bool) Converted {
+	if program.client == unsafe { nil } || program.client.inproc == 0 || program.snapshot < 0
+		|| program.path == '' {
+		return convert(text, tsx, script)
+	}
+	mut flags := if tsx { 1 } else { 0 }
+	if script {
+		flags |= 2
+	}
+	// As the parameters of veslint/nodesAtRanges, without values.
+	params := binary_params(program.snapshot, program.project, program.path, [])
+	mut call := C.veslint_tsgo_call{
+		op:     op_convert_file
+		handle: program.client.inproc
+		flag:   flags
+		a:      &char(text.str)
+		a_len:  uint(text.len)
+		b:      &char(params.str)
+		b_len:  uint(params.len)
+	}
+	C.veslint_tsgo_invoke(&call)
+	return converted_of(call)
+}
+
+// converted_of is what a call of op_convert or op_convert_file gave.
+fn converted_of(call C.veslint_tsgo_call) Converted {
 	status := match call.result {
 		0 { ConvertStatus.rows }
 		1 { ConvertStatus.diagnostics }
