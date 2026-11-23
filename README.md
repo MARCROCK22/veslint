@@ -22,7 +22,7 @@ veslint lints TypeScript with ESLint's rules, without ESLint. It parses the code
 ![The 23 type-aware rules of recommendedTypeChecked, in the editor](docs/bench/editor-typed.svg)
 
 - **Against ESLint** (with typescript-eslint), veslint reports exactly the same problems, 7 to 15 times faster on whole projects, with less memory in most cases.
-- **In the editor**, with type-aware rules, veslint is faster than ESLint and oxlint on every project measured, at re-linting a file after an edit and at its first lint; Biome has 3 of the 23 rules, so it is left out. Without types, its first lint of a file is the fastest on every project measured, and so is re-linting a file after an edit on zod and the TypeScript compiler.
+- **In the editor**, with type-aware rules, veslint is faster than ESLint and oxlint on every project measured, at re-linting a file after an edit and at its first lint; Biome has 3 of the 23 rules, so it is left out. Without types, its first lint of a file is the fastest on zod and recharts, and so is re-linting a file after an edit on zod and the TypeScript compiler.
 - **On the command line**, oxlint is faster in most cases (veslint is faster with the 23 type-aware rules on recharts and with no-floating-promises on zod and recharts); without types veslint is faster than Biome on zod and the TypeScript compiler, and Biome on recharts. Neither reports the same problems as ESLint: the charts and the table say how many of ESLint's problems each one finds.
 
 <details>
@@ -43,56 +43,56 @@ veslint lints TypeScript with ESLint's rules, without ESLint. It parses the code
 
 | Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| zod | ESLint | 4.1 s ± 0.05 s | 8.2 s | 469 MiB | 972 | — | 1557 ms | 344 ms |
-| zod | **veslint** | 0.29 s ± 0.00 s | 0.89 s | 151 MiB | 972 | 972 of 972 | 92 ms | 37 ms |
-| zod | oxlint | 0.09 s ± 0.00 s | 0.15 s | 116 MiB | 924 | 895 of 972 | 171 ms | 97 ms |
-| zod | Biome | 0.42 s ± 0.01 s | 0.87 s | 204 MiB | 941 | 887 of 972 | 172 ms | 349 ms |
-| recharts | ESLint | 4.3 s ± 0.04 s | 8.7 s | 466 MiB | 380 | — | 1115 ms | 132 ms |
-| recharts | **veslint** | 0.32 s ± 0.00 s | 1.1 s | 142 MiB | 380 | 380 of 380 | 56 ms | 19 ms |
-| recharts | oxlint | 0.08 s ± 0.01 s | 0.15 s | 114 MiB | 362 | 331 of 380 | 121 ms | 4.2 ms |
-| recharts | Biome | 0.27 s ± 0.00 s | 0.76 s | 132 MiB | 375 | 362 of 380 | 136 ms | 304 ms |
-| TypeScript compiler | ESLint | 24 s ± 0.22 s | 43 s | 1,195 MiB | 1,330 | — | 1998 ms | 639 ms |
-| TypeScript compiler | **veslint** | 1.7 s ± 0.03 s | 6.2 s | 574 MiB | 1,330 | 1,330 of 1,330 | 211 ms | 98 ms |
-| TypeScript compiler | oxlint | 0.39 s ± 0.01 s | 0.77 s | 185 MiB | 1,012 | 957 of 1,330 | 218 ms | 126 ms |
-| TypeScript compiler | Biome | 1.9 s ± 0.00 s | 5.9 s | 512 MiB | 1,288 | 879 of 1,330 | 519 ms | 401 ms |
+| zod | ESLint | 4.2 s ± 0.03 s | 8.2 s | 477 MiB | 972 | — | 1546 ms | 339 ms |
+| zod | **veslint** | 0.29 s ± 0.00 s | 0.90 s | 157 MiB | 972 | 972 of 972 | 94 ms | 38 ms |
+| zod | oxlint | 0.09 s ± 0.00 s | 0.14 s | 116 MiB | 924 | 895 of 972 | 158 ms | 98 ms |
+| zod | Biome | 0.42 s ± 0.00 s | 0.88 s | 207 MiB | 941 | 887 of 972 | 179 ms | 351 ms |
+| recharts | ESLint | 4.3 s ± 0.05 s | 8.6 s | 463 MiB | 380 | — | 1132 ms | 132 ms |
+| recharts | **veslint** | 0.31 s ± 0.00 s | 1.0 s | 146 MiB | 380 | 380 of 380 | 56 ms | 20 ms |
+| recharts | oxlint | 0.08 s ± 0.01 s | 0.15 s | 93 MiB | 362 | 331 of 380 | 135 ms | 3.6 ms |
+| recharts | Biome | 0.27 s ± 0.00 s | 0.76 s | 134 MiB | 375 | 362 of 380 | 134 ms | 305 ms |
+| TypeScript compiler | ESLint | 24 s ± 0.16 s | 43 s | 1,203 MiB | 1,330 | — | 2012 ms | 649 ms |
+| TypeScript compiler | **veslint** | 1.7 s ± 0.01 s | 6.2 s | 584 MiB | 1,330 | 1,330 of 1,330 | 209 ms | 100 ms |
+| TypeScript compiler | oxlint | 0.37 s ± 0.01 s | 0.77 s | 193 MiB | 1,012 | 957 of 1,330 | 219 ms | 120 ms |
+| TypeScript compiler | Biome | 1.9 s ± 0.01 s | 5.9 s | 512 MiB | 1,288 | 879 of 1,330 | 207 ms | 384 ms |
 
 **no-floating-promises**
 
 | Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| zod | ESLint | 6.1 s ± 0.05 s | 12 s | 799 MiB | 1 | — | — | — |
-| zod | **veslint** | 0.47 s ± 0.02 s | 1.3 s | 267 MiB | 1 | 1 of 1 | — | — |
-| zod | oxlint | 0.57 s ± 0.01 s | 1.7 s | 299 MiB | 1 | 1 of 1 | — | — |
-| zod | Biome | 0.46 s ± 0.00 s | 1.5 s | 174 MiB | 1 | 1 of 1 | — | — |
-| recharts | ESLint | 7.8 s ± 0.06 s | 16 s | 952 MiB | 0 | — | — | — |
-| recharts | **veslint** | 0.53 s ± 0.01 s | 1.7 s | 282 MiB | 0 | 0 of 0 | — | — |
-| recharts | oxlint | 0.71 s ± 0.02 s | 2.5 s | 333 MiB | 0 | 0 of 0 | — | — |
-| recharts | Biome | 0.45 s ± 0.02 s | 1.5 s | 171 MiB | 0 | 0 of 0 | — | — |
-| TypeScript compiler | ESLint | 32 s ± 0.20 s | 61 s | 1,884 MiB | 2 | — | — | — |
-| TypeScript compiler | **veslint** | 2.2 s ± 0.01 s | 8.1 s | 1,019 MiB | 2 | 2 of 2 | — | — |
-| TypeScript compiler | oxlint | 1.8 s ± 0.08 s | 6.7 s | 690 MiB | 2 | 2 of 2 | — | — |
-| TypeScript compiler | Biome | 3.0 s ± 0.03 s | 12 s | 429 MiB | 2 | 2 of 2 | — | — |
+| zod | ESLint | 6.2 s ± 0.05 s | 12 s | 793 MiB | 1 | — | — | — |
+| zod | **veslint** | 0.46 s ± 0.01 s | 1.3 s | 260 MiB | 1 | 1 of 1 | — | — |
+| zod | oxlint | 0.61 s ± 0.03 s | 1.8 s | 290 MiB | 1 | 1 of 1 | — | — |
+| zod | Biome | 0.46 s ± 0.01 s | 1.5 s | 173 MiB | 1 | 1 of 1 | — | — |
+| recharts | ESLint | 7.8 s ± 0.04 s | 16 s | 960 MiB | 0 | — | — | — |
+| recharts | **veslint** | 0.53 s ± 0.00 s | 1.8 s | 280 MiB | 0 | 0 of 0 | — | — |
+| recharts | oxlint | 0.69 s ± 0.02 s | 2.5 s | 336 MiB | 0 | 0 of 0 | — | — |
+| recharts | Biome | 0.45 s ± 0.01 s | 1.5 s | 179 MiB | 0 | 0 of 0 | — | — |
+| TypeScript compiler | ESLint | 32 s ± 0.16 s | 62 s | 1,842 MiB | 2 | — | — | — |
+| TypeScript compiler | **veslint** | 2.3 s ± 0.02 s | 8.1 s | 989 MiB | 2 | 2 of 2 | — | — |
+| TypeScript compiler | oxlint | 1.9 s ± 0.09 s | 6.9 s | 714 MiB | 2 | 2 of 2 | — | — |
+| TypeScript compiler | Biome | 3.0 s ± 0.02 s | 12 s | 429 MiB | 2 | 2 of 2 | — | — |
 
 **the 23 type-aware rules of recommendedTypeChecked**
 
 | Project | Tool | Time | CPU time | Memory | Problems | Same as ESLint | Editor: first lint | Editor: after an edit |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
-| zod | ESLint | 14 s ± 0.09 s | 24 s | 1,026 MiB | 1,376 | — | 3846 ms | 1112 ms |
-| zod | **veslint** | 1.8 s ± 0.02 s | 5.5 s | 475 MiB | 1,376 | 1,376 of 1,376 | 414 ms | 226 ms |
-| zod | oxlint | 1.8 s ± 0.02 s | 5.3 s | 474 MiB | 1,357 | 1,304 of 1,376 | 482 ms | 440 ms |
-| recharts | ESLint | 23 s ± 0.15 s | 38 s | 1,303 MiB | 175 | — | 5112 ms | 1232 ms |
-| recharts | **veslint** | 3.3 s ± 0.09 s | 12 s | 879 MiB | 175 | 175 of 175 | 452 ms | 239 ms |
-| recharts | oxlint | 4.5 s ± 0.04 s | 14 s | 862 MiB | 175 | 168 of 175 | 646 ms | 533 ms |
-| TypeScript compiler | ESLint | 72 s ± 0.86 s | 116 s | 2,059 MiB | 3,790 | — | 8788 ms | 2365 ms |
-| TypeScript compiler | **veslint** | 8.5 s ± 0.07 s | 32 s | 1,982 MiB | 3,790 | 3,790 of 3,790 | 1251 ms | 574 ms |
-| TypeScript compiler | oxlint | 6.3 s ± 0.18 s | 23 s | 1,123 MiB | 3,784 | 2,980 of 3,790 | 1627 ms | 1543 ms |
+| zod | ESLint | 14 s ± 0.10 s | 24 s | 1,057 MiB | 1,376 | — | 3825 ms | 1110 ms |
+| zod | **veslint** | 1.8 s ± 0.04 s | 5.7 s | 483 MiB | 1,376 | 1,376 of 1,376 | 409 ms | 224 ms |
+| zod | oxlint | 1.8 s ± 0.03 s | 5.4 s | 452 MiB | 1,357 | 1,304 of 1,376 | 545 ms | 438 ms |
+| recharts | ESLint | 23 s ± 0.26 s | 39 s | 1,260 MiB | 175 | — | 5106 ms | 1177 ms |
+| recharts | **veslint** | 3.4 s ± 0.08 s | 13 s | 868 MiB | 175 | 175 of 175 | 459 ms | 242 ms |
+| recharts | oxlint | 4.5 s ± 0.04 s | 14 s | 894 MiB | 175 | 168 of 175 | 648 ms | 546 ms |
+| TypeScript compiler | ESLint | 72 s ± 0.31 s | 116 s | 1,998 MiB | 3,790 | — | 8755 ms | 2355 ms |
+| TypeScript compiler | **veslint** | 8.6 s ± 0.04 s | 32 s | 1,926 MiB | 3,790 | 3,790 of 3,790 | 1246 ms | 567 ms |
+| TypeScript compiler | oxlint | 6.3 s ± 0.14 s | 23 s | 1,126 MiB | 3,784 | 2,980 of 3,790 | 1647 ms | 1550 ms |
 
 </details>
 
 <details>
 <summary>How it was measured</summary>
 
-`tests/bench/run.sh` (2026-11-22, `docs/bench/results.json`) on an Intel Core i3-4150T (2 cores, 4 threads, 12 GB, Linux), with veslint 0.47.0 (TypeScript 7.1.0-beta), ESLint 10.15.0 with typescript-eslint 8.72.2 and TypeScript 6.0.3, oxlint 1.94.0 with oxlint-tsgolint 7.0.2007, and Biome 2.6.8.
+`tests/bench/run.sh` (2026-11-23, `docs/bench/results.json`) on an Intel Core i3-4150T (2 cores, 4 threads, 12 GB, Linux), with veslint 0.48.0 (TypeScript 7.1.0-beta), ESLint 10.15.0 with typescript-eslint 8.72.2 and TypeScript 6.0.3, oxlint 1.94.0 with oxlint-tsgolint 7.0.2007, and Biome 2.6.8.
 
 - **Projects:** zod, recharts and the TypeScript compiler's sources, each linted with one `tsconfig.json`, the same files for every tool.
 - **Rules:**
@@ -205,7 +205,7 @@ Directive comments work as in ESLint 10: `eslint-disable`, `eslint-enable`, `esl
 
 ## Rules
 
-veslint has **847 rules**, each with all its options, fixes and suggestions:
+veslint has **848 rules**, each with all its options, fixes and suggestions:
 
 <details>
 <summary><b>ESLint 10.15.0</b>: 139 rules</summary>
@@ -229,9 +229,9 @@ veslint has **847 rules**, each with all its options, fixes and suggestions:
 </details>
 
 <details>
-<summary><b>@stylistic/eslint-plugin 6.0.1</b>: 54 rules</summary>
+<summary><b>@stylistic/eslint-plugin 6.0.1</b>: 55 rules</summary>
 
-`@stylistic/array-bracket-spacing`, `@stylistic/arrow-parens`, `@stylistic/arrow-spacing`, `@stylistic/block-spacing`, `@stylistic/brace-style`, `@stylistic/comma-dangle`, `@stylistic/comma-spacing`, `@stylistic/comma-style`, `@stylistic/computed-property-spacing`, `@stylistic/dot-location`, `@stylistic/eol-last`, `@stylistic/exp-jsx-props-style`, `@stylistic/function-call-argument-newline`, `@stylistic/function-call-spacing`, `@stylistic/function-paren-newline`, `@stylistic/implicit-arrow-linebreak`, `@stylistic/key-spacing`, `@stylistic/keyword-spacing`, `@stylistic/lines-between-class-members`, `@stylistic/list-style`, `@stylistic/member-delimiter-style`, `@stylistic/multiline-ternary`, `@stylistic/new-parens`, `@stylistic/no-extra-parens`, `@stylistic/no-extra-semi`, `@stylistic/no-floating-decimal`, `@stylistic/no-mixed-spaces-and-tabs`, `@stylistic/no-multi-spaces`, `@stylistic/no-trailing-spaces`, `@stylistic/no-whitespace-before-property`, `@stylistic/nonblock-statement-body-position`, `@stylistic/object-curly-newline`, `@stylistic/object-curly-spacing`, `@stylistic/object-property-newline`, `@stylistic/one-var-declaration-per-line`, `@stylistic/quote-props`, `@stylistic/quotes`, `@stylistic/rest-spread-spacing`, `@stylistic/semi`, `@stylistic/semi-spacing`, `@stylistic/semi-style`, `@stylistic/space-before-blocks`, `@stylistic/space-before-function-paren`, `@stylistic/space-in-parens`, `@stylistic/space-infix-ops`, `@stylistic/space-unary-ops`, `@stylistic/spaced-comment`, `@stylistic/switch-colon-spacing`, `@stylistic/template-curly-spacing`, `@stylistic/template-tag-spacing`, `@stylistic/type-annotation-spacing`, `@stylistic/type-generic-spacing`, `@stylistic/type-named-tuple-spacing`, `@stylistic/yield-star-spacing`
+`@stylistic/array-bracket-spacing`, `@stylistic/arrow-parens`, `@stylistic/arrow-spacing`, `@stylistic/block-spacing`, `@stylistic/brace-style`, `@stylistic/comma-dangle`, `@stylistic/comma-spacing`, `@stylistic/comma-style`, `@stylistic/computed-property-spacing`, `@stylistic/dot-location`, `@stylistic/eol-last`, `@stylistic/exp-jsx-props-style`, `@stylistic/function-call-argument-newline`, `@stylistic/function-call-spacing`, `@stylistic/function-paren-newline`, `@stylistic/implicit-arrow-linebreak`, `@stylistic/indent`, `@stylistic/key-spacing`, `@stylistic/keyword-spacing`, `@stylistic/lines-between-class-members`, `@stylistic/list-style`, `@stylistic/member-delimiter-style`, `@stylistic/multiline-ternary`, `@stylistic/new-parens`, `@stylistic/no-extra-parens`, `@stylistic/no-extra-semi`, `@stylistic/no-floating-decimal`, `@stylistic/no-mixed-spaces-and-tabs`, `@stylistic/no-multi-spaces`, `@stylistic/no-trailing-spaces`, `@stylistic/no-whitespace-before-property`, `@stylistic/nonblock-statement-body-position`, `@stylistic/object-curly-newline`, `@stylistic/object-curly-spacing`, `@stylistic/object-property-newline`, `@stylistic/one-var-declaration-per-line`, `@stylistic/quote-props`, `@stylistic/quotes`, `@stylistic/rest-spread-spacing`, `@stylistic/semi`, `@stylistic/semi-spacing`, `@stylistic/semi-style`, `@stylistic/space-before-blocks`, `@stylistic/space-before-function-paren`, `@stylistic/space-in-parens`, `@stylistic/space-infix-ops`, `@stylistic/space-unary-ops`, `@stylistic/spaced-comment`, `@stylistic/switch-colon-spacing`, `@stylistic/template-curly-spacing`, `@stylistic/template-tag-spacing`, `@stylistic/type-annotation-spacing`, `@stylistic/type-generic-spacing`, `@stylistic/type-named-tuple-spacing`, `@stylistic/yield-star-spacing`
 
 </details>
 
@@ -299,7 +299,7 @@ What each version added is in the [changelog](CHANGELOG.md).
 
 ### How it is checked
 
-Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 9,528 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 204 of @eslint-community/eslint-plugin-eslint-comments, 522 of eslint-plugin-promise, 572 of eslint-plugin-regexp, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 1,090 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
+Every rule passes all the cases of its own upstream tests, linted as TypeScript: 29,862 cases of typescript-eslint, 14,092 of ESLint, 14,962 of eslint-plugin-unicorn, 11,063 of @stylistic/eslint-plugin, 3,278 of eslint-plugin-perfectionist, 204 of @eslint-community/eslint-plugin-eslint-comments, 522 of eslint-plugin-promise, 572 of eslint-plugin-regexp, 459 of @slipher/eslint-plugin, 206 of @marcrock22/eslintcf, 10,085 of eslint-plugin-vue and 1,090 of eslint-plugin-svelte (their JavaScript cases with `lang="ts"`, with what ESLint gives for them). On fixtures of its own, every rule gives exactly what ESLint gives: problems, messages, positions, fixes and suggestions. The rules are also compared with ESLint on real projects (a Discord bot, zod, recharts and the TypeScript compiler).
 
 ## VS Code extension
 
@@ -314,6 +314,7 @@ The extension shows the problems of the TypeScript files you open and type, unde
 - **The newest TypeScript syntax** may not be read yet: veslint warns when a file has syntax it does not understand, and some problems of that file may be missing.
 - **Parsing errors:** a file TypeScript's parser rejects is ESLint's fatal `Parsing error`, with TypeScript's first syntactic diagnostic as tsgo sorts them (by position): when the parser of TypeScript 6, which typescript-estree uses, reported two errors at the same position, the one ESLint prints may be the other (`const b = <` at the end of a file: `Type expected.` in ESLint, `Expression expected.` in veslint). Syntax only veslint's grammar does not read (see above) is linted on with a warning.
 - **Plugins:** only the rules listed above. Rules of other plugins are skipped with a warning.
+- **Files in no project:** a file in none of the projects typescript-eslint takes the types from is ESLint's fatal `Parsing error`, with typescript-eslint's message, and the other files are linted; with veslint's own JSON configuration (no `projectService` nor `project`), only when a rule needs types. A file of the default project of `allowDefaultProject` is linted with a program of its own, with the compiler options of `defaultProject`. The patterns are matched against those of the file's own configuration, where typescript-eslint uses the ones of the first configuration with the project service, and a `jsconfig.json` does not count as a project.
 
 ## Building from source
 

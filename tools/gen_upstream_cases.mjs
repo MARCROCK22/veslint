@@ -725,7 +725,11 @@ Bun.plugin({
       const text = fs.readFileSync(file, 'utf8').replaceAll(/from '#test(\/[^']*)?'/g, (_, sub) => {
         if (sub && sub !== '/parsers-flow' && sub !== '/parsers-jsx') throw new Error(`${file}: #test${sub} is not stubbed (tools/upstream/stylistic-test.mjs)`);
         return `from ${JSON.stringify(path.join(ROOT, 'tools/upstream/stylistic-test.mjs'))}`;
-      });
+      })
+        // indent's tests name node types with AST_NODE_TYPES of `#utils/ast`: typescript-eslint's.
+        .replaceAll(/import \{ AST_NODE_TYPES \} from '#utils\/ast'/g, () =>
+          `import { AST_NODE_TYPES } from ${JSON.stringify(path.join(ROOT, 'build/eval/spider-byte/node_modules/@typescript-eslint/types/dist/index.js'))}`);
+      if (/from '#utils/.test(text)) throw new Error(`${file}: an import of #utils is not stubbed`);
       return { contents: text, loader: 'ts' };
     });
     build.onLoad({ filter: /[\\/]stylistic[\\/]packages[\\/]eslint-plugin[\\/]rules[\\/]([^\\/]+)[\\/][^\\/.]+\.ts$/ }, () => ({
@@ -1625,7 +1629,9 @@ for (const rule of rules.sort()) {
         (run.tests.invalid ?? []).forEach((test, i) => cases.push(normalizeVue(run, test, 'invalid', i, casePrefix, source, testedRule)));
         return;
       }
-      if (run.rule !== ruleObject && run.name !== runName && !run.name.startsWith(`${runName} `)) {
+      // indent's JSX tests (indent._jsx_.test.ts) run it under the label `jsx-indent`.
+      const jsxIndent = source.stylistic && name === 'indent' && run.name === 'jsx-indent';
+      if (run.rule !== ruleObject && run.name !== runName && !run.name.startsWith(`${runName} `) && !jsxIndent) {
         console.error(`${rule}: ${stem} runs ${run.name}; left out`);
         return;
       }

@@ -123,8 +123,9 @@ const source_token_name_kinds = ['identifier', 'property_identifier', 'shorthand
 	'shorthand_property_identifier_pattern', 'type_identifier', 'statement_identifier']
 
 // Leaves of the grammar that are several tokens for TypeScript, one per character (`/>`, which
-// closes a self-closing JSX element, is a `/` and a `>`).
-const source_token_split_leaves = ['?:', '-?:', '+?:', '{|', '|}', '/>']
+// closes a self-closing JSX element, is a `/` and a `>`; the `</` of a closing tag is a `<` and a
+// `/`: getChildren scans it outside JSX, where TypeScript's scanner has no LessThanSlashToken).
+const source_token_split_leaves = ['?:', '-?:', '+?:', '{|', '|}', '/>', '</']
 
 // src_view is `src[start..end]` without the copy: a string that points into `src`, for comparisons
 // that do not keep it (a slice of a string allocates; the token walks take one per token).

@@ -19,6 +19,7 @@ only eslint	tests/rules/@typescript-eslint/array-type/readonly-generic/cases.ts:
 only eslint	tests/rules/@typescript-eslint/array-type/readonly-simple/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@typescript-eslint/array-type/simple-readonly-array/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@typescript-eslint/array-type/simple-readonly-generic/cases.ts:61:25	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
+only eslint	tests/rules/@typescript-eslint/no-dupe-class-members/cases.ts:54:38	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
 only eslint	tests/rules/@typescript-eslint/no-unnecessary-type-constraint/cases.ts:29:30	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
 only eslint	tests/rules/@typescript-eslint/non-nullable-type-assertion-style/cases.ts:62:11	@typescript-eslint/no-unsafe-type-assertion	unsafeTypeAssertion	Unsafe type assertion: type '"up" | "down"' is more narrow than the original type.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/conditional-origin/cases.ts:218:37	@stylistic/no-extra-parens	unexpected	Unnecessary parentheses around expression.
@@ -30,6 +31,22 @@ only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/condi
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/no-unnecessary-condition	alwaysTruthy	Unnecessary conditional, value is always truthy.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	@typescript-eslint/strict-boolean-expressions	conditionErrorObject	Unexpected object value in conditional. The condition is always true.
 only eslint	tests/rules/@typescript-eslint/prefer-readonly-parameter-types/methods-readonly/cases.ts:159:15	svelte/@typescript-eslint/no-unnecessary-condition	alwaysTruthy	Unnecessary conditional, value is always truthy.
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:52:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:53:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:54:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:55:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:56:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:57:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:58:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:59:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:60:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:61:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:62:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:63:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:64:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:65:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/marcrock/numeric-separators/cases.ts:66:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
+only eslint	tests/rules/no-loss-of-precision/cases.ts:7:12	marcrock/numeric-separators	numericSeparators	Number its not using numeric separators as expected
 only eslint	tests/rules/vue/max-len/i23/cases.vue:9:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
 only eslint	tests/rules/vue/max-len/i24/cases.vue:3:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.
 only eslint	tests/rules/vue/max-len/v17/cases.vue:9:9	@typescript-eslint/prefer-includes	preferStringIncludes	Use `String#includes()` method with a string instead.

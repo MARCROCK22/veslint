@@ -38,8 +38,10 @@ struct LintPlan {
 	timeout      time.Duration
 	// The tsconfigs of the files, before the snapshot gives those of `parserOptions.project`.
 	tsconfigs []string
-	served    map[string]string
-	virtual   map[string]string
+	// --project: every file takes the tsconfig given.
+	forced_project bool
+	served         map[string]string
+	virtual        map[string]string
 	// No rule needs types: the checkers make a snapshot only if a file asks for one.
 	lazy bool
 }
@@ -50,6 +52,8 @@ struct FileOutcome {
 	report   FileReport
 	findings []rules.Finding
 	warnings string
+	// --fix could not write a pass of the file (FixWriter): the run ends with code 1.
+	write_failed bool
 }
 
 // Worker lints files with its own TypeScript session, tree-sitter parsers and rule checkers.
@@ -69,6 +73,7 @@ mut:
 	svelte_parsers  SvelteParsers
 	stats           rules.Stats
 	fixed_files     int
+	writer          FixWriter = new_fix_writer()
 	start_ms        f64 // starting TypeScript, until the first snapshot is asked for
 	snapshot_ms     f64
 }
@@ -172,6 +177,22 @@ fn (mut w Worker) open(plan &LintPlan) ! {
 		}
 		w.tsconfigs << opened
 	}
+	// The project typescript-eslint takes each file from, or its parsing error.
+	found := find_file_projects(mut w.client, mut w.files, snap, plan.loaded, plan.lint_configs.map(configs_need_types([
+		it,
+	])), is_single_run(plan.fix), plan.forced_project)!
+	if found.opened.len > 0 {
+		if plan.lazy {
+			snap = config_snapshot(mut w.client, snap, found.opened)!
+		} else {
+			previous_snapshot := snap.snapshot
+			snap = w.client.update_snapshot_files(snap, found.opened, tsgo.FileChangeSet{})!
+			if snap.snapshot != previous_snapshot {
+				w.client.release_snapshot(previous_snapshot)!
+			}
+		}
+		w.tsconfigs << found.opened
+	}
 	w.snap = snap
 	w.snapshot_ms = ms(sw.elapsed())
 	w.projects = map_projects(w.tsconfigs, snap)!
@@ -185,7 +206,7 @@ fn (mut w Worker) open(plan &LintPlan) ! {
 fn (mut w Worker) mark_last_files(plan &LintPlan) {
 	if !plan.fix {
 		for index, f in w.files {
-			if f.note == '' {
+			if f.note == '' && f.fatal == '' {
 				w.last_of_project[w.projects[f.tsconfig]] = index
 			}
 		}
@@ -205,6 +226,12 @@ fn (mut w Worker) close() {
 // lint lints the file `index` (not a file with a note): with --fix, until its fixes are applied.
 fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 	f := w.files[index]
+	if f.fatal != '' {
+		return FileOutcome{
+			report:   fatal_report(f.path, f.fatal)
+			findings: [fatal_finding(f.fatal)]
+		}
+	}
 	config_index := plan.loaded.file_config[f.abs_path] or { 0 }
 	mut lint_config := plan.lint_configs[config_index]
 	if f.abs_path in plan.loaded.file_runes {
@@ -248,6 +275,7 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 	mut previous := ''
 	mut second_previous := ''
 	mut warnings := ''
+	mut write_failed := false
 	for {
 		pass++
 		if pass > 1 {
@@ -309,16 +337,19 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 		if !fixed {
 			break
 		}
+		// A fix of the range [-1, 0] removes the BOM, which is before the text (unicode-bom).
+		bom := has_bom && !result.findings.any(it.has_fix && it.fix.start < 0)
+		w.writer.write(f.path, if bom { offsets.utf8_bom + output } else { output }) or {
+			// The file keeps the text of the last pass written, `src`, whose problems `result`
+			// has: they are reported, and the other files are still linted and fixed.
+			warnings += 'error: ${f.path}: not fixed: ${err.msg()}; its problems are those of the text it has\n'
+			write_failed = true
+			break
+		}
 		second_previous = previous
 		previous = src
 		src = output
-		// A fix of the range [-1, 0] removes the BOM, which is before the text (unicode-bom).
-		if result.findings.any(it.has_fix && it.fix.start < 0) {
-			has_bom = false
-		}
-		os.write_file(f.path, if has_bom { offsets.utf8_bom + src } else { src }) or {
-			return error('cannot write ${f.path}: ${err.msg()}')
-		}
+		has_bom = bom
 		if f.vue {
 			// The twin gets the code of the fixed script.
 			doc.free()
@@ -374,9 +405,10 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 		sdoc.free()
 	}
 	return FileOutcome{
-		report:   report
-		findings: result.findings
-		warnings: warnings
+		report:       report
+		findings:     result.findings
+		warnings:     warnings
+		write_failed: write_failed
 	}
 }
 
@@ -449,7 +481,8 @@ fn (mut q FileQueue) take(worker int) int {
 			q.ends[most]--
 			index = q.ends[most]
 		}
-		if q.files[index].note == '' {
+		// A file without a tsconfig has its parsing error already (run_rules).
+		if q.files[index].note == '' && q.files[index].fatal == '' {
 			return index
 		}
 	}

@@ -864,6 +864,7 @@ pub const regexp_no_missing_g_flag = 'regexp/no-missing-g-flag'
 pub const regexp_no_legacy_features = 'regexp/no-legacy-features'
 pub const regexp_no_useless_dollar_replacements = 'regexp/no-useless-dollar-replacements'
 pub const regexp_grapheme_string_literal = 'regexp/grapheme-string-literal'
+pub const stylistic_indent = '@stylistic/indent'
 pub const names = [no_floating_promises, await_thenable, require_await, return_await,
 	no_misused_promises, no_unsafe_call, no_unsafe_member_access, no_unsafe_return,
 	no_unsafe_assignment, no_unsafe_argument, restrict_template_expressions,
@@ -1127,7 +1128,7 @@ pub const names = [no_floating_promises, await_thenable, require_await, return_a
 	regexp_hexadecimal_escape, regexp_letter_case, regexp_no_lazy_ends, regexp_no_obscure_range,
 	regexp_no_trivially_nested_quantifier, regexp_no_invisible_character,
 	regexp_no_useless_character_class, regexp_no_missing_g_flag, regexp_no_legacy_features,
-	regexp_no_useless_dollar_replacements, regexp_grapheme_string_literal]
+	regexp_no_useless_dollar_replacements, regexp_grapheme_string_literal, stylistic_indent]
 
 // untyped_rules are the ported rules that need no types (`meta.docs.requiresTypeChecking` is false
 // in typescript-eslint; the eslint-plugin-unicorn rules that read the types when the parser has a
@@ -1351,7 +1352,7 @@ pub const untyped_rules = [adjacent_overload_signatures, array_type, class_liter
 	regexp_control_character_escape, regexp_no_extra_lookaround_assertions, regexp_no_octal,
 	regexp_no_standalone_backslash, regexp_hexadecimal_escape, regexp_letter_case, regexp_no_lazy_ends,
 	regexp_no_obscure_range, regexp_no_trivially_nested_quantifier, regexp_no_invisible_character,
-	regexp_no_useless_character_class, regexp_grapheme_string_literal]
+	regexp_no_useless_character_class, regexp_grapheme_string_literal, stylistic_indent]
 
 // needs_types tells whether a rule asks tsgo for the types of the program.
 pub fn needs_types(rule string) bool {
@@ -2226,6 +2227,7 @@ pub const default_options = {
 	regexp_no_legacy_features:                           '[]'
 	regexp_no_useless_dollar_replacements:               '[]'
 	regexp_grapheme_string_literal:                      '[]'
+	stylistic_indent:                                    '[4,{"SwitchCase":1,"VariableDeclarator":1,"outerIIFEBody":1,"assignmentOperator":1,"FunctionDeclaration":{"parameters":1,"body":1,"returnType":1},"FunctionExpression":{"parameters":1,"body":1,"returnType":1},"StaticBlock":{"body":1},"CallExpression":{"arguments":1},"MemberExpression":1,"ArrayExpression":1,"ObjectExpression":1,"ImportDeclaration":1,"flatTernaryExpressions":false,"offsetTernaryExpressions":false,"ignoredNodes":[],"ignoreComments":false,"tabLength":4}]'
 }
 
 // Finding is a problem a rule found at a node.
@@ -3280,6 +3282,7 @@ pub fn message(rule string, finding Finding) string {
 		regexp_no_legacy_features { regexp_no_legacy_features_messages }
 		regexp_no_useless_dollar_replacements { regexp_no_useless_dollar_replacements_messages }
 		regexp_grapheme_string_literal { regexp_grapheme_string_literal_messages }
+		stylistic_indent { sti_messages }
 		else { map[string]string{} }
 	}
 	return interpolate(messages[finding.message_id] or { finding.message_id }, finding.data)
@@ -6091,6 +6094,9 @@ fn (mut c Checker) lint_rule(rule string, root C.vt_node, abs_path string, mut s
 		}
 		regexp_grapheme_string_literal {
 			return c.lint_regexp_grapheme_string_literal(root, abs_path, mut stats)!
+		}
+		stylistic_indent {
+			return c.lint_stylistic_indent(root, abs_path, mut stats)!
 		}
 		else { return error('unknown rule: ${rule}') }
 	}

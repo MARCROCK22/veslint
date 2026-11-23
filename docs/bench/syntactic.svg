@@ -24,43 +24,43 @@
 <text class="panel" x="24" y="105">zod<tspan class="sub" dx="8">125 files, 37,778 lines</tspan></text>
 <text class="tool" x="106" y="130" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,116h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
-<text class="value" x="494" y="130">4.1 s</text>
+<text class="value" x="494" y="130">4.2 s</text>
 <text class="tool accent-text" x="106" y="158" text-anchor="end">veslint</text>
-<path class="accent" d="M116,144h22.095670235222148a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-22.095670235222148z"/>
-<text class="value" x="150.09567023522214" y="158">0.29 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<path class="accent" d="M116,144h21.7753446897369a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-21.7753446897369z"/>
+<text class="value" x="149.7753446897369" y="158">0.29 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
 <text class="tool" x="106" y="186" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,172h3.8793888246534265a3.8793888246534265,3.8793888246534265 0 0 1 3.8793888246534265,3.8793888246534265v10.241222350693146a3.8793888246534265,3.8793888246534265 0 0 1 -3.8793888246534265,3.8793888246534265h-3.8793888246534265z"/>
-<text class="value" x="131.75877764930686" y="186">0.09 s<tspan class="parity" dx="8">895 of ESLint's 972 problems</tspan></text>
+<path class="rest" d="M116,172h3.7735998825782935a3.7735998825782935,3.7735998825782935 0 0 1 3.7735998825782935,3.7735998825782935v10.452800234843412a3.7735998825782935,3.7735998825782935 0 0 1 -3.7735998825782935,3.7735998825782935h-3.7735998825782935z"/>
+<text class="value" x="131.5471997651566" y="186">0.09 s<tspan class="parity" dx="8">895 of ESLint's 972 problems</tspan></text>
 <text class="tool" x="106" y="214" text-anchor="end">Biome</text>
-<path class="rest" d="M116,200h33.592382542315356a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-33.592382542315356z"/>
-<text class="value" x="161.59238254231536" y="214">0.42 s<tspan class="parity" dx="8">887 of ESLint's 972 problems</tspan></text>
+<path class="rest" d="M116,200h33.185676701474755a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-33.185676701474755z"/>
+<text class="value" x="161.18567670147476" y="214">0.42 s<tspan class="parity" dx="8">887 of ESLint's 972 problems</tspan></text>
 <line class="axis" x1="116" y1="112" x2="116" y2="222"/>
 <text class="panel" x="24" y="257">recharts<tspan class="sub" dx="8">294 files, 51,054 lines</tspan></text>
 <text class="tool" x="106" y="282" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,268h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
 <text class="value" x="494" y="282">4.3 s</text>
 <text class="tool accent-text" x="106" y="310" text-anchor="end">veslint</text>
-<path class="accent" d="M116,296h23.566259108353904a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-23.566259108353904z"/>
-<text class="value" x="151.5662591083539" y="310">0.32 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<path class="accent" d="M116,296h23.29299769795568a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-23.29299769795568z"/>
+<text class="value" x="151.29299769795568" y="310">0.31 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
 <text class="tool" x="106" y="338" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,324h3.5527580239984546a3.5527580239984546,3.5527580239984546 0 0 1 3.5527580239984546,3.5527580239984546v10.89448395200309a3.5527580239984546,3.5527580239984546 0 0 1 -3.5527580239984546,3.5527580239984546h-3.5527580239984546z"/>
-<text class="value" x="131.1055160479969" y="338">0.08 s<tspan class="parity" dx="8">331 of ESLint's 380 problems</tspan></text>
+<path class="rest" d="M116,324h3.612899470255732a3.612899470255732,3.612899470255732 0 0 1 3.612899470255732,3.612899470255732v10.774201059488536a3.612899470255732,3.612899470255732 0 0 1 -3.612899470255732,3.612899470255732h-3.612899470255732z"/>
+<text class="value" x="131.22579894051148" y="338">0.08 s<tspan class="parity" dx="8">331 of ESLint's 380 problems</tspan></text>
 <text class="tool" x="106" y="366" text-anchor="end">Biome</text>
-<path class="rest" d="M116,352h18.836291507096533a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-18.836291507096533z"/>
-<text class="value" x="146.83629150709652" y="366">0.27 s<tspan class="parity" dx="8">362 of ESLint's 380 problems</tspan></text>
+<path class="rest" d="M116,352h19.062300674770245a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-19.062300674770245z"/>
+<text class="value" x="147.06230067477026" y="366">0.27 s<tspan class="parity" dx="8">362 of ESLint's 380 problems</tspan></text>
 <line class="axis" x1="116" y1="264" x2="116" y2="374"/>
 <text class="panel" x="24" y="409">TypeScript compiler<tspan class="sub" dx="8">602 files, 381,174 lines</tspan></text>
 <text class="tool" x="106" y="434" text-anchor="end">ESLint</text>
 <path class="rest" d="M116,420h366a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-366z"/>
 <text class="value" x="494" y="434">24 s</text>
 <text class="tool accent-text" x="106" y="462" text-anchor="end">veslint</text>
-<path class="accent" d="M116,448h22.93483346656905a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-22.93483346656905z"/>
-<text class="value" x="150.93483346656905" y="462">1.7 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
+<path class="accent" d="M116,448h22.523220773691293a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-22.523220773691293z"/>
+<text class="value" x="150.5232207736913" y="462">1.7 s<tspan class="parity" dx="8">same problems as ESLint</tspan></text>
 <text class="tool" x="106" y="490" text-anchor="end">oxlint</text>
-<path class="rest" d="M116,476h3.00238486917916a3.00238486917916,3.00238486917916 0 0 1 3.00238486917916,3.00238486917916v11.99523026164168a3.00238486917916,3.00238486917916 0 0 1 -3.00238486917916,3.00238486917916h-3.00238486917916z"/>
-<text class="value" x="130.00476973835833" y="490">0.39 s<tspan class="parity" dx="8">957 of ESLint's 1,330 problems</tspan></text>
+<path class="rest" d="M116,476h2.8627665032156315a2.8627665032156315,2.8627665032156315 0 0 1 2.8627665032156315,2.8627665032156315v12.274466993568737a2.8627665032156315,2.8627665032156315 0 0 1 -2.8627665032156315,2.8627665032156315h-2.8627665032156315z"/>
+<text class="value" x="129.72553300643125" y="490">0.37 s<tspan class="parity" dx="8">957 of ESLint's 1,330 problems</tspan></text>
 <text class="tool" x="106" y="518" text-anchor="end">Biome</text>
-<path class="rest" d="M116,504h25.194278174713485a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-25.194278174713485z"/>
-<text class="value" x="153.19427817471347" y="518">1.9 s<tspan class="parity" dx="8">879 of ESLint's 1,330 problems</tspan></text>
+<path class="rest" d="M116,504h25.03672369756625a4,4 0 0 1 4,4v10a4,4 0 0 1 -4,4h-25.03672369756625z"/>
+<text class="value" x="153.03672369756626" y="518">1.9 s<tspan class="parity" dx="8">879 of ESLint's 1,330 problems</tspan></text>
 <line class="axis" x1="116" y1="416" x2="116" y2="526"/>
 </svg>

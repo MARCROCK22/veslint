@@ -449,6 +449,9 @@ fn compose_resolution(entry map[string]json2.Any, index map[string]int, files []
 		if runes := fields['svelteConfigRunes'] {
 			out += ',"svelteConfigRunes":${text[runes.value.start..runes.value.end]}'
 		}
+		if default_project := fields['defaultProject'] {
+			out += ',"defaultProject":${text[default_project.value.start..default_project.value.end]}'
+		}
 		entries << out + '}'
 		p := file_parts[i]
 		if p < 0 || p >= parts.len {

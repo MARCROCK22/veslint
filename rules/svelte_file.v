@@ -201,8 +201,9 @@ fn (c &Checker) svelte_move_findings(findings []Finding) []Finding {
 	mut out := []Finding{cap: findings.len}
 	mut seen := map[string]bool{}
 	for f in findings {
-		// The svelte/* rules report on the document (svelte_template.v): offsets of the file.
-		if f.rule.starts_with(svelte_rule_prefix) {
+		// The svelte/* rules report on the document (svelte_template.v): offsets of the file; so
+		// does @stylistic/indent, which runs on the document as ESLint does (stylistic_indent.v).
+		if f.rule.starts_with(svelte_rule_prefix) || f.rule == stylistic_indent {
 			out << f
 			continue
 		}
