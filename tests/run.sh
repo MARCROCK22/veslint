@@ -303,17 +303,17 @@ fi
 # run is not a single one, as with --fix), and the other files are linted and fixed. A file in the
 # tsconfig of a directory above the closest one, or in a project the closest one references, has
 # the types of that project. expected.txt and expected-fix.txt (`<tests/projects>` in the place of
-# the directory) are checked against ESLint by tests/rules/reference.sh; d-out.ts, which only the
-# default project of allowDefaultProject has, is not linted, with a warning.
-projects_files=(default-project/d-in.ts default-project/d-out.ts default-project/in.ts default-project/out.ts
+# the directory) are checked against ESLint by tests/rules/reference.sh. d-out.ts, which only the
+# default project of allowDefaultProject has, is linted with a program of its own, and d-out2.ts is
+# one file more than that project may have.
+projects_files=(default-project/d-in.ts default-project/d-out.ts default-project/d-out2.ts default-project/in.ts default-project/out.ts
 	project/a.ts project/b.ts service/.generated/g.d.ts service/a.ts service/b.ts service/c.ts
 	service/nested/x.ts service/nested/y.ts service/solution/s.ts)
-projects_warning='warning: default-project/d-out.ts: not linted: only the default project of allowDefaultProject has it, which veslint does not make'
 if [[ $windows -eq 0 ]]; then
 	code=0
 	(cd tests/projects && ../../veslint --config resolved.json --fixes "${projects_files[@]}") > "$TMP/projects.out" 2> "$TMP/projects.err" || code=$?
 	if [[ $code -eq 1 ]] && diff -u tests/projects/expected.txt <(sed "s|$ROOT/tests/projects|<tests/projects>|g" "$TMP/projects.out") &&
-		grep -qxF "$projects_warning" "$TMP/projects.err" && grep -qx '19 problems in 13 files' "$TMP/projects.err"; then
+		grep -qx "$(wc -l < tests/projects/expected.txt) problems in ${#projects_files[@]} files" "$TMP/projects.err"; then
 		ok "files in no project: ESLint's parsing error for each, the others linted ($(grep -c $'\tfatal\t' tests/projects/expected.txt) errors)"
 	else
 		ko "files in no project (code $code)"
@@ -324,14 +324,14 @@ if [[ $windows -eq 0 ]]; then
 	(cd "$TMP/projects" && "$ROOT/veslint" --config resolved.json --fixes --fix "${projects_files[@]}") > "$TMP/projects-fix.out" 2> "$TMP/projects-fix.err" || code=$?
 	fixed_ok=1
 	for file in "${projects_files[@]}"; do
-		if grep -qP "^\\Q$file\\E:0:0\t" tests/projects/expected-fix.txt || [[ $file == default-project/d-out.ts ]]; then
+		if grep -qP "^\\Q$file\\E:0:0\t" tests/projects/expected-fix.txt; then
 			cmp -s "tests/projects/$file" "$TMP/projects/$file" || fixed_ok=0
 		else
 			cmp -s <(sed 's/^let /const /' "tests/projects/$file") "$TMP/projects/$file" || fixed_ok=0
 		fi
 	done
 	if [[ $code -eq 1 && $fixed_ok -eq 1 ]] && diff -u tests/projects/expected-fix.txt <(sed "s|$TMP/projects|<tests/projects>|g" "$TMP/projects-fix.out") &&
-		grep -qx '12 problems in 13 files; 7 files fixed' "$TMP/projects-fix.err"; then
+		grep -qx "$(wc -l < tests/projects/expected-fix.txt) problems in ${#projects_files[@]} files; 8 files fixed" "$TMP/projects-fix.err"; then
 		ok "--fix with files in no project: their parsing errors, and the other files fixed"
 	else
 		ko "--fix with files in no project (code $code, files as expected: $fixed_ok)"
@@ -359,7 +359,7 @@ if [[ $windows -eq 0 ]]; then
 		if [[ $code -eq 1 && $attempts -eq 1 ]] && cmp -s tests/projects/service/c.ts "$TMP/projects-locked/service/c.ts" &&
 			cmp -s <(sed 's/^let /const /' tests/projects/service/a.ts) "$TMP/projects-locked/service/a.ts" &&
 			diff -u <({ grep -v '^service/c\.ts:' tests/projects/expected-fix.txt; grep '^service/c\.ts:' tests/projects/expected.txt; } | sort) <(sed "s|$TMP/projects-locked|<tests/projects>|g" "$TMP/projects-locked.out" | sort) &&
-			grep -qx '13 problems in 13 files; 6 files fixed' "$TMP/projects-locked.err"; then
+			grep -qx "$(($(wc -l < tests/projects/expected-fix.txt) + 1)) problems in ${#projects_files[@]} files; 7 files fixed" "$TMP/projects-locked.err"; then
 			ok "--fix with a file it cannot write ($case): an error for it, and the other files fixed"
 		else
 			ko "--fix with a file it cannot write ($case, code $code)"
@@ -393,6 +393,23 @@ PY
 	else
 		ko "--config rules.json with files in no project (code $code)"
 		cat "$TMP/projects-rules.err"
+	fi
+	# veslint's own configuration without a rule that needs types, or with `projectService: false`,
+	# stands for one ESLint lints without a program: a file in no project is linted (as the upstream
+	# tests lint their files outside the fixtures' tsconfig).
+	printf '{"rules": {"prefer-const": "error"}, "languageOptions": {"parserOptions": {"projectService": false}}}' > "$TMP/no-service.json"
+	b_line=$'service/b.ts:2:5\tprefer-const\tuseConst\t\'b1\' is never reassigned. Use \'const\' instead.\tfix\t44\t55\tconst b1 = 1;\tend\t2\t7'
+	untyped_ok=1
+	for config in "--rule prefer-const --no-config-lookup" "--config $TMP/no-service.json"; do
+		code=0
+		(cd tests/projects && ../../veslint $config --fixes service/b.ts) > "$TMP/untyped.out" 2> "$TMP/untyped.err" || code=$?
+		[[ $code -eq 1 && $(cat "$TMP/untyped.out") == "$b_line" ]] || untyped_ok=0
+	done
+	if [[ $untyped_ok -eq 1 ]]; then
+		ok "a file in no project with no rule that needs types, or without the project service: linted"
+	else
+		ko "a file in no project with no rule that needs types, or without the project service"
+		cat "$TMP/untyped.out" "$TMP/untyped.err"
 	fi
 	# Without a tsconfig.json at all: the parsing error, and the run goes on.
 	mkdir -p "$TMP/no-tsconfig/src"

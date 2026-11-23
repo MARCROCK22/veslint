@@ -573,9 +573,6 @@ struct RuleFile {
 	// typescript-eslint's error for a file in none of the projects it takes the types from, which
 	// ESLint reports as a parsing error instead of linting the file (projects.v).
 	fatal string
-	// The warning for a file veslint does not lint: only the default project of allowDefaultProject
-	// has it (find_file_projects).
-	unlinted string
 	// A .vue file: tsgo has its script in a virtual twin, at ts_path with the text twin_code
 	// (vue_files.v); ts_path is abs_path for any other file. A .svelte file too (svelte_files.v).
 	vue       bool
@@ -678,14 +675,13 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			project_override
 		} else {
 			find_tsconfig(abs_path) or {
-				// Not in any project: typescript-eslint's parsing error, for a configuration it
-				// gets the types with.
-				fatal = missing_tsconfig_fatal(abs_path, opts.loaded.config_entry(abs_path),
-					opts.loaded.service_patterns(opts.files.map(os.abs_path(it))))
-				if fatal == '' || is_vue || is_svelte {
+				if is_vue || is_svelte {
 					return err
 				}
-				''
+				found, message := without_tsconfig(abs_path, opts.loaded, lint_configs,
+					opts.files.map(os.abs_path(it))) or { return err }
+				fatal = message
+				found
 			}
 		}
 		for t in named {
@@ -750,7 +746,9 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 		return files.len - notes
 	}
 	mut served := map[string]string{}
-	mut virtual := map[string]string{}
+	// The tsconfigs of the default project's files (find_file_projects) are virtual files.
+	mut virtual := default_project_tsconfigs(opts.loaded, files.filter(it.note == ''
+		&& it.fatal == '').map(it.abs_path))
 	for f in files {
 		if f.vue || f.svelte {
 			virtual[f.ts_path] = f.twin_code

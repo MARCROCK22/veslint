@@ -217,6 +217,10 @@ for (const file of files) {
     const allowDefaultProject = typeof given.projectService === 'object' ? given.projectService?.allowDefaultProject : undefined;
     if (allowDefaultProject?.length) {
       parserOptions.projectService = { allowDefaultProject };
+      // The options of the default project, which the files it has are linted with.
+      for (const name of ['defaultProject', 'maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING']) {
+        if (given.projectService[name] !== undefined) parserOptions.projectService[name] = given.projectService[name];
+      }
       const minimatch = loadMinimatch();
       const relative = path.relative(root, path.resolve(file));
       defaultProject = !!minimatch && allowDefaultProject.some(pattern => minimatch(relative, pattern, { dot: true }));
@@ -344,12 +348,13 @@ struct ConfigEntry {
 	projects []string
 	// The shared settings of the configuration (`settings`), which rules read.
 	settings map[string]json2.Any
-	// Where typescript-eslint gets the types (projects.v), the tsconfigRootDir (absolute; '' for
-	// the current directory) and the patterns of `projectService.allowDefaultProject`, which its
-	// parsing error for a file in no project names.
+	// Where typescript-eslint gets the types (projects.v), its options of the project service and
+	// the tsconfigRootDir (absolute; '' for the current directory).
 	types                 TypeSource
 	tsconfig_root         string
 	allow_default_project []string
+	default_project       string
+	default_project_limit int = default_project_file_limit
 }
 
 // root_dir is the tsconfigRootDir of a configuration.
@@ -357,11 +362,29 @@ fn (e ConfigEntry) root_dir() string {
 	return if e.tsconfig_root != '' { e.tsconfig_root } else { os.getwd() }
 }
 
+// default_project_file_limit is how many files typescript-eslint takes from the default project at
+// most (DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD of @typescript-eslint/project-service).
+const default_project_file_limit = 8
+
+// TypeOptions is what a configuration says of where typescript-eslint gets the types.
+struct TypeOptions {
+	types TypeSource
+	// The tsconfigRootDir (absolute), '' when not given.
+	root string
+	// The patterns of `projectService.allowDefaultProject`, the tsconfig of the default project's
+	// options (`defaultProject`, tsconfig.json by default, from the tsconfigRootDir) and how many
+	// files the default project may have (maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING).
+	allow_default_project []string
+	default_project       string = 'tsconfig.json'
+	default_project_limit int    = default_project_file_limit
+}
+
 // type_options reads, from the `languageOptions.parserOptions` of a configuration, where
 // typescript-eslint gets the types (createParseSettings of typescript-estree): the project service
-// when `projectService` is set, else the programs of `project` (or of `programs`), else
-// `fallback`; with the tsconfigRootDir (relative to `base`) and allowDefaultProject's patterns.
-fn type_options(config map[string]json2.Any, base string, fallback TypeSource) (TypeSource, string, []string) {
+// when `projectService` is set, else the programs of `project` (or of `programs`), else none when
+// `projectService` is given (false) and `fallback` when nothing is; with the tsconfigRootDir
+// (relative to `base`) and the options of the project service.
+fn type_options(config map[string]json2.Any, base string, fallback TypeSource) TypeOptions {
 	mut options := map[string]json2.Any{}
 	if language := config['languageOptions'] {
 		if language is map[string]json2.Any {
@@ -385,19 +408,44 @@ fn type_options(config map[string]json2.Any, base string, fallback TypeSource) (
 	service := options['projectService'] or { json2.Any(false) }
 	if js_truthy(service) {
 		mut patterns := []string{}
+		mut default_project := 'tsconfig.json'
+		mut limit := default_project_file_limit
 		if service is map[string]json2.Any {
-			if listed := service.as_map()['allowDefaultProject'] {
+			settings := service.as_map()
+			if listed := settings['allowDefaultProject'] {
 				if listed is []json2.Any {
 					patterns = listed.map(it.str())
 				}
 			}
+			if given := settings['defaultProject'] {
+				if given is string {
+					default_project = given
+				}
+			}
+			if given := settings['maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING'] {
+				if given is i64 || given is f64 || given is int {
+					limit = given.int()
+				}
+			}
 		}
-		return .service, root, patterns
+		return TypeOptions{
+			types:                 .service
+			root:                  root
+			allow_default_project: patterns
+			default_project:       default_project
+			default_project_limit: limit
+		}
 	}
 	if js_truthy(options['project'] or { json2.Any(false) }) || 'programs' in options {
-		return .project, root, []string{}
+		return TypeOptions{
+			types: .project
+			root:  root
+		}
 	}
-	return fallback, root, []string{}
+	return TypeOptions{
+		types: if 'projectService' in options || 'project' in options { .none } else { fallback }
+		root:  root
+	}
 }
 
 // language_options reads the `languageOptions` of a configuration.
@@ -668,7 +716,7 @@ fn (l &LoadedConfig) service_patterns(files []string) []string {
 			continue
 		}
 		entry := l.config_entry(file)
-		if entry.types == .service {
+		if entry.types in [.service, .implicit] {
 			return entry.allow_default_project
 		}
 	}
@@ -805,15 +853,16 @@ fn load_config_resolving(path string, files []string, lookup bool, reuse bool, m
 		}
 	}
 	// veslint gets the types of such a configuration as the project service does.
-	types, tsconfig_root, allow_default_project := type_options(root.as_map(), os.getwd(),
-		.service)
+	typing := type_options(root.as_map(), os.getwd(), .implicit)
 	return LoadedConfig{
 		configs:     [
 			ConfigEntry{
 				setup:                 setup
-				types:                 types
-				tsconfig_root:         tsconfig_root
-				allow_default_project: allow_default_project
+				types:                 typing.types
+				tsconfig_root:         typing.root
+				allow_default_project: typing.allow_default_project
+				default_project:       typing.default_project
+				default_project_limit: typing.default_project_limit
 				language:              language_options(root.as_map())
 				plugins:               plugins
 				project_programs:      uses_project_programs(root.as_map())
@@ -896,11 +945,13 @@ fn loaded_from_resolved(text string, path string, base_dir string, files []strin
 		config := item.as_map()
 		section := (config['rules'] or { json2.Any(map[string]json2.Any{}) }).as_map()
 		linter := (config['linterOptions'] or { json2.Any(map[string]json2.Any{}) }).as_map()
-		types, tsconfig_root, allow_default_project := type_options(config, base_dir, .none)
+		typing := type_options(config, base_dir, .none)
 		configs << ConfigEntry{
-			types:                 types
-			tsconfig_root:         tsconfig_root
-			allow_default_project: allow_default_project
+			types:                 typing.types
+			tsconfig_root:         typing.root
+			allow_default_project: typing.allow_default_project
+			default_project:       typing.default_project
+			default_project_limit: typing.default_project_limit
 			language:              language_options(config)
 			project_programs:      uses_project_programs(config)
 			service_program_root:  single_run_program_root(config, base_dir)

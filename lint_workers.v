@@ -178,8 +178,9 @@ fn (mut w Worker) open(plan &LintPlan) ! {
 		w.tsconfigs << opened
 	}
 	// The project typescript-eslint takes each file from, or its parsing error.
-	found := find_file_projects(mut w.client, mut w.files, snap, plan.loaded, is_single_run(plan.fix),
-		plan.forced_project)!
+	found := find_file_projects(mut w.client, mut w.files, snap, plan.loaded, plan.lint_configs.map(configs_need_types([
+		it,
+	])), is_single_run(plan.fix), plan.forced_project)!
 	if found.opened.len > 0 {
 		if plan.lazy {
 			snap = config_snapshot(mut w.client, snap, found.opened)!
@@ -205,7 +206,7 @@ fn (mut w Worker) open(plan &LintPlan) ! {
 fn (mut w Worker) mark_last_files(plan &LintPlan) {
 	if !plan.fix {
 		for index, f in w.files {
-			if f.note == '' && f.fatal == '' && f.unlinted == '' {
+			if f.note == '' && f.fatal == '' {
 				w.last_of_project[w.projects[f.tsconfig]] = index
 			}
 		}
@@ -229,11 +230,6 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 		return FileOutcome{
 			report:   fatal_report(f.path, f.fatal)
 			findings: [fatal_finding(f.fatal)]
-		}
-	}
-	if f.unlinted != '' {
-		return FileOutcome{
-			warnings: f.unlinted
 		}
 	}
 	config_index := plan.loaded.file_config[f.abs_path] or { 0 }

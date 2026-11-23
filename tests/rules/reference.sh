@@ -192,9 +192,9 @@ fi
 # tests/projects: the files in none of the projects typescript-eslint takes the types from, as
 # ESLint reports them (its parsing error) in a single run (expected.txt) and in a run that is not
 # one (expected-fix.txt, which tests/run.sh lints with --fix: --fix-dry-run with
-# TSESTREE_SINGLE_RUN=false here), whose fixes give each file with `const` for `let`; without
-# default-project/d-out.ts, which veslint does not lint.
-projects_files=(default-project/d-in.ts default-project/in.ts default-project/out.ts project/a.ts project/b.ts
+# TSESTREE_SINGLE_RUN=false here), whose fixes give each file with `const` for `let`.
+projects_files=(default-project/d-in.ts default-project/d-out.ts default-project/d-out2.ts default-project/in.ts
+	default-project/out.ts project/a.ts project/b.ts
 	service/.generated/g.d.ts service/a.ts service/b.ts service/c.ts service/nested/x.ts service/nested/y.ts
 	service/solution/s.ts)
 for run in single fix; do

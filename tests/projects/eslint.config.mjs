@@ -3,8 +3,9 @@
 // project service: b.ts is in no tsconfig; nested/y.ts is in its parent's tsconfig, not in the
 // closest one; solution/s.ts is in a project the closest tsconfig references; .generated/g.d.ts is
 // in none. `project` gets them from the program of `parserOptions.project`. In `default-project`,
-// allowDefaultProject matches d-in.ts, which the tsconfig has too, and d-out.ts, which only the
-// default project has (veslint does not lint it, with a warning), but not out.ts.
+// allowDefaultProject matches d-in.ts, which the tsconfig has too, and d-out.ts and d-out2.ts,
+// which only the default project has (with the options of default-project/tsconfig.json): it may
+// have one file, so d-out2.ts is one too many; it does not match out.ts.
 import tseslint from '../../build/eval/spider-byte/node_modules/typescript-eslint/dist/index.js';
 
 const rules = { 'prefer-const': 'error', '@typescript-eslint/no-floating-promises': 'error' };
@@ -26,7 +27,14 @@ export default [
     files: ['default-project/**/*.ts'],
     languageOptions: {
       parser: tseslint.parser,
-      parserOptions: { projectService: { allowDefaultProject: ['default-project/d-*.ts'] }, tsconfigRootDir: import.meta.dirname },
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['default-project/d-*.ts'],
+          defaultProject: 'default-project/tsconfig.json',
+          maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING: 1,
+        },
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     plugins,
     rules,
