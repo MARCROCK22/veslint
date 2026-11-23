@@ -9,6 +9,7 @@ import strings
 import time
 import treesitter
 import tsgo
+import tsparse
 import svelte
 import vue
 
@@ -964,7 +965,11 @@ fn file_report(path string, src string, result rules.FileLint, fixes bool, doc &
 fn prepare_file(parser treesitter.Parser, path string, project_override string, all bool, mut bench BenchReport) !FileWork {
 	mut sw := time.new_stopwatch()
 	src, _, not_utf8 := read_source(path)!
-	tree := parser.parse(src) or { return error('${path}: ${err.msg()}') }
+	// TypeScript's rows (tsparse), or tree-sitter's, with their errors, for a file TypeScript's
+	// parser rejects.
+	tree := (tsparse.parse(parser.ts_parser(), src, 'the file') or {
+		return error('${path}: ${err.msg()}')
+	}).rows
 	defer {
 		treesitter.rows_free(tree)
 	}

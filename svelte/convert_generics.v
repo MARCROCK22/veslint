@@ -30,13 +30,14 @@ fn (mut c Conv) convert_generics(script int) {
 	code := c.code[value.start..value.end]
 	text := 'void function<${code}>(){}'
 	c.generics_code = text
-	tree := parse_ts(c.parsers.ts, text) or { return }
+	parsed := parse_ts(c.parsers.ts, text) or { return }
+	tree := parsed.rows
 	root := treesitter.root_node(tree)
-	if C.vt_node_has_error(root) {
+	if parsed.rejected {
 		treesitter.rows_free(tree)
 		return
 	}
-	es := convert_es(root, text) or {
+	es := convert_es(parsed, text) or {
 		treesitter.rows_free(tree)
 		return
 	}

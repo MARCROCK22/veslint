@@ -6,6 +6,7 @@ import rules
 import svelte
 import time
 import treesitter
+import tsparse
 
 // Svelte components. veslint lints a .svelte file as ESLint does with svelte-eslint-parser and
 // typescript-eslint's parser: the rules run on its script and its template's expressions
@@ -222,9 +223,9 @@ fn svelte_report_positions(doc &svelte.Document, findings []rules.Finding, ends 
 // template's expressions): where they are in the file, and their UTF-16 offsets in the twin's
 // text (what tsgo is asked).
 fn svelte_identifiers(parser treesitter.Parser, doc &svelte.Document, all bool) !([]treesitter.Ident, []int, []offsets.DisplayPos) {
-	tree := parser.parse(doc.lint_code) or {
+	tree := (tsparse.parse(parser.ts_parser(), doc.lint_code, 'the code') or {
 		return []treesitter.Ident{}, []int{}, []offsets.DisplayPos{}
-	}
+	}).rows
 	defer {
 		treesitter.rows_free(tree)
 	}

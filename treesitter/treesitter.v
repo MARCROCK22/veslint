@@ -100,6 +100,7 @@ fn C.ts_language_symbol_for_name(self &C.TSLanguage, name &char, length u32, is_
 fn C.ts_parser_new() &C.TSParser
 fn C.ts_parser_delete(self &C.TSParser)
 fn C.ts_parser_set_language(self &C.TSParser, language &C.TSLanguage) bool
+fn C.ts_parser_language(self &C.TSParser) &C.TSLanguage
 fn C.ts_parser_parse_string(self &C.TSParser, old_tree &C.TSTree, str &char, length u32) &C.TSTree
 fn C.ts_tree_delete(self &C.TSTree)
 fn C.ts_tree_language(self &C.TSTree) &C.TSLanguage
@@ -231,19 +232,35 @@ pub fn (p &Parser) is_tsx() bool {
 	return p.tsx
 }
 
+// ts_parser is the parser's tree-sitter parser, for what takes a bare one (tsparse.convert).
+pub fn (p &Parser) ts_parser() &C.TSParser {
+	return p.parser
+}
+
 // adopt_rows gives rows of this parser's language from `count` rows another parser filled in
 // `buffer`, a malloc'd array of vt_row (tsgo.convert's rows) that the rows take: they are freed with
 // rows_free, the buffer with them.
 pub fn (p &Parser) adopt_rows(buffer voidptr, count int) !&C.vt_rows {
+	return adopt_rows_of(p.parser, buffer, count)
+}
+
+// adopt_rows_of is Parser.adopt_rows for the language of a bare tree-sitter parser (the parsers of
+// .vue and .svelte files).
+pub fn adopt_rows_of(parser &C.TSParser, buffer voidptr, count int) !&C.vt_rows {
 	if count <= 0 {
 		unsafe { C.free(buffer) }
 		return error('the converter gave no rows')
 	}
-	rows := C.vt_rows_adopt(voidptr(p.lang), buffer, u32(count))
+	rows := C.vt_rows_adopt(voidptr(C.ts_parser_language(parser)), buffer, u32(count))
 	if isnil(rows) {
 		return error('out of memory for the rows of a tree')
 	}
 	return rows
+}
+
+// parser_is_tsx: a bare tree-sitter parser reads the TSX dialect of the grammar.
+pub fn parser_is_tsx(parser &C.TSParser) bool {
+	return voidptr(C.ts_parser_language(parser)) == voidptr(C.tree_sitter_tsx())
 }
 
 pub fn (p &Parser) close() {
@@ -363,6 +380,10 @@ pub fn trees_differ(a &C.TSTree, b &C.TSTree) i64 {
 // parse from it (Parser.reparse). Its trees are its own: one is freed when a file is parsed again,
 // forgotten or pushed out by others. A parse gives new rows of the tree, which are the caller's.
 //
+// A file TypeScript's parser read first has no tree: seed parses its text in a thread of its own,
+// whose tree the cache takes when it is done (has, parse), so that the next text is parsed from
+// it without the first lint waiting for tree-sitter.
+//
 // VESLINT_INCREMENTAL=0 turns it off (every parse from scratch; veslint --server then reuses no
 // answer either); VESLINT_INCREMENTAL_CHECK=1
 // parses each new text from scratch too and compares both trees: a difference is written to
@@ -374,6 +395,9 @@ mut:
 	order   []string // the keys, the most recently parsed last
 	off     bool
 	check   bool
+	// seeding: the keys whose seed has not come back; seeded: the trees of the seeds.
+	seeding map[string]bool
+	seeded  chan SeededTree = chan SeededTree{cap: max_seeds}
 pub mut:
 	// how many parses of a new text of a file were Reparse.same, .incremental and .fresh
 	reparses [3]int
@@ -387,6 +411,18 @@ struct CachedTree {
 
 // tree_cache_size is how many trees a TreeCache keeps: the files being edited.
 const tree_cache_size = 8
+
+// max_seeds is how many seeds may be on their way at once (TreeCache.seed): a seed's thread never
+// waits to give its tree.
+const max_seeds = 16
+
+// SeededTree is the tree a seed's thread parsed for `key` from `text` (nil when it failed).
+struct SeededTree {
+	key  string
+	text string
+	tree &C.TSTree     = unsafe { nil }
+	lang &C.TSLanguage = unsafe { nil }
+}
 
 pub fn new_tree_cache() &TreeCache {
 	return &TreeCache{
@@ -405,6 +441,7 @@ pub fn (mut c TreeCache) parse(p &Parser, key string, src string) !&C.vt_rows {
 
 // parse_tree is the tree parse gives the rows of.
 pub fn (mut c TreeCache) parse_tree(p &Parser, key string, src string) !&C.TSTree {
+	c.take_seeds()
 	mut tree := &C.TSTree(unsafe { nil })
 	if entry := c.entries[key] {
 		c.entries.delete(key)
@@ -434,16 +471,80 @@ pub fn (mut c TreeCache) parse_tree(p &Parser, key string, src string) !&C.TSTre
 	} else {
 		tree = p.parse_tree(src)!
 	}
-	c.entries[key] = CachedTree{
-		text: src
-		tree: tree
-		lang: p.lang
+	c.keep(key, src, tree, p.lang)
+	return tree
+}
+
+// keep makes `tree`, parsed from `src`, the tree of `key`.
+fn (mut c TreeCache) keep(key string, src string, tree &C.TSTree, lang &C.TSLanguage) {
+	// The tree and the language are tree-sitter's (C memory), not V values on the stack.
+	c.entries[key] = unsafe {
+		CachedTree{
+			text: src
+			tree: tree
+			lang: lang
+		}
 	}
 	c.order << key
 	for c.order.len > tree_cache_size {
 		c.forget(c.order[0])
 	}
-	return tree
+}
+
+// has: the cache has a tree of `key` of the language of `p`, for a parse of its next text.
+pub fn (mut c TreeCache) has(p &Parser, key string) bool {
+	c.take_seeds()
+	entry := c.entries[key] or { return false }
+	return voidptr(entry.lang) == voidptr(p.lang)
+}
+
+// seed parses `src`, the text of `key`, with tree-sitter in a thread of its own (the dialect of
+// `p`), unless a seed of `key` is on its way: the cache takes its tree at its next has or parse
+// that finds it done, while it has no newer tree of `key`.
+pub fn (mut c TreeCache) seed(p &Parser, key string, src string) {
+	if c.off || c.seeding[key] || c.seeding.len >= max_seeds {
+		return
+	}
+	c.seeding[key] = true
+	spawn seed_tree(c.seeded, p.tsx, key, src)
+}
+
+// seed_tree is a seed's thread: its own parser (tree-sitter's are not shared between threads).
+fn seed_tree(out chan SeededTree, tsx bool, key string, src string) {
+	p := new_parser_for(tsx) or {
+		out <- SeededTree{
+			key: key
+		}
+		return
+	}
+	tree := p.parse_tree(src) or { unsafe { nil } }
+	out <- SeededTree{
+		key:  key
+		text: src
+		tree: tree
+		lang: p.lang
+	}
+	p.close()
+}
+
+// take_seeds keeps the trees of the seeds that are done, but for files the cache has a newer tree
+// of (a parse of theirs came first).
+fn (mut c TreeCache) take_seeds() {
+	for c.seeding.len > 0 {
+		mut seeded := SeededTree{}
+		if c.seeded.try_pop(mut seeded) != .success {
+			return
+		}
+		c.seeding.delete(seeded.key)
+		if isnil(seeded.tree) {
+			continue
+		}
+		if seeded.key in c.entries {
+			C.ts_tree_delete(seeded.tree)
+			continue
+		}
+		c.keep(seeded.key, seeded.text, seeded.tree, seeded.lang)
+	}
 }
 
 // enabled: the cache keeps trees (not VESLINT_INCREMENTAL=0).
@@ -600,6 +701,21 @@ pub fn nodes_of_kinds(root C.vt_node, kinds []string, skip []string) []C.vt_node
 		i = if state & symbol_skipped == 0 { i + 1 } else { int(entry.last) + 1 }
 	}
 	return nodes
+}
+
+// first_error_offset is where the first ERROR or MISSING node of the tree starts.
+pub fn first_error_offset(root C.vt_node) int {
+	first, last := flat_range(root)
+	mut i := first
+	for i <= last {
+		node := flat_node(root, i)
+		if C.vt_node_is_error(node) || C.vt_node_is_missing(node) {
+			return node_start(node)
+		}
+		// Only the subtrees with an error are entered.
+		i = if C.vt_node_has_error(node) { i + 1 } else { flat_last(root, i) + 1 }
+	}
+	return node_start(root)
 }
 
 // flat_range gives the places in its rows of `n` and of the last node of its subtree: its subtree

@@ -6,6 +6,7 @@ import estree
 import json2
 import jsregexp
 import time
+import tsparse
 import tsgo { Client, CompilerOptions, ParameterResponse, SignatureResponse, SourceFileAst, SymbolResponse, TypeResponse }
 import treesitter { Ident, Parser, TokenEnds, children, first_named_child, named_children, node_end, node_field, node_kind, node_start, root_node, token_ends, tree_has_error }
 import offsets
@@ -3483,18 +3484,50 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	} else {
 		c.vue.doc.script.masked
 	}
-	// TypeScript's parser (parser_source.v) reads a plain TypeScript file, unless --server parses it
-	// from its last tree; tree-sitter parses it when the converter fails.
+	// TypeScript's parser (parser_source.v) reads a plain TypeScript file, Svelte's lint code and
+	// the masked script of a .vue file vue/ did not parse (one without a TypeScript script; the
+	// others come parsed by it); tree-sitter parses it when the converter fails. Svelte's lint code
+	// and Vue's masked script are code veslint writes, whose errors are those of the file's parse
+	// (svelte/, vue/): tree-sitter's rows, with their errors, are linted when TypeScript's parser
+	// rejects them, as before the converter.
+	// --server: an edit of a file the cache has a tree of is parsed from it by tree-sitter, faster
+	// than a whole parse by TypeScript's (TypeScript has no incremental parse), when that tree has
+	// no error (where it has one, TypeScript's parser tells whether the code has); a file it has
+	// no tree of is parsed by TypeScript's, and seeded for its next text.
 	mut typescript := TypeScriptParse{}
-	if owned && cache == unsafe { nil } && !vue_file && !svelte_file
-		&& parser_source == .typescript {
-		typescript = typescript_parse(parser, parsed, config.language, abs_path)
+	mut reparsed := unsafe { &C.vt_rows(nil) }
+	if owned && parser_source == .typescript {
+		if cache != unsafe { nil } && cache.enabled() {
+			if cache.has(parser, cache_key) {
+				rows := cache.parse(parser, cache_key, parsed)!
+				if tree_has_error(rows) {
+					treesitter.rows_free(rows)
+				} else {
+					reparsed = rows
+				}
+			} else {
+				cache.seed(parser, cache_key, parsed)
+			}
+		}
+		if reparsed == unsafe { nil } {
+			typescript = if svelte_file || vue_file {
+				converted := tsparse.convert(parser.ts_parser(), parsed, false)
+				TypeScriptParse{
+					rows: converted.rows
+				}
+			} else {
+				typescript_parse(parser, parsed, config.language, abs_path)
+			}
+		}
 	}
 	from_typescript := typescript.rows != unsafe { nil }
+		|| (!owned && c.vue.doc.script.typescript)
 	c.rows_from_typescript = from_typescript
 	mut tree := if !owned {
 		c.vue.doc.script.tree
-	} else if from_typescript {
+	} else if reparsed != unsafe { nil } {
+		reparsed
+	} else if typescript.rows != unsafe { nil } {
 		typescript.rows
 	} else if typescript.diagnostics.len > 0 {
 		// ESLint's "Parsing error" alone: no rows (returned below).
@@ -3550,7 +3583,12 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	// TypeScript file with syntax errors is ESLint's fatal problem when TypeScript's parser finds
 	// one; when only tree-sitter does (syntax its grammar does not read), it is linted on with a
 	// warning (FileLint.syntax_errors).
-	mut fatal := if from_typescript { []Finding{} } else { c.parsing_error(ts_path) }
+	// The twin of a .vue or .svelte file also has the template's code, which --fix may break.
+	mut fatal := if from_typescript && !vue_file && !svelte_file {
+		[]Finding{}
+	} else {
+		c.parsing_error(ts_path)
+	}
 	if fatal.len == 0 && !from_typescript && !vue_file && !svelte_file && tree_has_error(tree) {
 		fatal = c.ts_syntax_error(abs_path)
 	}

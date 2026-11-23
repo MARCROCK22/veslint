@@ -3,6 +3,7 @@ module svelte
 import estree
 import jsregexp
 import treesitter
+import tsparse
 
 // Document is a parsed .svelte file: svelte-eslint-parser 1.10.1's result for it, as ESLint 10
 // gets it with `parserOptions.parser` set to typescript-eslint's parser 8.72.2 (an object, so
@@ -123,26 +124,30 @@ pub fn (p &Parsers) close() {
 // token_ends are the ends of the tokens of TypeScript code (bytes, sorted): veslint gets where
 // TypeScript's nodes of the virtual code start (they include the trivia before them) from them.
 pub fn (p &Parsers) token_ends(code string) ![]int {
-	tree := parse_ts(p.ts, code)!
+	tree := parse_ts(p.ts, code)!.rows
 	defer {
 		treesitter.rows_free(tree)
 	}
 	return treesitter.token_ends(treesitter.root_node(tree)).ends
 }
 
-fn parse_ts(parser &C.TSParser, code string) !&C.vt_rows {
-	return treesitter.parse_with(parser, code, 'the code')
+// parse_ts parses with TypeScript's parser (tsparse) in the dialect of `parser`, or with `parser`
+// itself; the rows must be freed.
+fn parse_ts(parser &C.TSParser, code string) !tsparse.Parse {
+	return tsparse.parse(parser, code, 'the code')
 }
 
-fn convert_es(root C.vt_node, code string) !estree.EsTree {
-	return convert_es_with(root, code, false)
+// convert_es is the ESTree of a parse (of the grammar's ts dialect).
+fn convert_es(parsed &tsparse.Parse, code string) !estree.EsTree {
+	return convert_es_with(parsed, code, false)
 }
 
 // convert_es_with is convert_es of a tree of the grammar's tsx dialect when `jsx`.
-fn convert_es_with(root C.vt_node, code string, jsx bool) !estree.EsTree {
-	return estree.convert_with(root, code, jsx, estree.Options{
-		module:       true
-		regexp_valid: fn (pattern string, flags string) bool {
+fn convert_es_with(parsed &tsparse.Parse, code string, jsx bool) !estree.EsTree {
+	return estree.convert_with(treesitter.root_node(parsed.rows), code, jsx, estree.Options{
+		module:          true
+		typescript_rows: parsed.typescript
+		regexp_valid:    fn (pattern string, flags string) bool {
 			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
 		}
 	})

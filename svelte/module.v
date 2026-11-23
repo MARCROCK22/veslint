@@ -29,7 +29,7 @@ pub fn is_svelte_module_path(path string) bool {
 // declaring them (an identifier of a rune's name that is not a name the module declares at its top
 // level), in svelte-eslint-parser's order.
 pub fn (p &Parsers) module_virtual(src string) !ModuleVirtual {
-	tree := parse_ts(p.ts, src)!
+	tree := parse_ts(p.ts, src)!.rows
 	defer {
 		treesitter.rows_free(tree)
 	}
