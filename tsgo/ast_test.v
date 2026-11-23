@@ -16,7 +16,7 @@ fn test_source_file_ast_names_nodes_that_tsgo_accepts() {
 	snap := client.create_snapshot([os.join_path(dir, 'tsconfig.json')]) or { panic(err) }
 	project := snap.projects[0].id
 	ast := client.source_file_ast(snap.snapshot, project, file) or { panic(err) }
-	assert ast.path == file
+	assert path_key(ast.path) == path_key(file)
 	assert ast.nodes > 10
 	// `x` starts at unit 26 and `1` at 30; pos includes the previous space.
 	x := ast.handle(25, 27, 0) or { panic('no node for `x`') }

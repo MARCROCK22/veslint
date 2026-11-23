@@ -12,12 +12,15 @@ CC_V     := clang
 TS_LTO   := -flto
 AR_LTO   := ar
 SHA256   := shasum -a 256
+# V built from source has no tcc libgc.a on macOS: `v test` builds the bundled collector instead.
+TEST_VFLAGS := -d use_bundled_libgc
 else
 PLATFORM := linux-x64
 CC_V     := gcc
 TS_LTO   := -flto -ffat-lto-objects
 AR_LTO   := gcc-ar
 SHA256   := sha256sum
+TEST_VFLAGS :=
 endif
 TSGO     := node_modules/@typescript/typescript-$(PLATFORM)/lib/tsc
 TS_CLI   := node_modules/.bin/tree-sitter
@@ -128,7 +131,7 @@ run: veslint
 	./veslint app.ts
 
 test: veslint
-	@start=$$(date +%s); $(V) test . && echo "time   v test: $$(( $$(date +%s) - start )) s"
+	@start=$$(date +%s); VFLAGS="$$VFLAGS $(TEST_VFLAGS)" $(V) test . && echo "time   v test: $$(( $$(date +%s) - start )) s"
 	V=$(V) tests/run.sh
 
 bench: veslint

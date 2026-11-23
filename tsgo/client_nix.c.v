@@ -6,6 +6,7 @@ import time
 // The POSIX side of the pipes of client.v, moved from it as it was; client_windows.c.v is the
 // Windows one.
 
+#include <limits.h>
 #include <poll.h>
 
 struct C.pollfd {
@@ -135,7 +136,9 @@ fn write_frame(fd int, data []u8, timeout time.Duration) !bool {
 		if ready <= 0 {
 			continue
 		}
-		chunk := if data.len - off < pipe_buf { data.len - off } else { pipe_buf }
+		// PIPE_BUF is 4096 on Linux but 512 on macOS: a larger write can block after POLLOUT.
+		limit := int(C.PIPE_BUF)
+		chunk := if data.len - off < limit { data.len - off } else { limit }
 		n := C.write(i32(fd), unsafe { &data[off] }, uint(chunk))
 		if n < 0 {
 			if C.errno == C.EINTR || C.errno == C.EAGAIN {
