@@ -261,7 +261,9 @@ fn (mut c Checker) srep_return_kind(t TypeResponse, depth int) !SrepKind {
 // (tsNodeToESTreeNodeMap), else at the $props() call.
 fn (mut c Checker) srep_report(property SymbolResponse, call C.vt_node) !Finding {
 	doc := c.svelte.doc
-	if property.declarations.len > 0 && tsgo.handle_path(property.declarations[0]) == c.svelte.ts_path {
+	// tsgo.path_key: tsgo writes the path of a handle in lower case where file names have no case.
+	if property.declarations.len > 0
+		&& tsgo.path_key(tsgo.handle_path(property.declarations[0])) == tsgo.path_key(c.svelte.ts_path) {
 		tree, index := c.srep_ast(property.declarations[0])!
 		start := tree.node_token_start(index)
 		end := tree.node_end_byte(index)
