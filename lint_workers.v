@@ -52,6 +52,8 @@ struct FileOutcome {
 	report   FileReport
 	findings []rules.Finding
 	warnings string
+	// --fix could not write a pass of the file (FixWriter): the run ends with code 1.
+	write_failed bool
 }
 
 // Worker lints files with its own TypeScript session, tree-sitter parsers and rule checkers.
@@ -71,6 +73,7 @@ mut:
 	svelte_parsers  SvelteParsers
 	stats           rules.Stats
 	fixed_files     int
+	writer          FixWriter = new_fix_writer()
 	start_ms        f64 // starting TypeScript, until the first snapshot is asked for
 	snapshot_ms     f64
 }
@@ -276,6 +279,7 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 	mut previous := ''
 	mut second_previous := ''
 	mut warnings := ''
+	mut write_failed := false
 	for {
 		pass++
 		if pass > 1 {
@@ -337,16 +341,19 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 		if !fixed {
 			break
 		}
+		// A fix of the range [-1, 0] removes the BOM, which is before the text (unicode-bom).
+		bom := has_bom && !result.findings.any(it.has_fix && it.fix.start < 0)
+		w.writer.write(f.path, if bom { offsets.utf8_bom + output } else { output }) or {
+			// The file keeps the text of the last pass written, `src`, whose problems `result`
+			// has: they are reported, and the other files are still linted and fixed.
+			warnings += 'error: ${f.path}: not fixed: ${err.msg()}; its problems are those of the text it has\n'
+			write_failed = true
+			break
+		}
 		second_previous = previous
 		previous = src
 		src = output
-		// A fix of the range [-1, 0] removes the BOM, which is before the text (unicode-bom).
-		if result.findings.any(it.has_fix && it.fix.start < 0) {
-			has_bom = false
-		}
-		os.write_file(f.path, if has_bom { offsets.utf8_bom + src } else { src }) or {
-			return error('cannot write ${f.path}: ${err.msg()}')
-		}
+		has_bom = bom
 		if f.vue {
 			// The twin gets the code of the fixed script.
 			doc.free()
@@ -402,9 +409,10 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 		sdoc.free()
 	}
 	return FileOutcome{
-		report:   report
-		findings: result.findings
-		warnings: warnings
+		report:       report
+		findings:     result.findings
+		warnings:     warnings
+		write_failed: write_failed
 	}
 }
 

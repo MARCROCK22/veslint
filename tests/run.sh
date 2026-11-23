@@ -245,6 +245,20 @@ else
 	ko "--fix (code $code)"
 	cat "$TMP/fix.err"
 fi
+# A write that fails for a while, as on Windows when another process (an antivirus, the indexer)
+# has the file open (VESLINT_DEBUG_WRITE_FAILURES fails the first attempts as a sharing violation
+# does): --fix tries it again and gives the same as without failures.
+mkdir -p "$TMP/fix-retry"
+cp tests/fix/*.ts tests/fix/tsconfig.json tests/fix/rules.json "$TMP/fix-retry/"
+code=0
+(cd "$TMP/fix-retry" && VESLINT_DEBUG_WRITE_FAILURES=4 "$OLDPWD/veslint" --config rules.json --fix --fixes cases.ts) > "$TMP/fix-retry.out" 2> "$TMP/fix-retry.err" || code=$?
+if [[ $code -eq 1 ]] && cmp -s "$TMP/fix.out" "$TMP/fix-retry.out" && cmp -s "$TMP/fix.err" "$TMP/fix-retry.err" &&
+	diff -u tests/fix/expected/cases.ts "$TMP/fix-retry/cases.ts"; then
+	ok "--fix tries a write again while it fails as a file another process has open"
+else
+	ko "--fix with writes that fail for a while (code $code)"
+	cat "$TMP/fix-retry.err"
+fi
 # An ESLint configuration with ignores, rules per folder, linterOptions and the two ways the parser
 # gets the types (tests/config). Its
 # resolved form (resolved.json, what --print-config prints) needs no JavaScript runtime; reading
@@ -323,6 +337,35 @@ if [[ $windows -eq 0 ]]; then
 		ko "--fix with files in no project (code $code, files as expected: $fixed_ok)"
 		cat "$TMP/projects-fix.err"
 	fi
+	# A file --fix cannot write even when it tries again for a while (VESLINT_DEBUG_WRITE_LIMIT_MS
+	# shortens the minute it tries for): an error says so, the file keeps its text and its problems
+	# are reported, the other files are still fixed, and the run ends with code 1. A read-only file
+	# is not tried again (which only root can write).
+	for case in locked read-only; do
+		rm -rf "$TMP/projects-locked"
+		cp -r tests/projects "$TMP/projects-locked"
+		env=(VESLINT_DEBUG_WRITE_FAILURES=1000@c.ts VESLINT_DEBUG_WRITE_LIMIT_MS=200)
+		if [[ $case == read-only ]]; then
+			[[ $(id -u) -eq 0 ]] && continue
+			env=(VESLINT_DEBUG_WRITE_LIMIT_MS=60000)
+			chmod a-w "$TMP/projects-locked/service/c.ts"
+		fi
+		code=0
+		(cd "$TMP/projects-locked" && env "${env[@]}" "$ROOT/veslint" --config resolved.json --fixes --fix "${projects_files[@]}") > "$TMP/projects-locked.out" 2> "$TMP/projects-locked.err" || code=$?
+		# Tried again for a while, or (read-only) once.
+		tried=' (VESLINT_DEBUG_WRITE_FAILURES), [0-9]* attempts in 0\.[0-9] s'
+		[[ $case == read-only ]] && tried=''
+		attempts=$(grep -c "^error: service/c\\.ts: not fixed: failed to open file \"service/c\\.ts\"$tried; its problems are those of the text it has\$" "$TMP/projects-locked.err")
+		if [[ $code -eq 1 && $attempts -eq 1 ]] && cmp -s tests/projects/service/c.ts "$TMP/projects-locked/service/c.ts" &&
+			cmp -s <(sed 's/^let /const /' tests/projects/service/a.ts) "$TMP/projects-locked/service/a.ts" &&
+			diff -u <({ grep -v '^service/c\.ts:' tests/projects/expected-fix.txt; grep '^service/c\.ts:' tests/projects/expected.txt; } | sort) <(sed "s|$TMP/projects-locked|<tests/projects>|g" "$TMP/projects-locked.out" | sort) &&
+			grep -qx '13 problems in 13 files; 6 files fixed' "$TMP/projects-locked.err"; then
+			ok "--fix with a file it cannot write ($case): an error for it, and the other files fixed"
+		else
+			ko "--fix with a file it cannot write ($case, code $code)"
+			cat "$TMP/projects-locked.err"
+		fi
+	done
 	# The server answers as the command line, and so does a JSON with a `rules` section (veslint
 	# gets the types of its files as the project service does).
 	python3 -c 'import json, sys; print(json.dumps({"id": 1, "config": "resolved.json", "files": sys.argv[1:]}))' "${projects_files[@]/#/$ROOT/tests/projects/}" > "$TMP/server-projects.jsonl"

@@ -807,6 +807,7 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	// The reports in the order of the files, up to the first that failed, as one worker gives them.
 	mut problems := 0
 	mut warnings := 0
+	mut write_failures := 0
 	mut summary := RuleSummary{}
 	for index, f in files {
 		if index >= failed_at {
@@ -833,6 +834,9 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 			continue
 		}
 		outcome := outcomes[index] or { break }
+		if outcome.write_failed {
+			write_failures++
+		}
 		eprint(outcome.warnings)
 		eprint(outcome.report.stderr)
 		if opts.summary {
@@ -891,6 +895,11 @@ fn run_rules(opts Options, timeout time.Duration) !int {
 	fixed_note := if opts.fix { '; ${fixed_files} files fixed' } else { '' }
 	eprintln(summary_line(problems, files.len, warnings) + fixed_note)
 	print_bench(opts, mut bench, total)
+	// A file --fix could not write fails the run, as ESLint's does (its error stops it with code
+	// 2, after it wrote the other files): veslint still prints every report, and ends with code 1.
+	if write_failures > 0 && problems - warnings == 0 {
+		return 1
+	}
 	return problems - warnings
 }
 
