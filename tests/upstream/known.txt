@@ -430,11 +430,6 @@ eslint	prefer-readonly-parameter-types/i12	a JavaScript file, which the program 
 veslint	prefer-readonly-parameter-types/i12	a JavaScript file; veslint lints only TypeScript
 eslint	prefer-readonly-parameter-types/i13	a JavaScript file, which the program of the fixtures does not have: no types, no problem
 veslint	prefer-readonly-parameter-types/i13	a JavaScript file; veslint lints only TypeScript
-# veslint's grammar (tree-sitter-typescript's) does not take a `new` without arguments as the
-# constructor of another `new`: `new new Buffer;` is a syntax error there, which typescript-estree
-# parses as `new (new Buffer)`. Allowing it in new_expression made tree-sitter read
-# `new new X().Y` as `(new (new X())).Y`: left for now.
-veslint	no-new-buffer/r5/i2	tree-sitter's grammar: `new new Buffer;` is a syntax error
 veslint	escape-case/r2/v19	the code has a lone surrogate, which a UTF-8 file cannot hold
 veslint	escape-case/r2/i21	the code has a lone surrogate, which a UTF-8 file cannot hold
 veslint	escape-case/r3/v17	the code has a lone surrogate, which a UTF-8 file cannot hold
@@ -672,6 +667,7 @@ veslint	escape-case/r1/v5	code of another language (SOML, TOML…), linted as Ty
 eslint	escape-case/r4/v4	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r4/v4	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r4/v5	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r4/v5	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r4/v6	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r4/v6	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r4/v9	code of another language (SOML, TOML…), linted as TypeScript
@@ -688,6 +684,7 @@ veslint	escape-case/r4/i5	code of another language (SOML, TOML…), linted as Ty
 eslint	escape-case/r5/v4	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r5/v4	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r5/v5	code of another language (SOML, TOML…), linted as TypeScript
+veslint	escape-case/r5/v5	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r5/v6	code of another language (SOML, TOML…), linted as TypeScript
 veslint	escape-case/r5/v6	code of another language (SOML, TOML…), linted as TypeScript
 eslint	escape-case/r5/v9	code of another language (SOML, TOML…), linted as TypeScript
@@ -1256,8 +1253,6 @@ eslint	require-module-specifiers/r1/v21	the test lints a declaration file, the f
 veslint	require-module-specifiers/r1/v21	the test lints a declaration file, the fixtures `file.ts`
 eslint	require-module-specifiers/r1/v22	the test lints a declaration file, the fixtures `file.ts`
 veslint	require-module-specifiers/r1/v22	the test lints a declaration file, the fixtures `file.ts`
-# tree-sitter reads `declare export type {} from "foo";` (TypeScript rejects `declare` there) as a syntax error.
-veslint	require-module-specifiers/r1/i12	tree-sitter reads `declare export` as a syntax error
 # prefer-module: the `.mjs` and `.cjs` cases lint a file of another name, the fixtures `file.ts` in both tools; the
 # `new __filename.constructor()` cases of the JavaScript parser get the parentheses TypeScript needs.
 eslint	prefer-module/r0/i3	the test lints a file of another name, the fixtures `file.ts`
@@ -1374,9 +1369,6 @@ veslint	prefer-default-parameters/r16/i0	a JavaScript case: with the TypeScript 
 eslint	no-whitespace-before-property._js_/i82	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	no-whitespace-before-property._js_/i83	typescript-eslint's parser: Decimals with leading zeros are not allowed.
 eslint	no-whitespace-before-property._js_/i94	typescript-eslint's parser: Octal literals are not allowed.
-# @stylistic/comma-spacing: `let foo ,` (a declaration list that ends with a comma) is a syntax error that
-# typescript-estree tolerates; tree-sitter reads it as an ERROR node.
-veslint	comma-spacing._ts_/i5	tree-sitter reads `let foo ,` as a syntax error
 # @stylistic/dot-location: JavaScript cases with a legacy octal literal or a decimal with leading zeros, which
 # typescript-eslint's parser rejects; tree-sitter parses them.
 eslint	dot-location._js_/i6	typescript-eslint's parser: Octal literals are not allowed.
@@ -1398,10 +1390,6 @@ eslint	quotes._js_/i48	typescript-eslint's parser: Escape sequence '\8' is not a
 # reports as an unused disable directive (reportUnusedDisableDirectives).
 eslint	spaced-comment/v24	ESLint reports the unused eslint-disable directive of the case
 veslint	spaced-comment/v24	ESLint reports the unused eslint-disable directive of the case
-# @stylistic/new-parens: `new new Foo()` is a syntax error for tree-sitter's grammar (see no-new-buffer above),
-# which typescript-estree parses as `new (new Foo())`.
-veslint	new-parens/i11	tree-sitter's grammar: `new new Foo()` is a syntax error
-veslint	new-parens/i20	tree-sitter's grammar: `new new Foo()` is a syntax error
 # @stylistic/semi: a case that turns on ESLint's no-extra-semi in a comment, a rule veslint does not have.
 veslint	semi._js_/i92	turns on ESLint's no-extra-semi in a comment, a rule veslint does not have
 # @stylistic/comma-dangle: JavaScript cases with an espree `ecmaVersion` below 2017 (functions) or 2025 (dynamic imports),
@@ -1690,18 +1678,6 @@ veslint	sort-classes/r1/i302	the alphabet has lone surrogates, which veslint's J
 veslint	sort-classes/r1/i303	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-classes/r1/v306	the alphabet has lone surrogates, which veslint's JSON reader refuses
 veslint	sort-classes/r1/v307	the alphabet has lone surrogates, which veslint's JSON reader refuses
-# perfectionist/sort-classes: tree-sitter's grammar does not parse `abstract override` before a field (a syntax
-# error), nor an index signature without a type (`[k: string];`, which TypeScript parses with an error), and reads
-# the computed field `[key in O]` as an index signature.
-veslint	sort-classes/r1/i1	tree-sitter's grammar: `abstract override` before a field is a syntax error
-veslint	sort-classes/r1/i27	tree-sitter's grammar: `abstract override` before a field is a syntax error
-veslint	sort-classes/r1/i126	tree-sitter's grammar: `abstract override` before a field is a syntax error
-veslint	sort-classes/r1/i152	tree-sitter's grammar: `abstract override` before a field is a syntax error
-veslint	sort-classes/r1/i215	tree-sitter's grammar: `abstract override` before a field is a syntax error
-veslint	sort-classes/r1/i241	tree-sitter's grammar: `abstract override` before a field is a syntax error
-veslint	sort-classes/r1/i39	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
-veslint	sort-classes/r1/i164	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
-veslint	sort-classes/r1/i253	tree-sitter's grammar: an index signature without a type (`[k: string];`) is a syntax error
 # perfectionist/sort-imports (P2): as for sort-array-includes; v138 and v142 mock the tsconfig the rule reads
 # (vi.spyOn of readClosestTsConfigByPath) and i257 has `settings` the test does not give the rule.
 eslint	sort-imports/r0/i264	disables rule-to-test/sort-imports, the name the tester gives the rule
