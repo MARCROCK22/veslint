@@ -219,6 +219,8 @@ fn test_convert_in_gives_the_rows_of_convert() {
 	for name, text in files {
 		os.write_file(os.join_path(dir, name), text) or { panic(err) }
 	}
+	// A script whose `await []` is an element access without an argument for the program.
+	os.write_file(os.join_path(dir, 'f.ts'), 'await [];\n') or { panic(err) }
 	mut c := start(bin, dir, 20 * time.second) or { panic(err) }
 	defer {
 		c.shutdown()
@@ -246,6 +248,34 @@ fn test_convert_in_gives_the_rows_of_convert() {
 			got.free()
 			want.free()
 		}
+	}
+	// With program_ast the program's AST is converted whatever the sourceType, as typescript-eslint
+	// lints it with `projectService` or `project`: b.ts has no import or export, a script for the
+	// program, whose `await (1)` calls a function `await`, and f.ts is the program's parsing error.
+	for script in [false, true] {
+		mut whole := convert_in(ProgramFile{
+			client:      c
+			snapshot:    snap.snapshot
+			project:     snap.projects[0].id
+			path:        os.join_path(dir, 'b.ts')
+			program_ast: true
+		}, files['b.ts'], false, script)
+		mut as_script := convert(files['b.ts'], false, true)
+		mut as_module := convert(files['b.ts'], false, false)
+		assert converted_rows(whole) == converted_rows(as_script), 'b.ts ${script}'
+		assert converted_rows(whole) != converted_rows(as_module), 'b.ts ${script}'
+		mut error := convert_in(ProgramFile{
+			client:      c
+			snapshot:    snap.snapshot
+			project:     snap.projects[0].id
+			path:        os.join_path(dir, 'f.ts')
+			program_ast: true
+		}, 'await [];\n', false, script)
+		assert error.status == .diagnostics, 'f.ts ${script}'
+		whole.free()
+		as_script.free()
+		as_module.free()
+		error.free()
 	}
 	// Without a snapshot (a lint without types), the text is parsed.
 	mut got := convert_in(ProgramFile{

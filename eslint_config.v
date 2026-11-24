@@ -779,6 +779,8 @@ fn (l &LoadedConfig) lint_config(index int) rules.LintConfig {
 		settings:             entry.settings
 		program_directory:    if entry.project_programs { os.getwd() } else { '' }
 		project_programs:     entry.project_programs
+		program_ast:          entry.types in [.service, .project]
+		no_program:           entry.types == .none
 	}
 }
 

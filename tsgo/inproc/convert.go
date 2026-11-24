@@ -192,11 +192,13 @@ func (c *VeslintConverter) Convert(text string) (rows []VeslintRow, diagnostics 
 }
 
 // ConvertFile converts `file`, a file of a program, instead of parsing `text` again, when its AST
-// is the one Convert would parse (SameParse); ok is false otherwise. A file of a program may be
-// read by the checkers of other threads at the same time, so it must be bound already (the binder
-// is the only one that writes its nodes after the parse; InProcess.VeslintSourceFile binds it).
-func (c *VeslintConverter) ConvertFile(file *ast.SourceFile, text string) (rows []VeslintRow, diagnostics []*ast.Diagnostic, ok bool) {
-	if !c.SameParse(file, text) {
+// is the one to convert: with `programAST`, whenever it is a parse of `text` (ProgramParse);
+// otherwise when it is the one Convert would parse (SameParse). ok is false otherwise. A file of a
+// program may be read by the checkers of other threads at the same time, so it must be bound
+// already (the binder is the only one that writes its nodes after the parse;
+// InProcess.VeslintSourceFile binds it).
+func (c *VeslintConverter) ConvertFile(file *ast.SourceFile, text string, programAST bool) (rows []VeslintRow, diagnostics []*ast.Diagnostic, ok bool) {
+	if programAST && !c.ProgramParse(file, text) || !programAST && !c.SameParse(file, text) {
 		return nil, nil, false
 	}
 	defer c.forget()
@@ -205,6 +207,22 @@ func (c *VeslintConverter) ConvertFile(file *ast.SourceFile, text string) (rows 
 	}
 	c.convert(file)
 	return c.rows, nil, true
+}
+
+// ProgramParse tells whether `file` (a file of a program) is a parse of `text` as the converter's
+// language: the same text and script kind, not a declaration file. Its AST is then the one
+// typescript-eslint lints with `projectService` or `project` (getAstFromProgram), whatever ESLint's
+// sourceType: the program decides whether the file is a module (moduleDetection, the module
+// format, its imports and exports), and in a script a top-level `await` that no name, keyword or
+// literal follows is an identifier (`await (x)` a call, `await []` an element access without an
+// argument, a parsing error), where a parse as a module (Convert, unless Script) reads an await
+// expression.
+func (c *VeslintConverter) ProgramParse(file *ast.SourceFile, text string) bool {
+	kind := core.ScriptKindTS
+	if c.l.tsx {
+		kind = core.ScriptKindTSX
+	}
+	return file != nil && file.ScriptKind == kind && !file.IsDeclarationFile && file.Text() == text
 }
 
 // SameParse tells whether `file` (a file of a program) has the AST that Convert parses from
@@ -217,15 +235,8 @@ func (c *VeslintConverter) ConvertFile(file *ast.SourceFile, text string) (rows 
 // makes it a module. That changes nothing when the text cannot have an identifier `await` (no
 // `await`, and no `\u` escape that could spell it); otherwise such a file is parsed again.
 func (c *VeslintConverter) SameParse(file *ast.SourceFile, text string) bool {
-	kind := core.ScriptKindTS
-	if c.l.tsx {
-		kind = core.ScriptKindTSX
-	}
-	if file == nil || file.ScriptKind != kind || file.IsDeclarationFile || file.Text() != text {
-		return false
-	}
-	return (file.ExternalModuleIndicator != nil) == !c.Script ||
-		!strings.Contains(text, "await") && !strings.Contains(text, `\u`)
+	return c.ProgramParse(file, text) && ((file.ExternalModuleIndicator != nil) == !c.Script ||
+		!strings.Contains(text, "await") && !strings.Contains(text, `\u`))
 }
 
 // forget drops what the converter holds of the last file: its AST and text (a converter waits in a
