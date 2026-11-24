@@ -2,6 +2,11 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, macOS arm64 and x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.50.0
+
+- **macOS** (#44, by socram03): veslint for macOS on Apple silicon (`darwin-arm64`) and Intel (`darwin-x64`), as `veslint-<version>-darwin-<arch>.tar.gz` on the release, the npm packages `@marcrock22/veslint-darwin-arm64` and `-darwin-x64` (installed by `@marcrock22/veslint`), and the VS Code extension's `veslint: Update veslint`. A file given through a symlinked directory where its tsconfig is not, or the other way round (on macOS `/var` is `/private/var`), is linted with its types.
+- **A top-level `await` of a script with `projectService` or `project`** (#47): typescript-eslint lints the program's AST of a file even when no rule needs types, and in a file without `import` or `export` (a script for the program) `await (x)` calls a function `await` and `await []` is a parsing error. veslint parsed such a file as a module since 0.47.0, and reported problems where ESLint gives a `Parsing error`; it now reads it as ESLint does.
+
 ## 0.49.0
 
 - **Less memory with TypeScript's parser** (#43): the memory 0.47.0 added is gone. Peak memory, 0.48.0 → 0.49.0:
