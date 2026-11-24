@@ -77,11 +77,12 @@ fn (mut c Conv) restore() ! {
 		doc.lets_index = new_text_index(pre[prefix..])
 	}
 	jsx := doc.options.jsx
-	tree := parse_ts(if jsx { c.parsers.tsx } else { c.parsers.ts }, pre)!
+	parsed := parse_ts(if jsx { c.parsers.tsx } else { c.parsers.ts }, pre)!
+	tree := parsed.rows
 	doc.tree = tree
 	root := treesitter.root_node(tree)
-	if C.vt_node_has_error(root) {
-		c.syntax_error(root)
+	if parsed.rejected {
+		c.syntax_error(parsed.error_offset(pre))
 		return
 	}
 	// The compiler parses the template's expressions without JSX (acorn), which the parse with
@@ -92,10 +93,10 @@ fn (mut c Conv) restore() ! {
 	if jsx && doc.options.program {
 		// The second parse, of the virtual code, as TypeScript: its script and template parts
 		// are those of the pre-virtual code.
-		ts_tree := parse_ts(c.parsers.ts, pre)!
-		ts_root := treesitter.root_node(ts_tree)
-		if C.vt_node_has_error(ts_root) {
-			at := first_error_offset(ts_root)
+		ts_parsed := parse_ts(c.parsers.ts, pre)!
+		ts_tree := ts_parsed.rows
+		if ts_parsed.rejected {
+			at := ts_parsed.error_offset(pre)
 			treesitter.rows_free(ts_tree)
 			doc.error = ParseError{
 				message:    'Parsing error.'
@@ -108,7 +109,7 @@ fn (mut c Conv) restore() ! {
 		}
 		treesitter.rows_free(ts_tree)
 	}
-	es := convert_es_with(root, pre, jsx) or {
+	es := convert_es_with(&parsed, pre, jsx) or {
 		doc.error = ParseError{
 			message:    'Parsing error.'
 			index:      0
@@ -308,15 +309,15 @@ fn sort_tokens(mut list []Token) {
 	})
 }
 
-// syntax_error records the error of a pre-virtual code tree-sitter rejects: a compiler error
-// (acorn rejected a template expression) when an expression alone does not parse either, the
-// first in the file (the compiler parses the template before svelte-eslint-parser parses the
-// script), else typescript-eslint's error at the position in the pre-virtual code.
-fn (mut c Conv) syntax_error(root C.vt_node) {
+// syntax_error records the error of a pre-virtual code its parser rejects (`at`: where,
+// tsparse.Parse.error_offset): a compiler error (acorn rejected a template expression) when an
+// expression alone does not parse either, the first in the file (the compiler parses the template
+// before svelte-eslint-parser parses the script), else typescript-eslint's error at the position
+// in the pre-virtual code.
+fn (mut c Conv) syntax_error(at int) {
 	if c.compile_expression_error() {
 		return
 	}
-	at := first_error_offset(root)
 	for l in c.lets {
 		for s in l.segments {
 			if s.pre_start <= at && at <= s.pre_start + s.len {
@@ -367,19 +368,26 @@ fn (mut c Conv) compile_expression_error() bool {
 	return true
 }
 
-// expression_error is where tree-sitter finds the first error of an expression alone (an offset
-// of `part`), none when it parses.
+// expression_error is where the first error of an expression alone is (an offset of `part`), none
+// when it parses: where acorn stops, as tree-sitter's error tells (expression_error_offset), or
+// TypeScript's first diagnostic when only TypeScript's parser rejects it.
 fn (c &Conv) expression_error(part string) ?int {
 	code := '(${part});'
-	tree := parse_ts(c.parsers.ts, code) or { return none }
+	parsed := parse_ts(c.parsers.ts, code) or { return none }
+	tree := parsed.rows
 	defer {
 		treesitter.rows_free(tree)
 	}
-	root := treesitter.root_node(tree)
-	if !C.vt_node_has_error(root) {
+	if !parsed.rejected {
 		return none
 	}
-	at := expression_error_offset(root, code) - 1
+	root := treesitter.root_node(tree)
+	offset := if C.vt_node_has_error(root) {
+		expression_error_offset(root, code)
+	} else {
+		parsed.error_offset(code)
+	}
+	at := offset - 1
 	return if at < 0 {
 		0
 	} else if at > part.len {
@@ -417,25 +425,11 @@ fn expression_error_offset(root C.vt_node, code string) int {
 }
 
 fn (c &Conv) expression_parses(part string) bool {
-	tree := parse_ts(c.parsers.ts, '(${part});') or { return false }
+	parsed := parse_ts(c.parsers.ts, '(${part});') or { return false }
 	defer {
-		treesitter.rows_free(tree)
+		treesitter.rows_free(parsed.rows)
 	}
-	return !C.vt_node_has_error(treesitter.root_node(tree))
-}
-
-fn first_error_offset(root C.vt_node) int {
-	first, last := treesitter.flat_range(root)
-	mut i := first
-	for i <= last {
-		node := treesitter.flat_node(root, i)
-		if C.vt_node_is_error(node) || C.vt_node_is_missing(node) {
-			return treesitter.node_start(node)
-		}
-		// Only the subtrees with an error are entered.
-		i = if C.vt_node_has_error(node) { i + 1 } else { treesitter.flat_last(root, i) + 1 }
-	}
-	return treesitter.node_start(root)
+	return !parsed.rejected
 }
 
 // let_tokens adds the tokens and comments of a let's segments (moved to the file).
@@ -777,15 +771,14 @@ fn (c &Conv) has_type_info(e int) bool {
 	}
 	text := c.code[ex.start..ex.end]
 	code := '(${text});'
-	tree := parse_ts(c.parsers.ts, code) or { return false }
+	parsed := parse_ts(c.parsers.ts, code) or { return false }
 	defer {
-		treesitter.rows_free(tree)
+		treesitter.rows_free(parsed.rows)
 	}
-	root := treesitter.root_node(tree)
-	if C.vt_node_has_error(root) {
+	if parsed.rejected {
 		return false
 	}
-	es := convert_es(root, code) or { return false }
+	es := convert_es(parsed, code) or { return false }
 	body := es.list(es.root, .body) or { return false }
 	if body.len == 0 {
 		return false

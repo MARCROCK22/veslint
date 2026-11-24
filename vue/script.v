@@ -71,10 +71,13 @@ pub mut:
 	tree          &C.vt_rows = unsafe { nil }
 	es            estree.EsTree
 	has_es        bool
-	// has_error: tree-sitter found syntax errors in the script (vue-eslint-parser throws a
-	// parsing error from TypeScript then); error_index is where.
+	// has_error: the script's parser rejects it (tsparse: TypeScript's parser, or tree-sitter's
+	// with VESLINT_PARSER=tree-sitter; vue-eslint-parser throws a parsing error from TypeScript
+	// then); error_index is where.
 	has_error   bool
 	error_index int
+	// typescript: `tree` is TypeScript's parse (the converter's rows), not tree-sitter's.
+	typescript bool
 	// setup_error: the content of the <script setup> next to a <script> has syntax errors alone:
 	// vue-eslint-parser's pre-pass (getScriptSetupCodeBlocks) throws from its parse of that
 	// content, at setup_start (the content's offset) plus the error's.
@@ -406,19 +409,22 @@ fn (mut c ExprContext) parse_masked(ranges [][]int) {
 	// JSX only with Options.script_jsx, whatever the `lang` (`lang="tsx"` alone does not enable
 	// it: `<div/>` is `'>' expected.` and `<T>x` a type assertion).
 	s.jsx = c.opts.script_jsx
-	tree := parse_ts(if s.jsx { c.tsx } else { c.ts }, s.masked) or { return }
+	parsed := parse_ts(if s.jsx { c.tsx } else { c.ts }, s.masked) or { return }
+	tree := parsed.rows
 	s.tree = tree
+	s.typescript = parsed.typescript
 	root := treesitter.root_node(tree)
-	if C.vt_node_has_error(root) {
+	if parsed.rejected {
 		s.has_error = true
-		s.error_index = first_error_offset(root)
+		s.error_index = parsed.error_offset(s.masked)
 	}
 	// A script with syntax errors is a parsing error for vue-eslint-parser: no Program then
 	// (its tokens still are).
 	if !s.has_error {
 		if es := estree.convert_with(root, s.masked, s.jsx, estree.Options{
-			module:       true
-			regexp_valid: fn (pattern string, flags string) bool {
+			module:          true
+			typescript_rows: parsed.typescript
+			regexp_valid:    fn (pattern string, flags string) bool {
 				return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
 			}
 		})
@@ -799,15 +805,17 @@ fn (mut c ExprContext) parse_setup_alone(text int) SetupAlone {
 	}
 	code := bytes.bytestr()
 	jsx := c.opts.fragment_jsx
-	tree := parse_ts(if jsx { c.tsx } else { c.ts }, code) or { return SetupAlone{} }
+	parsed := parse_ts(if jsx { c.tsx } else { c.ts }, code) or { return SetupAlone{} }
+	tree := parsed.rows
 	root := treesitter.root_node(tree)
-	if C.vt_node_has_error(root) {
+	if parsed.rejected {
 		treesitter.rows_free(tree)
 		return SetupAlone{}
 	}
 	es := estree.convert_with(root, code, jsx, estree.Options{
-		module:       true
-		regexp_valid: fn (pattern string, flags string) bool {
+		module:          true
+		typescript_rows: parsed.typescript
+		regexp_valid:    fn (pattern string, flags string) bool {
 			return jsregexp.regexp_new(estree.utf16_units(pattern), flags) != none
 		}
 	}) or {

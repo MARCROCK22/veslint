@@ -1,6 +1,6 @@
 {
   "name": "@marcrock22/veslint-darwin-arm64",
-  "version": "0.48.0",
+  "version": "0.49.0",
   "description": "The veslint binary for macOS arm64 (Apple silicon). Install @marcrock22/veslint, which runs it.",
   "files": [
     "veslint"

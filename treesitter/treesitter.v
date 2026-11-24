@@ -100,6 +100,7 @@ fn C.ts_language_symbol_for_name(self &C.TSLanguage, name &char, length u32, is_
 fn C.ts_parser_new() &C.TSParser
 fn C.ts_parser_delete(self &C.TSParser)
 fn C.ts_parser_set_language(self &C.TSParser, language &C.TSLanguage) bool
+fn C.ts_parser_language(self &C.TSParser) &C.TSLanguage
 fn C.ts_parser_parse_string(self &C.TSParser, old_tree &C.TSTree, str &char, length u32) &C.TSTree
 fn C.ts_tree_delete(self &C.TSTree)
 fn C.ts_tree_language(self &C.TSTree) &C.TSLanguage
@@ -231,19 +232,35 @@ pub fn (p &Parser) is_tsx() bool {
 	return p.tsx
 }
 
+// ts_parser is the parser's tree-sitter parser, for what takes a bare one (tsparse.convert).
+pub fn (p &Parser) ts_parser() &C.TSParser {
+	return p.parser
+}
+
 // adopt_rows gives rows of this parser's language from `count` rows another parser filled in
 // `buffer`, a malloc'd array of vt_row (tsgo.convert's rows) that the rows take: they are freed with
 // rows_free, the buffer with them.
 pub fn (p &Parser) adopt_rows(buffer voidptr, count int) !&C.vt_rows {
+	return adopt_rows_of(p.parser, buffer, count)
+}
+
+// adopt_rows_of is Parser.adopt_rows for the language of a bare tree-sitter parser (the parsers of
+// .vue and .svelte files).
+pub fn adopt_rows_of(parser &C.TSParser, buffer voidptr, count int) !&C.vt_rows {
 	if count <= 0 {
 		unsafe { C.free(buffer) }
 		return error('the converter gave no rows')
 	}
-	rows := C.vt_rows_adopt(voidptr(p.lang), buffer, u32(count))
+	rows := C.vt_rows_adopt(voidptr(C.ts_parser_language(parser)), buffer, u32(count))
 	if isnil(rows) {
 		return error('out of memory for the rows of a tree')
 	}
 	return rows
+}
+
+// parser_is_tsx: a bare tree-sitter parser reads the TSX dialect of the grammar.
+pub fn parser_is_tsx(parser &C.TSParser) bool {
+	return voidptr(C.ts_parser_language(parser)) == voidptr(C.tree_sitter_tsx())
 }
 
 pub fn (p &Parser) close() {
@@ -600,6 +617,21 @@ pub fn nodes_of_kinds(root C.vt_node, kinds []string, skip []string) []C.vt_node
 		i = if state & symbol_skipped == 0 { i + 1 } else { int(entry.last) + 1 }
 	}
 	return nodes
+}
+
+// first_error_offset is where the first ERROR or MISSING node of the tree starts.
+pub fn first_error_offset(root C.vt_node) int {
+	first, last := flat_range(root)
+	mut i := first
+	for i <= last {
+		node := flat_node(root, i)
+		if C.vt_node_is_error(node) || C.vt_node_is_missing(node) {
+			return node_start(node)
+		}
+		// Only the subtrees with an error are entered.
+		i = if C.vt_node_has_error(node) { i + 1 } else { flat_last(root, i) + 1 }
+	}
+	return node_start(root)
 }
 
 // flat_range gives the places in its rows of `n` and of the last node of its subtree: its subtree

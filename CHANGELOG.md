@@ -2,6 +2,16 @@
 
 Each version is a release on GitHub with the veslint binaries (Linux x64, macOS arm64 and x64, Windows x64) and the VS Code extension. The section of a version is the text of its release.
 
+## 0.49.0
+
+- **Less memory with TypeScript's parser** (#43): the memory 0.47.0 added is gone. Peak memory, 0.48.0 → 0.49.0:
+  - the TypeScript compiler's sources: 584 → 352 MiB without types, 989 → 657 MiB with no-floating-promises, 1,926 → 1,708 MiB with the 23 type-aware rules;
+  - zod: 157 → 143 MiB without types, 260 → 212 MiB with no-floating-promises.
+
+  In a lint with types, each file's AST in TypeScript's program is converted instead of parsing the file a second time. no-floating-promises on the TypeScript compiler: 2.3 s → 1.7 s.
+- **TypeScript's parser for everything else** (#45): the scripts and templates of `.vue` files, `.svelte` files and `.svelte.ts` modules, and `veslint --server` (the editor) now parse with TypeScript's parser, as plain TypeScript files do since 0.47.0. The editor's first lint of a file is faster: the TypeScript compiler's `parser.ts` 209 → 153 ms. A re-lint after an edit without types costs a few milliseconds more: TypeScript's parser parses the whole text, where tree-sitter reparsed only what changed. In the editor, code that tree-sitter's grammar read wrongly now gets ESLint's problems and parsing errors: an unterminated `/*` in a `.svelte` script, legacy octal literals.
+- **JSDoc types** `T!`, `?T` and `*` in a type no longer give a spurious `@typescript-eslint/no-explicit-any`.
+
 ## 0.48.0
 
 - **`@stylistic/indent`** (#39), with all its options and fixes, on .ts, .tsx, .vue and .svelte files: the lines that the fixes of `curly`, `@stylistic/nonblock-statement-body-position` and `@stylistic/multiline-ternary` add are indented in the next fix pass, as with ESLint. @marcrock22/eslintcf 0.0.3 enables it.
