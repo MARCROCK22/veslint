@@ -33,8 +33,9 @@ V ?= v
 # The V binary is a prerequisite of veslint: updating V rebuilds it.
 V_BIN := $(shell command -v $(V))
 # A V built from its C sources (as the release workflow builds it) has no tcc libgc.a: `v test` and
-# the V programs tests/run.sh runs then build the bundled collector.
-TEST_VFLAGS := $(if $(wildcard $(dir $(V_BIN))thirdparty/tcc/lib/libgc.a),,-d use_bundled_libgc)
+# the V programs tests/run.sh runs then build the bundled collector. The binary's real path: `v
+# symlink` puts a link to it in the PATH, away from its thirdparty/.
+TEST_VFLAGS := $(if $(wildcard $(dir $(realpath $(V_BIN)))thirdparty/tcc/lib/libgc.a),,-d use_bundled_libgc)
 
 # TypeScript's API session linked into veslint (tsgo/inproc.c.v): a C archive built with Go from the
 # checkout of the pinned commit (tsgo/inproc/build.sh fetches it when it is missing).
