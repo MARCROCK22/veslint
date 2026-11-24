@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Writes the npm packages of veslint to OUT, ready for `npm publish OUT/<package>`:
 #
-#   npm/stage.sh OUT linux-x64=<veslint> win32-x64=<veslint.exe>
+#   npm/stage.sh OUT linux-x64=<veslint> darwin-arm64=<veslint> darwin-x64=<veslint> win32-x64=<veslint.exe>
 #
 # OUT/veslint is @marcrock22/veslint (the `veslint` command, which runs the binary of the platform,
 # and the README); OUT/<platform> is @marcrock22/veslint-<platform>, with the binary given for it.

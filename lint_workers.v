@@ -317,7 +317,7 @@ fn (mut w Worker) lint(plan &LintPlan, index int) !FileOutcome {
 		} else {
 			w.parser
 		},
-			lint_config, src, f.abs_path, mut w.stats) or {
+			lint_config, src, if f.vue || f.svelte { f.abs_path } else { f.ts_path }, mut w.stats) or {
 			return error('${f.path}: ${err.msg()}')
 		}
 		if !plan.fix || pass > max_fix_passes {

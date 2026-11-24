@@ -19,7 +19,9 @@ const linux = process.platform === 'linux' && process.arch === 'x64';
 test('the package of each platform', () => {
   assert.deepEqual(updater.platformPackage('linux', 'x64'), { suffix: 'linux-x64', extension: '.tar.gz', executable: 'veslint' });
   assert.deepEqual(updater.platformPackage('win32', 'x64'), { suffix: 'win32-x64', extension: '.zip', executable: 'veslint.exe' });
-  assert.equal(updater.platformPackage('darwin', 'arm64'), null);
+  assert.deepEqual(updater.platformPackage('darwin', 'arm64'), { suffix: 'darwin-arm64', extension: '.tar.gz', executable: 'veslint' });
+  assert.deepEqual(updater.platformPackage('darwin', 'x64'), { suffix: 'darwin-x64', extension: '.tar.gz', executable: 'veslint' });
+  assert.equal(updater.platformPackage('freebsd', 'x64'), null);
   assert.equal(updater.platformPackage('linux', 'arm64'), null);
 });
 
@@ -104,7 +106,7 @@ test('a package whose binary is another version is not installed', { skip: !linu
   await assert.rejects(updater.install(await updater.latestRelease(fetchImpl), storage, { fetchImpl }), /says it is 1\.9\.0, not 2\.0\.0/);
   assert.equal(updater.installed(storage), null);
   const release = await updater.latestRelease(fetchImpl);
-  await assert.rejects(updater.install(release, storage, { fetchImpl, platform: 'darwin', arch: 'arm64' }), /no veslint release for darwin-arm64/);
+  await assert.rejects(updater.install(release, storage, { fetchImpl, platform: 'freebsd', arch: 'x64' }), /no veslint release for freebsd-x64/);
 });
 
 /** The extension against the stub, with `fetch` answered by the fake release. */

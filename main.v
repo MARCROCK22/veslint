@@ -575,7 +575,9 @@ struct RuleFile {
 	// ESLint reports as a parsing error instead of linting the file (projects.v).
 	fatal string
 	// A .vue file: tsgo has its script in a virtual twin, at ts_path with the text twin_code
-	// (vue_files.v); ts_path is abs_path for any other file. A .svelte file too (svelte_files.v).
+	// (vue_files.v); ts_path is abs_path for any other file, or the name tsgo has it by when that is
+	// spelled through a symlink where abs_path is not, or the other way round (find_file_projects).
+	// A .svelte file too (svelte_files.v).
 	vue       bool
 	svelte    bool
 	ts_path   string

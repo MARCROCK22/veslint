@@ -20,7 +20,8 @@ const stderr_tail_bytes = 16384
 
 const stderr_tail_lines = 50
 
-// A write of at most PIPE_BUF bytes does not block if poll() reports POLLOUT.
+// A write of at most PIPE_BUF bytes does not block if poll() reports POLLOUT. Windows writes in
+// chunks of this size; POSIX systems use their own PIPE_BUF (client_nix.c.v), 512 on macOS.
 const pipe_buf = 4096
 
 const read_chunk = 65536

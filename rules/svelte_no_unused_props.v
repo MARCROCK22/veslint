@@ -433,8 +433,9 @@ fn (mut c Checker) svnup_check_properties(mut ctx SvnupContext, props_type TypeR
 		if c.svnup_inaccessible(prop) {
 			continue
 		}
+		// tsgo.path_key: tsgo writes the path of a handle in lower case where file names have no case.
 		if !ctx.o.check_imported_types && (prop.declarations.len == 0
-			|| !prop.declarations.all(tsgo.handle_path(it) == ctx.file)) {
+			|| !prop.declarations.all(tsgo.path_key(tsgo.handle_path(it)) == tsgo.path_key(ctx.file))) {
 			continue
 		}
 		name := unescape_name(prop.name)

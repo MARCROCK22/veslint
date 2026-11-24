@@ -127,10 +127,14 @@ pub fn binary_rel_path() string {
 }
 
 // path_key is a path as tsgo compares it, to match a path of veslint with one of tsgo's answers:
-// on Windows TypeScript writes `\` as `/` and ignores case (its project ids are lowercased paths).
+// on Windows TypeScript writes `\` as `/` and ignores case (its project ids are lowercased paths),
+// and on macOS, whose file system ignores case by default, it lowercases paths too.
 pub fn path_key(path string) string {
 	$if windows {
 		return path.replace('\\', '/').to_lower()
+	}
+	$if macos {
+		return path.to_lower()
 	}
 	return path
 }

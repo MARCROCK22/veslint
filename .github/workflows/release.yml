@@ -1,10 +1,10 @@
 name: Release
 
-# On a tag `v*` (or by hand, without publishing): veslint for Linux x64 and Windows x64, each with
-# the TypeScript 7 compiler it runs, and the VS Code extension; with a tag, a GitHub release of it
-# whose text is the section of the version in CHANGELOG.md, the extension published to the
-# Visual Studio Marketplace (publisher MARCROCK22, with the secret VSCE_PAT) and the command line
-# published to npm as @marcrock22/veslint (with the secret NPM_TOKEN).
+# On a tag `v*` (or by hand, without publishing): veslint for Linux x64, macOS (arm64 and x64) and
+# Windows x64, each with the TypeScript 7 compiler it runs, and the VS Code extension; with a tag, a
+# GitHub release of it whose text is the section of the version in CHANGELOG.md, the extension
+# published to the Visual Studio Marketplace (publisher MARCROCK22, with the secret VSCE_PAT) and
+# the command line published to npm as @marcrock22/veslint (with the secret NPM_TOKEN).
 on:
   push:
     tags: ['v*']
@@ -112,6 +112,55 @@ jobs:
           name: windows
           path: dist/*.zip
 
+  # macOS on Apple silicon and on Intel, each built on its own runner with Xcode's clang; the
+  # grammar is generated here, as on Linux.
+  macos:
+    strategy:
+      matrix:
+        include:
+          - runner: macos-15
+            platform: darwin-arm64
+          - runner: macos-15-intel
+            platform: darwin-x64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-go@v5
+        with:
+          go-version: 1.27.4
+          cache: false
+      - name: V
+        run: |
+          git init -q vendor/v
+          git -C vendor/v fetch -q --depth 1 https://github.com/vlang/v "$V_COMMIT"
+          git -C vendor/v checkout -q FETCH_HEAD
+          git init -q vendor/v/vc
+          git -C vendor/v/vc fetch -q --depth 1 https://github.com/vlang/vc "$VC_COMMIT"
+          git -C vendor/v/vc checkout -q FETCH_HEAD
+          cd vendor/v
+          sh ./cmd/tools/vc_compat.sh ./vc/v.c cc -DCUSTOM_DEFINE_v1_fallback -std=c99 -w -o v1 -- -lm -lpthread
+          ./v1 -no-parallel -o v2 -gc none cmd/v
+          ./v2 -nocache -o v -gc none cmd/v
+          rm v1 v2
+      - name: veslint
+        run: make veslint V=vendor/v/v
+      - name: Check
+        run: ./veslint app.ts | diff - tests/expected/app.txt
+      - name: Package
+        run: |
+          name=veslint-${GITHUB_REF_NAME#v}-${{ matrix.platform }}
+          mkdir -p "dist/$name/node_modules/@typescript"
+          cp veslint README.md "dist/$name/"
+          cp -r node_modules/@typescript/typescript-${{ matrix.platform }} "dist/$name/node_modules/@typescript/"
+          tar -C dist -czf "dist/$name.tar.gz" "$name"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}
+          path: dist/*.tar.gz
+
   extension:
     runs-on: ubuntu-22.04
     steps:
@@ -135,7 +184,7 @@ jobs:
           path: dist/*.vsix
 
   release:
-    needs: [linux, windows, extension]
+    needs: [linux, macos, windows, extension]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-22.04
     env:
@@ -147,7 +196,7 @@ jobs:
           node-version: 22
       - uses: actions/download-artifact@v4
         with:
-          pattern: '{linux,windows,extension}'
+          pattern: '{linux,darwin-*,windows,extension}'
           path: dist
           merge-multiple: true
       - name: Release notes
@@ -168,8 +217,9 @@ jobs:
         if: env.VSCE_PAT != ''
         run: npx --yes @vscode/vsce@4.1.0 publish --packagePath dist/*.vsix
 
-  # The npm packages (npm/stage.sh): @marcrock22/veslint-linux-x64 and -win32-x64 with the binaries
-  # of the release, then @marcrock22/veslint, which depends on them; with the secret NPM_TOKEN.
+  # The npm packages (npm/stage.sh): @marcrock22/veslint-linux-x64, -darwin-arm64, -darwin-x64 and
+  # -win32-x64 with the binaries of the release, then @marcrock22/veslint, which depends on them;
+  # with the secret NPM_TOKEN.
   npm:
     needs: release
     runs-on: ubuntu-22.04
@@ -186,7 +236,7 @@ jobs:
           registry-url: https://registry.npmjs.org
       - uses: actions/download-artifact@v4
         with:
-          pattern: '{linux,windows}'
+          pattern: '{linux,darwin-*,windows}'
           path: dist
           merge-multiple: true
       - name: Packages
@@ -200,13 +250,17 @@ jobs:
               exit 1
             fi
           done
-          tar -C dist -xzf "dist/veslint-$version-linux-x64.tar.gz"
+          for platform in linux-x64 darwin-arm64 darwin-x64; do
+            tar -C dist -xzf "dist/veslint-$version-$platform.tar.gz"
+          done
           unzip -q "dist/veslint-$version-win32-x64.zip" -d dist
           npm/stage.sh dist/npm "linux-x64=dist/veslint-$version-linux-x64/veslint" \
+            "darwin-arm64=dist/veslint-$version-darwin-arm64/veslint" \
+            "darwin-x64=dist/veslint-$version-darwin-x64/veslint" \
             "win32-x64=dist/veslint-$version-win32-x64/veslint.exe"
       - name: Publish
         if: env.NODE_AUTH_TOKEN != ''
         run: |
-          for package in linux-x64 win32-x64 veslint; do
+          for package in linux-x64 darwin-arm64 darwin-x64 win32-x64 veslint; do
             npm publish --provenance --access public "dist/npm/$package"
           done
