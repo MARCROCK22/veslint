@@ -2337,6 +2337,12 @@ pub:
 	// `parserOptions.project`, not from the project service (a .vue file is a SourceFile of
 	// ScriptKind TS in such a program, and of the extension's own kind for the project service).
 	project_programs bool
+	// program_ast: typescript-eslint lints the program's AST of each file, whether a rule needs
+	// types or not (`projectService` or `project`: TypeSource service and project). no_program: it
+	// builds no program (neither, in an ESLint configuration: TypeSource none). veslint's own
+	// configurations (TypeSource implicit) have a program when a rule needs types.
+	program_ast bool
+	no_program  bool
 pub mut:
 	// program_directory is the current directory of ESLint's program, which `from: "file"` type
 	// specifiers are relative to, when it is not the directory of the tsconfig (see specifiers.v).
@@ -3503,9 +3509,12 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 				rows: converted.rows
 			}
 		} else {
-			typescript_parse(parser, parsed, config.language, abs_path, c.program_file(abs_path))
+			typescript_parse(parser, parsed, config.language, abs_path, c.parse_program(config, abs_path))
 		}
 	}
+	// Whether those rows had the program's AST to convert (none without a snapshot).
+	parsed_in_program := owned && parser_source == .typescript && !svelte_file && !vue_file
+		&& c.parse_program(config, abs_path).path != ''
 	from_typescript := typescript.rows != unsafe { nil }
 		|| (!owned && c.vue.doc.script.typescript)
 	c.rows_from_typescript = from_typescript
@@ -3553,6 +3562,39 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 	part.restart()
 	c.index_file(root)
 	stats.parse_index_ms += ms(part.elapsed())
+	// With `projectService` or `project` typescript-eslint lints the program's AST of the file even
+	// when no rule needs types, where a top-level `await` of a script that no name, keyword or
+	// literal follows is an identifier (rules/await_identifier.v); TypeScript's rows were parsed as
+	// ESLint's sourceType says, as a module by default, where it is an await expression. A lint
+	// without types has no snapshot yet: it is made when such an `await` is there, and the rows are
+	// the program's AST (tsgo.convert_in), or its parsing error. Without a program in ESLint (and in
+	// veslint's own configurations when no rule needs types) the parse of the text is ESLint's.
+	if from_typescript && owned && !vue_file && !svelte_file && !parsed_in_program
+		&& config.program_ast && c.snapshot_tsconfig != '' && c.has_await_name_candidate(root) {
+		part.restart()
+		c.make_snapshot()!
+		program := c.parse_program(config, abs_path)
+		if program.path != '' {
+			again := typescript_parse(parser, parsed, config.language, abs_path, program)
+			if again.diagnostics.len > 0 {
+				fatal := c.typescript_parsing_error(again.diagnostics)
+				stats.parse_ms += ms(sw.elapsed())
+				stats.findings++
+				return FileLint{
+					findings:      fatal
+					parsing_error: true
+				}
+			}
+			if again.rows != unsafe { nil } {
+				c.node_index = treesitter.NodeIndex{}
+				treesitter.rows_free(tree)
+				tree = again.rows
+				root = root_node(tree)
+				c.index_file(root)
+			}
+		}
+		stats.parse_await_ms += ms(part.elapsed())
+	}
 	c.ast_path = ''
 	c.file_tree_loaded = false
 	c.check_ast_path = ''
@@ -3586,7 +3628,7 @@ fn (mut c Checker) lint_file_in_lifetime(parser Parser, config LintConfig, src s
 		}
 	}
 	// Where TypeScript read an `await` as an identifier, tree-sitter's rows are parsed again that
-	// way (rules/await_identifier.v); TypeScript's rows read it as TypeScript does.
+	// way (rules/await_identifier.v); TypeScript's rows are the program's AST then (above).
 	part.restart()
 	reread := if from_typescript { '' } else { c.await_identifiers_source(root, ts_path)! }
 	if reread != '' {
@@ -6452,6 +6494,20 @@ fn first_parse_diagnostic(diagnostics []tsgo.Diagnostic, units int) tsgo.Diagnos
 		return d
 	}
 	return diagnostics[0]
+}
+
+// parse_program is the file whose program's AST the converter may convert (program_file), none
+// when typescript-eslint builds no program for the configuration (LintConfig.no_program); with
+// `projectService` or `project` that AST is ESLint's whatever the sourceType (program_ast).
+fn (c &Checker) parse_program(config LintConfig, abs_path string) tsgo.ProgramFile {
+	if config.no_program {
+		return tsgo.ProgramFile{}
+	}
+	file := c.program_file(abs_path)
+	return tsgo.ProgramFile{
+		...file
+		program_ast: config.program_ast
+	}
 }
 
 // program_file is the file `abs_path` in the program of the checker's project, for the converter

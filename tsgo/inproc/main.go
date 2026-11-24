@@ -292,8 +292,10 @@ func veslint_tsgo_convert(flags C.int, text *C.char, textLen C.size_t, rows **C.
 }
 
 // veslint_tsgo_convert_file is veslint_tsgo_convert for a file of a program of the session
-// `handle`: it converts the program's AST of the file when it is the one a parse of `text` gives
-// (VeslintConverter.SameParse), and parses `text` otherwise. `params` name the snapshot, the
+// `handle`: it converts the program's AST of the file when it is the one to convert
+// (VeslintConverter.ConvertFile: with flag 4, the AST typescript-eslint lints with `projectService`
+// or `project`, whenever it is a parse of `text`; otherwise when it is the one a parse of `text`
+// gives), and parses `text` otherwise. `params` name the snapshot, the
 // project and the file as the parameters of veslint/nodesAtRanges, without values
 // (InProcess.VeslintSourceFile). In a lint with types the program has parsed every file already:
 // parsing it again was about 5 % of a lint of the TypeScript compiler, and its AST was garbage that
@@ -350,12 +352,14 @@ func convert(flags C.int, text *C.char, textLen C.size_t, file *ast.SourceFile, 
 	var diagnostics []*ast.Diagnostic
 	fromProgram := false
 	if file != nil {
-		out, diagnostics, fromProgram = c.ConvertFile(file, source)
+		out, diagnostics, fromProgram = c.ConvertFile(file, source, flags&4 != 0)
 	}
 	if !fromProgram {
 		out, diagnostics = c.Convert(source)
 	} else if checkProgramAST {
-		if want, wantDiagnostics, same := checkConverted(l, c.Script, file.FileName().AsString(), source, out, diagnostics); !same {
+		// The text parsed as the program parsed it: a module or a script.
+		script := file.ExternalModuleIndicator == nil
+		if want, wantDiagnostics, same := checkConverted(l, script, file.FileName().AsString(), source, out, diagnostics); !same {
 			// The rows of the text, copied below.
 			c.free()
 			out, diagnostics = want, wantDiagnostics
@@ -393,7 +397,8 @@ func convert(flags C.int, text *C.char, textLen C.size_t, file *ast.SourceFile, 
 }
 
 // checkConverted compares the rows and diagnostics of a program's AST (`rows` and `diagnostics`)
-// with those of a parse of `text`, which it returns, and tells whether they are the same.
+// with those of a parse of `text` (as a script when `script`), which it returns, and tells whether
+// they are the same.
 func checkConverted(l *parser.VeslintLanguage, script bool, name string, text string, rows []parser.VeslintRow, diagnostics []*ast.Diagnostic) ([]parser.VeslintRow, []*ast.Diagnostic, bool) {
 	fresh := parser.NewVeslintConverter(l)
 	fresh.Script = script

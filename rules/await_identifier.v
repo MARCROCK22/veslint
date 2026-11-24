@@ -59,6 +59,19 @@ fn (mut c Checker) await_identifiers_source(root C.vt_node, abs_path string) !st
 	return if found { source.bytestr() } else { '' }
 }
 
+// has_await_name_candidate tells whether the tree has an await_expression whose `await` TypeScript
+// may read as an identifier, where await_identifiers_source asks tsgo: outside the body of an async
+// function, and followed by no name, keyword or literal on its line.
+fn (mut c Checker) has_await_name_candidate(root C.vt_node) bool {
+	for node in c.nodes_of_kind(root, c'await_expression') {
+		keyword := await_keyword(node) or { continue }
+		if !c.await_takes_operand(keyword) && !await_in_async_body(node) {
+			return true
+		}
+	}
+	return false
+}
+
 // await_in_async_body: the await_expression is in the body of an async function, with no other
 // function or class in between, where TypeScript always reads the operator (its await context).
 // Anywhere else (the top level, a function that is not async, parameters, the members of a class)

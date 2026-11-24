@@ -89,12 +89,16 @@ pub fn convert(text string, tsx bool, script bool) Converted {
 
 // ProgramFile names a file of a program of TypeScript in this process: the client of the session,
 // the snapshot, the project and the file's path, as a request for the file gives them.
+// program_ast: the program's AST is the one ESLint lints (typescript-eslint with `projectService` or
+// `project`), converted whatever ESLint's sourceType; otherwise only when a parse of the text as
+// that sourceType gives it.
 pub struct ProgramFile {
 pub:
-	client   &Client = unsafe { nil }
-	snapshot int     = -1
-	project  string
-	path     string
+	client      &Client = unsafe { nil }
+	snapshot    int     = -1
+	project     string
+	path        string
+	program_ast bool
 }
 
 // convert_in is convert for `program`, a file of a program of TypeScript in this process (none
@@ -109,6 +113,9 @@ pub fn convert_in(program ProgramFile, text string, tsx bool, script bool) Conve
 	mut flags := if tsx { 1 } else { 0 }
 	if script {
 		flags |= 2
+	}
+	if program.program_ast {
+		flags |= 4
 	}
 	// As the parameters of veslint/nodesAtRanges, without values.
 	params := binary_params(program.snapshot, program.project, program.path, [])

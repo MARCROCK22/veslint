@@ -987,21 +987,6 @@ veslint	no-immediate-mutation/r3/i25	in TypeScript an initialization of a declar
 eslint	no-immediate-mutation/r7/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
 veslint	no-immediate-mutation/r7/i1	in TypeScript an initialization of a declaration without a type annotation is only a suggestion
 
-# no-await-expression-member: these cases run without a program, where typescript-estree reads a top-level `await` of a
-# script followed by a token that is not an identifier, keyword or literal (`{`, `(`, `[`, `-`, a template, a regular
-# expression) as an await expression. veslint always has a
-# program, and TypeScript reads such an `await` as an identifier there (rules/await_identifier.v), as typescript-eslint
-# does with the project service.
-veslint	no-await-expression-member/r0/i3	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r1/i0	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r1/i3	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r1/i4	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r4/i10	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r4/i11	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r4/i13	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r4/i17	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r4/i7	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-expression-member/r4/i8	without a program typescript-estree reads this top-level `await` of a script as an await expression
 # eslint-plugin-unicorn: prefer-spread makes its fix a suggestion in a TypeScript file (shouldSuggestSpread:
 # removing the call can change the contextual typing of the copy) unless it initializes an unannotated
 # variable and the types prove that the copy has the type of the source; the test lints these cases
@@ -1252,42 +1237,12 @@ eslint	prefer-spread/r18/i2	a TypeScript file: the fix is a suggestion unless th
 veslint	prefer-spread/r18/i2	a TypeScript file: the fix is a suggestion unless the types prove the copy keeps its type
 eslint	prefer-spread/r18/i3	a TypeScript file: the fix is a suggestion unless the types prove the copy keeps its type
 veslint	prefer-spread/r18/i3	a TypeScript file: the fix is a suggestion unless the types prove the copy keeps its type
-# The same for no-await-in-promise-methods: without a program typescript-estree reads a top-level `await` of a script
-# followed by `(` or a line break as an await expression, where TypeScript reads an identifier.
-veslint	no-await-in-promise-methods/r4/i7	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-in-promise-methods/r4/i8	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-in-promise-methods/r4/i23	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-await-in-promise-methods/r4/i60	without a program typescript-estree reads this top-level `await` of a script as an await expression
-# The same for no-unnecessary-await: a top-level `await` of a script followed by a token that is not an identifier,
-# keyword or literal, or by a line break, is an identifier for TypeScript (veslint has a program) and an await
-# expression for typescript-estree without one.
-veslint	no-unnecessary-await/r0/i0	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i1	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i12	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i13	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i2	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i23	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i24	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i26	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i27	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i28	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i3	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i30	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i34	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i35	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i38	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i4	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i5	without a program typescript-estree reads this top-level `await` of a script as an await expression
-veslint	no-unnecessary-await/r0/i6	without a program typescript-estree reads this top-level `await` of a script as an await expression
 # no-thenable: espree gives `export {then}` one Identifier as both `local` and `exported`, so its test expects the
 # problem twice (the Identifier is visited twice); typescript-estree makes two nodes and ESLint reports it once.
 eslint	no-thenable/i61	typescript-estree has two nodes for `then` in `export {then}`: reported once
 veslint	no-thenable/i61	typescript-estree has two nodes for `then` in `export {then}`: reported once
 eslint	no-thenable/i63	typescript-estree has two nodes for `then` in `export {then}`: reported once
 veslint	no-thenable/i63	typescript-estree has two nodes for `then` in `export {then}`: reported once
-# The same for no-single-promise-in-promise-methods: `await(Promise).all(…)` at the top of a script is a call of an
-# `await` function for TypeScript.
-veslint	no-single-promise-in-promise-methods/r0/i2	without a program typescript-estree reads this top-level `await` of a script as an await expression
 # no-anonymous-default-export names the function or class after the file (its name in camelCase): the cases of its test
 # lint files of other names (`foo.js`, `/path/to/foo-bar.js`…) or check the error a missing file gives, where the fixtures
 # lint `file.ts` in both tools. (no-anonymous-default-export/r0/i47 is also a syntax error for veslint: tree-sitter does

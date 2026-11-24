@@ -599,6 +599,25 @@ for parser in tree-sitter typescript; do
 		diff "$TMP/eager.out" "$TMP/lazy.out"
 	fi
 done
+# With `projectService` typescript-eslint lints the program's AST even when no rule needs types:
+# await-script.ts is a script there, whose `await (1)` calls the function `await` before its
+# definition (ESLint with the project service reports it), and `await []` at the top of a script is
+# an element access without an argument, the parsing error ESLint gives.
+printf '{"languageOptions": {"parserOptions": {"projectService": true}}, "rules": {"@typescript-eslint/no-use-before-define": ["error"]}}' > "$TMP/service.json"
+mkdir -p "$TMP/service-await"
+cp tests/lazy-snapshot/tsconfig.json "$TMP/service-await/"
+printf 'await [];\n' > "$TMP/service-await/element.ts"
+for parser in typescript tree-sitter; do
+	VESLINT_PARSER=$parser ./veslint --config "$TMP/service.json" tests/lazy-snapshot/await-script.ts > "$TMP/service.out" 2> /dev/null
+	(cd "$TMP/service-await" && VESLINT_PARSER=$parser "$ROOT/veslint" --config "$TMP/service.json" element.ts) > "$TMP/service-element.out" 2> /dev/null
+	if grep -q $'await-script.ts:3:1\t@typescript-eslint/no-use-before-define' "$TMP/service.out" &&
+		{ [[ $parser == tree-sitter ]] || grep -qxF $'element.ts:1:7\teslint\tfatal\tParsing error: An element access expression should take an argument.' "$TMP/service-element.out"; }; then
+		ok "projectService without rules that need types ($parser's rows): a top-level await of a script as the program reads it"
+	else
+		ko "projectService without rules that need types ($parser's rows): a top-level await of a script as the program reads it"
+		cat "$TMP/service.out" "$TMP/service-element.out"
+	fi
+done
 ./veslint --bench --config "$TMP/untyped.json" tests/lazy-snapshot/plain.ts > /dev/null 2> "$TMP/lazy.bench"
 if grep -q '"tsgo_requests":2[,}]' "$TMP/lazy.bench"; then
 	ok "rules without types: no snapshot when nothing needs one"
@@ -1613,9 +1632,9 @@ else
 fi
 # In a lint with types, the converter converts the program's AST of a file instead of parsing its
 # text again (tsgo.convert_in); VESLINT_CHECK_PROGRAM_AST also converts the text of each such file
-# and reports where the two differ (`veslint_tsgo: checked <path>` where they do not): most files
-# are converted from their program's AST (not those without import or export whose text has an
-# `await` or a `\u` escape), none differently, and the output does not change.
+# (as a module or a script, as the program parsed it) and reports where the two differ
+# (`veslint_tsgo: checked <path>` where they do not): files are converted from their program's AST,
+# none differently, and the output does not change.
 # Only TypeScript's parser converts a program's AST, so the test sets it.
 code=0
 VESLINT_PARSER=typescript VESLINT_CHECK_PROGRAM_AST=1 ./veslint --config "$TMP/workers.json" "${worker_files[@]}" > "$TMP/workers-program.out" 2> "$TMP/workers-program.err" || code=$?

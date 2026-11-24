@@ -489,11 +489,12 @@ def known_cases(tool):
 
 
 def known_key(rule, case_id, known):
-    """The id a case has in known.txt: a case of a vue/* rule may be listed with the rule's
-    prefix (`vue/no-restricted-syntax/i1`), as its id without it may also be the id of a case of
-    the rule of ESLint core of the same name; so may a case of a svelte/* rule."""
+    """The id a case has in known.txt: a case of a vue/* rule is listed with the rule's prefix
+    (`vue/no-restricted-syntax/i1`), as its id without it may also be the id of a case of the rule
+    of ESLint core of the same name (`no-dupe-keys/v14` is one in both, with other code); so is a
+    case of a svelte/* rule. An id without the prefix is the core rule's only."""
     for prefix in ('vue/', 'svelte/'):
-        if rule.startswith(prefix) and prefix + case_id in known:
+        if rule.startswith(prefix):
             return prefix + case_id
     return case_id
 
